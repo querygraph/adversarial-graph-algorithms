@@ -20,3 +20,7 @@ The 65,536-node chain produces 2,147,516,416 entries in each path array per engi
 [Protocol and resource limits](docker/README.md) · [raw evidence and checksums](publication/evidence/) · [source snapshot receipt](publication/source.json).
 
 All five variants also passed 30 small cases (six families × five algorithms); the runtime image passes 45 kernel/Arrow interchange checks. BFS and PageRank have documented cross-engine output/convergence differences. Graph loading and projection are outside kernel/query timers. No published query-suite result is pooled with these measurements.
+
+## Grust implementation handoff
+
+[Generalized graph algorithms in Grust](docs/grust-generalized-graph-algorithms-handoff.md) describes the proposed upstream architecture, Arrow and Cypher contracts, phased acceptance gates, and benchmark validation. It includes committed source references and clone commands for an implementation agent on another machine.
