@@ -1,0 +1,243 @@
+{
+  "binary_sha256": {
+    "icecat": "7a2bfc428bba0045aa98aacd84c3d1f963f12c17b45c05c1ec6a0e3d0cf0c35b",
+    "grustcat": "8bd8b0d623496c6f90aa478e6b02334696ea7e7b6d0afd4701a24ae96df64dea",
+    "grustcat-cypher": "3aec36478acaa011e7e65f0dc19dbdf060d324e76ddba5890c2060fe99a58ddd"
+  },
+  "checks": [
+    {
+      "family": "path",
+      "algorithm": "bfs",
+      "status": "ok"
+    },
+    {
+      "family": "path",
+      "algorithm": "dijkstra",
+      "status": "ok"
+    },
+    {
+      "family": "path",
+      "algorithm": "dijkstra-full",
+      "status": "ok"
+    },
+    {
+      "family": "path",
+      "algorithm": "wcc",
+      "status": "ok"
+    },
+    {
+      "family": "path",
+      "algorithm": "scc",
+      "status": "ok"
+    },
+    {
+      "family": "path",
+      "algorithm": "pagerank",
+      "status": "ok"
+    },
+    {
+      "family": "hub",
+      "algorithm": "bfs",
+      "status": "ok"
+    },
+    {
+      "family": "hub",
+      "algorithm": "dijkstra",
+      "status": "ok"
+    },
+    {
+      "family": "hub",
+      "algorithm": "dijkstra-full",
+      "status": "ok"
+    },
+    {
+      "family": "hub",
+      "algorithm": "wcc",
+      "status": "ok"
+    },
+    {
+      "family": "hub",
+      "algorithm": "scc",
+      "status": "ok"
+    },
+    {
+      "family": "hub",
+      "algorithm": "pagerank",
+      "status": "ok"
+    },
+    {
+      "family": "clusters",
+      "algorithm": "bfs",
+      "status": "ok"
+    },
+    {
+      "family": "clusters",
+      "algorithm": "dijkstra",
+      "status": "ok"
+    },
+    {
+      "family": "clusters",
+      "algorithm": "dijkstra-full",
+      "status": "ok"
+    },
+    {
+      "family": "clusters",
+      "algorithm": "wcc",
+      "status": "ok"
+    },
+    {
+      "family": "clusters",
+      "algorithm": "scc",
+      "status": "ok"
+    },
+    {
+      "family": "clusters",
+      "algorithm": "pagerank",
+      "status": "ok"
+    },
+    {
+      "family": "layered",
+      "algorithm": "bfs",
+      "status": "ok"
+    },
+    {
+      "family": "layered",
+      "algorithm": "dijkstra",
+      "status": "ok"
+    },
+    {
+      "family": "layered",
+      "algorithm": "dijkstra-full",
+      "status": "ok"
+    },
+    {
+      "family": "layered",
+      "algorithm": "wcc",
+      "status": "ok"
+    },
+    {
+      "family": "layered",
+      "algorithm": "scc",
+      "status": "ok"
+    },
+    {
+      "family": "layered",
+      "algorithm": "pagerank",
+      "status": "ok"
+    },
+    {
+      "family": "uniform",
+      "algorithm": "bfs",
+      "status": "ok"
+    },
+    {
+      "family": "uniform",
+      "algorithm": "dijkstra",
+      "status": "ok"
+    },
+    {
+      "family": "uniform",
+      "algorithm": "dijkstra-full",
+      "status": "ok"
+    },
+    {
+      "family": "uniform",
+      "algorithm": "wcc",
+      "status": "ok"
+    },
+    {
+      "family": "uniform",
+      "algorithm": "scc",
+      "status": "ok"
+    },
+    {
+      "family": "uniform",
+      "algorithm": "pagerank",
+      "status": "ok"
+    },
+    {
+      "family": "rmat",
+      "algorithm": "bfs",
+      "status": "ok"
+    },
+    {
+      "family": "rmat",
+      "algorithm": "dijkstra",
+      "status": "ok"
+    },
+    {
+      "family": "rmat",
+      "algorithm": "dijkstra-full",
+      "status": "ok"
+    },
+    {
+      "family": "rmat",
+      "algorithm": "wcc",
+      "status": "ok"
+    },
+    {
+      "family": "rmat",
+      "algorithm": "scc",
+      "status": "ok"
+    },
+    {
+      "family": "rmat",
+      "algorithm": "pagerank",
+      "status": "ok"
+    },
+    {
+      "writer": "icecat",
+      "reader": "icecat",
+      "format": "Arrow IPC",
+      "status": "ok"
+    },
+    {
+      "writer": "icecat",
+      "reader": "grustcat",
+      "format": "Arrow IPC",
+      "status": "ok"
+    },
+    {
+      "writer": "icecat",
+      "reader": "grustcat-cypher",
+      "format": "Arrow IPC",
+      "status": "ok"
+    },
+    {
+      "writer": "grustcat",
+      "reader": "icecat",
+      "format": "Arrow IPC",
+      "status": "ok"
+    },
+    {
+      "writer": "grustcat",
+      "reader": "grustcat",
+      "format": "Arrow IPC",
+      "status": "ok"
+    },
+    {
+      "writer": "grustcat",
+      "reader": "grustcat-cypher",
+      "format": "Arrow IPC",
+      "status": "ok"
+    },
+    {
+      "writer": "grustcat-cypher",
+      "reader": "icecat",
+      "format": "Arrow IPC",
+      "status": "ok"
+    },
+    {
+      "writer": "grustcat-cypher",
+      "reader": "grustcat",
+      "format": "Arrow IPC",
+      "status": "ok"
+    },
+    {
+      "writer": "grustcat-cypher",
+      "reader": "grustcat-cypher",
+      "format": "Arrow IPC",
+      "status": "ok"
+    }
+  ]
+}

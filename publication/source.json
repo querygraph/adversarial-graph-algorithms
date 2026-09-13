@@ -1,0 +1,6 @@
+{
+  "archive": "measured-source.tar.gz",
+  "sha256": "caa91104693861ff29ca4e108af621130184a9a1d2340228ff0eefcefbf898cf",
+  "description": "Exact staged source inputs from the five-way Docker build; official Neo4j/GDS binaries are downloaded separately and checksum-verified. OS base images and transitive apt packages are not immutable.",
+  "licenses": "licenses/"
+}

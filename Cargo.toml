@@ -1,0 +1,23 @@
+[package]
+name = "adversarial-graph-algorithms"
+version = "0.1.0"
+edition = "2024"
+autobins = false
+[dependencies]
+icebug-core = { path = "../icecat/rust/crates/icebug-core" }
+icebug-algorithms = { path = "../icecat/rust/crates/icebug-algorithms" }
+arrow-array = "59.3.0"
+grustcat = { path = "../icecat/rust/crates/grustcat" }
+grustcat-cypher = { path = "../icecat/rust/crates/grustcat-cypher" }
+
+[[bin]]
+name = "icecat"
+path = "src/main.rs"
+
+[[bin]]
+name = "grustcat"
+path = "src/bin/grustcat.rs"
+
+[[bin]]
+name = "grustcat-cypher"
+path = "src/bin/grustcat-cypher.rs"

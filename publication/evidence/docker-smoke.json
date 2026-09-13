@@ -1,0 +1,3409 @@
+{
+  "metadata": {
+    "gds": "2026.08.1",
+    "database": [
+      {
+        "versions": [
+          "2026.08.0"
+        ],
+        "edition": "community"
+      },
+      {
+        "versions": [
+          "5",
+          "25"
+        ],
+        "edition": ""
+      }
+    ],
+    "warmups": 1,
+    "repeats": 1,
+    "concurrency": 1,
+    "dijkstra_mode": "full-path",
+    "java": "openjdk version \"21.0.12\" 2026-07-21 LTS\nOpenJDK Runtime Environment Temurin-21.0.12+8 (build 21.0.12+8-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12+8 (build 21.0.12+8-LTS, mixed mode, sharing)",
+    "runner_platform": "Linux-7.0.12-linuxkit-aarch64-with-glibc2.36",
+    "native_engines": {
+      "cpp": "Icebug",
+      "rust": "Icecat",
+      "grustcat": "Grustcat"
+    },
+    "heap": "2G",
+    "user_log_level": "WARN",
+    "server_log_level": "WARN",
+    "page_cache": "512M",
+    "jar_sha256": "c8dc6396cd3bce89fc95ad20f55d09615d931f216a693e6bee005f8163d4df4f",
+    "native_binary_sha256": {
+      "legacy": "3800f957858555df16db22b539f4a7b70084b2dd4e838cdc6825e6e0e7bc5ea4",
+      "rust-bench": "8c9c696e9dceb9746532448deb265dace172b5640ea3b0cd21b9193f6abdc363",
+      "grustcat": "f5997e2335c8da86f6cdc0da04b898062da74dd996ae32f8f3c30a035dff6537"
+    }
+  },
+  "results": [
+    {
+      "family": "path",
+      "n": 128,
+      "edges": 127,
+      "algorithm": "bfs",
+      "graph_sha256": "560e700854f41cd32e1e8b5bd58f6417cc0d38426dd45d1151b1ac10b459e874",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 99,
+        "relationshipCount": 127
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.00625
+        ],
+        "rust": [
+          0.009875
+        ],
+        "grustcat": [
+          0.006541
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 6,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-4ec5d8ea-173a-4706-bb1d-14845886f831",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 33.88937500005795
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-9a2d7fac-45d2-45b1-b33a-e05cc47d0f8c",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.372499999931279
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 128,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "path",
+      "n": 128,
+      "edges": 127,
+      "algorithm": "dijkstra",
+      "graph_sha256": "560e700854f41cd32e1e8b5bd58f6417cc0d38426dd45d1151b1ac10b459e874",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 99,
+        "relationshipCount": 127
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.092833
+        ],
+        "rust": [
+          0.095958
+        ],
+        "grustcat": [
+          0.07083300000000001
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          },
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          },
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          },
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 128,
+          "distance_sum": 125196.0,
+          "path_entries": 8256,
+          "node_sum": 349504,
+          "cost_sum": 5265485.0,
+          "server_query_ms": 64,
+          "client_wall_ms": 66.19150000005902
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 128,
+          "distance_sum": 125196.0,
+          "path_entries": 8256,
+          "node_sum": 349504,
+          "cost_sum": 5265485.0,
+          "server_query_ms": 11,
+          "client_wall_ms": 13.268874999994296
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": true,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "path",
+      "n": 128,
+      "edges": 127,
+      "algorithm": "wcc",
+      "graph_sha256": "560e700854f41cd32e1e8b5bd58f6417cc0d38426dd45d1151b1ac10b459e874",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 99,
+        "relationshipCount": 127
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.016334
+        ],
+        "rust": [
+          0.010292
+        ],
+        "grustcat": [
+          0.0067079999999999996
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "p5": 128,
+            "max": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 2,
+          "postProcessingMillis": 2,
+          "configuration": {
+            "jobId": "jid-60dc386b-d0d3-4cc3-836d-ba86e05ba990",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 36.54354200000398
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "p5": 128,
+            "max": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-2cca89e6-ea62-4a0f-a248-23c4eb63ff50",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.8219169999583755
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "path",
+      "n": 128,
+      "edges": 127,
+      "algorithm": "scc",
+      "graph_sha256": "560e700854f41cd32e1e8b5bd58f6417cc0d38426dd45d1151b1ac10b459e874",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 99,
+        "relationshipCount": 127
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.031666
+        ],
+        "rust": [
+          0.014917
+        ],
+        "grustcat": [
+          0.008459
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 128,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 1,
+            "p25": 1,
+            "min": 1,
+            "mean": 1.0,
+            "p999": 1
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 2,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-bb518005-8387-4abd-9a59-4d1a6748172b",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 28.70716600000378
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 128,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 1,
+            "p25": 1,
+            "min": 1,
+            "mean": 1.0,
+            "p999": 1
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-46323e66-6532-4417-a65b-7b08d088692e",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.564457999890692
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "path",
+      "n": 128,
+      "edges": 127,
+      "algorithm": "pagerank",
+      "graph_sha256": "560e700854f41cd32e1e8b5bd58f6417cc0d38426dd45d1151b1ac10b459e874",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 99,
+        "relationshipCount": 127
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.457
+        ],
+        "rust": [
+          0.13716699999999998
+        ],
+        "grustcat": [
+          0.085167
+        ]
+      },
+      "native_iterations": {
+        "cpp": 88,
+        "rust": 88,
+        "grustcat": 88
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 127,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 0.9999990463256836,
+            "min": 0.14999961853027344,
+            "max": 0.9999999999999999,
+            "mean": 0.9557285383343697,
+            "p90": 0.9999990463256836,
+            "p50": 0.9999723434448242,
+            "p999": 0.9999990463256836,
+            "p95": 0.9999990463256836,
+            "p75": 0.9999990463256836
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 85,
+          "postProcessingMillis": 2,
+          "configuration": {
+            "jobId": "jid-e5e543ac-b38b-47ab-8e91-7d6acf624608",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 143.87087499994777
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 127,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 0.9999990463256836,
+            "min": 0.14999961853027344,
+            "max": 0.9999999999999999,
+            "mean": 0.9557285383343697,
+            "p90": 0.9999990463256836,
+            "p50": 0.9999723434448242,
+            "p999": 0.9999990463256836,
+            "p95": 0.9999990463256836,
+            "p75": 0.9999990463256836
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 64,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-27d20ec3-2eb2-4fb6-892c-3e9fb3483a3b",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 72.2203330000184
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 122.3333333385688,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 3.831992043124011e-09,
+        "l1_error": 3.8768924538355384e-08
+      }
+    },
+    {
+      "family": "hub",
+      "n": 128,
+      "edges": 243,
+      "algorithm": "bfs",
+      "graph_sha256": "351a02bb650912a20f18a3a33d24a38a805cd76678c9772de7768fed182bf259",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 34,
+        "relationshipCount": 243
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.006625
+        ],
+        "rust": [
+          0.013791999999999999
+        ],
+        "grustcat": [
+          0.009000000000000001
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-7d59af4c-3e09-4669-92c9-093121c19e6d",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.695832999914273
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-707f68e5-479e-4b34-a2eb-cfcca4dd20eb",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.489583000032326
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 128,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "hub",
+      "n": 128,
+      "edges": 243,
+      "algorithm": "dijkstra",
+      "graph_sha256": "351a02bb650912a20f18a3a33d24a38a805cd76678c9772de7768fed182bf259",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 34,
+        "relationshipCount": 243
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.034791
+        ],
+        "rust": [
+          0.019583
+        ],
+        "grustcat": [
+          0.016249999999999997
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          },
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          },
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          },
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 128,
+          "distance_sum": 2034.0,
+          "path_entries": 255,
+          "node_sum": 8128,
+          "cost_sum": 2034.0,
+          "server_query_ms": 4,
+          "client_wall_ms": 7.472957999993923
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 128,
+          "distance_sum": 2034.0,
+          "path_entries": 255,
+          "node_sum": 8128,
+          "cost_sum": 2034.0,
+          "server_query_ms": 3,
+          "client_wall_ms": 6.310083000016675
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": false,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "hub",
+      "n": 128,
+      "edges": 243,
+      "algorithm": "wcc",
+      "graph_sha256": "351a02bb650912a20f18a3a33d24a38a805cd76678c9772de7768fed182bf259",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 34,
+        "relationshipCount": 243
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.018625
+        ],
+        "rust": [
+          0.011165999999999999
+        ],
+        "grustcat": [
+          0.007208
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "p5": 128,
+            "max": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-d48e588a-c817-4434-bb7c-98ebbf1cb19d",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 5.525250000005144
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "p5": 128,
+            "max": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-a195da23-e602-498d-a262-585d34ee3951",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.274541999961912
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "hub",
+      "n": 128,
+      "edges": 243,
+      "algorithm": "scc",
+      "graph_sha256": "351a02bb650912a20f18a3a33d24a38a805cd76678c9772de7768fed182bf259",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 34,
+        "relationshipCount": 243
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.020292
+        ],
+        "rust": [
+          0.013083
+        ],
+        "grustcat": [
+          0.0095
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 12,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 117,
+            "p90": 1,
+            "p50": 1,
+            "p95": 117,
+            "p10": 1,
+            "p75": 1,
+            "p99": 117,
+            "p25": 1,
+            "min": 1,
+            "mean": 10.666666666666666,
+            "p999": 117
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-0bff3f91-7347-40a8-bef5-2d3c40e79c62",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.728874999955224
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 12,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 117,
+            "p90": 1,
+            "p50": 1,
+            "p95": 117,
+            "p10": 1,
+            "p75": 1,
+            "p99": 117,
+            "p25": 1,
+            "min": 1,
+            "mean": 10.666666666666666,
+            "p999": 117
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-53d44df7-c019-447d-a1b7-e0efcb6715db",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.75933400005124
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "hub",
+      "n": 128,
+      "edges": 243,
+      "algorithm": "pagerank",
+      "graph_sha256": "351a02bb650912a20f18a3a33d24a38a805cd76678c9772de7768fed182bf259",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 34,
+        "relationshipCount": 243
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.4215
+        ],
+        "rust": [
+          0.121625
+        ],
+        "grustcat": [
+          0.084125
+        ]
+      },
+      "native_iterations": {
+        "cpp": 76,
+        "rust": 76,
+        "grustcat": 76
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 104,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 0.7168493270874023,
+            "min": 0.16828536987304688,
+            "max": 43.75634765624999,
+            "mean": 0.7812414318323135,
+            "p90": 0.6802816390991211,
+            "p50": 0.4425687789916992,
+            "p999": 43.756346702575684,
+            "p95": 0.6985654830932617,
+            "p75": 0.5888509750366211
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 39,
+          "postProcessingMillis": 5,
+          "configuration": {
+            "jobId": "jid-7ae910c4-dbcd-4e39-b249-169932b932e0",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 116.21704200001659
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 104,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 0.7168493270874023,
+            "min": 0.16828536987304688,
+            "max": 43.75634765624999,
+            "mean": 0.7812414318323135,
+            "p90": 0.6802816390991211,
+            "p50": 0.4425687789916992,
+            "p999": 43.756346702575684,
+            "p95": 0.6985654830932617,
+            "p75": 0.5888509750366211
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 39,
+          "postProcessingMillis": 2,
+          "configuration": {
+            "jobId": "jid-8e9ea4fd-44ae-4cb2-a6b8-6e8b26cb10f8",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 52.24416700002621
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 99.99879790804921,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 1.5762957050746706e-09,
+        "l1_error": 3.181029927315504e-09
+      }
+    },
+    {
+      "family": "clusters",
+      "n": 128,
+      "edges": 240,
+      "algorithm": "bfs",
+      "graph_sha256": "ee785380bd82875ab6116b42bfbec7727ef092db3148c22d50f9c0d46f5ffb16",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 31,
+        "relationshipCount": 240
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.002458
+        ],
+        "rust": [
+          0.010583
+        ],
+        "grustcat": [
+          0.007833
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-26c16182-f166-4bde-af41-28c0a3e863c4",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.2658329999767375
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-1a9af2f6-8f70-4f1b-996f-2574f4097046",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.796417000013207
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 61,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "clusters",
+      "n": 128,
+      "edges": 240,
+      "algorithm": "dijkstra",
+      "graph_sha256": "ee785380bd82875ab6116b42bfbec7727ef092db3148c22d50f9c0d46f5ffb16",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 31,
+        "relationshipCount": 240
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.032
+        ],
+        "rust": [
+          0.019917
+        ],
+        "grustcat": [
+          0.015166
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          },
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          },
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          },
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 61,
+          "distance_sum": 5356.0,
+          "path_entries": 475,
+          "node_sum": 8402,
+          "cost_sum": 26902.0,
+          "server_query_ms": 4,
+          "client_wall_ms": 5.620875000090564
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 61,
+          "distance_sum": 5356.0,
+          "path_entries": 475,
+          "node_sum": 8402,
+          "cost_sum": 26902.0,
+          "server_query_ms": 2,
+          "client_wall_ms": 4.323166999938621
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": false,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "clusters",
+      "n": 128,
+      "edges": 240,
+      "algorithm": "wcc",
+      "graph_sha256": "ee785380bd82875ab6116b42bfbec7727ef092db3148c22d50f9c0d46f5ffb16",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 31,
+        "relationshipCount": 240
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.0215
+        ],
+        "rust": [
+          0.010083
+        ],
+        "grustcat": [
+          0.007958999999999999
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 8,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 61,
+            "p90": 61,
+            "p50": 1,
+            "p95": 61,
+            "p10": 1,
+            "p75": 1,
+            "p99": 61,
+            "p25": 1,
+            "min": 1,
+            "mean": 16.0,
+            "p999": 61
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-a24ab684-74fc-4094-8377-089cdd23e0cd",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.29287499991915
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 8,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 61,
+            "p90": 61,
+            "p50": 1,
+            "p95": 61,
+            "p10": 1,
+            "p75": 1,
+            "p99": 61,
+            "p25": 1,
+            "min": 1,
+            "mean": 16.0,
+            "p999": 61
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-6150a6d9-ec47-4208-9ec0-737ea073197e",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.5027090000312455
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "clusters",
+      "n": 128,
+      "edges": 240,
+      "algorithm": "scc",
+      "graph_sha256": "ee785380bd82875ab6116b42bfbec7727ef092db3148c22d50f9c0d46f5ffb16",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 31,
+        "relationshipCount": 240
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.032042
+        ],
+        "rust": [
+          0.015708
+        ],
+        "grustcat": [
+          0.011250000000000001
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 10,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 60,
+            "p90": 60,
+            "p50": 1,
+            "p95": 60,
+            "p10": 1,
+            "p75": 1,
+            "p99": 60,
+            "p25": 1,
+            "min": 1,
+            "mean": 12.8,
+            "p999": 60
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-2f66aa69-649b-4771-80a9-fe88c88de8e2",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.613666999944144
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 10,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 60,
+            "p90": 60,
+            "p50": 1,
+            "p95": 60,
+            "p10": 1,
+            "p75": 1,
+            "p99": 60,
+            "p25": 1,
+            "min": 1,
+            "mean": 12.8,
+            "p999": 60
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-d6264195-8c2c-48b5-ba97-f82fe97a1738",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.182458999958726
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "clusters",
+      "n": 128,
+      "edges": 240,
+      "algorithm": "pagerank",
+      "graph_sha256": "ee785380bd82875ab6116b42bfbec7727ef092db3148c22d50f9c0d46f5ffb16",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 31,
+        "relationshipCount": 240
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.485417
+        ],
+        "rust": [
+          0.134125
+        ],
+        "grustcat": [
+          0.092167
+        ]
+      },
+      "native_iterations": {
+        "cpp": 86,
+        "rust": 86,
+        "grustcat": 86
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 131,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 2.1892080307006836,
+            "min": 0.14999961853027344,
+            "max": 2.279525756835937,
+            "mean": 0.9290916323661804,
+            "p90": 1.6186285018920898,
+            "p50": 0.8670949935913086,
+            "p999": 2.279524803161621,
+            "p95": 1.7445287704467773,
+            "p75": 1.2542181015014648
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 44,
+          "postProcessingMillis": 1,
+          "configuration": {
+            "jobId": "jid-080b185a-7976-45df-8d98-8c4a20ca7cc3",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 54.191666999940935
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 131,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 2.1892080307006836,
+            "min": 0.14999961853027344,
+            "max": 2.279525756835937,
+            "mean": 0.9290916323661804,
+            "p90": 1.6186285018920898,
+            "p50": 0.8670949935913086,
+            "p999": 2.279524803161621,
+            "p95": 1.7445287704467773,
+            "p75": 1.2542181015014648
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 43,
+          "postProcessingMillis": 1,
+          "configuration": {
+            "jobId": "jid-307a68bc-a60a-439e-8c8f-2e46f9840dae",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 52.63754199995674
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 118.92374608124253,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 8.675954850378975e-10,
+        "l1_error": 9.328193733941503e-09
+      }
+    },
+    {
+      "family": "layered",
+      "n": 128,
+      "edges": 239,
+      "algorithm": "bfs",
+      "graph_sha256": "f3933bed340e7c9b983dc81751f6949a258e7981d5eab54550b95507cf4f14b2",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 28,
+        "relationshipCount": 239
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.007792
+        ],
+        "rust": [
+          0.012583
+        ],
+        "grustcat": [
+          0.007708
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-61ff08c7-1ca0-4c90-a4e4-ee1bd716aacb",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.329542000050424
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-8cb410d1-cc3f-4481-8cde-c2b66c29940d",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.5445409999965705
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 128,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "layered",
+      "n": 128,
+      "edges": 239,
+      "algorithm": "dijkstra",
+      "graph_sha256": "f3933bed340e7c9b983dc81751f6949a258e7981d5eab54550b95507cf4f14b2",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 28,
+        "relationshipCount": 239
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.047584
+        ],
+        "rust": [
+          0.028708
+        ],
+        "grustcat": [
+          0.026250000000000002
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          },
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          },
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          },
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 128,
+          "distance_sum": 13055.0,
+          "path_entries": 1522,
+          "node_sum": 55879,
+          "cost_sum": 93477.0,
+          "server_query_ms": 4,
+          "client_wall_ms": 5.704290999915429
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 128,
+          "distance_sum": 13055.0,
+          "path_entries": 1522,
+          "node_sum": 55879,
+          "cost_sum": 93477.0,
+          "server_query_ms": 4,
+          "client_wall_ms": 4.920666999964851
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": false,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "layered",
+      "n": 128,
+      "edges": 239,
+      "algorithm": "wcc",
+      "graph_sha256": "f3933bed340e7c9b983dc81751f6949a258e7981d5eab54550b95507cf4f14b2",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 28,
+        "relationshipCount": 239
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.018416
+        ],
+        "rust": [
+          0.011125
+        ],
+        "grustcat": [
+          0.007916
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "p5": 128,
+            "max": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-56899757-f3c9-4051-a5ae-166a20041e1c",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.155208000042876
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "p5": 128,
+            "max": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-5edb4433-6274-422d-8c4d-79bceb95ee6a",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.0565000000706277
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "layered",
+      "n": 128,
+      "edges": 239,
+      "algorithm": "scc",
+      "graph_sha256": "f3933bed340e7c9b983dc81751f6949a258e7981d5eab54550b95507cf4f14b2",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 28,
+        "relationshipCount": 239
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.031542
+        ],
+        "rust": [
+          0.012917
+        ],
+        "grustcat": [
+          0.009459
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 128,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 1,
+            "p25": 1,
+            "min": 1,
+            "mean": 1.0,
+            "p999": 1
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-27cf106a-3a02-439d-ae85-3c0227d3534f",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.424875000040629
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 128,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 1,
+            "p25": 1,
+            "min": 1,
+            "mean": 1.0,
+            "p999": 1
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-65819cfc-aa9a-4b52-901b-d624df97177c",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.996208000013212
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "layered",
+      "n": 128,
+      "edges": 239,
+      "algorithm": "pagerank",
+      "graph_sha256": "f3933bed340e7c9b983dc81751f6949a258e7981d5eab54550b95507cf4f14b2",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 28,
+        "relationshipCount": 239
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.345292
+        ],
+        "rust": [
+          0.09825
+        ],
+        "grustcat": [
+          0.066625
+        ]
+      },
+      "native_iterations": {
+        "cpp": 61,
+        "rust": 61,
+        "grustcat": 61
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 59,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 3.147109031677246,
+            "min": 0.14999961853027344,
+            "max": 3.239578247070312,
+            "mean": 0.8671950176358223,
+            "p90": 2.0164480209350586,
+            "p50": 0.6292486190795898,
+            "p999": 3.239577293395996,
+            "p95": 2.985854148864746,
+            "p75": 1.0298070907592773
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 18,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-719088e9-4d0c-44b8-ac1f-6968a792def7",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 26.690959000006842
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 59,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 3.147109031677246,
+            "min": 0.14999961853027344,
+            "max": 3.239578247070312,
+            "mean": 0.8671950176358223,
+            "p90": 2.0164480209350586,
+            "p50": 0.6292486190795898,
+            "p999": 3.239577293395996,
+            "p95": 2.985854148864746,
+            "p75": 1.0298070907592773
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 19,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-89aa489b-2e25-4784-8a11-702e19d19aee",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 27.31354200000169
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 111.00099396495969,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 1.0533453310979102e-09,
+        "l1_error": 1.7859423249739353e-08
+      }
+    },
+    {
+      "family": "uniform",
+      "n": 128,
+      "edges": 983,
+      "algorithm": "bfs",
+      "graph_sha256": "6efc390bf921736ab566fb5fb6d52b2a0bf6050f439979e47f01075da28d2a6f",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 983
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.019208
+        ],
+        "rust": [
+          0.012833
+        ],
+        "grustcat": [
+          0.010083
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-36c1fe35-109a-47d7-a893-49c3ff699eae",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.115166000019599
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-0b323acb-d518-4ecb-8f89-e60cc86c90a5",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.823750000061409
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 128,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "uniform",
+      "n": 128,
+      "edges": 983,
+      "algorithm": "dijkstra",
+      "graph_sha256": "6efc390bf921736ab566fb5fb6d52b2a0bf6050f439979e47f01075da28d2a6f",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 983
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.047958
+        ],
+        "rust": [
+          0.030667000000000003
+        ],
+        "grustcat": [
+          0.029
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          },
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          },
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          },
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 128,
+          "distance_sum": 3758.0,
+          "path_entries": 655,
+          "node_sum": 32751,
+          "cost_sum": 10975.0,
+          "server_query_ms": 3,
+          "client_wall_ms": 5.107375000079628
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 128,
+          "distance_sum": 3758.0,
+          "path_entries": 655,
+          "node_sum": 32751,
+          "cost_sum": 10975.0,
+          "server_query_ms": 1,
+          "client_wall_ms": 4.212832999996863
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": false,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "uniform",
+      "n": 128,
+      "edges": 983,
+      "algorithm": "wcc",
+      "graph_sha256": "6efc390bf921736ab566fb5fb6d52b2a0bf6050f439979e47f01075da28d2a6f",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 983
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.023291
+        ],
+        "rust": [
+          0.013167
+        ],
+        "grustcat": [
+          0.010042
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "p5": 128,
+            "max": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-21c77678-7450-470d-bdb5-28913e22d56c",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.218832999981714
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "p5": 128,
+            "max": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-9d9db733-de0e-48ca-ade5-423c5f7bf9ff",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.2015410000667543
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "uniform",
+      "n": 128,
+      "edges": 983,
+      "algorithm": "scc",
+      "graph_sha256": "6efc390bf921736ab566fb5fb6d52b2a0bf6050f439979e47f01075da28d2a6f",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 983
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.034167
+        ],
+        "rust": [
+          0.020834000000000002
+        ],
+        "grustcat": [
+          0.015125
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "p5": 128,
+            "max": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-86778b18-718c-4782-a62b-45d7d1480025",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.522291000057521
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "p5": 128,
+            "max": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-c7b692dd-0f1b-48ee-8570-36a3cac2fe9c",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.0574169999226797
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "uniform",
+      "n": 128,
+      "edges": 983,
+      "algorithm": "pagerank",
+      "graph_sha256": "6efc390bf921736ab566fb5fb6d52b2a0bf6050f439979e47f01075da28d2a6f",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 983
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.1455
+        ],
+        "rust": [
+          0.059917000000000005
+        ],
+        "grustcat": [
+          0.040375
+        ]
+      },
+      "native_iterations": {
+        "cpp": 19,
+        "rust": 19,
+        "grustcat": 19
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 130,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 2.208097457885742,
+            "min": 0.28875732421875,
+            "max": 2.4997863769531246,
+            "mean": 0.9999998956918716,
+            "p90": 1.5286083221435547,
+            "p50": 0.9256420135498047,
+            "p999": 2.499784469604492,
+            "p95": 1.6863842010498047,
+            "p75": 1.2813396453857422
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 42,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-42db92c6-c118-4343-ba72-09401ebff151",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 50.03491699994811
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 130,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 2.208097457885742,
+            "min": 0.28875732421875,
+            "max": 2.4997863769531246,
+            "mean": 0.9999998956918716,
+            "p90": 1.5286083221435547,
+            "p50": 0.9256420135498047,
+            "p999": 2.499784469604492,
+            "p95": 1.6863842010498047,
+            "p75": 1.2813396453857422
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 40,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-234cf9cd-7aaa-497b-a3db-6958496d218b",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 47.929500000009284
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 127.99999988607394,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 9.324101213348257e-11,
+        "l1_error": 2.8004827224564766e-09
+      }
+    },
+    {
+      "family": "rmat",
+      "n": 128,
+      "edges": 709,
+      "algorithm": "bfs",
+      "graph_sha256": "994f02d1281343870ef04ad794b96a481c11dc5deaf8d28ebebcf130c553f44a",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 54,
+        "relationshipCount": 709
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.008958
+        ],
+        "rust": [
+          0.015333000000000001
+        ],
+        "grustcat": [
+          0.009917
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-acf159ff-1f93-473a-9807-e0332f7fc06f",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 7.988875000023654
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-a4160e87-7dc0-40a2-87c2-b5bbf842ba24",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.95716599998741
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 103,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "rmat",
+      "n": 128,
+      "edges": 709,
+      "algorithm": "dijkstra",
+      "graph_sha256": "994f02d1281343870ef04ad794b96a481c11dc5deaf8d28ebebcf130c553f44a",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 54,
+        "relationshipCount": 709
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.051666
+        ],
+        "rust": [
+          0.024666999999999998
+        ],
+        "grustcat": [
+          0.020458
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 103,
+            "path_entries": 347,
+            "node_sum": 11586,
+            "cost_sum": 2253
+          },
+          {
+            "reachable": 103,
+            "path_entries": 347,
+            "node_sum": 11586,
+            "cost_sum": 2253
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 103,
+            "path_entries": 356,
+            "node_sum": 10665,
+            "cost_sum": 2280
+          },
+          {
+            "reachable": 103,
+            "path_entries": 356,
+            "node_sum": 10665,
+            "cost_sum": 2280
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 103,
+            "path_entries": 356,
+            "node_sum": 10665,
+            "cost_sum": 2280
+          },
+          {
+            "reachable": 103,
+            "path_entries": 356,
+            "node_sum": 10665,
+            "cost_sum": 2280
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 103,
+          "distance_sum": 1463.0,
+          "path_entries": 356,
+          "node_sum": 11192,
+          "cost_sum": 2280.0,
+          "server_query_ms": 7,
+          "client_wall_ms": 8.54099999992286
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 103,
+          "distance_sum": 1463.0,
+          "path_entries": 356,
+          "node_sum": 11192,
+          "cost_sum": 2280.0,
+          "server_query_ms": 3,
+          "client_wall_ms": 3.879417000007379
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": false,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "rmat",
+      "n": 128,
+      "edges": 709,
+      "algorithm": "wcc",
+      "graph_sha256": "994f02d1281343870ef04ad794b96a481c11dc5deaf8d28ebebcf130c553f44a",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 54,
+        "relationshipCount": 709
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.021542
+        ],
+        "rust": [
+          0.01225
+        ],
+        "grustcat": [
+          0.009000000000000001
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 15,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 114,
+            "p90": 1,
+            "p50": 1,
+            "p95": 114,
+            "p10": 1,
+            "p75": 1,
+            "p99": 114,
+            "p25": 1,
+            "min": 1,
+            "mean": 8.533333333333333,
+            "p999": 114
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-46d8caea-1d28-44ba-973f-1098aa78cc61",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 6.32516600001054
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 15,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 114,
+            "p90": 1,
+            "p50": 1,
+            "p95": 114,
+            "p10": 1,
+            "p75": 1,
+            "p99": 114,
+            "p25": 1,
+            "min": 1,
+            "mean": 8.533333333333333,
+            "p999": 114
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-a4f8a9a8-f2a5-4fda-8e0e-a33b2086ae61",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.9351250000217988
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "rmat",
+      "n": 128,
+      "edges": 709,
+      "algorithm": "scc",
+      "graph_sha256": "994f02d1281343870ef04ad794b96a481c11dc5deaf8d28ebebcf130c553f44a",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 54,
+        "relationshipCount": 709
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.024166
+        ],
+        "rust": [
+          0.017499999999999998
+        ],
+        "grustcat": [
+          0.015458
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 38,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 91,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 91,
+            "p25": 1,
+            "min": 1,
+            "mean": 3.3684210526315788,
+            "p999": 91
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-2269d184-bac4-46ce-9fb2-c3f511aa6e50",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 6.619875000069442
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 38,
+          "componentDistribution": {
+            "p1": 1,
+            "p5": 1,
+            "max": 91,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 91,
+            "p25": 1,
+            "min": 1,
+            "mean": 3.3684210526315788,
+            "p999": 91
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-fe2bf5d2-05cd-46bb-8a18-c0f333b585dd",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.8461250000191285
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "rmat",
+      "n": 128,
+      "edges": 709,
+      "algorithm": "pagerank",
+      "graph_sha256": "994f02d1281343870ef04ad794b96a481c11dc5deaf8d28ebebcf130c553f44a",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 54,
+        "relationshipCount": 709
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.172542
+        ],
+        "rust": [
+          0.050958
+        ],
+        "grustcat": [
+          0.036041000000000004
+        ]
+      },
+      "native_iterations": {
+        "cpp": 18,
+        "rust": 18,
+        "grustcat": 18
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 120,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 4.271849632263184,
+            "min": 0.14999961853027344,
+            "max": 5.925689697265624,
+            "mean": 0.7825410664081573,
+            "p90": 2.1586904525756836,
+            "p50": 0.3802480697631836,
+            "p999": 5.925688743591309,
+            "p95": 2.752181053161621,
+            "p75": 0.9285192489624023
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 38,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-c8d4c9b4-965b-4ba0-84f3-0b3a6484589a",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 52.11854200001653
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 120,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 4.271849632263184,
+            "min": 0.14999961853027344,
+            "max": 5.925689697265624,
+            "mean": 0.7825410664081573,
+            "p90": 2.1586904525756836,
+            "p50": 0.3802480697631836,
+            "p999": 5.925688743591309,
+            "p95": 2.752181053161621,
+            "p75": 0.9285192489624023
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 38,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-42fee7da-b97f-428b-b783-6a15b504e41d",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 47.83112500001607
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 100.1652721245678,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 8.480248447906291e-11,
+        "l1_error": 1.1685619397041463e-09
+      }
+    }
+  ]
+}

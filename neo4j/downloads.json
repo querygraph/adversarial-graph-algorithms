@@ -1,0 +1,12 @@
+{
+  "neo4j.tar.gz": {
+    "url": "https://dist.neo4j.org/neo4j-community-2026.08.0-unix.tar.gz",
+    "sha256": "3e9d7fd6b3fe463d139bf534c6bb549761dea3aa489b94be27cda3e24324b834",
+    "bytes": 268754509
+  },
+  "gds.jar": {
+    "url": "https://github.com/neo4j/graph-data-science/releases/download/2026.08.1/neo4j-graph-data-science-2026.08.1.jar",
+    "sha256": "c8dc6396cd3bce89fc95ad20f55d09615d931f216a693e6bee005f8163d4df4f",
+    "bytes": 69544914
+  }
+}

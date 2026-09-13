@@ -1,0 +1,205 @@
+{
+  "metadata": {
+    "gds": "2026.08.1",
+    "database": [
+      {
+        "versions": [
+          "2026.08.0"
+        ],
+        "edition": "community"
+      },
+      {
+        "versions": [
+          "5",
+          "25"
+        ],
+        "edition": ""
+      }
+    ],
+    "warmups": 0,
+    "repeats": 1,
+    "concurrency": 1,
+    "dijkstra_mode": "full-path",
+    "java": "openjdk version \"21.0.12\" 2026-07-21 LTS\nOpenJDK Runtime Environment Temurin-21.0.12+8 (build 21.0.12+8-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12+8 (build 21.0.12+8-LTS, mixed mode, sharing)",
+    "runner_platform": "Linux-7.0.12-linuxkit-aarch64-with-glibc2.36",
+    "native_engines": {
+      "cpp": "Icebug",
+      "rust": "Icecat",
+      "grustcat": "Grustcat"
+    },
+    "heap": "2G",
+    "user_log_level": "WARN",
+    "server_log_level": "WARN",
+    "page_cache": "512M",
+    "jar_sha256": "c8dc6396cd3bce89fc95ad20f55d09615d931f216a693e6bee005f8163d4df4f",
+    "native_binary_sha256": {
+      "legacy": "3800f957858555df16db22b539f4a7b70084b2dd4e838cdc6825e6e0e7bc5ea4",
+      "rust-bench": "8c9c696e9dceb9746532448deb265dace172b5640ea3b0cd21b9193f6abdc363",
+      "grustcat": "f5997e2335c8da86f6cdc0da04b898062da74dd996ae32f8f3c30a035dff6537"
+    }
+  },
+  "results": [
+    {
+      "family": "path",
+      "n": 16384,
+      "edges": 16383,
+      "algorithm": "dijkstra",
+      "graph_sha256": "ad59945a9ebc54454aac40ec2e161c0f135c4b50e8efac305d8d0e8dccbe4ea0",
+      "projection": {
+        "nodeCount": 16384,
+        "projectMillis": 87,
+        "relationshipCount": 16383
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          1028.625084
+        ],
+        "rust": [
+          1036.1498330000002
+        ],
+        "grustcat": [
+          1070.079126
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 16384,
+            "path_entries": 134225920,
+            "node_sum": 733007749120,
+            "cost_sum": 11722888521915
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 16384,
+            "path_entries": 134225920,
+            "node_sum": 733007749120,
+            "cost_sum": 11722888521915
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 16384,
+            "path_entries": 134225920,
+            "node_sum": 733007749120,
+            "cost_sum": 11722888521915
+          }
+        ]
+      },
+      "warmups": [],
+      "samples": [
+        {
+          "reachable": 16384,
+          "distance_sum": 2146713455.0,
+          "path_entries": 134225920,
+          "node_sum": 733007749120,
+          "cost_sum": 11722888521915.0,
+          "server_query_ms": 12385,
+          "client_wall_ms": 12449.05988100004
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": true
+      }
+    },
+    {
+      "family": "path",
+      "n": 65536,
+      "edges": 65535,
+      "algorithm": "dijkstra",
+      "graph_sha256": "92fd77be9c6e0565179f9152dd8169006653e0afd30b7ae5b902704130cf35ab",
+      "projection": {
+        "nodeCount": 65536,
+        "projectMillis": 110,
+        "relationshipCount": 65535
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          22263.767427
+        ],
+        "rust": [
+          16815.660883
+        ],
+        "grustcat": [
+          16761.378174
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 65536,
+            "path_entries": 2147516416,
+            "node_sum": 46912496107520,
+            "cost_sum": 750516181958851
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 65536,
+            "path_entries": 2147516416,
+            "node_sum": 46912496107520,
+            "cost_sum": 750516181958851
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 65536,
+            "path_entries": 2147516416,
+            "node_sum": 46912496107520,
+            "cost_sum": 750516181958851
+          }
+        ]
+      },
+      "warmups": [],
+      "samples": [
+        {
+          "reachable": 65536,
+          "distance_sum": 34356658252.0,
+          "path_entries": 2147516416,
+          "node_sum": 46912496107520,
+          "cost_sum": 750516181958851.0,
+          "server_query_ms": 200919,
+          "client_wall_ms": 201177.10709100004
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": true
+      }
+    }
+  ]
+}

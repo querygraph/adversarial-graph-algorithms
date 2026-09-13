@@ -1,0 +1,3705 @@
+{
+  "metadata": {
+    "gds": "2026.08.1",
+    "database": [
+      {
+        "versions": [
+          "2026.08.0"
+        ],
+        "edition": "community"
+      },
+      {
+        "versions": [
+          "5",
+          "25"
+        ],
+        "edition": ""
+      }
+    ],
+    "warmups": 1,
+    "repeats": 1,
+    "concurrency": 1,
+    "dijkstra_mode": "full-path",
+    "java": "openjdk version \"21.0.12\" 2026-07-21 LTS\nOpenJDK Runtime Environment Temurin-21.0.12+8 (build 21.0.12+8-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12+8 (build 21.0.12+8-LTS, mixed mode, sharing)",
+    "runner_platform": "Linux-7.0.12-linuxkit-aarch64-with-glibc2.36",
+    "native_engines": {
+      "cpp": "Icebug",
+      "rust": "Icecat",
+      "grustcat": "Grustcat",
+      "grustcat_cypher": "Grustcat Cypher"
+    },
+    "heap": "2G",
+    "user_log_level": "WARN",
+    "server_log_level": "WARN",
+    "page_cache": "512M",
+    "jar_sha256": "c8dc6396cd3bce89fc95ad20f55d09615d931f216a693e6bee005f8163d4df4f",
+    "native_binary_sha256": {
+      "legacy": "3800f957858555df16db22b539f4a7b70084b2dd4e838cdc6825e6e0e7bc5ea4",
+      "rust-bench": "7a2bfc428bba0045aa98aacd84c3d1f963f12c17b45c05c1ec6a0e3d0cf0c35b",
+      "grustcat": "8bd8b0d623496c6f90aa478e6b02334696ea7e7b6d0afd4701a24ae96df64dea",
+      "grustcat-cypher": "3aec36478acaa011e7e65f0dc19dbdf060d324e76ddba5890c2060fe99a58ddd"
+    }
+  },
+  "results": [
+    {
+      "family": "path",
+      "n": 128,
+      "edges": 127,
+      "algorithm": "bfs",
+      "graph_sha256": "560e700854f41cd32e1e8b5bd58f6417cc0d38426dd45d1151b1ac10b459e874",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 452,
+        "relationshipCount": 127
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.006542
+        ],
+        "rust": [
+          0.017292
+        ],
+        "grustcat": [
+          0.009082999999999999
+        ],
+        "grustcat_cypher": [
+          0.033708
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.bfs($source) YIELD node_id, distance RETURN node_id, distance"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 5,
+          "computeMillis": 8,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-7b1fe23d-df14-4b38-a1b8-fb9c5b74042d",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 46.49033299983785
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 1,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-e358a3f2-1c28-4fec-9f80-bf6a4d685a3e",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.855291999774636
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 128,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "path",
+      "n": 128,
+      "edges": 127,
+      "algorithm": "dijkstra",
+      "graph_sha256": "560e700854f41cd32e1e8b5bd58f6417cc0d38426dd45d1151b1ac10b459e874",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 452,
+        "relationshipCount": 127
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.089791
+        ],
+        "rust": [
+          0.083541
+        ],
+        "grustcat": [
+          0.073667
+        ],
+        "grustcat_cypher": [
+          0.09425
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.fullPaths($source) YIELD nodeIds, costs UNWIND range(0,size(nodeIds)-1) AS i RETURN count(*) AS path_entries, sum(nodeIds[i]) AS node_sum, sum(costs[i]) AS cost_sum"
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          },
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          },
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          },
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          }
+        ],
+        "grustcat_cypher": [
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          },
+          {
+            "reachable": 128,
+            "path_entries": 8256,
+            "node_sum": 349504,
+            "cost_sum": 5265485
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 128,
+          "distance_sum": 125196.0,
+          "path_entries": 8256,
+          "node_sum": 349504,
+          "cost_sum": 5265485.0,
+          "server_query_ms": 139,
+          "client_wall_ms": 142.18008399984683
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 128,
+          "distance_sum": 125196.0,
+          "path_entries": 8256,
+          "node_sum": 349504,
+          "cost_sum": 5265485.0,
+          "server_query_ms": 8,
+          "client_wall_ms": 26.28058299978875
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": true,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "path",
+      "n": 128,
+      "edges": 127,
+      "algorithm": "wcc",
+      "graph_sha256": "560e700854f41cd32e1e8b5bd58f6417cc0d38426dd45d1151b1ac10b459e874",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 452,
+        "relationshipCount": 127
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.018542
+        ],
+        "rust": [
+          0.014542000000000001
+        ],
+        "grustcat": [
+          0.007958000000000002
+        ],
+        "grustcat_cypher": [
+          0.035292
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.wcc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "max": 128,
+            "p5": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 2,
+          "postProcessingMillis": 2,
+          "configuration": {
+            "jobId": "jid-b974a501-0ad5-4a97-829a-6a9d05003e38",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 37.05833399999392
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "max": 128,
+            "p5": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-f2269e33-4008-496a-8d2c-e34afc57bca5",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.756000000270433
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "path",
+      "n": 128,
+      "edges": 127,
+      "algorithm": "scc",
+      "graph_sha256": "560e700854f41cd32e1e8b5bd58f6417cc0d38426dd45d1151b1ac10b459e874",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 452,
+        "relationshipCount": 127
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.0335
+        ],
+        "rust": [
+          0.016166
+        ],
+        "grustcat": [
+          0.010208
+        ],
+        "grustcat_cypher": [
+          0.035459
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.scc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 128,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 1,
+            "p5": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 1,
+            "p25": 1,
+            "min": 1,
+            "mean": 1.0,
+            "p999": 1
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 2,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-461e5db1-18c8-4499-956d-21fa5c29195b",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 31.850542000029236
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 128,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 1,
+            "p5": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 1,
+            "p25": 1,
+            "min": 1,
+            "mean": 1.0,
+            "p999": 1
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-0310269a-516a-43da-8c17-3662fbf84a0f",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 5.221749999691383
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "path",
+      "n": 128,
+      "edges": 127,
+      "algorithm": "pagerank",
+      "graph_sha256": "560e700854f41cd32e1e8b5bd58f6417cc0d38426dd45d1151b1ac10b459e874",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 452,
+        "relationshipCount": 127
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.462542
+        ],
+        "rust": [
+          0.129167
+        ],
+        "grustcat": [
+          0.082625
+        ],
+        "grustcat_cypher": [
+          0.108333
+        ]
+      },
+      "native_iterations": {
+        "cpp": 88,
+        "rust": 88,
+        "grustcat": 88,
+        "grustcat_cypher": 88
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.pagerank() YIELD node_id, score RETURN node_id, score"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 127,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 0.9999990463256836,
+            "min": 0.14999961853027344,
+            "max": 0.9999999999999999,
+            "p90": 0.9999990463256836,
+            "mean": 0.9557285383343697,
+            "p999": 0.9999990463256836,
+            "p50": 0.9999723434448242,
+            "p95": 0.9999990463256836,
+            "p75": 0.9999990463256836
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 83,
+          "postProcessingMillis": 3,
+          "configuration": {
+            "jobId": "jid-40fee418-9eb5-42cd-a673-3d521b279bd5",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 159.48658300021634
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 127,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 0.9999990463256836,
+            "min": 0.14999961853027344,
+            "max": 0.9999999999999999,
+            "p90": 0.9999990463256836,
+            "mean": 0.9557285383343697,
+            "p999": 0.9999990463256836,
+            "p50": 0.9999723434448242,
+            "p95": 0.9999990463256836,
+            "p75": 0.9999990463256836
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 75,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-f368f023-e3fe-4c2d-9f20-5994a8731f70",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 85.59974999980113
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 122.3333333385688,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 3.831992043124011e-09,
+        "l1_error": 3.8768924538355384e-08
+      }
+    },
+    {
+      "family": "hub",
+      "n": 128,
+      "edges": 243,
+      "algorithm": "bfs",
+      "graph_sha256": "351a02bb650912a20f18a3a33d24a38a805cd76678c9772de7768fed182bf259",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 32,
+        "relationshipCount": 243
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.006
+        ],
+        "rust": [
+          0.011958
+        ],
+        "grustcat": [
+          0.00925
+        ],
+        "grustcat_cypher": [
+          0.034375
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.bfs($source) YIELD node_id, distance RETURN node_id, distance"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-efd52faf-e5df-4cf5-8577-7ff6f3fdb9bc",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.679291999764246
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-20c51048-df71-4a53-8eb2-367d91495c6b",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.169542000250658
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 128,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "hub",
+      "n": 128,
+      "edges": 243,
+      "algorithm": "dijkstra",
+      "graph_sha256": "351a02bb650912a20f18a3a33d24a38a805cd76678c9772de7768fed182bf259",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 32,
+        "relationshipCount": 243
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.036708
+        ],
+        "rust": [
+          0.022209
+        ],
+        "grustcat": [
+          0.01675
+        ],
+        "grustcat_cypher": [
+          0.040125
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.fullPaths($source) YIELD nodeIds, costs UNWIND range(0,size(nodeIds)-1) AS i RETURN count(*) AS path_entries, sum(nodeIds[i]) AS node_sum, sum(costs[i]) AS cost_sum"
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          },
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          },
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          },
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          }
+        ],
+        "grustcat_cypher": [
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          },
+          {
+            "reachable": 128,
+            "path_entries": 255,
+            "node_sum": 8128,
+            "cost_sum": 2034
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 128,
+          "distance_sum": 2034.0,
+          "path_entries": 255,
+          "node_sum": 8128,
+          "cost_sum": 2034.0,
+          "server_query_ms": 5,
+          "client_wall_ms": 6.7609590000756725
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 128,
+          "distance_sum": 2034.0,
+          "path_entries": 255,
+          "node_sum": 8128,
+          "cost_sum": 2034.0,
+          "server_query_ms": 4,
+          "client_wall_ms": 5.309875000421016
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": false,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "hub",
+      "n": 128,
+      "edges": 243,
+      "algorithm": "wcc",
+      "graph_sha256": "351a02bb650912a20f18a3a33d24a38a805cd76678c9772de7768fed182bf259",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 32,
+        "relationshipCount": 243
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.018541
+        ],
+        "rust": [
+          0.023125
+        ],
+        "grustcat": [
+          0.006334
+        ],
+        "grustcat_cypher": [
+          0.033207999999999994
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.wcc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "max": 128,
+            "p5": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-066e00f5-f796-42fc-a4c0-f999aab44009",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.8612089999551245
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "max": 128,
+            "p5": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-279712c0-8197-4d36-a2e4-1d7f888aa5d9",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.40979199972935
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "hub",
+      "n": 128,
+      "edges": 243,
+      "algorithm": "scc",
+      "graph_sha256": "351a02bb650912a20f18a3a33d24a38a805cd76678c9772de7768fed182bf259",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 32,
+        "relationshipCount": 243
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.021083
+        ],
+        "rust": [
+          0.0125
+        ],
+        "grustcat": [
+          0.009208000000000001
+        ],
+        "grustcat_cypher": [
+          0.028541999999999998
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.scc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 12,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 117,
+            "p5": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 117,
+            "p10": 1,
+            "p75": 1,
+            "p99": 117,
+            "p25": 1,
+            "min": 1,
+            "mean": 10.666666666666666,
+            "p999": 117
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-c43164d3-4f9f-4d63-893b-af8bd8c27624",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.498750000038854
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 12,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 117,
+            "p5": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 117,
+            "p10": 1,
+            "p75": 1,
+            "p99": 117,
+            "p25": 1,
+            "min": 1,
+            "mean": 10.666666666666666,
+            "p999": 117
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-f0f21bd0-e755-4337-bc99-6828ef67bb50",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.51249999994252
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "hub",
+      "n": 128,
+      "edges": 243,
+      "algorithm": "pagerank",
+      "graph_sha256": "351a02bb650912a20f18a3a33d24a38a805cd76678c9772de7768fed182bf259",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 32,
+        "relationshipCount": 243
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.40075
+        ],
+        "rust": [
+          0.129
+        ],
+        "grustcat": [
+          0.083125
+        ],
+        "grustcat_cypher": [
+          0.102958
+        ]
+      },
+      "native_iterations": {
+        "cpp": 76,
+        "rust": 76,
+        "grustcat": 76,
+        "grustcat_cypher": 76
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.pagerank() YIELD node_id, score RETURN node_id, score"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 104,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 0.7168493270874023,
+            "min": 0.16828536987304688,
+            "max": 43.75634765624999,
+            "p90": 0.6802816390991211,
+            "mean": 0.7812414318323135,
+            "p999": 43.756346702575684,
+            "p50": 0.4425687789916992,
+            "p95": 0.6985654830932617,
+            "p75": 0.5888509750366211
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 38,
+          "postProcessingMillis": 5,
+          "configuration": {
+            "jobId": "jid-990d1de8-f902-4635-9131-2bd07f138fb3",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 112.13941699998031
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 104,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 0.7168493270874023,
+            "min": 0.16828536987304688,
+            "max": 43.75634765624999,
+            "p90": 0.6802816390991211,
+            "mean": 0.7812414318323135,
+            "p999": 43.756346702575684,
+            "p50": 0.4425687789916992,
+            "p95": 0.6985654830932617,
+            "p75": 0.5888509750366211
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 37,
+          "postProcessingMillis": 2,
+          "configuration": {
+            "jobId": "jid-b859bb06-3304-4762-8026-51f2cb6a03d3",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 50.07633400009581
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 99.99879790804921,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 1.5762957050746706e-09,
+        "l1_error": 3.181029927315504e-09
+      }
+    },
+    {
+      "family": "clusters",
+      "n": 128,
+      "edges": 240,
+      "algorithm": "bfs",
+      "graph_sha256": "ee785380bd82875ab6116b42bfbec7727ef092db3148c22d50f9c0d46f5ffb16",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 43,
+        "relationshipCount": 240
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.002583
+        ],
+        "rust": [
+          0.009708
+        ],
+        "grustcat": [
+          0.006959
+        ],
+        "grustcat_cypher": [
+          0.024958
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.bfs($source) YIELD node_id, distance RETURN node_id, distance"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-dc9603dc-bcec-458d-949e-e402b20c86f4",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.503458000272076
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-a0d164a1-ccd1-448a-9cc6-cbc8206fb6b5",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.266290999818011
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 61,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "clusters",
+      "n": 128,
+      "edges": 240,
+      "algorithm": "dijkstra",
+      "graph_sha256": "ee785380bd82875ab6116b42bfbec7727ef092db3148c22d50f9c0d46f5ffb16",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 43,
+        "relationshipCount": 240
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.027584
+        ],
+        "rust": [
+          0.01575
+        ],
+        "grustcat": [
+          0.013833
+        ],
+        "grustcat_cypher": [
+          0.036333
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.fullPaths($source) YIELD nodeIds, costs UNWIND range(0,size(nodeIds)-1) AS i RETURN count(*) AS path_entries, sum(nodeIds[i]) AS node_sum, sum(costs[i]) AS cost_sum"
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          },
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          },
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          },
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          }
+        ],
+        "grustcat_cypher": [
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          },
+          {
+            "reachable": 61,
+            "path_entries": 475,
+            "node_sum": 8402,
+            "cost_sum": 26902
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 61,
+          "distance_sum": 5356.0,
+          "path_entries": 475,
+          "node_sum": 8402,
+          "cost_sum": 26902.0,
+          "server_query_ms": 4,
+          "client_wall_ms": 5.259291000129451
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 61,
+          "distance_sum": 5356.0,
+          "path_entries": 475,
+          "node_sum": 8402,
+          "cost_sum": 26902.0,
+          "server_query_ms": 3,
+          "client_wall_ms": 3.800292000050831
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": false,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "clusters",
+      "n": 128,
+      "edges": 240,
+      "algorithm": "wcc",
+      "graph_sha256": "ee785380bd82875ab6116b42bfbec7727ef092db3148c22d50f9c0d46f5ffb16",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 43,
+        "relationshipCount": 240
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.022375
+        ],
+        "rust": [
+          0.011542
+        ],
+        "grustcat": [
+          0.006542
+        ],
+        "grustcat_cypher": [
+          0.025875
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.wcc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 8,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 61,
+            "p5": 1,
+            "p90": 61,
+            "p50": 1,
+            "p95": 61,
+            "p10": 1,
+            "p75": 1,
+            "p99": 61,
+            "p25": 1,
+            "min": 1,
+            "mean": 16.0,
+            "p999": 61
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-22571024-dd83-4080-b37c-c6e99a6402f8",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.415999999764608
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 8,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 61,
+            "p5": 1,
+            "p90": 61,
+            "p50": 1,
+            "p95": 61,
+            "p10": 1,
+            "p75": 1,
+            "p99": 61,
+            "p25": 1,
+            "min": 1,
+            "mean": 16.0,
+            "p999": 61
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-8a81a832-08ec-49f6-b741-18597403b958",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.932459000021481
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "clusters",
+      "n": 128,
+      "edges": 240,
+      "algorithm": "scc",
+      "graph_sha256": "ee785380bd82875ab6116b42bfbec7727ef092db3148c22d50f9c0d46f5ffb16",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 43,
+        "relationshipCount": 240
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.0235
+        ],
+        "rust": [
+          0.013791999999999999
+        ],
+        "grustcat": [
+          0.010334
+        ],
+        "grustcat_cypher": [
+          0.029209000000000002
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.scc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 10,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 60,
+            "p5": 1,
+            "p90": 60,
+            "p50": 1,
+            "p95": 60,
+            "p10": 1,
+            "p75": 1,
+            "p99": 60,
+            "p25": 1,
+            "min": 1,
+            "mean": 12.8,
+            "p999": 60
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-5e446610-e65c-4996-af87-7ac3f014895c",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.37862499984476
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 10,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 60,
+            "p5": 1,
+            "p90": 60,
+            "p50": 1,
+            "p95": 60,
+            "p10": 1,
+            "p75": 1,
+            "p99": 60,
+            "p25": 1,
+            "min": 1,
+            "mean": 12.8,
+            "p999": 60
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-805e82c9-850f-440c-90ce-65b1e0b4aa20",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.922292000221205
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "clusters",
+      "n": 128,
+      "edges": 240,
+      "algorithm": "pagerank",
+      "graph_sha256": "ee785380bd82875ab6116b42bfbec7727ef092db3148c22d50f9c0d46f5ffb16",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 43,
+        "relationshipCount": 240
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.452
+        ],
+        "rust": [
+          0.134917
+        ],
+        "grustcat": [
+          0.09658299999999999
+        ],
+        "grustcat_cypher": [
+          0.128667
+        ]
+      },
+      "native_iterations": {
+        "cpp": 86,
+        "rust": 86,
+        "grustcat": 86,
+        "grustcat_cypher": 86
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.pagerank() YIELD node_id, score RETURN node_id, score"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 131,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 2.1892080307006836,
+            "min": 0.14999961853027344,
+            "max": 2.279525756835937,
+            "p90": 1.6186285018920898,
+            "mean": 0.9290916323661804,
+            "p999": 2.279524803161621,
+            "p50": 0.8670949935913086,
+            "p95": 1.7445287704467773,
+            "p75": 1.2542181015014648
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 44,
+          "postProcessingMillis": 1,
+          "configuration": {
+            "jobId": "jid-0ebb26eb-5db6-436d-bcbd-dcfc64f4e8d0",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 53.82499999996071
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 131,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 2.1892080307006836,
+            "min": 0.14999961853027344,
+            "max": 2.279525756835937,
+            "p90": 1.6186285018920898,
+            "mean": 0.9290916323661804,
+            "p999": 2.279524803161621,
+            "p50": 0.8670949935913086,
+            "p95": 1.7445287704467773,
+            "p75": 1.2542181015014648
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 43,
+          "postProcessingMillis": 1,
+          "configuration": {
+            "jobId": "jid-fc9fcba9-d25f-4be6-8639-619476a2de7e",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 52.781541000058496
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 118.92374608124253,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 8.675954850378975e-10,
+        "l1_error": 9.328193733941503e-09
+      }
+    },
+    {
+      "family": "layered",
+      "n": 128,
+      "edges": 239,
+      "algorithm": "bfs",
+      "graph_sha256": "f3933bed340e7c9b983dc81751f6949a258e7981d5eab54550b95507cf4f14b2",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 25,
+        "relationshipCount": 239
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.006625
+        ],
+        "rust": [
+          0.011708999999999999
+        ],
+        "grustcat": [
+          0.010292
+        ],
+        "grustcat_cypher": [
+          0.0365
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.bfs($source) YIELD node_id, distance RETURN node_id, distance"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-37bb196f-0c36-4110-9520-6c3272e6a409",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.351500000211672
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-c8343bc6-428a-4f4e-b4e8-8a7a3a140eb7",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.042416999960551
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 128,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "layered",
+      "n": 128,
+      "edges": 239,
+      "algorithm": "dijkstra",
+      "graph_sha256": "f3933bed340e7c9b983dc81751f6949a258e7981d5eab54550b95507cf4f14b2",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 25,
+        "relationshipCount": 239
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.048625
+        ],
+        "rust": [
+          0.03175
+        ],
+        "grustcat": [
+          0.026375
+        ],
+        "grustcat_cypher": [
+          0.047125
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.fullPaths($source) YIELD nodeIds, costs UNWIND range(0,size(nodeIds)-1) AS i RETURN count(*) AS path_entries, sum(nodeIds[i]) AS node_sum, sum(costs[i]) AS cost_sum"
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          },
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          },
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          },
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          }
+        ],
+        "grustcat_cypher": [
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          },
+          {
+            "reachable": 128,
+            "path_entries": 1522,
+            "node_sum": 55879,
+            "cost_sum": 93477
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 128,
+          "distance_sum": 13055.0,
+          "path_entries": 1522,
+          "node_sum": 55879,
+          "cost_sum": 93477.0,
+          "server_query_ms": 3,
+          "client_wall_ms": 6.312834000254952
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 128,
+          "distance_sum": 13055.0,
+          "path_entries": 1522,
+          "node_sum": 55879,
+          "cost_sum": 93477.0,
+          "server_query_ms": 3,
+          "client_wall_ms": 4.956457999924169
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": false,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "layered",
+      "n": 128,
+      "edges": 239,
+      "algorithm": "wcc",
+      "graph_sha256": "f3933bed340e7c9b983dc81751f6949a258e7981d5eab54550b95507cf4f14b2",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 25,
+        "relationshipCount": 239
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.026459
+        ],
+        "rust": [
+          0.014416
+        ],
+        "grustcat": [
+          0.00725
+        ],
+        "grustcat_cypher": [
+          0.038
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.wcc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "max": 128,
+            "p5": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-f946d44f-f51f-4f24-96c3-75f38ecd0ddd",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.0603329998702975
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "max": 128,
+            "p5": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-9441d1f4-295e-474c-bdfc-6db7413dc765",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.9255839999677846
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "layered",
+      "n": 128,
+      "edges": 239,
+      "algorithm": "scc",
+      "graph_sha256": "f3933bed340e7c9b983dc81751f6949a258e7981d5eab54550b95507cf4f14b2",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 25,
+        "relationshipCount": 239
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.029375
+        ],
+        "rust": [
+          0.012291
+        ],
+        "grustcat": [
+          0.008749999999999999
+        ],
+        "grustcat_cypher": [
+          0.047958
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.scc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 128,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 1,
+            "p5": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 1,
+            "p25": 1,
+            "min": 1,
+            "mean": 1.0,
+            "p999": 1
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-89ab6017-77fb-4c03-befb-f23b6d41db63",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.25462500015783
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 128,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 1,
+            "p5": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 1,
+            "p25": 1,
+            "min": 1,
+            "mean": 1.0,
+            "p999": 1
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-a08d1b92-83cf-4add-b36e-8f06ff80987a",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.8919999999743595
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "layered",
+      "n": 128,
+      "edges": 239,
+      "algorithm": "pagerank",
+      "graph_sha256": "f3933bed340e7c9b983dc81751f6949a258e7981d5eab54550b95507cf4f14b2",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 25,
+        "relationshipCount": 239
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.322666
+        ],
+        "rust": [
+          0.09691699999999999
+        ],
+        "grustcat": [
+          0.066458
+        ],
+        "grustcat_cypher": [
+          0.08325
+        ]
+      },
+      "native_iterations": {
+        "cpp": 61,
+        "rust": 61,
+        "grustcat": 61,
+        "grustcat_cypher": 61
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.pagerank() YIELD node_id, score RETURN node_id, score"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 59,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 3.147109031677246,
+            "min": 0.14999961853027344,
+            "max": 3.239578247070312,
+            "p90": 2.0164480209350586,
+            "mean": 0.8671950176358223,
+            "p999": 3.239577293395996,
+            "p50": 0.6292486190795898,
+            "p95": 2.985854148864746,
+            "p75": 1.0298070907592773
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 18,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-806825ac-eb78-4c93-a44b-d08cd194773f",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 26.79824999995617
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 59,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 3.147109031677246,
+            "min": 0.14999961853027344,
+            "max": 3.239578247070312,
+            "p90": 2.0164480209350586,
+            "mean": 0.8671950176358223,
+            "p999": 3.239577293395996,
+            "p50": 0.6292486190795898,
+            "p95": 2.985854148864746,
+            "p75": 1.0298070907592773
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 19,
+          "postProcessingMillis": 1,
+          "configuration": {
+            "jobId": "jid-04d176cb-4d07-4abf-b947-030c37696f37",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 27.795292000064364
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 111.00099396495969,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 1.0533453310979102e-09,
+        "l1_error": 1.7859423249739353e-08
+      }
+    },
+    {
+      "family": "uniform",
+      "n": 128,
+      "edges": 983,
+      "algorithm": "bfs",
+      "graph_sha256": "6efc390bf921736ab566fb5fb6d52b2a0bf6050f439979e47f01075da28d2a6f",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 983
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.008916
+        ],
+        "rust": [
+          0.016875
+        ],
+        "grustcat": [
+          0.015458
+        ],
+        "grustcat_cypher": [
+          0.042792
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.bfs($source) YIELD node_id, distance RETURN node_id, distance"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-72783746-b699-46a5-bb5f-e1ec37490d7b",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.241667000314919
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-1837cc2e-c41c-4465-8152-b9477e3d7135",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.6530000000093423
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 128,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "uniform",
+      "n": 128,
+      "edges": 983,
+      "algorithm": "dijkstra",
+      "graph_sha256": "6efc390bf921736ab566fb5fb6d52b2a0bf6050f439979e47f01075da28d2a6f",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 983
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.046417
+        ],
+        "rust": [
+          0.031375
+        ],
+        "grustcat": [
+          0.028541999999999998
+        ],
+        "grustcat_cypher": [
+          0.05
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.fullPaths($source) YIELD nodeIds, costs UNWIND range(0,size(nodeIds)-1) AS i RETURN count(*) AS path_entries, sum(nodeIds[i]) AS node_sum, sum(costs[i]) AS cost_sum"
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          },
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          },
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          },
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          }
+        ],
+        "grustcat_cypher": [
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          },
+          {
+            "reachable": 128,
+            "path_entries": 655,
+            "node_sum": 32751,
+            "cost_sum": 10975
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 128,
+          "distance_sum": 3758.0,
+          "path_entries": 655,
+          "node_sum": 32751,
+          "cost_sum": 10975.0,
+          "server_query_ms": 3,
+          "client_wall_ms": 5.581041999903391
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 128,
+          "distance_sum": 3758.0,
+          "path_entries": 655,
+          "node_sum": 32751,
+          "cost_sum": 10975.0,
+          "server_query_ms": 3,
+          "client_wall_ms": 4.546749999917665
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": false,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "uniform",
+      "n": 128,
+      "edges": 983,
+      "algorithm": "wcc",
+      "graph_sha256": "6efc390bf921736ab566fb5fb6d52b2a0bf6050f439979e47f01075da28d2a6f",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 983
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.02325
+        ],
+        "rust": [
+          0.015000000000000001
+        ],
+        "grustcat": [
+          0.011541000000000001
+        ],
+        "grustcat_cypher": [
+          0.0365
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.wcc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "max": 128,
+            "p5": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-ac7bce21-f120-4e3b-82e2-e6d9f46bf099",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.681082999923092
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "max": 128,
+            "p5": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-c8519120-0e1a-43d7-b4da-d41b3e4c4740",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.858082999864564
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "uniform",
+      "n": 128,
+      "edges": 983,
+      "algorithm": "scc",
+      "graph_sha256": "6efc390bf921736ab566fb5fb6d52b2a0bf6050f439979e47f01075da28d2a6f",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 983
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.027958
+        ],
+        "rust": [
+          0.020041999999999997
+        ],
+        "grustcat": [
+          0.016125
+        ],
+        "grustcat_cypher": [
+          0.032332999999999994
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.scc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "max": 128,
+            "p5": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-09e8b979-5c10-4868-9faa-45e2b8e44616",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 4.347790999872814
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 1,
+          "componentDistribution": {
+            "p1": 128,
+            "max": 128,
+            "p5": 128,
+            "p90": 128,
+            "p50": 128,
+            "p95": 128,
+            "p10": 128,
+            "p75": 128,
+            "p99": 128,
+            "p25": 128,
+            "min": 128,
+            "mean": 128.0,
+            "p999": 128
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-6d60aa73-9297-48c1-b2da-93e30b94fe02",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.9022910002822755
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "uniform",
+      "n": 128,
+      "edges": 983,
+      "algorithm": "pagerank",
+      "graph_sha256": "6efc390bf921736ab566fb5fb6d52b2a0bf6050f439979e47f01075da28d2a6f",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 983
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.164458
+        ],
+        "rust": [
+          0.056542
+        ],
+        "grustcat": [
+          0.037208
+        ],
+        "grustcat_cypher": [
+          0.07100000000000001
+        ]
+      },
+      "native_iterations": {
+        "cpp": 19,
+        "rust": 19,
+        "grustcat": 19,
+        "grustcat_cypher": 19
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.pagerank() YIELD node_id, score RETURN node_id, score"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 130,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 2.208097457885742,
+            "min": 0.28875732421875,
+            "max": 2.4997863769531246,
+            "p90": 1.5286083221435547,
+            "mean": 0.9999998956918716,
+            "p999": 2.499784469604492,
+            "p50": 0.9256420135498047,
+            "p95": 1.6863842010498047,
+            "p75": 1.2813396453857422
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 41,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-0e263849-706a-4675-96dd-e718f76177a3",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 49.70370799992452
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 130,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 2.208097457885742,
+            "min": 0.28875732421875,
+            "max": 2.4997863769531246,
+            "p90": 1.5286083221435547,
+            "mean": 0.9999998956918716,
+            "p999": 2.499784469604492,
+            "p50": 0.9256420135498047,
+            "p95": 1.6863842010498047,
+            "p75": 1.2813396453857422
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 67,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-12d3d175-d8c8-44ae-82e9-1a745bf06fdb",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 75.26441699974384
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 127.99999988607394,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 9.324101213348257e-11,
+        "l1_error": 2.8004827224564766e-09
+      }
+    },
+    {
+      "family": "rmat",
+      "n": 128,
+      "edges": 709,
+      "algorithm": "bfs",
+      "graph_sha256": "994f02d1281343870ef04ad794b96a481c11dc5deaf8d28ebebcf130c553f44a",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 709
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0
+      },
+      "procedure": "gds.bfs.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.009
+        ],
+        "rust": [
+          0.015833
+        ],
+        "grustcat": [
+          0.010917000000000001
+        ],
+        "grustcat_cypher": [
+          0.038125
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.bfs($source) YIELD node_id, distance RETURN node_id, distance"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-c184b672-1029-4fb3-8f00-80e5b5415b67",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 6.263333999868337
+        }
+      ],
+      "samples": [
+        {
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "maxDepth": -1,
+            "jobId": "jid-3c3c945b-267e-41af-9956-c5c444a4d90b",
+            "sourceNode": 0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "targetNodes": [],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.178334000040195
+        }
+      ],
+      "validation": {
+        "reachable_nodes": 103,
+        "reachability_and_level_order_match": true
+      }
+    },
+    {
+      "family": "rmat",
+      "n": 128,
+      "edges": 709,
+      "algorithm": "dijkstra",
+      "graph_sha256": "994f02d1281343870ef04ad794b96a481c11dc5deaf8d28ebebcf130c553f44a",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 709
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "sourceNode": 0,
+        "relationshipWeightProperty": "weight"
+      },
+      "procedure": "gds.allShortestPaths.dijkstra.stream",
+      "timing_kind": "server_query",
+      "native_ms": {
+        "cpp": [
+          0.045375
+        ],
+        "rust": [
+          0.024708
+        ],
+        "grustcat": [
+          0.024292
+        ],
+        "grustcat_cypher": [
+          0.055624999999999994
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.fullPaths($source) YIELD nodeIds, costs UNWIND range(0,size(nodeIds)-1) AS i RETURN count(*) AS path_entries, sum(nodeIds[i]) AS node_sum, sum(costs[i]) AS cost_sum"
+      },
+      "native_path_summaries": {
+        "cpp": [
+          {
+            "reachable": 103,
+            "path_entries": 347,
+            "node_sum": 11586,
+            "cost_sum": 2253
+          },
+          {
+            "reachable": 103,
+            "path_entries": 347,
+            "node_sum": 11586,
+            "cost_sum": 2253
+          }
+        ],
+        "rust": [
+          {
+            "reachable": 103,
+            "path_entries": 356,
+            "node_sum": 10665,
+            "cost_sum": 2280
+          },
+          {
+            "reachable": 103,
+            "path_entries": 356,
+            "node_sum": 10665,
+            "cost_sum": 2280
+          }
+        ],
+        "grustcat": [
+          {
+            "reachable": 103,
+            "path_entries": 356,
+            "node_sum": 10665,
+            "cost_sum": 2280
+          },
+          {
+            "reachable": 103,
+            "path_entries": 356,
+            "node_sum": 10665,
+            "cost_sum": 2280
+          }
+        ],
+        "grustcat_cypher": [
+          {
+            "reachable": 103,
+            "path_entries": 356,
+            "node_sum": 10665,
+            "cost_sum": 2280
+          },
+          {
+            "reachable": 103,
+            "path_entries": 356,
+            "node_sum": 10665,
+            "cost_sum": 2280
+          }
+        ]
+      },
+      "warmups": [
+        {
+          "reachable": 103,
+          "distance_sum": 1463.0,
+          "path_entries": 356,
+          "node_sum": 11192,
+          "cost_sum": 2280.0,
+          "server_query_ms": 8,
+          "client_wall_ms": 9.542207999857055
+        }
+      ],
+      "samples": [
+        {
+          "reachable": 103,
+          "distance_sum": 1463.0,
+          "path_entries": 356,
+          "node_sum": 11192,
+          "cost_sum": 2280.0,
+          "server_query_ms": 2,
+          "client_wall_ms": 4.067542000029789
+        }
+      ],
+      "validation": {
+        "all_distances_match": true,
+        "path_aggregates_match_unique_path_oracle": false,
+        "every_gds_path_edge_and_cost_validated": true
+      }
+    },
+    {
+      "family": "rmat",
+      "n": 128,
+      "edges": 709,
+      "algorithm": "wcc",
+      "graph_sha256": "994f02d1281343870ef04ad794b96a481c11dc5deaf8d28ebebcf130c553f44a",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 709
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.wcc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.027084
+        ],
+        "rust": [
+          0.02325
+        ],
+        "grustcat": [
+          0.010042
+        ],
+        "grustcat_cypher": [
+          0.035750000000000004
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.wcc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 15,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 114,
+            "p5": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 114,
+            "p10": 1,
+            "p75": 1,
+            "p99": 114,
+            "p25": 1,
+            "min": 1,
+            "mean": 8.533333333333333,
+            "p999": 114
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-b65d2783-e7cb-4cb9-86c9-a28cd4d59c77",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 7.264374999977008
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 15,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 114,
+            "p5": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 114,
+            "p10": 1,
+            "p75": 1,
+            "p99": 114,
+            "p25": 1,
+            "min": 1,
+            "mean": 8.533333333333333,
+            "p999": 114
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-3ca91cac-72a9-4a40-851d-38511a3908cb",
+            "forceSeedOptimization": false,
+            "seedProperty": null,
+            "consecutiveIds": false,
+            "threshold": 0.0,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 3.557667000222864
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "rmat",
+      "n": 128,
+      "edges": 709,
+      "algorithm": "scc",
+      "graph_sha256": "994f02d1281343870ef04ad794b96a481c11dc5deaf8d28ebebcf130c553f44a",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 709
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ]
+      },
+      "procedure": "gds.scc.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.024792
+        ],
+        "rust": [
+          0.019625
+        ],
+        "grustcat": [
+          0.014624999999999999
+        ],
+        "grustcat_cypher": [
+          0.0375
+        ]
+      },
+      "native_iterations": {
+        "cpp": 0,
+        "rust": 0,
+        "grustcat": 0,
+        "grustcat_cypher": 0
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.scc() YIELD node_id, component_id RETURN node_id, component_id"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "componentCount": 38,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 91,
+            "p5": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 91,
+            "p25": 1,
+            "min": 1,
+            "mean": 3.3684210526315788,
+            "p999": 91
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-81ec9aa9-653c-4ce5-b99c-3a750137e180",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 6.657207999978709
+        }
+      ],
+      "samples": [
+        {
+          "componentCount": 38,
+          "componentDistribution": {
+            "p1": 1,
+            "max": 91,
+            "p5": 1,
+            "p90": 1,
+            "p50": 1,
+            "p95": 1,
+            "p10": 1,
+            "p75": 1,
+            "p99": 91,
+            "p25": 1,
+            "min": 1,
+            "mean": 3.3684210526315788,
+            "p999": 91
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 0,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-2ec35338-52a7-494f-8cde-c181ad96bc43",
+            "consecutiveIds": false,
+            "logProgress": false,
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "concurrency": 1
+          },
+          "client_wall_ms": 2.707625000311964
+        }
+      ],
+      "validation": {
+        "canonical_partition_matches": true
+      }
+    },
+    {
+      "family": "rmat",
+      "n": 128,
+      "edges": 709,
+      "algorithm": "pagerank",
+      "graph_sha256": "994f02d1281343870ef04ad794b96a481c11dc5deaf8d28ebebcf130c553f44a",
+      "projection": {
+        "nodeCount": 128,
+        "projectMillis": 27,
+        "relationshipCount": 709
+      },
+      "configuration": {
+        "concurrency": 1,
+        "logProgress": false,
+        "relationshipTypes": [
+          "EDGE"
+        ],
+        "relationshipWeightProperty": "weight",
+        "dampingFactor": 0.85,
+        "tolerance": 1e-10,
+        "maxIterations": 1000
+      },
+      "procedure": "gds.pageRank.stats",
+      "timing_kind": "reported_compute",
+      "native_ms": {
+        "cpp": [
+          0.139375
+        ],
+        "rust": [
+          0.049666
+        ],
+        "grustcat": [
+          0.03275
+        ],
+        "grustcat_cypher": [
+          0.054541
+        ]
+      },
+      "native_iterations": {
+        "cpp": 18,
+        "rust": 18,
+        "grustcat": 18,
+        "grustcat_cypher": 18
+      },
+      "native_queries": {
+        "grustcat_cypher": "CALL grustcat.pagerank() YIELD node_id, score RETURN node_id, score"
+      },
+      "native_path_summaries": {},
+      "warmups": [
+        {
+          "ranIterations": 120,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 4.271849632263184,
+            "min": 0.14999961853027344,
+            "max": 5.925689697265624,
+            "p90": 2.1586904525756836,
+            "mean": 0.7825410664081573,
+            "p999": 5.925688743591309,
+            "p50": 0.3802480697631836,
+            "p95": 2.752181053161621,
+            "p75": 0.9285192489624023
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 38,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-9c83feb6-6d66-405b-876e-0f5abd20ea8b",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 50.287083000057464
+        }
+      ],
+      "samples": [
+        {
+          "ranIterations": 120,
+          "didConverge": true,
+          "centralityDistribution": {
+            "p99": 4.271849632263184,
+            "min": 0.14999961853027344,
+            "max": 5.925689697265624,
+            "p90": 2.1586904525756836,
+            "mean": 0.7825410664081573,
+            "p999": 5.925688743591309,
+            "p50": 0.3802480697631836,
+            "p95": 2.752181053161621,
+            "p75": 0.9285192489624023
+          },
+          "preProcessingMillis": 0,
+          "computeMillis": 36,
+          "postProcessingMillis": 0,
+          "configuration": {
+            "jobId": "jid-eebd03f6-aae0-4d4d-8484-794ae3f979d3",
+            "maxIterations": 1000,
+            "sourceNodes": [],
+            "scaler": "NONE",
+            "logProgress": false,
+            "relationshipWeightProperty": "weight",
+            "nodeLabels": [
+              "*"
+            ],
+            "sudo": false,
+            "dampingFactor": 0.85,
+            "relationshipTypes": [
+              "EDGE"
+            ],
+            "tolerance": 1e-10,
+            "concurrency": 1
+          },
+          "client_wall_ms": 45.44966699995712
+        }
+      ],
+      "validation": {
+        "raw_gds_score_sum": 100.1652721245678,
+        "normalization": "divide by raw sum",
+        "max_absolute_error": 8.480248447906291e-11,
+        "l1_error": 1.1685619397041463e-09
+      }
+    }
+  ]
+}
