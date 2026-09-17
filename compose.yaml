@@ -2,9 +2,9 @@ name: graph-algorithm-bench
 services:
   neo4j:
     build:
-      context: .docker-context
+      context: ${BENCH_CONTEXT:-.docker-context}
       target: neo4j
-    image: graph-bench-neo4j:local
+    image: ${BENCH_NEO4J_IMAGE:-graph-bench-neo4j:local}
     mem_limit: 4g
     cpus: 2
     healthcheck:
@@ -16,11 +16,11 @@ services:
     networks: [bench]
   benchmark:
     build:
-      context: .docker-context
+      context: ${BENCH_CONTEXT:-.docker-context}
       target: benchmark
       args:
         BUILD_JOBS: ${BUILD_JOBS:-4}
-    image: graph-bench:local
+    image: ${BENCH_IMAGE:-graph-bench:local}
     depends_on:
       neo4j:
         condition: service_healthy
@@ -28,6 +28,10 @@ services:
       NEO4J_URI: bolt://neo4j:7687
       BENCH_NEO4J_HEAP: 2G
       BENCH_NEO4J_PAGE_CACHE: 512M
+      BENCH_TURSO_JOURNAL: ${BENCH_TURSO_JOURNAL:-wal}
+      BENCH_TURSO_GROUP_COMMIT: ${BENCH_TURSO_GROUP_COMMIT:-engine}
+      BENCH_TURSO_LOAD: ${BENCH_TURSO_LOAD:-bulk}
+      BENCH_TURSO_WRITERS: ${BENCH_TURSO_WRITERS:-4}
     volumes:
       - ${BENCH_OUTPUT:-./docker-results}:/work
     mem_limit: 4g

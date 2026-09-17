@@ -16,8 +16,12 @@ def main():
     p.add_argument('--icecat', type=Path, default=ROOT.parent/'icecat')
     p.add_argument('--grust', type=Path, default=ROOT.parent/'grust')
     p.add_argument("--local", action="store_true", help="Stage current sibling checkouts instead of the published measured snapshot")
+    p.add_argument('--output', type=Path, help='New isolated context directory; refuses an existing path')
     a = p.parse_args()
-    dest = ROOT/'.docker-context'
+    dest = a.output or ROOT/'.docker-context'
+    if a.output and dest.exists(): p.error('--output must not exist')
+    if not a.local and not (ROOT/'publication/measured-source.tar.gz').exists():
+        p.error('Frozen snapshot missing; use --local explicitly for development sources')
     if dest.exists(): shutil.rmtree(dest)
     dest.mkdir()
     def copy(source, target):

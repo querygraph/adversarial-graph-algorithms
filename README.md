@@ -24,3 +24,16 @@ All five variants also passed 30 small cases (six families × five algorithms); 
 ## Grust implementation handoff
 
 [Generalized graph algorithms in Grust](docs/grust-generalized-graph-algorithms-handoff.md) describes the proposed upstream architecture, Arrow and Cypher contracts, phased acceptance gates, and benchmark validation. It includes committed source references and clone commands for an implementation agent on another machine.
+
+## Current-source optimization workflow
+
+The [current Grust/Turso workflow](docker/README.md#current-grust-and-turso-main)
+adds upstream direct/Cypher execution, Arrow/DataFusion preparation, and
+Turso-backed snapshot participants, with process-wide mimalloc by default and
+explicit allocator and release-profile controls. Turso main is pinned by
+commit for each experiment. The historical reproduction command above continues
+to use the published frozen sources. Group commit is measured in a separate
+concurrent-write preparation workload, outside algorithm timers.
+
+[Optimization results and qualification status](docs/optimization-results.md)
+keep the current-source measurements separate from the historical publication.

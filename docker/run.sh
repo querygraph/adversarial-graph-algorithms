@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+for arg in "$@"; do
+    if [[ "$arg" == "--upstream-grust" || "$arg" == --upstream-grust=* ]]; then
+        exec python3 docker/run_current.py "$@"
+    fi
+done
 python3 docker/prepare.py
 docker compose build
 mkdir -p "${BENCH_OUTPUT:-docker-results}"

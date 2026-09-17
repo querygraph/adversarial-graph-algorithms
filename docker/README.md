@@ -1,6 +1,6 @@
 # Graph algorithm Docker benchmark
 
-Builds Icebug (C++/Arrow), Icecat (Rust/Arrow), Grustcat (Grust + Arrow), Grustcat Cypher (Grust parser + Arrow query backend), and official Neo4j GDS from the sibling checkouts. Run from `~/src/adversarial-graph-algorithms` with Docker Compose v2 and Python 3 available. Expected source directories are `../icecat` and `../grust`; `python3 docker/prepare.py --icecat PATH --grust PATH` also supports other layouts when invoking Compose directly.
+By default, builds Icebug (C++/Arrow), Icecat (Rust/Arrow), Grustcat (Grust + Arrow), Grustcat Cypher (Grust parser + Arrow query backend), and official Neo4j GDS from the checksum-verified published snapshot. Requires Docker Compose v2 and Python 3.12+. Sibling checkouts are only needed for explicit development mode: `python3 docker/prepare.py --local --icecat PATH --grust PATH`. The current-source workflow below stages upstream Grust and Turso separately.
 
 ```sh
 # Build and test all five algorithms on six small graph families.
@@ -49,3 +49,105 @@ Docker now includes a fifth column, `grustcat-cypher`. It uses the Grust Cypher 
 Compilation (parsing, semantic checks and planning) is inside the new column's timer, followed by algorithm execution, aggregation and Arrow result construction. Source parameter setup and input projection are outside the timer. Direct Grustcat remains a separate column. Native runs can opt into the new column with `neo4j/compare.py --include-grustcat --include-grustcat-cypher`; Docker includes both automatically.
 
 `check_cypher.py` validates the three Rust variants across all graph families and all algorithm modes, and cross-reads Arrow IPC from each writer. The final runtime image executes these checks during its build. Its receipt is `/opt/benchmark/cypher-validation.json`.
+
+## Current Grust and Turso main
+
+The current-source workflow preserves the frozen historical participants and adds
+`grust_upstream_direct`, `grust_upstream_cypher`, `turso_direct`, `turso_cypher`,
+`grust_arrow`, and `grust_datafusion`.
+Turso runs Grust kernels over a verified snapshot from a temporary file-backed
+Turso database; it is not a Turso-native SQL graph-algorithm implementation.
+Loading and snapshot capture have separate timers. The GDS projection consumes
+edge parameters without equivalent durable ingestion, so database-load timings
+are not a Turso-versus-Neo4j ingestion comparison.
+
+```sh
+# Resolve main once, then keep this checkout fixed throughout the experiment.
+git clone https://github.com/querygraph/grust.git /tmp/algorithms-grust
+git -C /tmp/algorithms-grust checkout 3a739544c3d9e6581bdac7563d8cc3a66cdcf828
+git clone https://github.com/tursodatabase/turso.git /tmp/algorithms-turso
+git -C /tmp/algorithms-turso checkout 9a082e5bc33705e3593fac19046506e18a382921
+./docker/run.sh --upstream-grust /tmp/algorithms-grust \
+  --turso /tmp/algorithms-turso --mimalloc --profile default \
+  --lockfile docker/upstream-Cargo.lock --output /tmp/algorithms-mimalloc \
+  -- --full-path --sizes 128 1024 --warmups 1 --repeats 5 --label qualification
+```
+
+The output directory must be new. The runner prepares isolated frozen/current
+contexts, builds both services, runs image correctness checks, records image and
+compiler identities, and runs the suite with the same two-CPU/four-GiB limits.
+Build and runtime logs, per-file hashes, exact dependency lockfile, image validation,
+raw process outcomes, terminal status, and reports remain in that directory even
+if the run fails. Each Compose project has a unique name. Source directories
+are copied without editing the original checkouts. The supplied lockfile targets
+the two commits above; omit `--lockfile` to resolve a new source combination,
+then reuse the resulting `upstream-Cargo.lock` for every trial. Resolution is not
+silently repeated when a lockfile is supplied.
+
+`--mimalloc` (also `--allocator mimalloc`) is the default and installs an actual
+global allocator for the whole process in all current participant binaries.
+Use `--allocator system` for the explicit baseline control. Historical binaries stay fixed. `--profile thin` enables
+thin LTO and one codegen unit for the current participants; default preserves
+Cargo's release defaults. Both use portable CPU targets. Compare allocator and
+profile changes independently with fixed source and lockfile, alternating trial
+order, warmups, at least five measured samples, and median/dispersion. Inspect
+loading/projection/end-to-end phases as well as query/kernel timings.
+
+Turso defaults to WAL, bulk loading, and `synchronous=FULL`. For a separate
+concurrent-write preparation experiment, set:
+
+```sh
+export BENCH_TURSO_JOURNAL=mvcc BENCH_TURSO_LOAD=statements
+export BENCH_TURSO_WRITERS=4
+export BENCH_TURSO_GROUP_COMMIT=engine # or off, or client
+```
+
+`engine` explicitly enables Turso engine grouping and leaves Grust client
+grouping off. `off` disables both; `client` disables engine grouping and enables
+Grust's client committer. These settings apply only to MVCC; WAL records grouping
+as not applicable. Client grouping requires the statements workload. Each trial
+loads exactly the same nodes and edges, with all nodes committed before edge
+writes, and checks the full recovered snapshot before algorithm execution.
+Runtime has two worker threads and algorithm concurrency remains one. Statement
+loading includes connection setup, task scheduling, and input batching. It is a
+disclosed preparation workload, not the strain benchmark's hot-node workload.
+No group-commit change can be credited as an algorithm-kernel optimization.
+
+Workflow checks: `python3 -m unittest discover -s docker -v`.
+Set `BENCH_TEST_CONTEXT=/path/to/staged/context` to also check actual staging.
+
+For paired measurements after building the three variants, export the binaries
+and receipts with `python3 docker/export_variant.py IMAGE OUTPUT`. Stop other
+measurement jobs and the idle Neo4j service, then run a single container:
+
+```sh
+docker run --rm --cpus 2 --memory 4g --network none \
+  --user "$(id -u):$(id -g)" \
+  -v /absolute/results:/work -v /absolute/variants:/variants:ro \
+  -v "$PWD/docker":/scripts:ro --entrypoint python3 IMAGE \
+  /scripts/sweep.py \
+  --variants /variants/system-default /variants/mimalloc-default /variants/system-thin \
+  --output /work/optimization --sizes 4096 --warmups 1 --repeats 5
+python3 docker/report_sweep.py /absolute/results/optimization/results.json
+```
+
+The sweep alternates forward/reverse variant order, validates every result against
+C++, keeps warmups and measurements separately, and retains all failures while
+continuing the other samples. Use `--group-commit --participants turso-direct
+--variants /variants/system-default --families hub --algorithms dijkstra
+--sizes 128 1024` for the separate engine/off/client durable-loading experiment.
+Each sweep output directory must be new. Whole-container memory peak is explicitly
+labeled and is not a per-participant RSS measurement.
+
+The current optimized Grust pin is from `turso-mvcc-concurrency`, which is newer
+than `main` and contains the Arrow/DataFusion routing work and Turso allocator
+facade feature. Arrow 59.3.0 and DataFusion 55.1.0 are locked. `grust_arrow`
+converts the row graph into Arrow input, uses the native Arrow projection API,
+and consumes native Arrow algorithm results. `grust_datafusion` executes complete
+node/edge DataFusion scan plans first and then uses the same Arrow/native path.
+Conversion, DataFusion preparation and projection are timed independently.
+Neither column claims that DataFusion executes algorithm CALLs or provides
+independent BFS/Dijkstra/PageRank kernels. Every full path's node and cost arrays
+are materialized and consumed. DataFusion has one target partition, a 256 MiB
+working pool, and spilling disabled; caller-owned Arrow inputs remain outside
+that logical pool and inside the container limit.
