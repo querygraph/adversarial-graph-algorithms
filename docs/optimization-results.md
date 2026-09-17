@@ -52,16 +52,89 @@ flag. An earlier attempt at the same matrix was terminated externally partway
 through (exit 137, no kernel out-of-memory event); its partial evidence is
 retained separately and is not pooled with this run.
 
-### Allocator policy
+### Allocator policy, measured at this pin
 
-Mimalloc is the standing default for every current participant. The initial
-experiment above measured it as a broad improvement with one clear exception,
-the full-path chain, where it cost about 8.6% end-to-end at the previous source
-pin. That exception predates the Arrow and DataFusion routing, so its sign at
-the current pin is not established. A matched system-allocator control at this
-exact pin, differing only in the six global allocator declarations and the build
-receipt, is measured separately; `--allocator system` remains the explicit
-control build. Any regression it shows will be reported rather than dropped.
+Mimalloc is the standing default for every current participant, and the matched
+control measures that choice rather than assuming it. Both builds come from the
+same commit, lockfile, Arrow and DataFusion versions and release profile; the
+staged sources differ only in the build receipt and the six global allocator
+declarations, and the two binary sets were exported from their own validated
+images. One container, network disabled, two CPUs and 4 GiB, 4096 nodes, four
+families, full-path Dijkstra and PageRank, six participants, one warmup and five
+measured samples per cell with forward/reverse variant order alternating between
+repeats. All 576 outcomes passed and every result was validated against the C++
+reference.
+
+End-to-end milliseconds, median ± MAD over five measured samples:
+
+| Graph | Algorithm | Participant | System | Mimalloc | Change |
+|---|---|---|---:|---:|---:|
+| hub | dijkstra-full | arrow | 59.322 ± 0.797 | 51.312 ± 0.311 | -13.5% |
+| hub | dijkstra-full | datafusion | 63.565 ± 0.296 | 55.298 ± 0.157 | -13.0% |
+| hub | dijkstra-full | upstream cypher | 1064.609 ± 3.806 | 1079.307 ± 8.556 | +1.4% |
+| hub | dijkstra-full | upstream direct | 13.842 ± 0.113 | 12.442 ± 0.206 | -10.1% |
+| hub | dijkstra-full | turso-cypher | 1243.994 ± 1.208 | 1216.520 ± 5.502 | -2.2% |
+| hub | dijkstra-full | turso-direct | 172.527 ± 2.100 | 161.962 ± 0.816 | -6.1% |
+| hub | pagerank | arrow | 54.107 ± 1.105 | 54.285 ± 3.103 | +0.3% |
+| hub | pagerank | datafusion | 57.379 ± 0.389 | 57.067 ± 0.962 | -0.5% |
+| hub | pagerank | upstream cypher | 1768.976 ± 3.649 | 1772.839 ± 12.428 | +0.2% |
+| hub | pagerank | upstream direct | 53.536 ± 0.152 | 48.257 ± 0.616 | -9.9% |
+| hub | pagerank | turso-cypher | 1940.979 ± 1.847 | 1937.247 ± 2.835 | -0.2% |
+| hub | pagerank | turso-direct | 216.561 ± 1.659 | 198.938 ± 0.649 | -8.1% |
+| layered | dijkstra-full | arrow | 78.226 ± 1.140 | 70.719 ± 0.361 | -9.6% |
+| layered | dijkstra-full | datafusion | 83.414 ± 1.246 | 73.908 ± 0.088 | -11.4% |
+| layered | dijkstra-full | upstream cypher | 1704.635 ± 6.306 | 1698.790 ± 15.025 | -0.3% |
+| layered | dijkstra-full | upstream direct | 22.863 ± 0.350 | 19.303 ± 0.712 | -15.6% |
+| layered | dijkstra-full | turso-cypher | 1932.621 ± 10.790 | 1881.284 ± 12.554 | -2.7% |
+| layered | dijkstra-full | turso-direct | 229.823 ± 1.796 | 209.588 ± 0.592 | -8.8% |
+| layered | pagerank | arrow | 73.135 ± 0.423 | 68.620 ± 1.385 | -6.2% |
+| layered | pagerank | datafusion | 80.513 ± 0.584 | 72.293 ± 1.011 | -10.2% |
+| layered | pagerank | upstream cypher | 2299.987 ± 8.662 | 2279.929 ± 4.905 | -0.9% |
+| layered | pagerank | upstream direct | 72.633 ± 1.608 | 70.488 ± 5.729 | -3.0% |
+| layered | pagerank | turso-cypher | 2505.016 ± 14.245 | 2492.272 ± 15.026 | -0.5% |
+| layered | pagerank | turso-direct | 279.794 ± 1.569 | 256.615 ± 1.736 | -8.3% |
+| path | dijkstra-full | arrow | 997.234 ± 0.878 | 940.904 ± 2.012 | -5.6% |
+| path | dijkstra-full | datafusion | 946.715 ± 3.510 | 997.948 ± 2.934 | +5.4% |
+| path | dijkstra-full | upstream cypher | 23409.530 ± 8.233 | 23045.083 ± 43.239 | -1.6% |
+| path | dijkstra-full | upstream direct | 252.695 ± 12.022 | 249.282 ± 1.492 | -1.4% |
+| path | dijkstra-full | turso-cypher | 23766.257 ± 47.946 | 23090.628 ± 22.119 | -2.8% |
+| path | dijkstra-full | turso-direct | 366.720 ± 10.557 | 358.046 ± 2.166 | -2.4% |
+| path | pagerank | arrow | 38.212 ± 1.055 | 39.358 ± 0.758 | +3.0% |
+| path | pagerank | datafusion | 43.294 ± 0.416 | 43.579 ± 0.819 | +0.7% |
+| path | pagerank | upstream cypher | 1328.727 ± 10.596 | 1332.674 ± 9.538 | +0.3% |
+| path | pagerank | upstream direct | 38.682 ± 0.920 | 37.708 ± 0.678 | -2.5% |
+| path | pagerank | turso-cypher | 1454.881 ± 7.456 | 1452.111 ± 13.503 | -0.2% |
+| path | pagerank | turso-direct | 150.733 ± 1.589 | 147.719 ± 0.423 | -2.0% |
+| uniform | dijkstra-full | arrow | 106.218 ± 0.930 | 86.221 ± 0.599 | -18.8% |
+| uniform | dijkstra-full | datafusion | 108.711 ± 0.094 | 90.821 ± 1.233 | -16.5% |
+| uniform | dijkstra-full | upstream cypher | 3167.063 ± 1.025 | 3117.894 ± 22.795 | -1.6% |
+| uniform | dijkstra-full | upstream direct | 51.614 ± 0.451 | 37.290 ± 0.438 | -27.8% |
+| uniform | dijkstra-full | turso-cypher | 3633.011 ± 29.743 | 3569.619 ± 7.368 | -1.7% |
+| uniform | dijkstra-full | turso-direct | 521.335 ± 1.245 | 462.919 ± 2.892 | -11.2% |
+| uniform | pagerank | arrow | 80.166 ± 0.623 | 65.202 ± 0.347 | -18.7% |
+| uniform | pagerank | datafusion | 82.765 ± 1.724 | 68.209 ± 1.958 | -17.6% |
+| uniform | pagerank | upstream cypher | 2254.800 ± 6.573 | 2238.654 ± 17.802 | -0.7% |
+| uniform | pagerank | upstream direct | 69.067 ± 1.136 | 55.154 ± 0.964 | -20.1% |
+| uniform | pagerank | turso-cypher | 2726.222 ± 10.405 | 2655.668 ± 2.571 | -2.6% |
+| uniform | pagerank | turso-direct | 538.826 ± 0.792 | 478.331 ± 2.648 | -11.2% |
+
+Mimalloc is faster in 41 of the 48 cells and slower in 7.
+The largest gains are on the sparse random family, where direct execution
+improves 27.8% on full-path Dijkstra and 20.1% on PageRank, and on the Arrow and
+DataFusion preparation paths, which improve 16-19% there. Ordinary Cypher moves
+little in either direction, as expected: parsing, policy checks and row
+consumption dominate its time.
+
+The regression that motivated this control did not reproduce. At the previous
+pin, mimalloc cost the full-path chain about 8.6% end-to-end; at this pin the
+same cell is 252.695 ± 12.022 ms against 249.282 ± 1.492 ms, a 1.4% improvement
+within run-to-run spread. The remaining slower cells are small and specific:
+DataFusion on the full-path chain at +5.4% (946.715 ± 3.510 against 997.948 ±
+2.934, outside both dispersions and therefore real), Arrow PageRank on the chain
+at +3.0%, and three cells at or below 1.4% that are inside their dispersion.
+Mimalloc is therefore the default on measured grounds, with the DataFusion chain
+cell disclosed as a genuine regression rather than dropped. `--allocator system`
+remains the explicit control build.
 
 ### Source lineage
 
@@ -71,10 +144,38 @@ only `docs/book/chapters/turso-under-strain.md`. The two benchmarks therefore
 exercise the same Grust implementation, while their measurements remain
 separate and unpooled.
 
-Remaining qualification: the 4096 Neo4j-inclusive run, the matched
-latest-source allocator control, independent durable group-commit measurements,
-profiling, and large full-path completion/resource tests. No final performance
-claim is made for these unfinished runs.
+### Neo4j-inclusive qualification at 4096
+
+The same matrix passed at 4096 nodes with the mimalloc build: 30 cases, six
+families by five algorithms, full paths, one warmup and five measured
+repetitions, GDS included. Medians for full-path Dijkstra on the chain, the
+benchmark's signature workload, in milliseconds:
+
+| Participant | Median, ms |
+|---|---:|
+| cpp | 65.318 |
+| rust | 41.989 |
+| grustcat | 39.488 |
+| grustcat_cypher | 41.394 |
+| grust_upstream_direct | 255.174 |
+| turso_direct | 242.016 |
+| grust_arrow | 969.051 |
+| grust_datafusion | 985.547 |
+| grust_upstream_cypher | 22704.301 |
+| turso_cypher | 22698.615 |
+
+These columns are not equal work. The historical adapters report kernel and
+Arrow result construction; upstream direct adds result conversion and resource
+accounting; Arrow and DataFusion add conversion, preparation and projection;
+ordinary Cypher adds parsing, policy validation, projection and row consumption,
+with full-path distance verification timed separately. The gap between upstream
+direct and the historical adapter is larger than those boundaries alone would
+suggest and is the profiling target, not an accepted cost.
+
+Remaining qualification: independent durable group-commit measurements,
+profiling of the full-path reconstruction path, and large full-path
+completion/resource tests. No final performance claim is made for these
+unfinished runs.
 
 ## Reproduction and evidence
 
