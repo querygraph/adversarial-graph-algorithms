@@ -35,7 +35,7 @@ def main():
     for row in rows:
         for name, details in row.get('native_details', {}).items():
             samples = [s for s in details if not s.get('warmup')]
-            for phase in ['loading_ms', 'preparation_ms', 'ms', 'verification_ms', 'serialization_ms', 'end_to_end_ms', 'process_seconds', 'setup_ms', 'database_load_ms', 'snapshot_ms', 'snapshot_verification_ms', 'conversion_ms', 'datafusion_preparation_ms', 'projection_ms']:
+            for phase in ['loading_ms', 'preparation_ms', 'ms', 'verification_ms', 'serialization_ms', 'end_to_end_ms', 'process_seconds', 'setup_ms', 'database_load_ms', 'snapshot_ms', 'snapshot_verification_ms', 'snapshot_ordering_ms', 'conversion_ms', 'datafusion_preparation_ms', 'projection_ms']:
                 values = []
                 for s in samples:
                     value = s.get(phase, (s.get('backend_details') or {}).get(phase, (s.get('arrow_details') or {}).get(phase)))

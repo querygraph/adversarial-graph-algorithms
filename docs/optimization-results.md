@@ -172,10 +172,55 @@ with full-path distance verification timed separately. The gap between upstream
 direct and the historical adapter is larger than those boundaries alone would
 suggest and is the profiling target, not an accepted cost.
 
-Remaining qualification: independent durable group-commit measurements,
-profiling of the full-path reconstruction path, and large full-path
-completion/resource tests. No final performance claim is made for these
-unfinished runs.
+### Durable group commit
+
+Group commit is a property of concurrent durable loading, not of the algorithm
+kernels, and is measured as its own preparation workload: MVCC journal,
+`synchronous=FULL`, statements loading, four writers, the hub family, one warmup
+and five measured samples per cell, with nodes fully committed before any edge
+write and the recovered snapshot verified before execution. All 36 outcomes
+passed. Database load time, median +/- MAD in milliseconds:
+
+| Nodes | Off | Engine | Client |
+|---:|---:|---:|---:|
+| 128 | 1261.627 +/- 16.491 | 590.089 +/- 7.176 | 670.386 +/- 26.608 |
+| 1024 | 9962.163 +/- 84.301 | 4232.310 +/- 38.286 | 5274.666 +/- 145.228 |
+
+Engine grouping roughly halves durable load time, by 53% at 128 nodes and 58% at
+1024; Grust's client committer recovers most but not all of that, 47% at both
+sizes. The algorithm timers are unmoved across all three settings, at about 0.03
+ms for 128 nodes and 0.3 ms for 1024, which is the expected result: no group
+commit setting may be credited as a kernel optimization. Snapshot ordering costs
+0.05 to 0.63 ms and sits outside every algorithm timer.
+
+WAL declines this workload outright. With four concurrent writers it fails on
+node insertion with `database is locked`, which is why the experiment is
+specified for MVCC only.
+
+### A correctness defect found by this experiment
+
+The first group-commit run failed all 36 samples. The cause was not group commit
+and not the journal mode: results were associated with nodes by position in the
+snapshot graph rather than by node identifier. Bulk loading and single-writer
+loading both insert in input order, so position and identifier coincided and the
+defect stayed invisible; four interleaved writers scrambled insertion order, and
+`read_graph` returned verified records in that order, so every distance was
+attached to the wrong node. The returned values were an exact permutation of the
+reference, with identical multisets and wrong positions. Snapshot verification
+could not catch it, by construction: it compares sorted records because database
+scan order is legitimately arbitrary.
+
+The adapter now permutes the verified snapshot back into input node order before
+execution, reported as the separate `snapshot_ordering_ms` phase above. No
+measurement published here was affected, because every qualification and sweep
+used bulk loading, whose exact agreement with the C++ reference is confirmed
+under both journal modes and is re-confirmed by every passing cell in this
+report. The defect was reachable only through the statements path, which this
+experiment exercised for the first time.
+
+Remaining qualification: profiling of the full-path reconstruction path and
+large full-path completion/resource tests. No final performance claim is made
+for these unfinished runs.
 
 ## Reproduction and evidence
 

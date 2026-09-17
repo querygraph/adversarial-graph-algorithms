@@ -73,11 +73,23 @@ pub fn prepare(graph: Graph) -> Result<(Graph, Value)> {
         };
         if canonical(&graph)? != canonical(&snapshot)? { return Err("Turso snapshot differs from input".into()); }
         let snapshot_verification_ms = started.elapsed().as_secs_f64() * 1000.;
+        let started = Instant::now();
+        // Database scan order follows insertion concurrency, so a multi-writer statements
+        // load returns the verified records in a different order than a bulk load. Results
+        // are reported per node position, so restore the input order before execution.
+        // This permutes already-verified records, adds no data, and is outside every
+        // algorithm timer; without it, concurrent loading silently mislabels every result.
+        let mut snapshot = snapshot;
+        let position: std::collections::HashMap<_, _> =
+            graph.nodes.iter().enumerate().map(|(index, node)| (node.id.clone(), index)).collect();
+        snapshot.nodes.sort_by_key(|node| position[&node.id]);
+        let snapshot_ordering_ms = started.elapsed().as_secs_f64() * 1000.;
         Ok((snapshot, json!({"backend": "grust-turso", "storage": "temporary file", "journal": journal,
             "synchronous": "FULL", "group_commit": if journal == "wal" { "not_applicable" } else { &group }, "load_mode": load,
             "writers": if load == "bulk" { 1 } else { writers }, "runtime_threads": 2,
             "setup_ms": setup_ms, "database_load_ms": database_load_ms,
             "snapshot_ms": snapshot_ms, "snapshot_verification_ms": snapshot_verification_ms,
-            "snapshot_verified": true})))
+            "snapshot_ordering_ms": snapshot_ordering_ms,
+            "snapshot_verified": true, "snapshot_order": "restored to input node order"})))
     })
 }

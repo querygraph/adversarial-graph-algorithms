@@ -32,7 +32,7 @@ def main():
              '|---|---:|---|---|---|---|---|---:|---:|']
     for key, samples in groups.items():
         row = dict(zip(['family', 'n', 'algorithm', 'participant', 'variant', 'group_commit'], key), phases={})
-        for phase in ['ms', 'loading_ms', 'preparation_ms', 'verification_ms', 'serialization_ms', 'end_to_end_ms', 'process_seconds', 'setup_ms', 'database_load_ms', 'snapshot_ms', 'snapshot_verification_ms', 'conversion_ms', 'datafusion_preparation_ms', 'projection_ms']:
+        for phase in ['ms', 'loading_ms', 'preparation_ms', 'verification_ms', 'serialization_ms', 'end_to_end_ms', 'process_seconds', 'setup_ms', 'database_load_ms', 'snapshot_ms', 'snapshot_verification_ms', 'snapshot_ordering_ms', 'conversion_ms', 'datafusion_preparation_ms', 'projection_ms']:
             values = [s.get(phase, (s.get('backend_details') or {}).get(phase, (s.get('arrow_details') or {}).get(phase))) for s in samples]
             values = [v*(1000 if phase == 'process_seconds' else 1) for v in values if v is not None]
             if not values: continue
