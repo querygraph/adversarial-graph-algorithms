@@ -1,6 +1,6 @@
 # Graph algorithms, full paths, and the work a benchmark must count
 
-![Prometheus breaks the chains of a graph, scattering sparks between its nodes.](../../../cover/prometheus-breaks-graphs-headboard.png)
+![Graph Algorithm Benchmark cover: a rocket marked Rust flies out of a ringed planet's debris field, past rocks marked JVM, legacy, GC pauses, warmup and heavy runtime, toward a sunrise over Earth.](../../../cover/graph-algorithm-benchmark.PNG)
 
 The [graph-algorithm benchmark on adversari.al](https://adversari.al/graph/algorithms)
 compares implementations on identical generated graphs. Its most revealing
