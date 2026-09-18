@@ -9,9 +9,12 @@ Published benchmark: **https://adversari.al/graph/algorithms**. The [graph index
 ```sh
 git clone https://github.com/querygraph/adversarial-graph-algorithms
 cd adversarial-graph-algorithms
-./docker/run.sh --full-path --algorithms dijkstra --families path \
+./docker/run.sh --frozen --full-path --algorithms dijkstra --families path \
   --sizes 16384 65536 --warmups 0 --repeats 1 --label reproduced-full-path
 ```
+
+`--frozen` selects the published measured snapshot. Without it, `run.sh` measures
+current upstream Grust and Turso with Arrow, DataFusion and mimalloc; see below.
 
 Requires Docker Compose v2 and Python 3.12+ (safe tar extraction). `docker/prepare.py` defaults to the checksum-verified measured source snapshot in `publication/`; no sibling repositories are required. Official Neo4j/GDS archives are downloaded and checksum-verified separately. For local development, `python3 docker/prepare.py --local` stages `../icecat` and `../grust`; then invoke Compose directly. The snapshot includes the exact staged build inputs, while transitive OS packages/base-image tags are not immutable. Separate dependency licenses are under `publication/licenses/`; bundled sources retain their own notices.
 
@@ -25,7 +28,15 @@ All five variants also passed 30 small cases (six families × five algorithms); 
 
 [Generalized graph algorithms in Grust](docs/grust-generalized-graph-algorithms-handoff.md) describes the proposed upstream architecture, Arrow and Cypher contracts, phased acceptance gates, and benchmark validation. It includes committed source references and clone commands for an implementation agent on another machine.
 
-## Current-source optimization workflow
+## Current sources are the default
+
+`./docker/run.sh` with no source flags measures current upstream Grust and Turso:
+the historical four participants plus upstream direct and Cypher, both Turso
+snapshot columns, Arrow and DataFusion, built with the mimalloc global allocator.
+Checkouts come from `docker/upstream-pins.json`; a missing checkout is cloned at
+its pinned commit, and a checkout sitting at any other commit is refused rather
+than silently measured. Pass `--upstream-grust` or `--turso` to measure a
+different source on purpose, which is recorded as unpinned in the run receipt.
 
 The [current Grust/Turso workflow](docker/README.md#current-grust-and-turso-main)
 adds upstream direct/Cypher execution, Arrow/DataFusion preparation, and

@@ -61,6 +61,10 @@ Loading and snapshot capture have separate timers. The GDS projection consumes
 edge parameters without equivalent durable ingestion, so database-load timings
 are not a Turso-versus-Neo4j ingestion comparison.
 
+`./docker/run.sh` runs this workflow by default; the commands below pin sources
+explicitly, which is what a separate experiment needs. `--frozen` selects the
+historical published snapshot instead.
+
 ```sh
 # Resolve main once, then keep this checkout fixed throughout the experiment.
 git clone https://github.com/querygraph/grust.git /tmp/algorithms-grust

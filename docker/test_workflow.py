@@ -19,6 +19,66 @@ def module(name):
     return result
 
 
+class PinnedSourceTests(unittest.TestCase):
+    def pins(self):
+        return json.loads((HERE/'upstream-pins.json').read_text())
+
+    def repository(self, root, commit_message):
+        root.mkdir(parents=True, exist_ok=True)
+        run = lambda *args: subprocess.run(['git', '-C', str(root), *args], check=True,
+                                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        run('init', '-q')
+        run('config', 'user.email', 'test@example.invalid')
+        run('config', 'user.name', 'test')
+        (root/'file').write_text(commit_message)
+        run('add', '.')
+        run('commit', '-qm', commit_message)
+        return subprocess.check_output(['git', '-C', str(root), 'rev-parse', 'HEAD'], text=True).strip()
+
+    def test_pins_name_every_required_source(self):
+        pins = self.pins()
+        for name in ['grust', 'turso']:
+            self.assertRegex(pins[name]['commit'], r'^[0-9a-f]{40}$')
+            self.assertTrue(pins[name]['url'].startswith('https://'))
+        self.assertTrue((HERE.parent/pins['lockfile']).exists())
+
+    def test_default_checkout_at_another_commit_is_refused(self):
+        runner = module('run_current')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)/'checkout'
+            head = self.repository(root, 'not the pinned commit')
+            pin = dict(url='https://example.invalid/repo.git', commit='0'*40)
+            with self.assertRaises(SystemExit) as refused:
+                runner.provision('upstream-grust', root, pin, False)
+            self.assertIn(head, str(refused.exception))
+            # An explicitly supplied checkout is the caller's choice, and is recorded.
+            self.assertEqual(runner.provision('upstream-grust', root, pin, True), head)
+
+    def test_missing_explicit_checkout_is_not_cloned(self):
+        runner = module('run_current')
+        with tempfile.TemporaryDirectory() as tmp:
+            absent = Path(tmp)/'absent'
+            with self.assertRaises(SystemExit):
+                runner.provision('turso', absent, dict(url='https://example.invalid/r.git', commit='0'*40), True)
+            self.assertFalse(absent.exists())
+
+
+class RunnerEntryPointTests(unittest.TestCase):
+    def invoke(self, *args):
+        """Report which path run.sh takes, without building or measuring anything."""
+        script = (HERE/'run.sh').read_text().replace('exec python3 docker/run_current.py "$@"', 'echo CURRENT "$@"; exit 0')
+        script = script.split('python3 docker/prepare.py')[0] + 'echo FROZEN "$@"\n'
+        result = subprocess.run(['bash', '-c', script, 'run.sh', *args], capture_output=True, text=True, cwd=HERE.parent)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        return result.stdout.strip()
+
+    def test_default_runs_current_sources(self):
+        self.assertEqual(self.invoke('--sizes', '128'), 'CURRENT --sizes 128')
+
+    def test_frozen_flag_selects_the_published_snapshot_and_is_consumed(self):
+        self.assertEqual(self.invoke('--frozen', '--sizes', '128'), 'FROZEN --sizes 128')
+
+
 class WorkflowTests(unittest.TestCase):
     def test_changed_upstream_anchor_is_rejected(self):
         stage = module('stage_upstream')
@@ -106,11 +166,17 @@ class WorkflowTests(unittest.TestCase):
                     (context/'sources.json').write_text('{}')
                 failed = 'benchmark' in command and 'run' in command
                 return subprocess.CompletedProcess(command, 7 if failed else 0)
+            head = 'a'*40
             with patch('sys.argv', ['run_current.py', '--upstream-grust', tmp, '--turso', tmp,
                                     '--lockfile', str(Path(tmp)/'lock'), '--output', str(output),
-                                    '--', '--sizes', '128']), patch.object(runner.subprocess, 'run', side_effect=run):
+                                    '--', '--sizes', '128']), \
+                 patch.object(runner.subprocess, 'run', side_effect=run), \
+                 patch.object(runner.subprocess, 'check_output', return_value=head+'\n'):
                 with self.assertRaises(subprocess.CalledProcessError): runner.main()
-            self.assertEqual(json.loads((output/'run.json').read_text())['status'], 'error')
+            receipt = json.loads((output/'run.json').read_text())
+            self.assertEqual(receipt['status'], 'error')
+            # An explicit checkout is measured as given and recorded as unpinned.
+            self.assertEqual(receipt['sources']['grust'], dict(path=tmp, commit=head, pinned=False))
             self.assertEqual((output/'upstream-Cargo.lock').read_text(), 'locked')
             self.assertFalse(any('update' in command for command, _ in commands))
             stage = next(c for c, _ in commands if 'docker/stage_upstream.py' in c)
