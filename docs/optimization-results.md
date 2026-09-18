@@ -110,9 +110,10 @@ Grust now holds the work counter and the cancellation flag as atomics, admitting
 each charge through a compare-exchange that recomputes admission against the
 value it replaces, so budgets are still enforced exactly and granularity is still
 per unit. Measured against a matched baseline differing only in that change,
-full-path Dijkstra improved 14 to 29% on direct execution and about 25% on the
-Arrow and DataFusion paths at 16384; PageRank improved 23 to 29% almost
-everywhere, since it charges once per node per iteration.
+full-path Dijkstra improved by up to 29.4% on direct execution — except on the
+hub family, where it was flat at -2.9% and +1.1% — and about 25% on the Arrow
+and DataFusion paths at 16384; PageRank improved between 22.5% and 29.1% across
+every family, since it charges once per node per iteration.
 
 The gain is smaller than the profile share suggests. A 72.8% share of self time
 is not 72.8% of removable wall time: the atomic still costs, and the work around
@@ -164,7 +165,7 @@ within dispersion, between −2.5% and +2.0%, with the Cypher gain intact at
 The `37fdf9c` pin adds sampled deadlines in read admission and per-row memory
 charges, compact candidate rows, aggregates folded as they are evaluated, shared
 relationships and path elements instead of deep copies, and nodes bound by
-reference. Ordinary Cypher at 4096 improves between 88.6% and 97.5% across every
+reference. Ordinary Cypher at 4096 improves between 88.6% and 98.1% across every
 graph family — clusters Dijkstra from 340.75 ± 0.83 ms to 8.47 ± 0.30, rmat from
 1121.98 ± 6.49 to 36.33 ± 0.05, uniform PageRank from 1483.02 ± 2.71 to 61.82 ±
 0.55. Direct, Arrow and DataFusion are unchanged, which is correct: the work is
