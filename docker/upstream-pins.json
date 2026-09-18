@@ -1,9 +1,9 @@
 {
   "grust": {
     "url": "https://github.com/querygraph/grust.git",
-    "branch": "turso-mvcc-concurrency",
-    "commit": "3a739544c3d9e6581bdac7563d8cc3a66cdcf828",
-    "note": "Arrow/DataFusion routing and the Turso allocator facade. Code-identical to the strain benchmark's Grust pin a04ebd7578c7ab87d29d31575e12db1193b1e9b1: every commit between them changes only docs/book/chapters/turso-under-strain.md."
+    "branch": "main",
+    "commit": "9573aacccc1a7b14f05086901101d8b7e6e1ff91",
+    "note": "Tadpole 0.21.0. Adds list binding forms, the cheaper reference executor, and per-path work admission with borrowed yielded lists. The qualifying run staged b3589903ddb958aadb171b7f0df15774d8d742db, which differs from this commit only by a book chapter; both manifests and lockfiles are identical."
   },
   "turso": {
     "url": "https://github.com/tursodatabase/turso.git",
