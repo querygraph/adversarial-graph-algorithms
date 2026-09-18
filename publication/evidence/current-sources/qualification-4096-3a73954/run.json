@@ -1,0 +1,28 @@
+{
+  "status": "pass",
+  "argv": [
+    "docker/run_current.py",
+    "--upstream-grust",
+    ".upstream-grust",
+    "--turso",
+    ".upstream-turso",
+    "--allocator",
+    "mimalloc",
+    "--lockfile",
+    "docker/upstream-Cargo.lock",
+    "--output",
+    ".measurements/qualification-4096-mimalloc",
+    "--",
+    "--full-path",
+    "--sizes",
+    "4096",
+    "--warmups",
+    "1",
+    "--repeats",
+    "5",
+    "--label",
+    "mimalloc-4096"
+  ],
+  "host": "grust",
+  "output": "/home/admin/src/adversarial-graph-algorithms/.measurements/qualification-4096-mimalloc"
+}

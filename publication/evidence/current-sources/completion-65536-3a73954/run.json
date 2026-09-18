@@ -1,0 +1,30 @@
+{
+  "status": "pass",
+  "argv": [
+    "docker/run_current.py",
+    "--upstream-grust",
+    ".upstream-grust",
+    "--turso",
+    ".upstream-turso",
+    "--lockfile",
+    "docker/upstream-Cargo.lock",
+    "--output",
+    ".measurements/completion-65536",
+    "--",
+    "--full-path",
+    "--families",
+    "path",
+    "--algorithms",
+    "dijkstra",
+    "--sizes",
+    "65536",
+    "--warmups",
+    "0",
+    "--repeats",
+    "1",
+    "--label",
+    "completion-65536"
+  ],
+  "host": "grust",
+  "output": "/home/admin/src/adversarial-graph-algorithms/.measurements/completion-65536"
+}

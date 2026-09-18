@@ -257,8 +257,15 @@ like an executor deficit was mostly deadline-checking policy.
 checkouts recorded in `docker/upstream-pins.json` and refusing a checkout that
 sits at any other commit. `--frozen` reproduces the published snapshot
 measurement. `docker/README.md` documents allocator selection, group-commit
-settings, the paired sweep, and the exact commands behind every table above. Raw
-evidence, receipts and retained failures live under `.measurements/`.
+settings, the paired sweep, and the exact commands behind every table above.
+
+The samples behind every table are committed under
+[`publication/evidence/current-sources/`](../publication/evidence/current-sources),
+one directory per run, named by pin, with `SHA256SUMS.json` over all of them.
+Each distributional claim here is recomputable from those files: the allocator's
+41 of 48 cells, the medians and dispersions, and the completion tables. Full
+environment dumps, per-sample process audits and container images stay on the
+measuring host and are not part of the bundle.
 
 ## Durable loading, measured separately
 

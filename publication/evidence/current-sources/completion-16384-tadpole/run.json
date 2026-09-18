@@ -1,0 +1,40 @@
+{
+  "status": "pass",
+  "argv": [
+    "docker/run_current.py",
+    "--upstream-grust",
+    "/home/admin/src/grust",
+    "--turso",
+    ".upstream-turso",
+    "--output",
+    ".measurements/tadpole-16384",
+    "--",
+    "--full-path",
+    "--families",
+    "path",
+    "--algorithms",
+    "dijkstra",
+    "--sizes",
+    "16384",
+    "--warmups",
+    "0",
+    "--repeats",
+    "1",
+    "--label",
+    "tadpole-16384"
+  ],
+  "host": "grust",
+  "output": "/home/admin/src/adversarial-graph-algorithms/.measurements/tadpole-16384",
+  "sources": {
+    "grust": {
+      "path": "/home/admin/src/grust",
+      "commit": "08ce50e7f35d709823e6f2be8817cf400885c71b",
+      "pinned": false
+    },
+    "turso": {
+      "path": ".upstream-turso",
+      "commit": "9a082e5bc33705e3593fac19046506e18a382921",
+      "pinned": true
+    }
+  }
+}

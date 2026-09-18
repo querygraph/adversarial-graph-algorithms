@@ -1,0 +1,42 @@
+{
+  "status": "pass",
+  "argv": [
+    "docker/run_current.py",
+    "--upstream-grust",
+    "/home/admin/src/grust",
+    "--turso",
+    ".upstream-turso",
+    "--lockfile",
+    "docker/upstream-Cargo.lock",
+    "--output",
+    ".measurements/main2-65536",
+    "--",
+    "--full-path",
+    "--families",
+    "path",
+    "--algorithms",
+    "dijkstra",
+    "--sizes",
+    "65536",
+    "--warmups",
+    "0",
+    "--repeats",
+    "1",
+    "--label",
+    "main2-65536"
+  ],
+  "host": "grust",
+  "output": "/home/admin/src/adversarial-graph-algorithms/.measurements/main2-65536",
+  "sources": {
+    "grust": {
+      "path": "/home/admin/src/grust",
+      "commit": "37fdf9c61bb5e04ed7f1ced6079b3b415e484f3f",
+      "pinned": false
+    },
+    "turso": {
+      "path": ".upstream-turso",
+      "commit": "9a082e5bc33705e3593fac19046506e18a382921",
+      "pinned": true
+    }
+  }
+}

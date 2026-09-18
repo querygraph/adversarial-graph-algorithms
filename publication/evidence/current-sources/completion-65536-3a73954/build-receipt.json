@@ -1,0 +1,17 @@
+{
+  "upstream_commit": "3a739544c3d9e6581bdac7563d8cc3a66cdcf828",
+  "upstream_status": "",
+  "upstream_diff": "",
+  "allocator": "mimalloc",
+  "release_profile": "default",
+  "arrow_version": "59.3.0",
+  "datafusion_version": "55.1.0",
+  "datafusion_boundary": "input preparation only; native Grust kernels and Arrow result consumption",
+  "rustflags": "",
+  "target_cpu": "portable default",
+  "turso_version": "0.8.0-pre.11",
+  "turso_commit": "9a082e5bc33705e3593fac19046506e18a382921",
+  "turso_status": "",
+  "mimalloc_version": "0.1.52",
+  "staging_script_sha256": "ee26f86667f381603a62096e5c51d02f93f2787185734f84ed0af2f5fb5968c4"
+}

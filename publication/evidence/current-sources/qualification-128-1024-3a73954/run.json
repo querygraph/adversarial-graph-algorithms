@@ -1,0 +1,27 @@
+{
+  "status": "pass",
+  "argv": [
+    "docker/run_current.py",
+    "--upstream-grust",
+    ".upstream-grust",
+    "--turso",
+    ".upstream-turso",
+    "--lockfile",
+    "docker/upstream-Cargo.lock",
+    "--output",
+    ".measurements/latest-qualification-neo4j",
+    "--",
+    "--full-path",
+    "--sizes",
+    "128",
+    "1024",
+    "--warmups",
+    "1",
+    "--repeats",
+    "5",
+    "--label",
+    "latest"
+  ],
+  "host": "grust",
+  "output": "/home/admin/src/adversarial-graph-algorithms/.measurements/latest-qualification-neo4j"
+}
