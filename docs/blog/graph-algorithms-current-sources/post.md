@@ -69,8 +69,9 @@ charge per visited entry, and the meter took a mutex on every call: about 134
 million lock acquisitions in a single-threaded kernel.
 
 Replacing that with atomics, with admission recomputed through a compare-exchange
-so budgets are still enforced exactly, improved full-path Dijkstra by 14 to 29%
-on direct execution and PageRank by 23 to 29% across graph families.
+so budgets are still enforced exactly, improved full-path Dijkstra by up to
+29.4% on direct execution — except on hub graphs, where it was flat — and
+PageRank by 22.5 to 29.1% across graph families.
 
 Together, on the 65,536-node chain: a run that took **3 hours 32 minutes** now
 takes **35 minutes**. Ordinary Cypher went from 5,808,625 ms to 594,419 ms.
@@ -79,6 +80,25 @@ Direct execution went from 66,477 ms to 51,869 ms.
 Throughout, the four historical binaries are byte-identical across every run and
 moved by at most 1.4%. That control is what makes the rest attributable to the
 code rather than to the machine.
+
+## Then the same trick again, one layer down
+
+Reporting all of this produced a third change, and it is the one that makes the
+first two look modest. A streaming `CALL` was deep-copying every yielded value
+into each row, so a path list was cloned once per path, and the work meter was
+still being charged once per entry even after it became cheap. The next release
+borrowed the yielded lists instead of copying them, and began admitting work per
+path — or per 1024 steps — rather than per entry.
+
+On the 16,384-node chain that took direct execution from 3,190 ms to 1,298 ms
+and ordinary Cypher from 36,913 ms to 20,255 ms. At 4,096 nodes, with five
+measured samples, direct execution improved 58.7% and ordinary Cypher 45.2%. The
+frozen C++ participant moved 0.4% in the same runs.
+
+So the per-entry charge that the first profile found was worth roughly another
+2.4x on direct execution once it was charged per path, on top of what removing
+the mutex achieved. The meter was never one problem; it was the same problem in
+three places.
 
 ## The benchmark found a correctness bug, and it was not in an algorithm
 
@@ -100,10 +120,16 @@ reference.
 ## What did not work
 
 `reduce` now exists in Grust's Cypher. It returns aggregates identical to the
-`UNWIND` form, and it is 4.6 to 4.9 times slower at three different sizes — a
-constant factor, not a scaling one. The benchmark keeps the row-expansion shape.
-Expressing the query the way GDS expresses it currently costs more than the rows
-it removes.
+`UNWIND` form, and it is slower: 4.6 to 4.9 times on the pin where it landed,
+and about 6.1 times on current code, where the row-expansion path improved
+faster than the fold did. The benchmark keeps the row-expansion shape.
+
+That comparison has shifted in an interesting way, though. When the clock reads
+dominated, removing the row expansion was worth about 4% and the query shape was
+irrelevant. On current code the same measurement is 1,533 ms against 718 ms
+without the expansion — the shape is now worth about half the query. The fold is
+still the slower way to write it, but the prize for making it fast is no longer
+rounding error.
 
 A first attempt at deadline sampling regressed every path that sets no deadline
 by 13 to 46%, because the sampling counter ticked whether or not a deadline
