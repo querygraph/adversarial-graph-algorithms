@@ -341,8 +341,47 @@ slower, all at or below 1.1% and at or near their dispersion, and are reported
 rather than dropped. These numbers belong to their own source pin and are not
 pooled with the baseline cells above.
 
+## Why ordinary Cypher is slow here, and how much of it is this host
+
+Ordinary Cypher's full-path numbers are roughly ninety times direct execution at
+4096 and 1.6 hours at 65536. A probe over the same chain, same policy and same
+procedure isolates the cause, and it is not the one the query text suggests.
+
+| Query shape at 4096 | Kernel/query ms |
+|---|---:|
+| `UNWIND` one row per path entry, as the participant runs it | 21,721 |
+| No `UNWIND` at all: `RETURN count(*), sum(size(nodeIds))` | 20,804 |
+| `UNWIND` with no list indexing: `RETURN count(i)` | 20,716 |
+| GDS's fold shape: `sum(reduce(s = 0, x IN nodeIds | s + x))` | rejected |
+
+Removing the row expansion entirely saves about 4%. The fold-in-row shape GDS
+uses is not expressible: Grust's Cypher has no `reduce`, and the parser rejects
+it. So the row-per-entry formulation is not a harness choice that inflates the
+number; it is the only formulation available, and it is not where the time goes.
+
+`perf` attributes about 83% of the remaining time to `__vdso_clock_gettime`,
+`do_syscall_64` and `pvclock_clocksource_read`. The cause is the deadline check:
+the bounded read policy requires a finite deadline, this participant discloses a
+24-hour ceiling, and `ExecutionContext::check_state` therefore reads the clock on
+every charge, once per path entry, about 8.4 million times at 4096. Direct
+execution passes no deadline, skips the clock entirely, and runs in 197 ms.
+
+**This host reads the clock the slow way.** Its clocksource is `xen`, not `tsc`,
+so each read goes through the paravirtual clock rather than a register read. The
+penalty is therefore partly a property of this machine: the same code on a
+TSC host would pay roughly an order of magnitude less per read. Every ordinary
+Cypher number in this report carries that caveat, and none of them should be
+read as a portable measurement of the executor.
+
+Sampling the deadline every 1024 charges instead of reading the clock per unit,
+as an experiment on this same probe, returns identical aggregates and runs the
+participant's query in 2,574 ms rather than 21,721 ms, an 8.4x improvement. That
+change trades deadline granularity for clock reads and is not committed; it is
+recorded here as measured headroom, not as a result.
+
 Remaining qualification: none outstanding for this pin. Any further source
-change starts a new pinned set.
+change starts a new pinned set. The deadline-sampling headroom above is an open
+proposal, not a measured participant.
 
 ## Reproduction and evidence
 
