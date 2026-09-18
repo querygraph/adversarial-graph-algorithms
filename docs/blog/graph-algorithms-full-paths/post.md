@@ -155,6 +155,16 @@ it was the benchmark's own per-sample comparison against a C++ reference.
 about 6.1 times on current code, where the row-expansion path improved faster
 than the fold did. The benchmark keeps the row-expansion shape.
 
+The reason it stays slower is the same problem one axis over. Work accounting is
+now lock-free, but each folded element still evaluates through the general scoped
+evaluator, and every variable reference clones a value and charges its bytes
+through a memory account that takes the state mutex. Two references per element
+means two lock round-trips plus a string allocation, and the per-entry string is
+inherent to path node identifiers being a string type. Closing the gap needs
+either byte accounting without the mutex — exactly what work accounting already
+got — or a compiled fold. Neither is in this release, which is why the shape
+stays as it is.
+
 That comparison has shifted in an interesting way. When the clock reads dominated,
 removing the row expansion was worth about 4% and the query shape was irrelevant.
 On current code the same measurement is 1,533 ms against 718 ms without the
