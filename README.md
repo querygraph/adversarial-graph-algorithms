@@ -48,5 +48,5 @@ concurrent-write preparation workload, outside algorithm timers.
 
 [The current-source report](docs/optimization-results.md) carries the measured
 results, boundaries, regressions and evidence, kept separate from the historical
-publication. The [write-up](docs/blog/graph-algorithms-current-sources/post.md)
-covers what the extension found.
+publication. The [write-up](docs/blog/graph-algorithms-full-paths/post.md) covers the output
+contract and what measuring it on current sources found.
