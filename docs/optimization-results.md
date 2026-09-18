@@ -218,9 +218,131 @@ under both journal modes and is re-confirmed by every passing cell in this
 report. The defect was reachable only through the statements path, which this
 experiment exercised for the first time.
 
-Remaining qualification: profiling of the full-path reconstruction path and
-large full-path completion/resource tests. No final performance claim is made
-for these unfinished runs.
+### Large full-path completion
+
+Both large chains completed with every participant, one sample and no warmup, as
+completion and resource demonstrations rather than performance rankings. The
+16384 chain builds 134,225,920 entries in each path array and the 65536 chain
+2,147,516,416; every node and cumulative-cost entry is constructed and consumed,
+with no large-case shortcut enabled. The 65536 run took three and a half hours
+of wall time and passed. Milliseconds:
+
+| Participant | 16384 | 65536 |
+|---|---:|---:|
+| cpp | 1,088 | 30,454 |
+| rust | 674 | 10,921 |
+| grustcat | 667 | 10,888 |
+| grustcat_cypher | 664 | 10,785 |
+| grust_upstream_direct | 4,138 | 66,477 |
+| turso_direct | 4,045 | 65,000 |
+| grust_arrow | 14,718 | 241,622 |
+| grust_datafusion | 15,646 | 245,380 |
+| grust_upstream_cypher | 361,935 | 5,808,625 |
+| turso_cypher | 362,102 | 5,817,678 |
+| GDS | 22,803 | 387,426 |
+
+Ordinary Cypher at 65536 takes about 1.6 hours per participant, which is why a
+single sample is the whole measurement. These columns are not equal work: the
+historical adapters report kernel and Arrow result construction, upstream direct
+adds result conversion and resource accounting, Arrow and DataFusion add
+conversion and projection, and Cypher adds parsing, policy validation and row
+consumption with distance verification timed separately.
+
+## Lock-free work accounting
+
+Profiling `grust_upstream_direct` on the 16384 chain with `perf` attributed
+72.8% of kernel self time to `ExecutionContext::charge_work`, against 14.8% for
+visiting paths and 6.6% for advancing path buffers. The meter took a mutex on
+every call and kernels call it once per visited entry and per reconstructed path
+step, about 134 million times in that case. Grust commit `23de753` on
+`work/algorithms-performance` holds `work_units` and `cancelled` as atomics and
+admits each charge through a compare-exchange that recomputes admission against
+the value it replaces, so budgets are still enforced exactly, granularity is
+still per unit, and cancellation is still published before wakers are collected.
+
+The patched source passed its Rust tests and the Neo4j-inclusive 4096 matrix,
+then ran against the matched baseline in one container, alternating order, one
+warmup and five measured samples per cell. Both variants carry the Turso
+ordering fix, so the pair differs only in the work meter. All 1,224 paired
+samples passed. Kernel and query milliseconds, median +/- MAD:
+
+| Graph | Algorithm | Participant | Baseline | Patched | Change |
+|---|---|---|---:|---:|---:|
+| hub | dijkstra-full | arrow | 39.85 +/- 0.04 | 38.55 +/- 0.20 | -3.3% |
+| hub | dijkstra-full | datafusion | 40.31 +/- 0.60 | 39.29 +/- 0.10 | -2.5% |
+| hub | dijkstra-full | upstream cypher | 514.58 +/- 3.77 | 510.45 +/- 3.04 | -0.8% |
+| hub | dijkstra-full | upstream direct | 2.09 +/- 0.06 | 2.03 +/- 0.36 | -2.9% |
+| hub | dijkstra-full | turso-cypher | 512.32 +/- 0.54 | 507.25 +/- 3.94 | -1.0% |
+| hub | dijkstra-full | turso-direct | 1.64 +/- 0.01 | 1.66 +/- 0.16 | +1.1% |
+| hub | pagerank | arrow | 41.55 +/- 0.25 | 29.92 +/- 0.39 | -28.0% |
+| hub | pagerank | datafusion | 41.53 +/- 0.47 | 29.89 +/- 0.52 | -28.0% |
+| hub | pagerank | upstream cypher | 1757.41 +/- 16.23 | 1747.38 +/- 4.44 | -0.6% |
+| hub | pagerank | upstream direct | 41.04 +/- 0.79 | 29.13 +/- 0.09 | -29.0% |
+| hub | pagerank | turso-cypher | 1753.34 +/- 7.28 | 1738.44 +/- 8.37 | -0.8% |
+| hub | pagerank | turso-direct | 41.46 +/- 0.81 | 29.59 +/- 0.58 | -28.6% |
+| layered | dijkstra-full | arrow | 52.94 +/- 0.24 | 49.61 +/- 0.15 | -6.3% |
+| layered | dijkstra-full | datafusion | 51.81 +/- 0.17 | 49.65 +/- 0.06 | -4.2% |
+| layered | dijkstra-full | upstream cypher | 971.85 +/- 13.01 | 963.73 +/- 6.49 | -0.8% |
+| layered | dijkstra-full | upstream direct | 4.85 +/- 0.17 | 3.49 +/- 0.05 | -27.9% |
+| layered | dijkstra-full | turso-cypher | 961.28 +/- 1.18 | 955.44 +/- 2.36 | -0.6% |
+| layered | dijkstra-full | turso-direct | 5.27 +/- 0.04 | 4.32 +/- 0.05 | -18.1% |
+| layered | pagerank | arrow | 54.88 +/- 0.74 | 39.22 +/- 0.07 | -28.5% |
+| layered | pagerank | datafusion | 50.12 +/- 0.45 | 38.60 +/- 0.24 | -23.0% |
+| layered | pagerank | upstream cypher | 2267.99 +/- 22.41 | 2252.42 +/- 1.03 | -0.7% |
+| layered | pagerank | upstream direct | 50.01 +/- 0.77 | 38.78 +/- 0.63 | -22.5% |
+| layered | pagerank | turso-cypher | 2273.01 +/- 10.92 | 2265.48 +/- 13.25 | -0.3% |
+| layered | pagerank | turso-direct | 53.82 +/- 0.94 | 38.17 +/- 0.34 | -29.1% |
+| path | dijkstra-full | arrow | 942.49 +/- 13.56 | 738.28 +/- 8.31 | -21.7% |
+| path | dijkstra-full | datafusion | 957.55 +/- 28.89 | 724.55 +/- 10.56 | -24.3% |
+| path | dijkstra-full | upstream cypher | 22603.46 +/- 42.00 | 22204.15 +/- 16.82 | -1.8% |
+| path | dijkstra-full | upstream direct | 242.31 +/- 0.50 | 196.70 +/- 1.18 | -18.8% |
+| path | dijkstra-full | turso-cypher | 22635.17 +/- 80.02 | 22257.26 +/- 15.19 | -1.7% |
+| path | dijkstra-full | turso-direct | 243.76 +/- 2.04 | 193.19 +/- 1.61 | -20.7% |
+| path | pagerank | arrow | 31.98 +/- 0.08 | 22.83 +/- 0.02 | -28.6% |
+| path | pagerank | datafusion | 29.18 +/- 0.20 | 22.38 +/- 0.40 | -23.3% |
+| path | pagerank | upstream cypher | 1323.53 +/- 8.87 | 1314.65 +/- 10.59 | -0.7% |
+| path | pagerank | upstream direct | 30.71 +/- 0.93 | 22.47 +/- 0.03 | -26.8% |
+| path | pagerank | turso-cypher | 1337.72 +/- 1.74 | 1315.16 +/- 1.62 | -1.7% |
+| path | pagerank | turso-direct | 31.32 +/- 2.73 | 22.47 +/- 0.12 | -28.3% |
+| uniform | dijkstra-full | arrow | 44.31 +/- 0.39 | 42.36 +/- 0.10 | -4.4% |
+| uniform | dijkstra-full | datafusion | 45.25 +/- 0.89 | 43.50 +/- 0.07 | -3.9% |
+| uniform | dijkstra-full | upstream cypher | 1557.83 +/- 6.79 | 1571.25 +/- 6.81 | +0.9% |
+| uniform | dijkstra-full | upstream direct | 3.66 +/- 0.04 | 2.59 +/- 0.15 | -29.4% |
+| uniform | dijkstra-full | turso-cypher | 1585.40 +/- 7.40 | 1563.36 +/- 3.19 | -1.4% |
+| uniform | dijkstra-full | turso-direct | 3.65 +/- 0.31 | 3.13 +/- 0.40 | -14.3% |
+| uniform | pagerank | arrow | 23.41 +/- 0.20 | 16.72 +/- 0.26 | -28.6% |
+| uniform | pagerank | datafusion | 23.42 +/- 0.13 | 16.68 +/- 0.35 | -28.8% |
+| uniform | pagerank | upstream cypher | 2208.48 +/- 1.61 | 2177.80 +/- 4.82 | -1.4% |
+| uniform | pagerank | upstream direct | 23.04 +/- 0.25 | 16.35 +/- 0.05 | -29.1% |
+| uniform | pagerank | turso-cypher | 2194.01 +/- 0.55 | 2213.91 +/- 9.97 | +0.9% |
+| uniform | pagerank | turso-direct | 21.55 +/- 0.11 | 16.43 +/- 0.02 | -23.8% |
+
+At 16384, where each path array holds sixteen times the entries:
+
+| Graph | Algorithm | Participant | Baseline | Patched | Change |
+|---|---|---|---:|---:|---:|
+| path | dijkstra-full | arrow | 15274.34 +/- 131.95 | 11372.30 +/- 105.86 | -25.5% |
+| path | dijkstra-full | datafusion | 15383.43 +/- 78.78 | 11601.42 +/- 85.75 | -24.6% |
+| path | dijkstra-full | upstream direct | 3985.76 +/- 64.73 | 3188.18 +/- 9.37 | -20.0% |
+| uniform | dijkstra-full | arrow | 220.57 +/- 1.88 | 213.16 +/- 1.24 | -3.4% |
+| uniform | dijkstra-full | datafusion | 184.55 +/- 0.71 | 177.87 +/- 4.28 | -3.6% |
+| uniform | dijkstra-full | upstream direct | 16.30 +/- 0.19 | 12.73 +/- 0.04 | -21.9% |
+
+Full-path Dijkstra improves 14 to 29% on direct execution and about 25% on the
+Arrow and DataFusion paths at 16384. PageRank improves 23 to 29% almost
+everywhere, since it charges once per node per iteration. Ordinary Cypher moves
+between -1.8% and +0.9%, as expected where parsing, policy checks and row
+consumption dominate.
+
+The measured gain is smaller than the profile might suggest. A 72.8% share of
+kernel self time is not 72.8% of removable wall time: the atomic still costs,
+and the work around it is real. 3 of 54 cells are
+slower, all at or below 1.1% and at or near their dispersion, and are reported
+rather than dropped. These numbers belong to their own source pin and are not
+pooled with the baseline cells above.
+
+Remaining qualification: none outstanding for this pin. Any further source
+change starts a new pinned set.
 
 ## Reproduction and evidence
 
