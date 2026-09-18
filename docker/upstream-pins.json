@@ -9,5 +9,35 @@
     "url": "https://github.com/tursodatabase/turso.git",
     "commit": "9a082e5bc33705e3593fac19046506e18a382921"
   },
-  "lockfile": "docker/upstream-Cargo.lock"
+  "lockfile": "docker/upstream-Cargo.lock",
+  "frozen": {
+    "archive": "publication/measured-source.tar.gz",
+    "receipt": "publication/source.json",
+    "note": "Historical participants. These entries never change: a different source is a new publication, not an update.",
+    "icecat": {
+      "repo": "https://github.com/querygraph/icecat.git",
+      "commit": "3cbc07a510c0bf1803f83a10776d40d0e6f556ba",
+      "date": "2026-09-13",
+      "provides": [
+        "icebug (C++/Arrow NetworKit update)",
+        "icecat (Rust/Arrow rewrite)",
+        "grustcat",
+        "grustcat-cypher"
+      ],
+      "license": "publication/licenses/icecat.txt",
+      "verification": "1085 of 1087 tracked staged files match this commit; rust/README.md and rust/crates/grustcat-cypher/README.md match no commit and were staged from a working tree; 601 extlibs/ files are submodule contents outside the commit tree",
+      "frozen": true
+    },
+    "grust": {
+      "repo": "https://github.com/querygraph/grust.git",
+      "commit": "62b8b0fa2b12ec84ee02b5296969efeaf0367a58",
+      "date": "2026-09-13",
+      "provides": [
+        "the Grust API that grustcat and grustcat-cypher target"
+      ],
+      "license": "publication/licenses/grust-APACHE.txt",
+      "verification": "303 of 303 staged files match this commit",
+      "frozen": true
+    }
+  }
 }
