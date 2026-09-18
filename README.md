@@ -46,5 +46,7 @@ commit for each experiment. The historical reproduction command above continues
 to use the published frozen sources. Group commit is measured in a separate
 concurrent-write preparation workload, outside algorithm timers.
 
-[Optimization results and qualification status](docs/optimization-results.md)
-keep the current-source measurements separate from the historical publication.
+[The current-source report](docs/optimization-results.md) carries the measured
+results, boundaries, regressions and evidence, kept separate from the historical
+publication. The [write-up](docs/blog/graph-algorithms-current-sources/post.md)
+covers what the extension found.
