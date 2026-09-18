@@ -170,13 +170,30 @@ graph family — clusters Dijkstra from 340.75 ± 0.83 ms to 8.47 ± 0.30, rmat 
 0.55. Direct, Arrow and DataFusion are unchanged, which is correct: the work is
 in the Cypher executor.
 
-Full-path Dijkstra on the chain is the exception. It does not improve, and the
-penalty grows with the work: **+2.0% at 4096, +9.8% at 16384, +11.0% at 65536**,
-while direct and Arrow stay flat in the same runs. That case is dominated by
+Full-path Dijkstra on the chain was the exception. It did not improve, and the
+penalty grew with the work: +2.0% at 4096, +9.8% at 16384, +11.0% at 65536,
+while direct and Arrow stayed flat in the same runs. That case is dominated by
 materializing one heap-allocated string per path entry — `nodeIds` is declared
-`ValueType::Strings`, and the earlier profile showed `Vec<String>::clone` and
-`cfree` in the residual — rather than by the per-row overhead this work removed.
-It is reported to the executor's author as the remaining case.
+`ValueType::Strings`, and the profile showed `Vec<String>::clone` and `cfree` in
+the residual — rather than by the per-row overhead that work removed.
+
+### The chain case, once it was charged per path
+
+Reporting that cell produced the next change (Tadpole 0.21.0, `9573aac`), which
+stopped deep-copying every yielded value into each row and began admitting work
+per path, or per 1024 steps, instead of per entry. It removed both the
+regression and much of the original cost. At 4096 nodes with five measured
+samples on the chain: direct execution 196.07 ± 1.67 to **80.92 ± 0.15 ms**
+(−58.7%), ordinary Cypher 2301.51 ± 10.60 to **1260.51 ± 1.63 ms** (−45.2%),
+Arrow 737.34 ± 6.06 to 605.82 ± 6.72 ms (−17.8%). On the 16384 chain: Cypher
+36,913 to 20,255 ms, direct 3,190 to 1,298 ms, Arrow 11,612 to 9,397 ms, with
+the frozen C++ participant moving 0.4% in the same runs.
+
+Direct execution improving by 58.7% is the per-entry charge the first profile
+found, now charged per path: worth roughly a further 2.4x on this case beyond
+what removing the mutex achieved. The 65536 case has not been re-run at this
+pin, and this pin's dependency resolution differs from the earlier ones, so its
+lockfile is recorded with the run rather than reused.
 
 ### List binding forms
 
