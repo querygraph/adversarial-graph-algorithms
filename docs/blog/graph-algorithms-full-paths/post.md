@@ -132,6 +132,40 @@ the four frozen historical binaries are byte-identical across every run and move
 by at most 1.4%. That control is what makes the rest attributable to the code
 rather than to the machine.
 
+## The Rust rewrite beats the C++ it came from, and not for the reason you'd guess
+
+The Rust implementation finishes the 65,536-node chain in 10,888 ms against the
+NetworKit-derived C++ at 30,454 — 2.8x. At 4,096 nodes it is 1.55x. **The gap
+widens with the work**, and that is the whole clue: a language or codegen
+advantage is a constant factor, and this one grows.
+
+`perf` over both, same chain, same limits. The C++ run spends 36.2% in
+`SSSP::getPath`, 20.1% in the caller's loop, **15.2% in `do_user_addr_fault`** —
+kernel page-fault handling — and another 10.7% between libc and kernel memory
+locking. The Rust run spends 66.7% in its Dijkstra and 33.2% in consumption, with
+no allocator or kernel frame above 2%. About a quarter of the C++ time is the
+allocator and the kernel. None of the Rust time is.
+
+The cause is in the data structures. NetworKit stores predecessors as
+`std::vector<std::vector<node>>`, one heap block per node, so reconstruction
+chases pointers across n separate allocations — the price of supporting multiple
+shortest paths. `getPath` then builds a fresh vector per target with `push_back`
+and no `reserve`, growing and reallocating as it goes, then reverses it, and the
+caller allocates a second vector for the costs. On a chain the paths sum to
+`n(n+1)/2` entries, so at 65,536 that is 2.1 billion entries through 131,072
+allocations whose sizes grow linearly with the target. That churn is what the
+page faults are.
+
+The Rust side keeps a flat parent array and two reconstruction buffers allocated
+once and cleared per target. After the first few paths it never allocates again.
+
+So this is not a verdict on the languages, and it would be dishonest to sell it
+as one. `getPath` returns by value, which *cannot* reuse a caller's buffer: the
+cost is forced by the shape of the interface, and the same C++ with an
+out-parameter or a visitor would close most of it. The interesting finding is
+that the most expensive thing in a mature C++ graph library, on this workload,
+was an API decision.
+
 ## The benchmark found a correctness bug, and it was not in an algorithm
 
 A durable-loading experiment failed all 36 of its samples. Neither group commit

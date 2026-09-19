@@ -238,6 +238,35 @@ case. Those are still not equal work — GDS's projection is built before its ti
 starts and Grust's Cypher timer includes projection — but the gap that looked
 like an executor deficit was mostly deadline-checking policy.
 
+## Why the frozen C++ column is slower than the frozen Rust one
+
+The historical columns are unchanged binaries and serve as this report's control,
+but the distance between two of them is itself a measurement. The Rust
+participant finishes the 65536 chain in 10,888 ms against the NetworKit-derived
+C++ at 30,454, a factor of 2.8, and at 4096 the same pair is 1.55. A gap that
+widens with the work is not a constant-factor language difference.
+
+`perf` over both on the same chain and the same limits attributes it. C++: 36.2%
+in `NetworKit::SSSP::getPath`, 20.1% in the caller's loop, 15.2% in
+`do_user_addr_fault`, 7.7% in libc and 3.0% in kernel memory locking. Rust: 66.7%
+in `dijkstra_impl`, 33.2% in `main`, with no allocator or kernel frame above 2%.
+Roughly a quarter of the C++ run is allocation and the kernel handling it.
+
+The mechanism is structural. NetworKit keeps predecessors as
+`std::vector<std::vector<node>>`, one heap block per node, which is what
+supporting multiple shortest paths costs; `getPath` returns a fresh
+`std::vector<node>` per target, grown by `push_back` without `reserve` and then
+reversed; and the caller allocates a second vector per target for costs. The
+chain's paths sum to `n(n+1)/2` entries, so at 65536 that is 2,147,516,416
+entries through 131,072 allocations of linearly growing size. The Rust
+participant walks a flat parent array into two buffers allocated once and cleared
+per target.
+
+This is an interface-shape result rather than a language result: a function that
+returns a fresh container per item cannot reuse a caller's buffer, so the
+allocation is forced by the signature. The same C++ with an out-parameter or a
+visitor would recover most of the difference.
+
 ## What these numbers are not
 
 - Not a ranking of engines. The columns are execution classes with disclosed and
