@@ -37,14 +37,22 @@ with any library column.
 | Column | What runs | Language |
 | --- | --- | --- |
 | `library` | `neo4j-labs/graph` via its builder API and `graph::prelude` algorithms | Rust |
-| `icecat` | the C++ NetworKit-derived kernels already in this harness | C++ |
-| `icebug` | `icebug-algorithms`, the Rust port of those kernels | Rust |
-| `grustcat` | `grustcat`, Grust's model projected to packed Arrow adjacency | Rust |
+| `icebug` | the Arrow update of NetworKit, the C++ kernels already in this harness | C++ |
+| `icecat` | the Rust rewrite of those kernels, Arrow 59.3 buffers throughout | Rust |
+| `grustcat` | Grust's model projected to packed Arrow adjacency | Rust |
 | `grust` | Grust's own kernels over `GraphProjection`, direct, no procedures | Rust |
 
-`icecat` and `icebug` are in the set because the lineage is
-NetworKit → icebug → icecat → grustcat (see `participant-lineage.md`), and a
-column that skips the middle cannot tell a port's cost from a design's.
+`icebug` and `icecat` are both in the set because the lineage is
+**NetworKit → Icebug (Arrow, C++) → Icecat (the Rust rewrite) → Grustcat**, per
+`rust/README.md` in that repository, and a column that skips the middle cannot
+tell a rewrite's cost from a design's. Note the crate names do not follow the
+lineage: Icecat's Rust crates are still called `icebug-*`, and its Python import
+is `icebug_rust`, kept for compatibility. A column labelled from a crate name
+would label this backwards — as an earlier draft of this document did.
+
+Three of the five are Arrow-first — Icebug, Icecat and Grustcat — so the
+C++-to-Rust cell and the Rust-to-Rust cells are not confounded by a change of
+memory layout at the same time.
 
 ## Algorithms
 
