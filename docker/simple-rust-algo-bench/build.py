@@ -37,6 +37,11 @@ def main():
     p.add_argument('--tag', default='simple-rust-algo-bench:local')
     p.add_argument('--jobs', type=int, default=4)
     a = p.parse_args()
+    # prepare.py learned this the same way: a clone without submodules configures
+    # for minutes and then fails on a message that reads like a CMake problem.
+    tlx = a.icecat.resolve()/'extlibs/tlx/CMakeLists.txt'
+    if not tlx.exists():
+        raise SystemExit(f'Initialize Icecat submodules first: git -C {a.icecat} submodule update --init --recursive')
     if a.context.exists(): shutil.rmtree(a.context)
     a.context.mkdir(parents=True)
     trees = dict(grust=commit(a.grust.resolve()), icecat=commit(a.icecat.resolve()), bench=commit(HERE))
