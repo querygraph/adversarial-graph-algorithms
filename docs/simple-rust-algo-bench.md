@@ -1,6 +1,8 @@
-# An in-memory column for `neo4j-labs/graph`, icecat and grustcat
+# simple-rust-algo-bench: an in-memory column for `neo4j-labs/graph`, icecat and grustcat
 
-Status: **scheduled, not yet run.** Recorded 2026-09-20. This answers the open
+Status: **scheduled, not yet run.** Recorded 2026-09-20. Called
+`simple-rust-algo-bench`: simple because it is one execution class and three
+algorithms, and named for what it measures rather than for who it compares. This answers the open
 item at the end of [`related-work.md`](related-work.md), which says the way to
 settle a comparison with `neo4j-labs/graph` is to add it as a participant under
 the same disclosed boundaries as every other column, and that until that exists
@@ -83,7 +85,7 @@ project that runs a faster kernel are different findings and must not be summed.
 
 ## Where it runs
 
-A **separate Docker image** under `docker/inmemory/`, not the main harness
+A **separate Docker image** under `docker/simple-rust-algo-bench/`, not the main harness
 image. The main image carries a JVM, Neo4j, GDS, a C++ NetworKit build and
 Turso; none of that belongs in an in-memory library comparison, and keeping it
 out means the image builds in minutes and the participants cannot accidentally
