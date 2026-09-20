@@ -273,6 +273,13 @@ visitor would recover most of the difference.
   unequal boundaries.
 - Not portable. The deadline and clock findings are shaped by a `xen`
   clocksource; a TSC host would show a smaller penalty for the same code.
+- Not taken on a quiet machine. This host is a shared instance, and the
+  hypervisor took 15.8%, 18.3% and 33.1% of busy CPU during the work-meter,
+  allocator and deadline sweeps respectively. Alternating variant order inside
+  each window divides steal between the arms, so the comparisons absorb it, but
+  every absolute millisecond here carries it. Dispersion is no guard: these
+  sweeps held sub-percent MAD while a third of busy CPU was being taken.
+  Absolute timings worth quoting should be retaken on a dedicated instance.
 - Not stable at 16384 and 65536. Those are single samples.
 - Not pooled. Three source pins, three result sets, kept separate.
 - Not per-participant memory. Container peaks are whole-container figures,

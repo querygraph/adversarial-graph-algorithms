@@ -12,6 +12,32 @@ def stats(values):
     return dict(n=len(values), median=median, mad=statistics.median(abs(x-median) for x in values), minimum=min(values), maximum=max(values))
 
 
+def hypervisor_steal(results_path, metadata):
+    """Time the hypervisor took from this host while the sweep ran.
+
+    A shared instance can lose a sixth to a third of its busy CPU to steal
+    without any local process appearing busy, so load average and container CPU
+    accounting do not reveal it. Paired trials alternate variants inside one
+    window and so divide steal between the arms, but absolute milliseconds
+    carry it and are not portable to another host.
+    """
+    def counters(text):
+        for line in text.splitlines():
+            if line.startswith('cpu '):
+                f = [int(x) for x in line.split()[1:]]
+                return sum(f), f[3] + f[4], (f[7] if len(f) > 7 else 0)
+        return None
+    terminal = results_path.parent/'status.json'
+    if not terminal.exists() or '/proc/stat' not in metadata: return None
+    start = counters(metadata['/proc/stat'])
+    end = counters(json.loads(terminal.read_text()).get('/proc/stat', ''))
+    if not start or not end: return None
+    total, idle, steal = (e - s for e, s in zip(end, start))
+    busy = total - idle
+    if total <= 0 or busy <= 0: return None
+    return dict(jiffies=steal, of_total=100*steal/total, of_busy=100*steal/busy)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('results', type=Path)
@@ -26,7 +52,15 @@ def main():
             key = tuple(sample[k] for k in ['family', 'n', 'algorithm', 'participant', 'variant', 'group_commit'])
             groups[key].append(sample['metrics'])
     rows = []
+    steal = hypervisor_steal(a.results, data.get('metadata', {}))
     lines = ['# Paired optimization trials', '', 'Times are milliseconds, median ± median absolute deviation. Every warmup, measured sample and failure remains in the source JSON and process audit. Alternating variant order; fresh process and Turso database per sample. No cross-host pooling.', '',
+             (f'**Hypervisor steal during this sweep: {steal["jiffies"]} jiffies, {steal["of_busy"]:.1f}% of busy CPU '
+              f'({steal["of_total"]:.2f}% of all CPU).** Alternating variant order divides steal between the arms, so the '
+              'comparisons above absorb it; the absolute milliseconds do not, and are not portable to another host. '
+              'Dispersion does not reveal steal: these runs have held sub-percent MAD while a third of busy CPU was taken.'
+              if steal and steal['of_busy'] >= 1 else
+              ('Hypervisor steal during this sweep was below 1% of busy CPU.' if steal else
+               'Hypervisor steal was not recorded for this sweep.')), '',
              'Turso uses Grust algorithms over a materialized database snapshot. Its loading and snapshot phases are outside the kernel/query timer. Group-commit settings change only concurrent durable statement loading; they are not kernel optimizations.', '',
              '| Graph | Nodes | Algorithm | Participant | Variant | Group | Phase | n | Median ± MAD, ms |',
              '|---|---:|---|---|---|---|---|---:|---:|']
