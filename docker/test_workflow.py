@@ -159,6 +159,9 @@ class WorkflowTests(unittest.TestCase):
             commands = []
             def run(command, **kwargs):
                 commands.append((command, kwargs))
+                if command[:2] == ['git', '-C']:
+                    answer = 'b'*40+'\n' if command[-1] == 'HEAD' else ' M docker/stage_arrow.py\n'
+                    return subprocess.CompletedProcess(command, 0, stdout=answer)
                 if 'docker/stage_upstream.py' in command:
                     context = output/'context'
                     (context/'grust-upstream').mkdir(parents=True)
@@ -177,6 +180,9 @@ class WorkflowTests(unittest.TestCase):
             self.assertEqual(receipt['status'], 'error')
             # An explicit checkout is measured as given and recorded as unpinned.
             self.assertEqual(receipt['sources']['grust'], dict(path=tmp, commit=head, pinned=False))
+            # The instrument is evidence: a working-tree-only fix makes the harness
+            # commit a report names not the harness that ran.
+            self.assertEqual(receipt['harness'], dict(commit='b'*40, uncommitted=' M docker/stage_arrow.py\n'))
             self.assertEqual((output/'upstream-Cargo.lock').read_text(), 'locked')
             self.assertFalse(any('update' in command for command, _ in commands))
             stage = next(c for c, _ in commands if 'docker/stage_upstream.py' in c)

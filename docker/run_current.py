@@ -70,7 +70,13 @@ def main():
     env = dict(os.environ, BENCH_CONTEXT=str(context), BENCH_OUTPUT=str(output),
                BENCH_IMAGE=project+':local', BENCH_NEO4J_IMAGE=project+'-neo4j:local')
     compose = ['docker', 'compose', '-f', str(ROOT/'compose.yaml'), '-p', project]
+    # The instrument is evidence too. A fix that lives only in a working tree
+    # makes the harness commit a report names not the harness that ran, which has
+    # already happened here once.
+    harness = subprocess.run(['git', '-C', str(ROOT), 'rev-parse', 'HEAD'], capture_output=True, text=True)
+    dirty = subprocess.run(['git', '-C', str(ROOT), 'status', '--porcelain'], capture_output=True, text=True)
     receipt = dict(status='running', argv=sys.argv, host=os.uname().nodename, output=str(output),
+                   harness=dict(commit=(harness.stdout or '').strip() or None, uncommitted=(dirty.stdout or '')),
                    sources=dict(grust=dict(path=str(a.upstream_grust), commit=commits['grust'], pinned=commits['grust'] == pins['grust']['commit']),
                                 turso=dict(path=str(a.turso), commit=commits['turso'], pinned=commits['turso'] == pins['turso']['commit'])))
     (output/'run.json').write_text(json.dumps(receipt, indent=2)+'\n')
