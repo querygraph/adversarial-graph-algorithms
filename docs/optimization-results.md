@@ -286,6 +286,23 @@ visitor would recover most of the difference.
   including file cache, and are labelled as such.
 - Not a query-suite result. No result from the separate graph-query or strain
   benchmarks is combined with these.
+- Not attributable cell by cell below about 5%. A single cell can move that far
+  because an edit relinked a binary rather than because it changed what runs. It
+  was measured here: a PageRank cell moved 5.2% on one participant across a
+  commit whose every changed line sits inside a function that participant never
+  calls, and disassembly of the function that does run found the same 1,118
+  instructions in the same order at a different address, with all 64 remaining
+  differences rip-relative relocations. Code placement -- i-cache and iTLB
+  aliasing, branch-predictor indexing -- is the mechanism class. So a sub-5%
+  single-cell move is not attributed to a diff's semantics without a layout
+  control: rebuild the same commit with an unrelated whitespace change, which
+  moves the layout and not the meaning, and see whether the cell moves anyway.
+  Above that threshold, or consistent in one direction across families and
+  participants, it is signal.
+- Not settled by a binary hash in the direction it is usually reached for.
+  Identical bytes prove layout is not the cause; differing bytes prove nothing,
+  and two different commits always differ. A hypothesis class retired on the
+  first case is not retired for the second.
 
 ## Reproduction
 
