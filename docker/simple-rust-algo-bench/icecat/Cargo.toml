@@ -1,0 +1,13 @@
+[package]
+name = "bench-icecat"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+icebug-core = { path = "../../../../icecat/rust/crates/icebug-core" }
+icebug-algorithms = { path = "../../../../icecat/rust/crates/icebug-algorithms" }
+arrow-array = "59.3.0"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
