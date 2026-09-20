@@ -1,0 +1,13 @@
+[package]
+name = "bench-grustcat"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+grustcat = { path = "../../../../icecat/rust/crates/grustcat" }
+icebug-core = { path = "../../../../icecat/rust/crates/icebug-core" }
+arrow-array = "59.3.0"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

@@ -17,7 +17,7 @@ def read(path):
     assert len(edges) == count, f'{path}: header says {count} edges, file has {len(edges)}'
     return nodes, edges
 
-def pagerank(nodes, edges, damping=0.85, tolerance=1e-10, max_iterations=100):
+def pagerank(nodes, edges, damping=0.85, tolerance=1e-8, max_iterations=100):
     out = [[] for _ in range(nodes)]
     degree = [0]*nodes
     for source, target in edges:
@@ -83,9 +83,12 @@ def main():
     p.add_argument('fixture', type=pathlib.Path)
     p.add_argument('--source', type=int, default=0)
     p.add_argument('--probe', type=int, default=0, help='node whose component label is reported')
+    p.add_argument('--tolerance', type=float, default=1e-8,
+                   help='L1 stopping tolerance; 1e-8 is the only value grustcat can express')
+    p.add_argument('--max-iterations', type=int, default=100)
     a = p.parse_args()
     nodes, edges = read(a.fixture)
-    scores, iterations = pagerank(nodes, edges)
+    scores, iterations = pagerank(nodes, edges, tolerance=a.tolerance, max_iterations=a.max_iterations)
     labels, count = components(nodes, edges)
     distance, reached, total = bfs(nodes, edges, a.source)
     print(json.dumps(dict(
