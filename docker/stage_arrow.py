@@ -8,8 +8,21 @@ def extend(target, allocator, replace_once):
         path.write_text(replace_once(path.read_text(), old, new))
     crate = target/'grust-upstream/crates/grust-algorithm-procedures'
     manifest = crate/'Cargo.toml'
-    rewrite(manifest, 'path = "../grust-algorithms" }', 'path = "../grust-algorithms", features = ["arrow"] }')
-    rewrite(manifest, '[dev-dependencies]', '[dev-dependencies]\narrow-array = "59.3.0"\ngrust-arrow = { path = "../grust-arrow" }\ngrust-datafusion = { path = "../grust-datafusion" }')
+    # Later upstream commits declare some of these themselves. Add only what is
+    # missing: a second declaration is a TOML duplicate key, which fails the
+    # whole workspace manifest rather than this crate alone.
+    text = manifest.read_text()
+    if 'path = "../grust-algorithms", features = ["arrow"] }' not in text:
+        text = replace_once(text, 'path = "../grust-algorithms" }',
+                            'path = "../grust-algorithms", features = ["arrow"] }')
+    additions = [line for key, line in [
+        ('arrow-array', 'arrow-array = "59.3.0"'),
+        ('grust-arrow', 'grust-arrow = { path = "../grust-arrow" }'),
+        ('grust-datafusion', 'grust-datafusion = { path = "../grust-datafusion" }'),
+    ] if not any(l.split('=')[0].strip() == key for l in text.splitlines())]
+    if additions:
+        text = replace_once(text, '[dev-dependencies]', '\n'.join(['[dev-dependencies]'] + additions))
+    manifest.write_text(text)
     lock = target/'grust-upstream/Cargo.lock'
     parts = lock.read_text().split('[[package]]')
     for i, part in enumerate(parts):
