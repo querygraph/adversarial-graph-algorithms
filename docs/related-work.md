@@ -53,6 +53,18 @@ before execution. Database loading, snapshot capture and verification are
 reported as separate phases and are not presented as equivalent to any other
 project's ingestion.
 
+**What the algorithms are accountable to.** Execution here runs under a
+cooperative budget: kernels charge work once per visited entry and per
+reconstructed path step, memory is admitted before it is allocated, and
+cancellation and an optional deadline are observed during execution, with an
+exhausted budget failing exactly at its limit. That machinery is why an
+untrusted or shared caller can be given an algorithm without being given the
+machine. `neo4j-labs/graph` has no equivalent layer — its algorithm crate
+depends on `ahash`, `atomic_float`, `graph_builder`, `nanorand`, `num-format`
+and `rayon`, and a repository search returns no matches for budget or deadline —
+which is the ordinary and reasonable choice for a library whose caller owns the
+process.
+
 **What the algorithm is required to return.** Most algorithm libraries, including
 that one, return one value per node: a rank, a component identifier, a distance.
 The workload that distinguishes this benchmark asks for full paths — the node
@@ -63,12 +75,13 @@ per-node outputs never reach.
 
 ## What is not established
 
-These are different shapes of project, and the differences above say nothing
-about speed. `neo4j-labs/graph` is parallel by design through `rayon`, while
-every measurement in this benchmark runs with algorithm concurrency one, so the
-two are not comparable as they stand.
+Nothing above is a performance comparison, and none is offered here. The two
+projects have not been measured against each other, their execution envelopes
+differ, and parallel execution is currently being added to the kernels on this
+side, so any speed statement written today would describe a moving target.
 
-The way to settle any of it is to add the library as a participant: it has a
-clean builder API, it computes several of the same algorithms, and a column for
-it would replace argument with evidence. Until that exists, this note should be
-read as a description of scope, not as a result.
+The way to settle it is to add the library as a participant: it has a clean
+builder API, it computes several of the same algorithms, and a column for it
+would replace argument with evidence, under the same disclosed boundaries as
+every other column. Until that exists, this note should be read as a description
+of scope, not as a result.
