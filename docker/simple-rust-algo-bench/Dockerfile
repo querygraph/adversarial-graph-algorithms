@@ -19,12 +19,15 @@ COPY icecat/CMakeLists.txt icecat/networkit.pc /src/icecat/
 COPY icecat/include /src/icecat/include
 COPY icecat/networkit /src/icecat/networkit
 COPY icecat/extlibs /src/icecat/extlibs
+# NetworKit compiles 372 objects and the driver is forty lines. Copying the
+# driver after the library build means iterating on the driver does not
+# recompile the library: the layer that changes often goes last.
+RUN mkdir -p /out && cmake -S /src/icecat -B /build/cpp -G Ninja -DNETWORKIT_BUILD_TESTS=OFF -DNETWORKIT_NATIVE=OFF -DCMAKE_BUILD_TYPE=Release \
+    && cmake --build /build/cpp --target networkit --parallel ${BUILD_JOBS}
 COPY bench/icebug/icebug.cpp /src/bench/icebug.cpp
 ARG ICEBUG_COMMIT=unknown
 ARG ICEBUG_VERSION=unknown
-RUN mkdir -p /out && cmake -S /src/icecat -B /build/cpp -G Ninja -DNETWORKIT_BUILD_TESTS=OFF -DNETWORKIT_NATIVE=OFF -DCMAKE_BUILD_TYPE=Release \
-    && cmake --build /build/cpp --target networkit --parallel ${BUILD_JOBS} \
-    && c++ -std=c++20 -O3 -fopenmp /src/bench/icebug.cpp \
+RUN c++ -std=c++20 -O3 -fopenmp /src/bench/icebug.cpp \
        -DBENCH_COMMIT='"'${ICEBUG_COMMIT}'"' -DBENCH_VERSION='"'${ICEBUG_VERSION}'"' \
        -I/src/icecat/include -I/src/icecat/extlibs/tlx -I/src/icecat/extlibs/ttmath \
        -L/build/cpp -lnetworkit $(pkg-config --cflags --libs arrow) \
