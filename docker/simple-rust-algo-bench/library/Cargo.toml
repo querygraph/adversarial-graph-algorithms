@@ -1,0 +1,12 @@
+[package]
+name = "bench-library"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+graph = "=0.3.2"
+graph_builder = "=0.4.2"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
