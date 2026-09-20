@@ -1,0 +1,11 @@
+[package]
+name = "bench-grust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+grust-algorithms = { path = "../../../../grust/crates/grust-algorithms" }
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
