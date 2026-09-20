@@ -22,7 +22,7 @@ COPY icecat/extlibs /src/icecat/extlibs
 COPY bench/icebug/icebug.cpp /src/bench/icebug.cpp
 ARG ICEBUG_COMMIT=unknown
 ARG ICEBUG_VERSION=unknown
-RUN cmake -S /src/icecat -B /build/cpp -G Ninja -DNETWORKIT_BUILD_TESTS=OFF -DNETWORKIT_NATIVE=OFF -DCMAKE_BUILD_TYPE=Release \
+RUN mkdir -p /out && cmake -S /src/icecat -B /build/cpp -G Ninja -DNETWORKIT_BUILD_TESTS=OFF -DNETWORKIT_NATIVE=OFF -DCMAKE_BUILD_TYPE=Release \
     && cmake --build /build/cpp --target networkit --parallel ${BUILD_JOBS} \
     && c++ -std=c++20 -O3 -fopenmp /src/bench/icebug.cpp \
        -DBENCH_COMMIT='"'${ICEBUG_COMMIT}'"' -DBENCH_VERSION='"'${ICEBUG_VERSION}'"' \
@@ -37,7 +37,7 @@ COPY icecat/rust /src/icecat/rust
 COPY bench /src/bench
 # One participant per manifest: a workspace would unify features across them and
 # a participant would stop being the code its own project builds.
-RUN for participant in library grust icecat grustcat; do \
+RUN mkdir -p /out && for participant in library grust icecat grustcat; do \
         cargo build --release --manifest-path /src/bench/$participant/Cargo.toml --jobs ${BUILD_JOBS} \
         && cp /src/bench/$participant/target/release/bench-$participant /out/$participant; \
     done
