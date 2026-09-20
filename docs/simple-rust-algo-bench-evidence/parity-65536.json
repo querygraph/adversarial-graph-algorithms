@@ -1,0 +1,686 @@
+[
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "library",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 34
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "library",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "library",
+  "algorithm": "bfs",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "library",
+  "algorithm": "triangles",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 12
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "library",
+  "algorithm": "pagerank",
+  "verdict": "MISMATCH",
+  "detail": "max: 9.4258336e-05 against 9.478284687779482e-05; sum: 0.9944661554582126 against 1.0000000000001217",
+  "notes": [],
+  "iterations": 3
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "library",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "library",
+  "algorithm": "bfs",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "library",
+  "algorithm": "triangles",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 60
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 75
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 75
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 75
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "library",
+  "algorithm": "pagerank",
+  "verdict": "MISMATCH",
+  "detail": "sum: 0.9999133549872568 against 0.9999999999991653; argmax undetermined at tolerance 1e-08: top two reference scores differ by 0",
+  "notes": [
+   "argmax undetermined at tolerance 1e-08: top two reference scores differ by 0"
+  ],
+  "iterations": 5
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "library",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "library",
+  "algorithm": "bfs",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "library",
+  "algorithm": "triangles",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "argmax undetermined at tolerance 1e-08: top two reference scores differ by 0",
+  "notes": [
+   "argmax undetermined at tolerance 1e-08: top two reference scores differ by 0"
+  ],
+  "iterations": 46
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 50
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 50
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 50
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "library",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 34
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "library",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "library",
+  "algorithm": "bfs",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "library",
+  "algorithm": "triangles",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 11
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ }
+]
