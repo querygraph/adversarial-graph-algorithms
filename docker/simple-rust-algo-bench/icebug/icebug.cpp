@@ -18,6 +18,7 @@
 #include <networkit/components/WeaklyConnectedComponents.hpp>
 #include <networkit/distance/BFS.hpp>
 #include <networkit/graph/Graph.hpp>
+#include <networkit/graph/GraphW.hpp>
 
 using clock_type = std::chrono::steady_clock;
 static double since(clock_type::time_point start) {
@@ -52,8 +53,11 @@ int main(int argc, char **argv) {
     const double parse_ms = since(started);
 
     started = clock_type::now();
-    NetworKit::Graph graph(nodes, false, true);
-    for (const auto &edge : edges) graph.addEdge(edge.first, edge.second);
+    // This NetworKit is the Arrow update: `Graph` is an immutable reference view
+    // and `GraphW` is the writable form. Build the writable one, then view it.
+    NetworKit::GraphW writable(nodes, false, true);
+    for (const auto &edge : edges) writable.addEdge(edge.first, edge.second);
+    const NetworKit::Graph graph(writable);
     const double build_ms = since(started);
 
     std::string summary;
