@@ -34,12 +34,16 @@ FROM rust:1.97.1-bookworm AS rust
 ARG BUILD_JOBS=4
 COPY grust /src/grust
 COPY icecat/rust /src/icecat/rust
-COPY bench /src/bench
+# The participants' path dependencies are written relative to the host layout,
+# so the image reproduces that layout rather than rewriting every manifest: a
+# participant whose manifest the harness edited is not the participant.
+COPY bench /src/adversarial-graph-algorithms/docker/simple-rust-algo-bench
 # One participant per manifest: a workspace would unify features across them and
 # a participant would stop being the code its own project builds.
+ENV BENCH=/src/adversarial-graph-algorithms/docker/simple-rust-algo-bench
 RUN mkdir -p /out && for participant in library grust icecat grustcat; do \
-        cargo build --release --manifest-path /src/bench/$participant/Cargo.toml --jobs ${BUILD_JOBS} \
-        && cp /src/bench/$participant/target/release/bench-$participant /out/$participant; \
+        cargo build --release --manifest-path $BENCH/$participant/Cargo.toml --jobs ${BUILD_JOBS} \
+        && cp $BENCH/$participant/target/release/bench-$participant /out/$participant; \
     done
 
 FROM debian:bookworm-slim AS bench
