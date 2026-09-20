@@ -46,6 +46,9 @@ commit for each experiment. The historical reproduction command above continues
 to use the published frozen sources. Group commit is measured in a separate
 concurrent-write preparation workload, outside algorithm timers.
 
+[Related work](docs/related-work.md) places these participants against the
+best-known Rust graph algorithm library and states what has not been measured.
+
 [The current-source report](docs/optimization-results.md) carries the measured
 results, boundaries, regressions and evidence, kept separate from the historical
 publication. The [write-up](docs/blog/graph-algorithms-full-paths/post.md) covers the output
