@@ -11,6 +11,25 @@ import argparse, json, pathlib, statistics, subprocess, sys, time
 
 ALGORITHMS = ['pagerank', 'wcc', 'bfs', 'triangles']
 
+# Grust's kernels fall back to sequential below a published threshold; the
+# library parallelises unconditionally. Below a floor `workers_above` returns
+# None whatever concurrency was requested, so a small-size row would compare a
+# parallel library against a Grust kernel that declined to parallelise -- and it
+# would flatter us, which is the direction that is easiest not to notice. The
+# units and floors are read from grust-algorithms/src/parallel.rs; each row
+# records whether the Grust-family kernels were eligible at its size.
+FLOORS = {
+    'pagerank': (lambda nodes, edges: (nodes + edges) * 2, 1 << 14),
+    'wcc': (lambda nodes, edges: nodes + edges * 2, 1 << 14),
+    'bfs': (lambda nodes, edges: nodes + edges, 1 << 18),
+}
+GRUST_FAMILY = {'grust', 'grustcat', 'icecat'}
+
+def eligibility(algorithm, nodes, edges):
+    if algorithm not in FLOORS: return None
+    units, floor = FLOORS[algorithm][0](nodes, edges), FLOORS[algorithm][1]
+    return dict(units=units, floor=floor, parallel_eligible=units >= floor)
+
 def steal_ticks():
     with open('/proc/stat') as handle:
         fields = handle.readline().split()
@@ -85,6 +104,8 @@ def main():
             total_ms=kernel, total_mad=kernel_spread,
             per_iteration_ms=(kernel / iterations) if iterations else None,
             build_ms=spread([r['build_ms'] for r in rows])[0],
+            grust_family_floor=(eligibility(algorithm, rows[0]['nodes'], rows[0]['edges'])
+                                if participant in GRUST_FAMILY else None),
             parse_ms=spread([r['parse_ms'] for r in rows])[0],
             absent=[name for name in a.participants
                     if algorithm not in declared[name]['algorithms']]))
