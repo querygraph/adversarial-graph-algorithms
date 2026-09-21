@@ -84,6 +84,40 @@ with dangling nodes they compute different functions.
 Consequently **PageRank is published only on the dangling-free families**, `hub`
 and `uniform`. The rows above are the reason, kept here rather than dropped.
 
+### PageRank precision is a boundary, not a rounding footnote
+
+**The library accumulates and returns `f32`; every other participant is `f64`.**
+Its score array is half the bytes, so half the memory traffic on the one array
+PageRank touches randomly per arc — which is a difference in the resource this
+kernel is bound by, not only in the digits it reports. It is stated under every
+PageRank table.
+
+Its consequences are measured rather than inferred, on `hub-16384`, which has no
+dangling node:
+
+| tolerance | `library` iterations | `library` score sum | `grust` iterations | `grust` score sum |
+| --- | ---: | ---: | ---: | ---: |
+| 1e-4 (the library's own default) | 8 | 0.9997947451 | 8 | 1.000000000000 |
+| 1e-8 (the protocol tolerance) | 36 | 0.9999999668 | 17 | 1.000000000000 |
+
+Three things follow. **The `f64` kernels preserve mass exactly at every
+iteration** and the `f32` one does not: it is 2.1e-4 short after eight iterations
+and still 3.3e-8 short at its converged answer. **At the same loose tolerance both
+take eight iterations**, so the iteration gap at 1e-8 is about how each measures
+its own residual rather than about one converging faster. And **the library does
+reach 1e-8**, with a residual of 9.3e-9 — it needs about twice the iterations to
+get there.
+
+A row at the library's own `1E-4` is therefore worth publishing beside the
+protocol row: it is where its author put the default, it costs one more sample,
+and at that tolerance its answer is 2e-4 short of a distribution on a graph with
+nothing dangling.
+
+**WCC and triangles carry no such difference.** `global_triangle_count` returns
+`u64` and contains no floating point at all; component labels are index types,
+and the only `f32` in the WCC path is a sampling percentage inside a heuristic
+that chooses which component to skip, not a value that reaches a label.
+
 ### Two things the parity checker gets right only because they were wrong first
 
 - **Score agreement is held to the run's stopping tolerance, not to float

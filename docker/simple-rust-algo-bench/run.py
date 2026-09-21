@@ -127,7 +127,13 @@ def main():
                      'only at equal width, so it belongs to the one-thread run. At full width a '
                      'difference between them is a statement about threads, not about a rewrite.'),
             across=('Cells from runs at different widths are not divided by one another. A '
-                    'scaling factor is its own table with its own heading.')),
+                    'scaling factor is its own table with its own heading.'),
+            precision=('PageRank precision differs by participant: the library accumulates and '
+                       'returns f32, every other participant f64. The score array is half the '
+                       'bytes, so it is half the memory traffic on the one array PageRank touches '
+                       'randomly per arc. State it under every PageRank table; it is a boundary, '
+                       'not a rounding footnote. WCC and triangle counts carry no such difference '
+                       '- component labels are indices and the triangle count is u64.')),
         participants={name: declared[name] for name in a.participants},
         cells=[])
     for (fixture, algorithm, participant), rows in sorted(cells.items()):
@@ -136,6 +142,11 @@ def main():
         report['cells'].append(dict(
             fixture=fixture, algorithm=algorithm, participant=participant,
             iterations=iterations,
+            # An f32 kernel's residual can sit at its arithmetic floor rather
+            # than below the tolerance it was asked for, which the iteration
+            # count alone does not show.
+            residual=rows[0].get('residual', rows[0].get('error')),
+            precision=declared[participant].get('precision'),
             total_ms=kernel, total_mad=kernel_spread,
             per_iteration_ms=(kernel / iterations) if iterations else None,
             build_ms=spread([r['build_ms'] for r in rows])[0],
