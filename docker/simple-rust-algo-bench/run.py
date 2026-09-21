@@ -40,11 +40,27 @@ def receipt(binary):
     out.check_returncode()
     return json.loads(out.stdout)
 
-def sample(binary, fixture, algorithm, tolerance, concurrency=None):
+def worker_env(workers):
+    """Give every participant the same width, explicitly.
+
+    The three projects take their thread count from three different places:
+    Grust from `with_concurrency`, the library from `available_parallelism` for
+    PageRank and triangles and from rayon for WCC, NetworKit from OpenMP. Left
+    alone under a CPU quota they disagree - OpenMP reads the affinity mask and
+    would oversubscribe a quota the others respect - so each is set by name and
+    the value is recorded in every cell.
+    """
+    import os
+    if workers is None: return None
+    return dict(os.environ, OMP_NUM_THREADS=str(workers), RAYON_NUM_THREADS=str(workers),
+                OPENBLAS_NUM_THREADS=str(workers))
+
+def sample(binary, fixture, algorithm, tolerance, concurrency=None, workers=None):
     command = [str(binary), '--fixture', str(fixture), '--algorithm', algorithm,
                '--tolerance', repr(tolerance)]
     if concurrency is not None: command += ['--concurrency', str(concurrency)]
-    out = subprocess.run(command, capture_output=True, text=True, timeout=3600)
+    out = subprocess.run(command, capture_output=True, text=True, timeout=3600,
+                         env=worker_env(workers))
     out.check_returncode()
     return json.loads(out.stdout)
 
@@ -65,6 +81,10 @@ def main():
                    help='parity.json from parity.py; a cell that did not agree is not timed')
     p.add_argument('--concurrency', type=int,
                    help='passed to participants that accept it; unset and 1 are different kernels')
+    p.add_argument('--workers', type=int,
+                   help='thread width given to every participant by name: OMP_NUM_THREADS for '
+                        'NetworKit, RAYON_NUM_THREADS for the library WCC, --concurrency for Grust. '
+                        'Set it to the cgroup CPU count; left unset the three disagree.')
     p.add_argument('--output', type=pathlib.Path, required=True)
     a = p.parse_args()
 
@@ -85,7 +105,7 @@ def main():
                 # opposite directions across the pair, so the comparison absorbs it.
                 order = present if repeat % 2 == 0 else list(reversed(present))
                 for name in order:
-                    found = sample(a.directory/name, fixture, algorithm, a.tolerance, a.concurrency)
+                    found = sample(a.directory/name, fixture, algorithm, a.tolerance, a.concurrency, a.workers)
                     found.update(repeat=repeat, warmup=repeat < a.warmups)
                     samples.append(found)
     after = steal_ticks()
@@ -97,6 +117,7 @@ def main():
     report = dict(
         steal_ticks_over_run=after - before, seconds=round(time.time() - started, 1),
         tolerance=a.tolerance, warmups=a.warmups, repeats=a.repeats,
+        workers=a.workers, concurrency=a.concurrency,
         participants={name: declared[name] for name in a.participants},
         cells=[])
     for (fixture, algorithm, participant), rows in sorted(cells.items()):
