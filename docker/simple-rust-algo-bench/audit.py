@@ -9,7 +9,7 @@ anything is timed and is fatal.
 """
 import argparse, hashlib, json, pathlib, subprocess, sys
 
-PARTICIPANTS = ['neo4j-graph', 'icebug', 'icecat', 'grustcat', 'grust']
+PARTICIPANTS = ['neo4j-graph', 'icebug', 'icecat', 'grustcat', 'grust', 'grust-next']
 
 def receipt(binary):
     # Each participant prints its own identity; the digest is taken here rather

@@ -5,8 +5,9 @@ Runs on the measuring host, outside the image, because the checks it makes are
 about the host and a container cannot see them:
 
 - **Idle before and after every run.** No cargo, rustc, perf, other benchmark
-  or other container may be running. A run that starts on a busy host is not
-  started; a run that ends on one is marked discarded.
+  or other container may be running, and no process outside the run may use
+  more than a tenth of a CPU over a two-second window. A run that starts on a
+  busy host is not started; a run that ends on one is marked discarded.
 - **Watched during every run.** A sampler looks for the same processes once a
   second for the whole run, outside the run's own container, because a build
   that starts and finishes between the two checks would pass both. Any sighting
@@ -70,6 +71,36 @@ RUNS = {
         participants=BASELINE + ['grust'] + NEXT),
 }
 
+# A process outside the run using more than this share of one CPU over a sample
+# window is load, whatever its name. The name list above catches a build that
+# is starting; this catches everything the list did not think of - it was added
+# after a fixture generator in plain python3 passed the name check.
+CPU_SHARE = 0.10
+TICKS = os.sysconf('SC_CLK_TCK')
+
+def cpu_ticks(container=None):
+    """utime+stime per process outside `container`, with its command line."""
+    found = {}
+    for entry in os.listdir('/proc'):
+        if not entry.isdigit(): continue
+        try:
+            if container and container[:12] in pathlib.Path(f'/proc/{entry}/cgroup').read_text():
+                continue
+            stat = pathlib.Path(f'/proc/{entry}/stat').read_text()
+            fields = stat[stat.rindex(')') + 2:].split()
+            command = pathlib.Path(f'/proc/{entry}/cmdline').read_bytes().replace(b'\0', b' ').decode(errors='replace').strip()
+            found[entry] = (int(fields[11]) + int(fields[12]), command or stat[stat.index('(') + 1:stat.rindex(')')])
+        except (OSError, ValueError, IndexError):
+            continue
+    return found
+
+def hungry(earlier, later, seconds):
+    """Processes that used more than CPU_SHARE of a CPU between two cpu_ticks readings."""
+    return [f'{pid} {100 * (ticks - earlier[pid][0]) / TICKS / seconds:.0f}% {command[:120]}'
+            for pid, (ticks, command) in later.items()
+            if pid in earlier and SELF.search(command) is None
+            and (ticks - earlier[pid][0]) / TICKS / seconds > CPU_SHARE]
+
 def container_ids():
     out = subprocess.run(['docker', 'ps', '-q', '--no-trunc'], capture_output=True, text=True)
     return [line for line in out.stdout.split() if line]
@@ -93,30 +124,44 @@ def busy_processes(container=None):
             found.append(f'{entry} {command[:160]}')
     return found
 
-def snapshot(container=None):
+def snapshot(container=None, window=2.0):
+    earlier = cpu_ticks(container)
+    time.sleep(window)
     with open('/proc/stat') as handle:
         steal = int(handle.readline().split()[8])
     others = [c for c in container_ids() if c != container]
     return dict(at=time.strftime('%Y-%m-%dT%H:%M:%S%z'), loadavg=pathlib.Path('/proc/loadavg').read_text().split()[:3],
-                steal_ticks=steal, busy=busy_processes(container), other_containers=others)
+                steal_ticks=steal, busy=busy_processes(container), other_containers=others,
+                hungry=hungry(earlier, cpu_ticks(container), window))
 
 def idle(state):
-    return not state['busy'] and not state['other_containers']
+    return not state['busy'] and not state['other_containers'] and not state['hungry']
 
 class Watcher(threading.Thread):
     def __init__(self, name):
         super().__init__(daemon=True)
         self.name_, self.sightings, self.container, self.done = name, [], None, threading.Event()
     def run(self):
+        earlier, then = None, time.time()
         while not self.done.wait(1.0):
             if self.container is None:
                 ids = subprocess.run(['docker', 'ps', '-q', '--no-trunc', '--filter', f'name={self.name_}'],
                                      capture_output=True, text=True).stdout.split()
                 self.container = ids[0] if ids else None
+                continue
+            # Until the container id is known its processes cannot be told
+            # apart from anyone else's, so CPU is only judged after that.
             busy = busy_processes(self.container)
-            others = [c for c in container_ids() if c != self.container] if self.container else []
-            if busy or others:
-                self.sightings.append(dict(at=time.strftime('%H:%M:%S'), busy=busy, other_containers=others))
+            others = [c for c in container_ids() if c != self.container]
+            later, now = cpu_ticks(self.container), time.time()
+            # docker run itself and the containerd shim do a little work for the
+            # run; they are part of it, not a second workload.
+            eaten = [h for h in hungry(earlier, later, now - then)
+                     if not re.search(r'docker|containerd', h)] if earlier else []
+            earlier, then = later, now
+            if busy or others or eaten:
+                self.sightings.append(dict(at=time.strftime('%H:%M:%S'), busy=busy,
+                                           other_containers=others, hungry=eaten))
 
 def docker(image, work, name, cpus, command):
     cpu = ['--cpus', str(cpus)] if cpus else []

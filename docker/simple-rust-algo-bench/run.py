@@ -78,6 +78,27 @@ def spread(values):
     middle = statistics.median(values)
     return middle, statistics.median([abs(value - middle) for value in values])
 
+def transpose(spec, algorithm, rows, incoming):
+    """Which timer a PageRank reverse index was built under, where it is known.
+
+    B3's finding was that this differed by participant and was not recorded.
+    grust-next builds it with prepare_incoming inside build_ms; icecat builds it
+    between the two timers and prints it apart; grust at v0.22.0 builds it inside
+    the first pull-kernel call, so inside that call's kernel_ms. grustcat,
+    neo4j-graph and NetworKit build theirs in their constructors, inside build_ms,
+    and print no figure for it.
+    """
+    if algorithm != 'pagerank': return None
+    if incoming:
+        return dict(where='inside build_ms', ms=spread(incoming)[0])
+    apart = [r['prepare_incoming_ms'] for r in rows if 'prepare_incoming_ms' in r]
+    if apart:
+        return dict(where='timed apart: in neither build_ms nor kernel_ms', ms=spread(apart)[0])
+    if spec['binary'] == 'grust':
+        return dict(where=('inside kernel_ms of the first call' if spec['concurrency'] is not None
+                           else 'not built: the push kernel does not use it'), ms=None)
+    return dict(where='inside build_ms, in the constructor; not reported apart', ms=None)
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--directory', type=pathlib.Path, default=pathlib.Path('/opt/bench'))
@@ -218,6 +239,7 @@ def main():
                 build_ms=spread([r['build_ms'] for r in rows])[0],
                 build_mad=spread([r['build_ms'] for r in rows])[1],
                 incoming_ms=spread(incoming)[0] if incoming else None,
+                transpose=transpose(spec, algorithm, rows, incoming),
                 work_units=rows[0].get('work_units'), peak_bytes=rows[0].get('peak_bytes'),
                 steal_ticks=groups[(fixture, algorithm)]['steal_ticks'],
                 grust_family_floor=(eligibility(algorithm, rows[0]['nodes'], rows[0]['edges'])

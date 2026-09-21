@@ -4,6 +4,11 @@ Status: **B1, B2 and B3 complete; the timed tables are not yet in this
 repository.** Recorded 2026-09-21. This document holds what has been established
 — that the participants compute the same functions — and states what has not.
 
+**B3's Grust PageRank rows carry a correction, stated below under "A correction
+to B3", and a rerun that measures it is prepared and has not been timed.**
+Nothing between here and the correction has been changed; the B3 tables stand
+as published, with the correction beside them.
+
 B3 ran on the dedicated host on 2026-09-21 with **0 steal ticks over each run**,
 against Grust `2182cdb` (v0.22.0), Icecat `57b443ec` and this harness at
 `8fd8223`. Its evidence bundle is in this repository at
@@ -270,6 +275,87 @@ looked like a defect and was a threshold.
 the size of its median, plausibly OpenMP spinning on a graph too small to
 amortise it. A median with a MAD its own size is not a measurement, so it is
 recorded as unusable and enters no table.
+
+## A correction to B3
+
+**Grust's PageRank rows above include building the transpose; no other
+participant's kernel time does.** Grust's pull kernel needs the incoming
+adjacency, and at v0.22.0 a projection builds it lazily, inside the first
+kernel call that asks for it. B3 made exactly one call, and both timed runs set
+a concurrency, which selects the pull kernel, so `kernel_ms` for every `grust`
+PageRank row in both timed tables contains a one-off transpose. `grustcat`,
+`neo4j-graph` and NetworKit build their reverse adjacency in their
+constructors, inside `build_ms` (checked in each source: grustcat's
+constructor, `graph_builder`'s `DirectedCsrGraph::csr_inc`, NetworKit's
+`GraphW::addEdge` filling `inEdges`); `icecat` builds it between the two timers
+and reports it apart. The same work therefore sat on opposite sides of the
+timing boundary, against us.
+
+What that affects: the one-thread PageRank table, the lineage sentence under it,
+the headline "2.1x slower per iteration" (per-iteration divides the one-off
+build across 16 or 17 iterations, so it inflates that column too), and the
+`grust` PageRank rows of the full-width table. A profile outside this harness
+attributed 25–29% of the published 2.1x gap to it; **that figure is the
+profile's and has not been measured here.** The rerun measures it, on both
+the release and the later commit, and the corrected numbers will be stated
+here beside the published ones, not in place of them. BFS, WCC and triangles
+are unaffected: none of them reads the incoming adjacency.
+
+## The rerun, prepared and not yet timed
+
+Everything in "The protocol" above still holds: tolerance 1e-8, sizes 16,384
+and 65,536, thread width set per participant by name, counterbalanced order,
+one warmup and five repeats, parity before timing. The rerun adds three
+measurements, each as its own labelled rows and never folded into one number.
+
+- **The transpose, on the build side.** Grust at the commit under test has
+  `GraphProjection::prepare_incoming()`; the `grust-next` participant calls it
+  inside the build timer, as grustcat's constructor does, and reports its share
+  of `build_ms` as `incoming_ms`. v0.22.0 has no such method, so every Grust
+  build runs the kernel twice on one projection and reports both: `call: first`
+  is what B3 published, `call: second` has the transpose cached. The second
+  call also runs on warm caches, which is not the same condition as grustcat's
+  first call after its constructor; it is labelled rather than presented as the
+  corrected number. The two calls must return identical results or the
+  participant exits non-zero and the cell is never timed.
+- **The kernel change.** `grust` is v0.22.0 (`2182cdb`), as published;
+  `grust-next` is the later commit, built from the same participant source with
+  a feature that selects the API it added. Its PageRank hoists each source's
+  share out of the pull kernel's arc loop and charges the push loop's arcs in
+  blocks instead of one atomic per arc. Both kernels are timed: pull
+  (`#1`, what B3 timed) and push (`#unset`, where the charging changed).
+- **Accounting modes.** `grust-next` takes `--accounting counted`,
+  `work-uncounted` or `unchecked`, and every output line names the mode.
+  `counted` is the default, is what v0.22.0 always does, and stays a row.
+  `neo4j-graph` performs no accounting, so `unchecked` is its like-for-like row
+  and the distance to `counted` is what the guarantee costs. v0.22.0 accepts
+  only `counted` and refuses the others rather than running counted under
+  another name.
+
+Gates and discipline added for it:
+
+- **Bits gate the comparison.** A `grust-next` PageRank vector must equal
+  v0.22.0's bit for bit — every score, compared by digest, and the iteration
+  count — at the same concurrency on every fixture, or it is a mismatch and is
+  never timed. A kernel that changed a score computes a different function.
+- **Every score is also compared with the reference**, and the count of
+  bit-identical scores is recorded.
+- **Host idle before, during and after every run**: no cargo, rustc, perf,
+  other benchmark or other container, checked on the host outside the image and
+  sampled once a second through the run. A shared run is kept, renamed
+  discarded, and not published; nothing retries on its own.
+- **Steal is reported with every cell**, not only per run.
+- **A cell whose MAD reaches a quarter of its median is marked unusable** and
+  enters no table. B3 made that call by eye for one cell at 94%; the rerun
+  states the threshold in advance.
+- **A size above L3.** The hoist changes which arrays the pull kernel indexes
+  at random, and at 65,536 every one of them fits in this host's L3, so it was
+  never measured where that matters. By arithmetic, not measurement: one `f64`
+  per node is 16.8 MB at 2,097,152 nodes and 33.6 MB at 4,194,304, against a
+  24.8 MB L3; v0.22.0's pull loop indexes two such arrays per arc, `scores` and
+  `offsets`, and the later commit's one, `shares`. Those runs will restate the
+  precision paragraph for their size rather than inherit it, as that paragraph
+  requires.
 
 ## What is not here
 
