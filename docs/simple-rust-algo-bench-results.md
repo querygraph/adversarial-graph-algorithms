@@ -1,9 +1,16 @@
 # simple-rust-algo-bench: correctness first, timings pending
 
-Status: **B1 and B2 complete; B3 not run.** Recorded 2026-09-21. This document
-holds what has been established — that the participants compute the same
-functions — and states what has not. No timing appears here, and none will
-until it comes from the dedicated host.
+Status: **B1, B2 and B3 complete; the timed tables are not yet in this
+repository.** Recorded 2026-09-21. This document holds what has been established
+— that the participants compute the same functions — and states what has not.
+
+B3 ran on the dedicated host on 2026-09-21 with **0 steal ticks over each run**,
+against Grust `2182cdb` (v0.22.0), Icecat `57b443ec` and this harness at
+`8fd8223`. **Its tables are deliberately not transcribed here yet**, because the
+evidence bundle — fixtures, three parity results and both timed result files —
+is on that host and not in this repository, and a measurement claim does not go
+into a document ahead of the evidence that supports it. They land together or
+not at all.
 
 ## What has been established
 
@@ -190,9 +197,10 @@ that chooses which component to skip, not a value that reaches a label.
 
 ## What is not here
 
-- **No timings.** B3 runs on the dedicated host, after the release sweep. Every
-  number produced on a burstable box during this work was for shape only and none
-  of it is quoted.
+- **No timings, yet.** B3 has run, on the dedicated host and with steal
+  disclosed, but its numbers are not in this document until its evidence is in
+  this repository. Every number produced on a burstable box during this work was
+  for shape only and none of it is quoted, here or anywhere.
 - **No comparison against `neo4j-labs/graph` on speed.** Nothing in this document
   says which is faster, because nothing has been measured that could.
 - **No claim about parallel execution.** Whether the Grust participants run
