@@ -128,6 +128,19 @@ and `uniform`. The rows above are the reason, kept here rather than dropped.
   reads the affinity mask rather than the quota. Left alone, NetworKit would run
   the host's CPU count inside a two-CPU quota the others respect. The width is
   set in each place and recorded in every cell.
+- **Two of the five cannot use a second thread at all.** `icecat` and `grustcat`
+  are sequential by construction, so the full-width run is not a five-column
+  parallel table and cannot become one. They appear in it with their times,
+  labelled sequential by construction, because dropping them would hide that a
+  participant exists — but no width-to-width ratio is drawn against them.
+- **The lineage comparison belongs to the one-thread run.** Icebug to Icecat to
+  Grustcat to Grust is the most informative comparison in the design and it is
+  valid only at equal width. At full width, "Grust is faster than Grustcat" would
+  be a statement about threads wearing the clothes of a statement about a
+  rewrite.
+- **Cells from runs at different widths are never divided by one another.** A
+  scaling factor is its own table with its own heading, not an arithmetic a
+  reader is invited to perform across two tables whose thread counts differ.
 - Parity gates timing: a cell that did not agree is never timed.
 - Variant order alternates between repeats; steal is read across the run and
   printed above the tables.

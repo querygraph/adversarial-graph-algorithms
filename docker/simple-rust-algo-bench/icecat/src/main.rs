@@ -36,7 +36,7 @@ fn main() {
         println!(
             "{{\"participant\":\"{PARTICIPANT}\",\"version\":\"{}\",\"commit\":\"{}\",\
               \"precision\":\"f64\",\"algorithms\":[\"pagerank\",\"wcc\",\"bfs\"],\
-              \"parallel\":\"sequential; the parallel feature is not enabled\"}}",
+              \"parallel\":\"sequential; the parallel feature is not enabled\",\"width_capable\":false}}",
             env!("CARGO_PKG_VERSION"), option_env!("BENCH_COMMIT").unwrap_or("unknown"));
         return;
     }

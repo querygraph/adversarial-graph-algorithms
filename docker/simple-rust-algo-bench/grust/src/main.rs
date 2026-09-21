@@ -40,7 +40,7 @@ fn main() {
         println!(
             "{{\"participant\":\"{PARTICIPANT}\",\"version\":\"{}\",\"commit\":\"{}\",\
               \"precision\":\"f64\",\"algorithms\":[\"pagerank\",\"wcc\",\"triangles\"],\
-              \"parallel\":\"sequential; with_concurrency not requested\"}}",
+              \"parallel\":\"sequential unless with_concurrency is requested\",\"width_capable\":true}}",
             env!("CARGO_PKG_VERSION"), option_env!("BENCH_COMMIT").unwrap_or("unknown"));
         return;
     }

@@ -40,7 +40,7 @@ fn main() {
             "{{\"participant\":\"{PARTICIPANT}\",\"version\":\"{}\",\"commit\":\"{}\",\
               \"precision\":\"f64\",\"algorithms\":[\"pagerank\",\"wcc\",\"bfs\"],\
               \"pagerank_tolerance\":\"{FIXED_TOLERANCE:e}, fixed in the crate\",\
-              \"parallel\":\"sequential\"}}",
+              \"parallel\":\"sequential\",\"width_capable\":false}}",
             env!("CARGO_PKG_VERSION"), option_env!("BENCH_COMMIT").unwrap_or("unknown"));
         return;
     }

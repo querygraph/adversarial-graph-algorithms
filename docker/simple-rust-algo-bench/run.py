@@ -118,6 +118,16 @@ def main():
         steal_ticks_over_run=after - before, seconds=round(time.time() - started, 1),
         tolerance=a.tolerance, warmups=a.warmups, repeats=a.repeats,
         workers=a.workers, concurrency=a.concurrency,
+        # Table rules, emitted with the data so a report cannot quietly drop them.
+        notes=dict(
+            width=('At full width, only participants declaring width_capable can use a second '
+                   'thread. The others are shown with their times, labelled sequential by '
+                   'construction, and no width-to-width ratio is drawn against them.'),
+            lineage=('The lineage comparison - icebug to icecat to grustcat to grust - is valid '
+                     'only at equal width, so it belongs to the one-thread run. At full width a '
+                     'difference between them is a statement about threads, not about a rewrite.'),
+            across=('Cells from runs at different widths are not divided by one another. A '
+                    'scaling factor is its own table with its own heading.')),
         participants={name: declared[name] for name in a.participants},
         cells=[])
     for (fixture, algorithm, participant), rows in sorted(cells.items()):
@@ -131,6 +141,10 @@ def main():
             build_ms=spread([r['build_ms'] for r in rows])[0],
             grust_family_floor=(eligibility(algorithm, rows[0]['nodes'], rows[0]['edges'])
                                 if participant in GRUST_FAMILY else None),
+            # Declared by the participant, not inferred here: two of the five
+            # cannot use a second thread whatever --workers says, so a
+            # width-to-width ratio against them is not a statement about width.
+            width_capable=declared[participant].get('width_capable'),
             parse_ms=spread([r['parse_ms'] for r in rows])[0],
             absent=[name for name in a.participants
                     if algorithm not in declared[name]['algorithms']]))

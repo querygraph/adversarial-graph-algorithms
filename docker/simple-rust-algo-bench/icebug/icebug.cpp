@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
         if (!std::strcmp(argv[i], "--receipt")) {
             std::printf("{\"participant\":\"icebug\",\"version\":\"%s\",\"commit\":\"%s\","
                         "\"precision\":\"f64\",\"algorithms\":[\"pagerank\",\"wcc\",\"bfs\"],"
-                        "\"parallel\":\"NetworKit OpenMP defaults\"}\n",
+                        "\"parallel\":\"NetworKit OpenMP defaults\",\"width_capable\":true}\n",
                         BENCH_VERSION, BENCH_COMMIT);
             return 0;
         }
