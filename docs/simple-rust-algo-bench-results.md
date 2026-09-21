@@ -199,6 +199,11 @@ that chooses which component to skip, not a value that reaches a label.
   scaling factor is its own table with its own heading, not an arithmetic a
   reader is invited to perform across two tables whose thread counts differ.
 - Parity gates timing: a cell that did not agree is never timed.
+- **A cell whose median absolute deviation is at least 0.25 of its median is
+  unusable** and enters no table; it is reported as unusable, with its numbers,
+  beside the table it would have been in. Adopted for the rerun and applied to
+  every cell by `run.py` (`--unusable-dispersion 0.25`), rather than judged by
+  eye per cell as B3's one such cell was.
 - Variant order alternates between repeats; steal is read across the run and
   printed above the tables.
 
@@ -384,9 +389,8 @@ Gates and discipline added for it:
   sampled once a second through the run. A shared run is kept, renamed
   discarded, and not published; nothing retries on its own.
 - **Steal is reported with every cell**, not only per run.
-- **A cell whose MAD reaches a quarter of its median is marked unusable** and
-  enters no table. B3 made that call by eye for one cell at 94%; the rerun
-  states the threshold in advance.
+- **The unusable-cell rule is now stated in "The protocol" above**: MAD at
+  least 0.25 of the median. B3 made that call by eye for one cell at 94%.
 - **A size above L3.** The hoist changes which arrays the pull kernel indexes
   at random, and at 65,536 every one of them fits in this host's L3, so it was
   never measured where that matters. By arithmetic, not measurement: one `f64`
