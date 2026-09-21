@@ -4,10 +4,14 @@ Status: **B1, B2 and B3 complete; the timed tables are not yet in this
 repository.** Recorded 2026-09-21. This document holds what has been established
 — that the participants compute the same functions — and states what has not.
 
-**B3's Grust PageRank rows carry a correction, stated below under "A correction
-to B3", and a rerun that measures it is prepared and has not been timed.**
-Nothing between here and the correction has been changed; the B3 tables stand
-as published, with the correction beside them.
+**B3 carries two corrections, stated below under "A correction to B3": its
+Grust PageRank times include a transpose no other participant's kernel time
+does, and its claim of bit-identical PageRank across implementations does not
+hold. A rerun that measures the first is prepared and has not been timed.**
+Nothing between here and the correction has been changed except one name: the
+participant B3 keyed `library` is keyed `neo4j-graph` here and in the evidence,
+because Grust is a library too. The B3 tables stand as published, with the
+corrections beside them.
 
 B3 ran on the dedicated host on 2026-09-21 with **0 steal ticks over each run**,
 against Grust `2182cdb` (v0.22.0), Icecat `57b443ec` and this harness at
@@ -300,6 +304,41 @@ profile's and has not been measured here.** The rerun measures it, on both
 the release and the later commit, and the corrected numbers will be stated
 here beside the published ones, not in place of them. BFS, WCC and triangles
 are unaffected: none of them reads the incoming adjacency.
+
+### A second correction: "the same `f64` bit pattern" does not hold
+
+"What has been established" says the reference, `grust`, `icecat` and
+`grustcat` return the same `f64` bit pattern for PageRank after 16 iterations.
+B3's parity never compared bits: it held `max` and `sum` to the stopping
+tolerance and stored no scores. The rerun's parity compares them, on the
+measuring host, with evidence in
+`simple-rust-algo-bench-evidence/b4-prep-44aa421/`. On `uniform-65536`, the
+fixture the sentence is about, all four take 16 iterations, and:
+
+| participant | maximum score | same bits as the reference |
+| --- | --- | --- |
+| reference | `4.285462911850025e-05` | — |
+| `grust`, push (concurrency unset) | `4.285462911850025e-05` | yes |
+| `grust`, pull (concurrency 1) | `4.285462911850024e-05` | no, 1 ulp |
+| `icecat` | `4.285462911850024e-05` | no, 1 ulp |
+| `grustcat` | `4.285462911850024e-05` | no, 1 ulp |
+
+Over whole vectors, Grust's push kernel is bit-identical to the reference on
+every `path` and `layered` fixture, and on 65,467 of 65,536 scores of
+`uniform-65536` (the rest within 2 ulps); on `hub-65536` 3,230 of 65,536 (within
+7 ulps). The pull kernel matches 29,430 of 65,536 on `uniform-65536`, within 4
+ulps. The two formulations differ where the rounding would be expected to: the
+reference forms each share as `d·s/deg` and Grust's push loop as
+`d·s·(1/deg)`; that this explains every differing bit is plausible and
+unverified.
+
+**The sentence is withdrawn as written.** What holds is that every `f64`
+participant agrees with the reference far inside the stopping tolerance, with
+the same iteration count, so they compute the same function to the precision
+that tolerance defines — which is what licenses comparing their speeds. Bit
+identity is a stronger property and holds where it is stated: between Grust
+builds. `grust-next` returns v0.22.0's vector bit for bit on 24 of 24
+PageRank checks at each of the three concurrency configurations.
 
 ## The rerun, prepared and not yet timed
 

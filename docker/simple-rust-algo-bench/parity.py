@@ -22,7 +22,7 @@ Two checks were added for the rerun, both recorded per PageRank row:
   that altered a score is a different function, not a faster one. A candidate
   that differs is a MISMATCH, and a mismatched cell is never timed.
 """
-import argparse, json, pathlib, struct, subprocess, sys, tempfile
+import argparse, hashlib, json, pathlib, pickle, struct, subprocess, sys, tempfile
 
 import reference as ref
 import variants
@@ -81,6 +81,22 @@ def run(binary, fixture, algorithm, tolerance, concurrency=None, extra=(), score
     if out.returncode: return None, out.stderr.strip()[-300:]
     return json.loads(out.stdout), None
 
+def cached(cache, fixture, tolerance, name, compute):
+    """The reference's result for this fixture's bytes, computed once.
+
+    At 4,194,304 nodes the Python reference takes minutes per algorithm, and
+    parity runs once per concurrency. The key is the fixture's SHA-256 and the
+    tolerance, so a changed fixture or tolerance cannot reuse a stale answer.
+    """
+    if cache is None: return compute()
+    digest_ = hashlib.sha256(fixture.read_bytes()).hexdigest()
+    path = cache/f'{digest_}-{tolerance!r}-{name}.pickle'
+    if path.exists(): return pickle.loads(path.read_bytes())
+    value = compute()
+    cache.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(pickle.dumps(value))
+    return value
+
 def close(found, expected, relative):
     if expected == 0: return abs(found) <= relative
     return abs(found - expected) / abs(expected) <= relative
@@ -99,6 +115,8 @@ def main():
                    help='passed to participants that accept it; unset and 1 are different kernels')
     p.add_argument('--bits-identical', nargs='+', metavar='KEY',
                    help='BASE then CANDIDATES: each candidate PageRank vector must equal BASE bit for bit')
+    p.add_argument('--reference-cache', type=pathlib.Path,
+                   help='directory keeping the reference result per fixture SHA-256 and tolerance')
     p.add_argument('--output', type=pathlib.Path)
     a = p.parse_args()
 
@@ -110,15 +128,23 @@ def main():
 
     rows, mismatches = [], 0
     for fixture in sorted(a.fixtures.glob('*.edges')):
-        nodes, edges = ref.read(fixture)
-        scores, iterations = ref.pagerank(nodes, edges, tolerance=a.tolerance)
+        loaded = []
+        def graph():
+            if not loaded: loaded.append(ref.read(fixture))
+            return loaded[0]
+        memo = lambda name, compute: cached(a.reference_cache, fixture, a.tolerance, name, compute)
+        scores, iterations = memo('pagerank', lambda: ref.pagerank(*graph(), tolerance=a.tolerance))
         ordered = sorted(scores, reverse=True)
         separation = ordered[0] - ordered[1] if len(ordered) > 1 else float('inf')
         # The reference computes only what this run checks: at the large size the
-        # triangle enumeration alone is minutes of Python.
-        labels, components = ref.components(nodes, edges) if 'wcc' in a.algorithms else ([None], None)
-        _, reached, distance_sum = ref.bfs(nodes, edges, 0) if 'bfs' in a.algorithms else (None, None, None)
-        triangles = ref.triangles(nodes, edges) if 'triangles' in a.algorithms else None
+        # triangle enumeration alone is minutes of Python. Labels are reduced to
+        # what is compared before caching, so the cache is not a copy of the graph.
+        components, probe = (memo('wcc', lambda: (lambda r: (r[1], r[0][0]))(ref.components(*graph())))
+                             if 'wcc' in a.algorithms else (None, None))
+        labels = [probe]
+        _, reached, distance_sum = ((None,) + memo('bfs', lambda: ref.bfs(*graph(), 0)[1:])
+                                    if 'bfs' in a.algorithms else (None, None, None))
+        triangles = memo('triangles', lambda: ref.triangles(*graph())) if 'triangles' in a.algorithms else None
         expected = {
             'pagerank': dict(max=max(scores), argmax=scores.index(max(scores)), sum=sum(scores)),
             'wcc': dict(count=components, probe_label=labels[0]),
