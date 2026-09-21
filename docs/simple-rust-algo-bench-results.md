@@ -88,9 +88,18 @@ and `uniform`. The rows above are the reason, kept here rather than dropped.
 
 **The library accumulates and returns `f32`; every other participant is `f64`.**
 Its score array is half the bytes, so half the memory traffic on the one array
-PageRank touches randomly per arc — which is a difference in the resource this
-kernel is bound by, not only in the digits it reports. It is stated under every
-PageRank table.
+PageRank touches randomly per arc. It is stated under every PageRank table.
+
+**How much that is worth is size-dependent, and at these sizes it is small.** At
+65,536 nodes the `f64` score array is 512 KB and the `f32` one 256 KB, against a
+whole PageRank working set of a few megabytes — inside the L3 of either
+measuring host, and about 1% of the 24.8 MB L3 of the one that publishes. So
+single precision buys bandwidth on one array here and no cache residency at all.
+The arrays cross that L3 somewhere in the hundreds of thousands of nodes at this
+density; a run above that size must restate this sentence rather than inherit
+it, because there halving an array that no longer fits is a different kind of
+advantage. Cache residency is a property of the measuring host, like steal, and
+is stated with the host rather than as a fact about the code.
 
 Its consequences are measured rather than inferred, on `hub-16384`, which has no
 dangling node:

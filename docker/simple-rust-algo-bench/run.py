@@ -133,7 +133,12 @@ def main():
                        'bytes, so it is half the memory traffic on the one array PageRank touches '
                        'randomly per arc. State it under every PageRank table; it is a boundary, '
                        'not a rounding footnote. WCC and triangle counts carry no such difference '
-                       '- component labels are indices and the triangle count is u64.')),
+                       '- component labels are indices and the triangle count is u64. '
+                       'Size-dependent: at 65,536 nodes every working set fits in the measuring '
+                       'host L3 with room to spare, so f32 buys bandwidth on one array and no '
+                       'cache residency at all. The arrays cross a 24.8 MB L3 somewhere in the '
+                       'hundreds of thousands of nodes at this density, and a run above that '
+                       'must restate this sentence rather than inherit it.')),
         participants={name: declared[name] for name in a.participants},
         cells=[])
     for (fixture, algorithm, participant), rows in sorted(cells.items()):
