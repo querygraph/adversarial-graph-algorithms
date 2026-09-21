@@ -6,11 +6,9 @@ repository.** Recorded 2026-09-21. This document holds what has been established
 
 B3 ran on the dedicated host on 2026-09-21 with **0 steal ticks over each run**,
 against Grust `2182cdb` (v0.22.0), Icecat `57b443ec` and this harness at
-`8fd8223`. **Its tables are deliberately not transcribed here yet**, because the
-evidence bundle — fixtures, three parity results and both timed result files —
-is on that host and not in this repository, and a measurement claim does not go
-into a document ahead of the evidence that supports it. They land together or
-not at all.
+`8fd8223`. Its evidence bundle is in this repository at
+`simple-rust-algo-bench-evidence/b3-quegee/`, and every number below was
+recomputed from those files rather than transcribed.
 
 ## What has been established
 
@@ -195,12 +193,90 @@ that chooses which component to skip, not a value that reaches a label.
 - Variant order alternates between repeats; steal is read across the run and
   printed above the tables.
 
+
+## The timed run
+
+One host, quegee: 16 vCPU on 8 physical cores, 24.8 MB L3, not burstable.
+**0 steal ticks over each run.** Tolerance 1e-8, one warmup, five repeats,
+counterbalanced order, parity-gated. Evidence in
+`simple-rust-algo-bench-evidence/b3-quegee/`.
+
+### Two results against this side, stated first because they are ours
+
+**Our general kernel is 2.1x slower per iteration than the specialised one that
+descends from it.** At one thread on `uniform-65536`, `grustcat` runs PageRank at
+1.981 ms per iteration and `grust` at 4.107. Same machine, same width, same
+function to the same tolerance, both `f64`, both 16 iterations — so it is a cost
+of the general projection rather than of the language or the measurement.
+
+**The library's triangle counting scales far better than ours.** On
+`uniform-65536` it is 47.65 ms against our 86.80 at one thread, a factor of 1.8;
+at full width it is 4.11 against 30.17, a factor of **7.3**. The sequential gap
+is modest and the parallel gap is not, which places the difference in how each
+parallelises rather than in the kernel.
+
+A third, not against us but against an assumption: **`icebug`, the C++ original,
+is the slowest sequential PageRank here and the best parallel one** — 6.3 ms per
+iteration at one thread, and 7.8x at width where we reach 3.4x.
+
+### PageRank at 65,536, one thread
+
+Totals and per-iteration, because the participants stop on different rules and
+only the second compares kernels.
+
+| participant | hub total | hub /iter | uniform total | uniform /iter | iters | precision |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `library` | 39.23 | 1.401 | 48.47 | 1.425 | 28 / 34 | **f32** |
+| `icebug` (C++) | 73.50 | 6.125 | 69.68 | 6.335 | 12 / 11 | f64 |
+| `icecat` (Rust) | 35.57 | 2.092 | 33.76 | 2.110 | 17 / 16 | f64 |
+| `grustcat` | 32.18 | 1.893 | 31.70 | 1.981 | 17 / 16 | f64 |
+| `grust` | 66.08 | 3.887 | 65.71 | 4.107 | 17 / 16 | f64 |
+
+**`library` computes in single precision and the others in double.** Its score
+array is half the bytes. At this size that buys bandwidth on one array and no
+cache residency: every participant's working set is inside this host's 24.8 MB
+L3. The arrays cross that L3 in the hundreds of thousands of nodes at this
+density, and a larger run must restate this rather than inherit it.
+
+The lineage, per iteration at equal width: C++ `icebug` 6.13 → Rust `icecat`
+2.09 → `grustcat` 1.89 → `grust` 3.89. **This is the only configuration in which
+that comparison is valid**, because two participants cannot use a second thread.
+
+### Full width, `--cpus 16 --workers 16`
+
+`icecat` and `grustcat` are sequential by construction. Their times are shown
+where they appear but **no width ratio is drawn against them**, and they barely
+move, which is the honest confirmation of the label rather than a result.
+
+| cell | one thread | full width | ratio |
+| --- | ---: | ---: | ---: |
+| `icebug` pagerank uniform-65536 | 69.68 | 8.96 | **7.78x** |
+| `grust` pagerank uniform-65536 | 65.71 | 19.20 | 3.42x |
+| `library` pagerank uniform-65536 | 48.47 | 17.03 | 2.85x |
+| `library` triangles uniform-65536 | 47.65 | 4.11 | **11.59x** |
+| `grust` triangles uniform-65536 | 86.80 | 30.17 | 2.88x |
+| `grust` bfs hub-65536 | 7.86 | 4.30 | 1.83x |
+| `grust` bfs hub-16384 | 1.63 | 1.66 | 0.98x |
+
+**That last row is not a scaling failure.** BFS at 16,384 computes 147,313 units
+against a floor of 262,144, so Grust's kernel declines to parallelise and no
+second thread is used; the cell records `parallel_eligible: false`. At 65,536 it
+clears the floor and moves. A run at 16,384 alone would have published a row that
+looked like a defect and was a threshold.
+
+### One cell not published
+
+`icebug` PageRank on `hub-16384` at full width read 54.09 ± 51.01 ms — a spread
+the size of its median, plausibly OpenMP spinning on a graph too small to
+amortise it. A median with a MAD its own size is not a measurement, so it is
+recorded as unusable and enters no table.
+
 ## What is not here
 
-- **No timings, yet.** B3 has run, on the dedicated host and with steal
-  disclosed, but its numbers are not in this document until its evidence is in
-  this repository. Every number produced on a burstable box during this work was
-  for shape only and none of it is quoted, here or anywhere.
+- **Not portable.** Every timing below is from one host — quegee, 16 vCPU on 8
+  physical cores, 24.8 MB L3, not burstable, 0 steal ticks per run — and is a
+  fact about that machine as much as about the code. Numbers produced on a
+  burstable box during this work were for shape only and none is quoted here.
 - **No comparison against `neo4j-labs/graph` on speed.** Nothing in this document
   says which is faster, because nothing has been measured that could.
 - **No claim about parallel execution.** Whether the Grust participants run
