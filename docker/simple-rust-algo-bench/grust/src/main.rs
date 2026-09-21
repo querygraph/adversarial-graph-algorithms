@@ -10,7 +10,7 @@ use std::time::Instant;
 
 use grust_algorithms::{
     ExecutionContext, ExecutionLimits, GraphProjection, Orientation, ProjectionEdge,
-    SnapshotIdentity, PageRankOptions, TriangleOptions, pagerank, triangles,
+    SnapshotIdentity, PageRankOptions, TriangleOptions, bfs, pagerank, triangles,
     weakly_connected_components,
 };
 
@@ -39,7 +39,7 @@ fn main() {
     if args.iter().any(|a| a == "--receipt") {
         println!(
             "{{\"participant\":\"{PARTICIPANT}\",\"version\":\"{}\",\"commit\":\"{}\",\
-              \"precision\":\"f64\",\"algorithms\":[\"pagerank\",\"wcc\",\"triangles\"],\
+              \"precision\":\"f64\",\"algorithms\":[\"pagerank\",\"wcc\",\"bfs\",\"triangles\"],\
               \"parallel\":\"sequential unless with_concurrency is requested\",\"width_capable\":true}}",
             env!("CARGO_PKG_VERSION"), option_env!("BENCH_COMMIT").unwrap_or("unknown"));
         return;
@@ -110,6 +110,18 @@ fn main() {
             let labels = result.values();
             let distinct: std::collections::HashSet<_> = labels.iter().collect();
             (format!("\"kernel_ms\":{kernel_ms},\"count\":{},\"probe_label\":{}", distinct.len(), labels[0]),
+             started.elapsed().as_secs_f64() * 1e3)
+        }
+        "bfs" => {
+            let result = bfs(&projection, "0").expect("bfs");
+            let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
+            let started = Instant::now();
+            // Unreachable nodes carry positive infinity here and -1 in the
+            // reference; both mean the same thing and neither enters the sum.
+            let distances = result.values();
+            let reached = distances.iter().filter(|hops| hops.is_finite()).count();
+            let total: f64 = distances.iter().filter(|hops| hops.is_finite()).sum();
+            (format!("\"kernel_ms\":{kernel_ms},\"reached\":{reached},\"distance_sum\":{total}"),
              started.elapsed().as_secs_f64() * 1e3)
         }
         "triangles" => {
