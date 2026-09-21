@@ -1,0 +1,458 @@
+[
+ {
+  "fixture": "hub-2097152.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": null,
+  "found": {
+   "sum": 1.000000024087221,
+   "max": 1.5900314e-06,
+   "argmax": 237386,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999636,
+   "max": 1.5900314244036702e-06,
+   "scores_digest": "ee60b6acd69c99db"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 28
+ },
+ {
+  "fixture": "hub-2097152.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": null,
+  "found": {
+   "sum": 1.0000000000000124,
+   "max": 1.5900336356421246e-06,
+   "argmax": 237386,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999636,
+   "max": 1.5900314244036702e-06,
+   "scores_digest": "ee60b6acd69c99db"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 10
+ },
+ {
+  "fixture": "hub-2097152.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999637,
+   "max": 1.5900314244036704e-06,
+   "argmax": 237386,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999636,
+   "max": 1.5900314244036702e-06,
+   "scores_digest": "ee60b6acd69c99db"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "hub-2097152.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999637,
+   "max": 1.5900314244036704e-06,
+   "argmax": 237386,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999636,
+   "max": 1.5900314244036702e-06,
+   "scores_digest": "ee60b6acd69c99db"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "hub-2097152.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999634,
+   "max": 1.5900314244036695e-06,
+   "argmax": 237386,
+   "scores_digest": "1c1ad55fa2a4ebe9"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999636,
+   "max": 1.5900314244036702e-06,
+   "scores_digest": "ee60b6acd69c99db"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 106053,
+   "of": 2097152,
+   "max_abs": 1.0587911840678754e-21,
+   "max_ulps": 8
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "hub-2097152.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999634,
+   "max": 1.5900314244036695e-06,
+   "argmax": 237386,
+   "scores_digest": "1c1ad55fa2a4ebe9"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999636,
+   "max": 1.5900314244036702e-06,
+   "scores_digest": "ee60b6acd69c99db"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 106053,
+   "of": 2097152,
+   "max_abs": 1.0587911840678754e-21,
+   "max_ulps": 8
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-2097152.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": "work-uncounted",
+  "found": {
+   "sum": 0.9999999999999634,
+   "max": 1.5900314244036695e-06,
+   "argmax": 237386,
+   "scores_digest": "1c1ad55fa2a4ebe9"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999636,
+   "max": 1.5900314244036702e-06,
+   "scores_digest": "ee60b6acd69c99db"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 106053,
+   "of": 2097152,
+   "max_abs": 1.0587911840678754e-21,
+   "max_ulps": 8
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-2097152.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 0.9999999999999634,
+   "max": 1.5900314244036695e-06,
+   "argmax": 237386,
+   "scores_digest": "1c1ad55fa2a4ebe9"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999636,
+   "max": 1.5900314244036702e-06,
+   "scores_digest": "ee60b6acd69c99db"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 106053,
+   "of": 2097152,
+   "max_abs": 1.0587911840678754e-21,
+   "max_ulps": 8
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-2097152.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999759506153,
+   "max": 1.5058897e-06,
+   "argmax": 182365,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "scores_digest": "87c4b1f738fe36fc"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 27
+ },
+ {
+  "fixture": "uniform-2097152.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999815,
+   "max": 1.505892236800117e-06,
+   "argmax": 182365,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "scores_digest": "87c4b1f738fe36fc"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 10
+ },
+ {
+  "fixture": "uniform-2097152.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": null,
+  "found": {
+   "sum": 1.0000000000000007,
+   "max": 1.505889606257316e-06,
+   "argmax": 182365,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "scores_digest": "87c4b1f738fe36fc"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-2097152.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": null,
+  "found": {
+   "sum": 1.0000000000000007,
+   "max": 1.505889606257316e-06,
+   "argmax": 182365,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "scores_digest": "87c4b1f738fe36fc"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-2097152.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "argmax": 182365,
+   "scores_digest": "2de58a98044d6167"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "scores_digest": "87c4b1f738fe36fc"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 2097053,
+   "of": 2097152,
+   "max_abs": 2.117582368135751e-22,
+   "max_ulps": 2
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-2097152.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "argmax": 182365,
+   "scores_digest": "2de58a98044d6167"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "scores_digest": "87c4b1f738fe36fc"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 2097053,
+   "of": 2097152,
+   "max_abs": 2.117582368135751e-22,
+   "max_ulps": 2
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-2097152.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": "work-uncounted",
+  "found": {
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "argmax": 182365,
+   "scores_digest": "2de58a98044d6167"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "scores_digest": "87c4b1f738fe36fc"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 2097053,
+   "of": 2097152,
+   "max_abs": 2.117582368135751e-22,
+   "max_ulps": 2
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-2097152.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": null,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "argmax": 182365,
+   "scores_digest": "2de58a98044d6167"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.0000000000000007,
+   "max": 1.5058896062573162e-06,
+   "scores_digest": "87c4b1f738fe36fc"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 2097053,
+   "of": 2097152,
+   "max_abs": 2.117582368135751e-22,
+   "max_ulps": 2
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ }
+]
