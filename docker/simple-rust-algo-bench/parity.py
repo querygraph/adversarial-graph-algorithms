@@ -29,9 +29,14 @@ def receipt(binary):
     out.check_returncode()
     return json.loads(out.stdout)
 
-def run(binary, fixture, algorithm, tolerance):
-    out = subprocess.run([str(binary), '--fixture', str(fixture), '--algorithm', algorithm,
-                          '--tolerance', repr(tolerance)], capture_output=True, text=True, timeout=1800)
+def run(binary, fixture, algorithm, tolerance, concurrency=None):
+    command = [str(binary), '--fixture', str(fixture), '--algorithm', algorithm,
+               '--tolerance', repr(tolerance)]
+    # Concurrency selects a kernel, not a thread count: unset takes Grust's push
+    # loop and 1 takes the pull kernel on one thread. Parity must therefore gate
+    # the configuration that will be timed, not a neighbouring one.
+    if concurrency is not None: command += ['--concurrency', str(concurrency)]
+    out = subprocess.run(command, capture_output=True, text=True, timeout=1800)
     if out.returncode: return None, out.stderr.strip()[:200]
     return json.loads(out.stdout), None
 
@@ -47,6 +52,8 @@ def main():
                    default=['library', 'icebug', 'icecat', 'grustcat', 'grust'])
     p.add_argument('--tolerance', type=float, default=1e-8,
                    help='the only value grustcat can express, so the only one all five share')
+    p.add_argument('--concurrency', type=int,
+                   help='passed to participants that accept it; unset and 1 are different kernels')
     p.add_argument('--output', type=pathlib.Path)
     a = p.parse_args()
 
@@ -74,7 +81,7 @@ def main():
                     rows.append(dict(fixture=fixture.name, participant=name, algorithm=algorithm,
                                      verdict='absent', detail='no such kernel in this project'))
                     continue
-                found, error = run(binary, fixture, algorithm, a.tolerance)
+                found, error = run(binary, fixture, algorithm, a.tolerance, a.concurrency)
                 if error is not None:
                     rows.append(dict(fixture=fixture.name, participant=name, algorithm=algorithm,
                                      verdict='error', detail=error))

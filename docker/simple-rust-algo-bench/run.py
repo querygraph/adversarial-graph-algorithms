@@ -40,9 +40,11 @@ def receipt(binary):
     out.check_returncode()
     return json.loads(out.stdout)
 
-def sample(binary, fixture, algorithm, tolerance):
-    out = subprocess.run([str(binary), '--fixture', str(fixture), '--algorithm', algorithm,
-                          '--tolerance', repr(tolerance)], capture_output=True, text=True, timeout=3600)
+def sample(binary, fixture, algorithm, tolerance, concurrency=None):
+    command = [str(binary), '--fixture', str(fixture), '--algorithm', algorithm,
+               '--tolerance', repr(tolerance)]
+    if concurrency is not None: command += ['--concurrency', str(concurrency)]
+    out = subprocess.run(command, capture_output=True, text=True, timeout=3600)
     out.check_returncode()
     return json.loads(out.stdout)
 
@@ -61,6 +63,8 @@ def main():
     p.add_argument('--repeats', type=int, default=5)
     p.add_argument('--parity', type=pathlib.Path, required=True,
                    help='parity.json from parity.py; a cell that did not agree is not timed')
+    p.add_argument('--concurrency', type=int,
+                   help='passed to participants that accept it; unset and 1 are different kernels')
     p.add_argument('--output', type=pathlib.Path, required=True)
     a = p.parse_args()
 
@@ -81,7 +85,7 @@ def main():
                 # opposite directions across the pair, so the comparison absorbs it.
                 order = present if repeat % 2 == 0 else list(reversed(present))
                 for name in order:
-                    found = sample(a.directory/name, fixture, algorithm, a.tolerance)
+                    found = sample(a.directory/name, fixture, algorithm, a.tolerance, a.concurrency)
                     found.update(repeat=repeat, warmup=repeat < a.warmups)
                     samples.append(found)
     after = steal_ticks()

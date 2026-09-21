@@ -55,13 +55,22 @@ fn main() {
     let (nodes, edges) = read(&fixture);
     let parse_ms = started.elapsed().as_secs_f64() * 1e3;
 
-    let context = ExecutionContext::new(ExecutionLimits {
+    // Two distinct things could be called "sequential": concurrency unset, where
+    // PageRank takes the push loop kept as the parallel path's oracle, and
+    // concurrency 1, where it takes the pull kernel on one thread. They are
+    // different algorithms, so the flag is explicit and the receipt records which.
+    let concurrency: Option<usize> = args.iter().position(|a| a == "--concurrency")
+        .map(|i| args[i + 1].parse().expect("--concurrency"));
+    let mut context = ExecutionContext::new(ExecutionLimits {
         memory_bytes: usize::MAX,
         work_units: usize::MAX,
         batch_rows: 1 << 16,
         deadline: None,
     })
     .expect("execution context");
+    if let Some(workers) = concurrency {
+        context = context.with_concurrency(workers).expect("concurrency");
+    }
 
     let started = Instant::now();
     let orientation = if algorithm == "triangles" { Orientation::Undirected } else { Orientation::Outgoing };
@@ -113,6 +122,7 @@ fn main() {
     let usage = context.usage().expect("usage");
     println!("{{\"participant\":\"{PARTICIPANT}\",\"algorithm\":\"{algorithm}\",\"fixture\":\"{fixture}\",\
                \"nodes\":{nodes},\"edges\":{},\"parse_ms\":{parse_ms},\"build_ms\":{build_ms},{summary},\
-               \"materialise_ms\":{materialise},\"work_units\":{},\"peak_bytes\":{}}}",
-             edges.len(), usage.work_units, usage.peak_bytes);
+               \"materialise_ms\":{materialise},\"work_units\":{},\"peak_bytes\":{},\"concurrency\":{}}}",
+             edges.len(), usage.work_units, usage.peak_bytes,
+             concurrency.map(|w| w.to_string()).unwrap_or_else(|| "null".into()));
 }
