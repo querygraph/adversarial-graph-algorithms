@@ -35,6 +35,14 @@ Identical at every size:
 | 16,384 | 58 | 20 | 2 |
 | 65,536 | 58 | 20 | 2 |
 
+And at 16,384 for each kernel the timed run may select:
+
+| configuration | agrees | absent | mismatch |
+| --- | ---: | ---: | ---: |
+| concurrency unset (push) | 58 | 20 | 2 |
+| concurrency 1 (pull, one thread) | 58 | 20 | 2 |
+| concurrency 2 (pull) | 58 | 20 | 2 |
+
 Per participant, at every size: `icebug`, `icecat`, `grustcat` and `grust` agree
 on 12 of 12 checks for the algorithms they implement; `library` agrees on 10 of
 12 and mismatches on 2.
@@ -106,6 +114,20 @@ and `uniform`. The rows above are the reason, kept here rather than dropped.
 - **`iterations`, `total` and `per iteration` are all published.** Per-iteration
   compares the kernels; total is what a user of that project waits for. The
   library takes 41 iterations where the others take 16, on its own stopping rule.
+- **Concurrency is explicit, because it selects a kernel.** With concurrency
+  unset Grust's PageRank takes the push loop that the parallel path is tested
+  against; with concurrency 1 it takes the pull kernel on one thread. The two
+  return different scores in the last digit, so they are distinguishable in the
+  evidence and not only in a timing. Parity therefore gates the configuration
+  that is timed: push, pull at one thread and pull at two all have their own
+  parity runs.
+- **Thread width is set for every participant by name.** The three projects read
+  it from three places — Grust from `with_concurrency`, the library from
+  `available_parallelism` for PageRank and triangles and from rayon for WCC,
+  NetworKit from OpenMP — and under a CPU quota they disagree, because OpenMP
+  reads the affinity mask rather than the quota. Left alone, NetworKit would run
+  the host's CPU count inside a two-CPU quota the others respect. The width is
+  set in each place and recorded in every cell.
 - Parity gates timing: a cell that did not agree is never timed.
 - Variant order alternates between repeats; steal is read across the run and
   printed above the tables.
