@@ -5,10 +5,27 @@ A mismatch is reported as a mismatch and never as a time. Tolerances are per
 participant, at the precision that participant can express, because an f32
 kernel cannot be held to an f64 number. Nothing here is a measurement of speed:
 durations printed by the participants are ignored.
+
+Two checks were added for the rerun, both recorded per PageRank row:
+
+- **Every score against the reference, bit for bit**, for a participant that can
+  write its scores (`scores_out` in its receipt). B3 published that four
+  implementations return "the same f64 bit pattern"; what its parity compared
+  was the maximum, the sum and the argmax. This records how many of the n
+  scores are bit-identical to the reference's and the largest difference, so a
+  claim about the vector rests on the vector. It is recorded, not gated: the
+  reference forms each share as `d*s/deg` and Grust as `d*s*(1/deg)`, which may
+  round differently in the last place while agreeing to far inside tolerance.
+- **`--bits-identical BASE CANDIDATE...`**: every candidate's PageRank vector
+  must have the same digest and iteration count as BASE's on every fixture.
+  This is the gate that licenses comparing two builds' times: a kernel change
+  that altered a score is a different function, not a faster one. A candidate
+  that differs is a MISMATCH, and a mismatched cell is never timed.
 """
-import argparse, json, pathlib, subprocess, sys
+import argparse, json, pathlib, struct, subprocess, sys, tempfile
 
 import reference as ref
+import variants
 
 ALGORITHMS = ['pagerank', 'wcc', 'bfs', 'triangles']
 # f32 carries about seven significant digits; f64 comparisons are held far
@@ -24,20 +41,44 @@ def score_agrees(found, expected, relative, stopping):
     """
     return abs(found - expected) <= max(stopping, abs(expected) * relative)
 
-def receipt(binary):
-    out = subprocess.run([str(binary), '--receipt'], capture_output=True, text=True, timeout=120)
-    out.check_returncode()
+def digest(values):
+    """FNV-1a over each value's little-endian IEEE-754 bits; the participant's own."""
+    hash_ = 0xcbf29ce484222325
+    for value in values:
+        for byte in struct.pack('<d', value):
+            hash_ = ((hash_ ^ byte) * 0x100000001b3) & 0xffffffffffffffff
+    return f'{hash_:016x}'
+
+def bits(value):
+    return struct.unpack('<q', struct.pack('<d', value))[0]
+
+def against_reference(found, expected):
+    """How many scores are bit-identical to the reference's, and how far the rest are."""
+    identical = sum(1 for a, b in zip(found, expected) if bits(a) == bits(b))
+    return dict(identical=identical, of=len(expected),
+                max_abs=max(abs(a - b) for a, b in zip(found, expected)),
+                max_ulps=max(abs(bits(a) - bits(b)) for a, b in zip(found, expected)))
+
+def receipt(binary, extra=()):
+    """The variant's declaration, or the reason it refused to make one.
+
+    A build asked for a mode it does not have exits non-zero here; that is a
+    finding about the variant, recorded as an error on every row, not a crash.
+    """
+    out = subprocess.run([str(binary), '--receipt', *extra], capture_output=True, text=True, timeout=120)
+    if out.returncode: return dict(refused=out.stderr.strip()[-300:])
     return json.loads(out.stdout)
 
-def run(binary, fixture, algorithm, tolerance, concurrency=None):
+def run(binary, fixture, algorithm, tolerance, concurrency=None, extra=(), scores_out=None):
     command = [str(binary), '--fixture', str(fixture), '--algorithm', algorithm,
-               '--tolerance', repr(tolerance)]
+               '--tolerance', repr(tolerance), *extra]
     # Concurrency selects a kernel, not a thread count: unset takes Grust's push
     # loop and 1 takes the pull kernel on one thread. Parity must therefore gate
     # the configuration that will be timed, not a neighbouring one.
     if concurrency is not None: command += ['--concurrency', str(concurrency)]
-    out = subprocess.run(command, capture_output=True, text=True, timeout=1800)
-    if out.returncode: return None, out.stderr.strip()[:200]
+    if scores_out is not None: command += ['--scores-out', str(scores_out)]
+    out = subprocess.run(command, capture_output=True, text=True, timeout=3600)
+    if out.returncode: return None, out.stderr.strip()[-300:]
     return json.loads(out.stdout), None
 
 def close(found, expected, relative):
@@ -49,13 +90,23 @@ def main():
     p.add_argument('--directory', type=pathlib.Path, default=pathlib.Path('/opt/bench'))
     p.add_argument('--fixtures', type=pathlib.Path, required=True)
     p.add_argument('--participants', nargs='+',
-                   default=['library', 'icebug', 'icecat', 'grustcat', 'grust'])
+                   default=['neo4j-graph', 'icebug', 'icecat', 'grustcat', 'grust'],
+                   help='participant names, optionally with @accounting-mode; see variants.py')
+    p.add_argument('--algorithms', nargs='+', default=ALGORITHMS)
     p.add_argument('--tolerance', type=float, default=1e-8,
                    help='the only value grustcat can express, so the only one all five share')
     p.add_argument('--concurrency', type=int,
                    help='passed to participants that accept it; unset and 1 are different kernels')
+    p.add_argument('--bits-identical', nargs='+', metavar='KEY',
+                   help='BASE then CANDIDATES: each candidate PageRank vector must equal BASE bit for bit')
     p.add_argument('--output', type=pathlib.Path)
     a = p.parse_args()
+
+    specs = [variants.parse(name) for name in a.participants]
+    if any('#' in spec['key'] for spec in specs):
+        raise SystemExit('parity runs one concurrency at a time: pass --concurrency, not #N')
+    receipts = {spec['key']: receipt(a.directory/spec['binary'], spec['args']) for spec in specs}
+    scratch = pathlib.Path(tempfile.mkdtemp(prefix='parity-scores-'))
 
     rows, mismatches = [], 0
     for fixture in sorted(a.fixtures.glob('*.edges')):
@@ -63,28 +114,37 @@ def main():
         scores, iterations = ref.pagerank(nodes, edges, tolerance=a.tolerance)
         ordered = sorted(scores, reverse=True)
         separation = ordered[0] - ordered[1] if len(ordered) > 1 else float('inf')
-        labels, components = ref.components(nodes, edges)
-        distances, reached, distance_sum = ref.bfs(nodes, edges, 0)
-        triangles = ref.triangles(nodes, edges)
+        # The reference computes only what this run checks: at the large size the
+        # triangle enumeration alone is minutes of Python.
+        labels, components = ref.components(nodes, edges) if 'wcc' in a.algorithms else ([None], None)
+        _, reached, distance_sum = ref.bfs(nodes, edges, 0) if 'bfs' in a.algorithms else (None, None, None)
+        triangles = ref.triangles(nodes, edges) if 'triangles' in a.algorithms else None
         expected = {
             'pagerank': dict(max=max(scores), argmax=scores.index(max(scores)), sum=sum(scores)),
             'wcc': dict(count=components, probe_label=labels[0]),
             'bfs': dict(reached=reached, distance_sum=distance_sum),
             'triangles': dict(triangles=triangles),
         }
-        for name in a.participants:
-            binary = a.directory/name
-            declared = receipt(binary)
+        reference_digest = digest(scores)
+        for spec in specs:
+            name, binary, declared = spec['key'], a.directory/spec['binary'], receipts[spec['key']]
             relative = RELATIVE[declared.get('precision', 'f64')]
-            for algorithm in ALGORITHMS:
-                if algorithm not in declared['algorithms']:
-                    rows.append(dict(fixture=fixture.name, participant=name, algorithm=algorithm,
-                                     verdict='absent', detail='no such kernel in this project'))
+            for algorithm in a.algorithms:
+                row = dict(fixture=fixture.name, participant=name, algorithm=algorithm,
+                           concurrency=a.concurrency, accounting=declared.get('accounting'))
+                if 'refused' in declared:
+                    rows.append(dict(row, verdict='error', detail=declared['refused']))
+                    mismatches += 1
                     continue
-                found, error = run(binary, fixture, algorithm, a.tolerance, a.concurrency)
+                if algorithm not in declared['algorithms']:
+                    rows.append(dict(row, verdict='absent', detail='no such kernel in this project'))
+                    continue
+                dump = (scratch/f'{fixture.stem}-{name}.scores'
+                        if algorithm == 'pagerank' and declared.get('scores_out') else None)
+                found, error = run(binary, fixture, algorithm, a.tolerance, a.concurrency,
+                                   spec['args'], dump)
                 if error is not None:
-                    rows.append(dict(fixture=fixture.name, participant=name, algorithm=algorithm,
-                                     verdict='error', detail=error))
+                    rows.append(dict(row, verdict='error', detail=error))
                     mismatches += 1
                     continue
                 differences, notes = [], []
@@ -109,15 +169,60 @@ def main():
                     else:
                         ok = close(found[field], value, relative) if isinstance(value, float) else found[field] == value
                     if not ok: differences.append(f'{field}: {found[field]!r} against {value!r}')
-                verdict = 'agrees' if not differences else 'MISMATCH'
+                if algorithm == 'pagerank':
+                    row.update(found={k: found.get(k) for k in ('sum', 'max', 'argmax', 'scores_digest')},
+                               reference=dict(iterations=iterations, sum=sum(scores), max=max(scores),
+                                              scores_digest=reference_digest),
+                               max_bits_equal_reference=bits(found['max']) == bits(max(scores)))
+                    if dump is not None:
+                        if not dump.exists():
+                            differences.append('declared scores_out and wrote no scores')
+                        else:
+                            found_scores = [struct.unpack('>d', bytes.fromhex(line))[0]
+                                            for line in dump.read_text().split()]
+                            if digest(found_scores) != found.get('scores_digest'):
+                                differences.append('written scores do not match the printed digest')
+                            row['vector_against_reference'] = against_reference(found_scores, scores)
+                            dump.unlink()
+                row.update(verdict='agrees' if not differences else 'MISMATCH',
+                           detail='; '.join(differences + notes), notes=notes,
+                           iterations=found.get('iterations'))
                 mismatches += bool(differences)
-                rows.append(dict(fixture=fixture.name, participant=name, algorithm=algorithm,
-                                 verdict=verdict, detail='; '.join(differences + notes),
-                                 notes=notes, iterations=found.get('iterations')))
+                rows.append(row)
+
+    if a.bits_identical:
+        base, *candidates = a.bits_identical
+        for row in rows:
+            if row['algorithm'] != 'pagerank' or row['participant'] not in candidates: continue
+            if row['verdict'] != 'agrees': continue
+            base_row = next((r for r in rows if r['fixture'] == row['fixture']
+                             and r['participant'] == base and r['algorithm'] == 'pagerank'), None)
+            if base_row is None or base_row['verdict'] != 'agrees':
+                row.update(verdict='MISMATCH', detail=f'{base} has no agreeing PageRank row to compare bits with')
+                mismatches += 1
+                continue
+            same = (row['found']['scores_digest'] == base_row['found']['scores_digest']
+                    and row['iterations'] == base_row['iterations'])
+            row['bits_identical_to'] = dict(participant=base, identical=same)
+            if not same:
+                row.update(verdict='MISMATCH',
+                           detail=f"scores differ from {base}: digest {row['found']['scores_digest']} "
+                                  f"against {base_row['found']['scores_digest']}, iterations "
+                                  f"{row['iterations']} against {base_row['iterations']}")
+                mismatches += 1
+
     width = max(len(r['participant']) for r in rows)
     for row in rows:
-        print(f"{row['fixture']:<18} {row['participant']:<{width}} {row['algorithm']:<10} "
-              f"{row['verdict']:<8} {row.get('detail','')}")
+        extra = ''
+        if 'vector_against_reference' in row:
+            v = row['vector_against_reference']
+            extra = f"  vector-bits-equal-reference={v['identical']}/{v['of']} max_ulps={v['max_ulps']}"
+        if 'max_bits_equal_reference' in row:
+            extra += f"  max-bits-equal-reference={row['max_bits_equal_reference']}"
+        if 'bits_identical_to' in row:
+            extra += f"  same-bits-as-{row['bits_identical_to']['participant']}={row['bits_identical_to']['identical']}"
+        print(f"{row['fixture']:<20} {row['participant']:<{width}} {row['algorithm']:<10} "
+              f"{row['verdict']:<8} {row.get('detail','')}{extra}")
     print(f"\n{len(rows)} checks, {mismatches} mismatches")
     if a.output: a.output.write_text(json.dumps(rows, indent=1)+'\n')
     return 1 if mismatches else 0

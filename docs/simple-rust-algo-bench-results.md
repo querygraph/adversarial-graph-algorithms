@@ -18,7 +18,7 @@ timed.
 
 | participant | what runs | language | parallel |
 | --- | --- | --- | --- |
-| `library` | `neo4j-labs/graph` via its builder and `graph::prelude` | Rust | rayon, unconditional |
+| `neo4j-graph` | `neo4j-labs/graph` via its builder and `graph::prelude` | Rust | rayon, unconditional |
 | `icebug` | the Arrow update of NetworKit, its own headers | C++ | OpenMP, NetworKit defaults |
 | `icecat` | the Rust rewrite of those kernels, Arrow 59.3 | Rust | sequential; parallel feature off |
 | `grustcat` | Grust's model projected to packed Arrow adjacency | Rust | sequential |
@@ -49,7 +49,7 @@ And at 16,384 for each kernel the timed run may select:
 | concurrency 2 (pull) | 58 | 20 | 2 |
 
 Per participant, at every size: `icebug`, `icecat`, `grustcat` and `grust` agree
-on 12 of 12 checks for the algorithms they implement; `library` agrees on 10 of
+on 12 of 12 checks for the algorithms they implement; `neo4j-graph` agrees on 10 of
 12 and mismatches on 2.
 
 **The strongest single result is that the reference, `grust`, `icecat` and
@@ -66,12 +66,12 @@ results are in `simple-rust-algo-bench-evidence/parity-*.json`.
 
 ### The two mismatches, which are one difference
 
-`library`'s PageRank does not redistribute dangling mass: it divides by
+`neo4j-graph`'s PageRank does not redistribute dangling mass: it divides by
 out-degree with no sink handling, so a node with no outgoing edge takes its share
 out of the distribution. The deficit tracks the dangling fraction rather than
 sitting at a fixed offset, which is what a leak does:
 
-| fixture | dangling nodes | share | `library` score sum |
+| fixture | dangling nodes | share | `neo4j-graph` score sum |
 | --- | ---: | ---: | ---: |
 | `layered-1024` | 64 | 6.25% | 0.672 |
 | `layered-4096` | 64 | 1.56% | 0.911 |
@@ -91,7 +91,7 @@ and `uniform`. The rows above are the reason, kept here rather than dropped.
 
 ### PageRank precision is a boundary, not a rounding footnote
 
-**The library accumulates and returns `f32`; every other participant is `f64`.**
+**`neo4j-graph` accumulates and returns `f32`; every other participant is `f64`.**
 Its score array is half the bytes, so half the memory traffic on the one array
 PageRank touches randomly per arc. It is stated under every PageRank table.
 
@@ -109,20 +109,20 @@ is stated with the host rather than as a fact about the code.
 Its consequences are measured rather than inferred, on `hub-16384`, which has no
 dangling node:
 
-| tolerance | `library` iterations | `library` score sum | `grust` iterations | `grust` score sum |
+| tolerance | `neo4j-graph` iterations | `neo4j-graph` score sum | `grust` iterations | `grust` score sum |
 | --- | ---: | ---: | ---: | ---: |
-| 1e-4 (the library's own default) | 8 | 0.9997947451 | 8 | 1.000000000000 |
+| 1e-4 (`neo4j-graph`'s own default) | 8 | 0.9997947451 | 8 | 1.000000000000 |
 | 1e-8 (the protocol tolerance) | 36 | 0.9999999668 | 17 | 1.000000000000 |
 
 Three things follow. **The `f64` kernels preserve mass exactly at every
 iteration** and the `f32` one does not: it is 2.1e-4 short after eight iterations
 and still 3.3e-8 short at its converged answer. **At the same loose tolerance both
 take eight iterations**, so the iteration gap at 1e-8 is about how each measures
-its own residual rather than about one converging faster. And **the library does
+its own residual rather than about one converging faster. And **`neo4j-graph` does
 reach 1e-8**, with a residual of 9.3e-9 — it needs about twice the iterations to
 get there.
 
-A row at the library's own `1E-4` is therefore worth publishing beside the
+A row at `neo4j-graph`'s own `1E-4` is therefore worth publishing beside the
 protocol row: it is where its author put the default, it costs one more sample,
 and at that tolerance its answer is 2e-4 short of a distribution on a graph with
 nothing dangling.
@@ -161,7 +161,7 @@ that chooses which component to skip, not a value that reaches a label.
   absent and that the reason is no such kernel rather than a slow one.
 - **`iterations`, `total` and `per iteration` are all published.** Per-iteration
   compares the kernels; total is what a user of that project waits for. The
-  library takes 41 iterations where the others take 16, on its own stopping rule.
+  `neo4j-graph` takes 41 iterations where the others take 16, on its own stopping rule.
 - **Concurrency is explicit, because it selects a kernel.** With concurrency
   unset Grust's PageRank takes the push loop that the parallel path is tested
   against; with concurrency 1 it takes the pull kernel on one thread. The two
@@ -170,7 +170,7 @@ that chooses which component to skip, not a value that reaches a label.
   that is timed: push, pull at one thread and pull at two all have their own
   parity runs.
 - **Thread width is set for every participant by name.** The three projects read
-  it from three places — Grust from `with_concurrency`, the library from
+  it from three places — Grust from `with_concurrency`, `neo4j-graph` from
   `available_parallelism` for PageRank and triangles and from rayon for WCC,
   NetworKit from OpenMP — and under a CPU quota they disagree, because OpenMP
   reads the affinity mask rather than the quota. Left alone, NetworKit would run
@@ -209,7 +209,7 @@ descends from it.** At one thread on `uniform-65536`, `grustcat` runs PageRank a
 function to the same tolerance, both `f64`, both 16 iterations — so it is a cost
 of the general projection rather than of the language or the measurement.
 
-**The library's triangle counting scales far better than ours.** On
+**`neo4j-graph`'s triangle counting scales far better than ours.** On
 `uniform-65536` it is 47.65 ms against our 86.80 at one thread, a factor of 1.8;
 at full width it is 4.11 against 30.17, a factor of **7.3**. The sequential gap
 is modest and the parallel gap is not, which places the difference in how each
@@ -226,13 +226,13 @@ only the second compares kernels.
 
 | participant | hub total | hub /iter | uniform total | uniform /iter | iters | precision |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| `library` | 39.23 | 1.401 | 48.47 | 1.425 | 28 / 34 | **f32** |
+| `neo4j-graph` | 39.23 | 1.401 | 48.47 | 1.425 | 28 / 34 | **f32** |
 | `icebug` (C++) | 73.50 | 6.125 | 69.68 | 6.335 | 12 / 11 | f64 |
 | `icecat` (Rust) | 35.57 | 2.092 | 33.76 | 2.110 | 17 / 16 | f64 |
 | `grustcat` | 32.18 | 1.893 | 31.70 | 1.981 | 17 / 16 | f64 |
 | `grust` | 66.08 | 3.887 | 65.71 | 4.107 | 17 / 16 | f64 |
 
-**`library` computes in single precision and the others in double.** Its score
+**`neo4j-graph` computes in single precision and the others in double.** Its score
 array is half the bytes. At this size that buys bandwidth on one array and no
 cache residency: every participant's working set is inside this host's 24.8 MB
 L3. The arrays cross that L3 in the hundreds of thousands of nodes at this
@@ -252,8 +252,8 @@ move, which is the honest confirmation of the label rather than a result.
 | --- | ---: | ---: | ---: |
 | `icebug` pagerank uniform-65536 | 69.68 | 8.96 | **7.78x** |
 | `grust` pagerank uniform-65536 | 65.71 | 19.20 | 3.42x |
-| `library` pagerank uniform-65536 | 48.47 | 17.03 | 2.85x |
-| `library` triangles uniform-65536 | 47.65 | 4.11 | **11.59x** |
+| `neo4j-graph` pagerank uniform-65536 | 48.47 | 17.03 | 2.85x |
+| `neo4j-graph` triangles uniform-65536 | 47.65 | 4.11 | **11.59x** |
 | `grust` triangles uniform-65536 | 86.80 | 30.17 | 2.88x |
 | `grust` bfs hub-65536 | 7.86 | 4.30 | 1.83x |
 | `grust` bfs hub-16384 | 1.63 | 1.66 | 0.98x |

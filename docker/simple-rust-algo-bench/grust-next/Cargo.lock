@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "bench-grust"
+name = "bench-grust-next"
 version = "0.1.0"
 dependencies = [
  "grust-algorithms",

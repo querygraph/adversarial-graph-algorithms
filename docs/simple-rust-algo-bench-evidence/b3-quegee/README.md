@@ -16,6 +16,20 @@ elsewhere is not the binary being timed.
 
 **The Grust columns are the release**, not main, so the label and the SHA agree.
 
+**One key in these files has been renamed since the run.** The participant the
+run called `library` — `neo4j-labs/graph` — is keyed `neo4j-graph` here, in
+every `participant` value, the receipts map and the `absent` lists, so these
+files and the results document use one name. Nothing else changed: the rename
+was applied to parsed JSON and re-serialised in the original format, which
+round-trips byte for byte, and the receipt's own `library` field (the crate
+versions it linked) is left as the binary printed it. The files exactly as the
+run wrote them are at commit `43c655c`. The `notes` prose inside the timed
+files is also as written, and still says "the library".
+
+**One published result here needs a correction, stated in the results
+document**: Grust's PageRank rows include building the transpose, which
+grustcat builds in its constructor and so outside its kernel time.
+
 ## Files
 
 | file | what it is |
@@ -32,7 +46,7 @@ are not divided by one another.
 
 ## What the parity mismatches are
 
-All four are `library` PageRank, on `layered-16384`, `layered-65536`,
+All four are `neo4j-graph` PageRank, on `layered-16384`, `layered-65536`,
 `path-16384` and `path-65536` — the two families with dangling nodes, at both
 sizes, and neither family without them. `graph 0.3.2` has no sink handling, so
 mass leaks and the score sum falls short of 1.0 in proportion to the dangling
@@ -49,13 +63,13 @@ rows are the stated reason rather than a silent omission.
 
 ## Two boundaries that belong under any PageRank table
 
-- **`library` computes in `f32`; every other participant in `f64`.** At these
+- **`neo4j-graph` computes in `f32`; every other participant in `f64`.** At these
   sizes the working set is inside this host's 24.8 MB L3, so single precision buys
   bandwidth on one array rather than cache residency. That qualification is
   size-dependent and stops being true somewhere in the hundreds of thousands of
   nodes at this density.
 - **Participants stop on different rules**, so `total` and `per iteration` are both
-  reported. `library` runs 28 and 34 iterations where the `f64` participants run 17
+  reported. `neo4j-graph` runs 28 and 34 iterations where the `f64` participants run 17
   and 16: a kernel that runs more iterations is not slower, it did more of them.
 
 ## Grust's parallel floors are recorded per cell

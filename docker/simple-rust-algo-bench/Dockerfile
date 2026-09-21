@@ -35,7 +35,11 @@ RUN c++ -std=c++20 -O3 -fopenmp /src/bench/icebug.cpp \
 
 FROM rust:1.97.1-bookworm AS rust
 ARG BUILD_JOBS=4
+# Two Grust trees: the published release the `grust` participant links, and the
+# commit under test that `grust-next` links. Both call themselves the same
+# version, so each binary is stamped with its tree's commit below.
 COPY grust /src/grust
+COPY grust-next /src/grust-next
 COPY icecat/rust /src/icecat/rust
 # The participants' path dependencies are written relative to the host layout,
 # so the image reproduces that layout rather than rewriting every manifest: a
@@ -44,9 +48,14 @@ COPY bench /src/adversarial-graph-algorithms/docker/simple-rust-algo-bench
 # One participant per manifest: a workspace would unify features across them and
 # a participant would stop being the code its own project builds.
 ENV BENCH=/src/adversarial-graph-algorithms/docker/simple-rust-algo-bench
-RUN mkdir -p /out && for participant in library grust icecat grustcat; do \
+ARG BENCH_COMMIT=unknown
+ARG GRUST_COMMIT=unknown
+ARG GRUST_NEXT_COMMIT=unknown
+RUN mkdir -p /out && for participant in neo4j-graph grust grust-next icecat grustcat; do \
+        case $participant in grust) stamp=${GRUST_COMMIT};; grust-next) stamp=${GRUST_NEXT_COMMIT};; *) stamp=;; esac; \
+        GRUST_COMMIT=$stamp BENCH_COMMIT=${BENCH_COMMIT} \
         cargo build --release --manifest-path $BENCH/$participant/Cargo.toml --jobs ${BUILD_JOBS} \
-        && cp $BENCH/$participant/target/release/bench-$participant /out/$participant; \
+        && cp $BENCH/$participant/target/release/bench-$participant /out/$participant || exit 1; \
     done
 
 FROM debian:bookworm-slim AS bench
@@ -59,5 +68,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
 COPY --from=cpp /out/icebug /opt/bench/
 COPY --from=cpp /build/cpp/libnetworkit.so* /opt/bench/lib/
 COPY --from=rust /out/ /opt/bench/
-COPY bench/fixtures.py bench/reference.py bench/audit.py /opt/bench/
+COPY bench/fixtures.py bench/reference.py bench/audit.py bench/variants.py bench/parity.py bench/run.py /opt/bench/
 WORKDIR /opt/bench

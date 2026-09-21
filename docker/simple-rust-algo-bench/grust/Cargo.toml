@@ -3,8 +3,15 @@ name = "bench-grust"
 version = "0.1.0"
 edition = "2021"
 
+# The published release, v0.22.0. `grust-next` builds this same source against
+# the commit under test; see the header of src/main.rs.
 [dependencies]
 grust-algorithms = { path = "../../../../grust/crates/grust-algorithms" }
+
+[features]
+# What the commit under test added and v0.22.0 lacks: `prepare_incoming`,
+# `ExecutionContext::with_accounting`, and `WorkCount` for the work total.
+accounting-api = []
 
 [profile.release]
 lto = "thin"

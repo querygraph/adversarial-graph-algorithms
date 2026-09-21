@@ -1,4 +1,4 @@
-//! The `neo4j-labs/graph` participant.
+//! The `neo4j-labs/graph` participant, keyed `neo4j-graph`.
 //!
 //! Reads the shared fixture, builds the library's own CSR through its builder
 //! API, and calls its kernels through `graph::prelude`. Parse, build, kernel and
@@ -9,7 +9,7 @@ use std::time::Instant;
 
 use graph::prelude::*;
 
-const PARTICIPANT: &str = "library";
+const PARTICIPANT: &str = "neo4j-graph";
 
 fn receipt() {
     // Versions come from the build rather than from a literal, so a dependency

@@ -13,8 +13,8 @@
   "precision": "PageRank precision differs by participant: the library accumulates and returns f32, every other participant f64. The score array is half the bytes, so it is half the memory traffic on the one array PageRank touches randomly per arc. State it under every PageRank table; it is a boundary, not a rounding footnote. WCC and triangle counts carry no such difference - component labels are indices and the triangle count is u64. Size-dependent: at 65,536 nodes every working set fits in the measuring host L3 with room to spare, so f32 buys bandwidth on one array and no cache residency at all. The arrays cross a 24.8 MB L3 somewhere in the hundreds of thousands of nodes at this density, and a run above that must restate this sentence rather than inherit it."
  },
  "participants": {
-  "library": {
-   "participant": "library",
+  "neo4j-graph": {
+   "participant": "neo4j-graph",
    "version": "0.1.0",
    "commit": "unknown",
    "library": "graph 0.3.2 / graph_builder 0.4.2",
@@ -102,7 +102,7 @@
    "width_capable": true,
    "parse_ms": 10.020735,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -124,7 +124,7 @@
    "width_capable": false,
    "parse_ms": 9.880422,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -142,7 +142,7 @@
    "width_capable": true,
    "parse_ms": 16.500379,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -164,7 +164,7 @@
    "width_capable": false,
    "parse_ms": 10.209887,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -246,7 +246,7 @@
   {
    "fixture": "/work/fixtures/hub-16384.edges",
    "algorithm": "pagerank",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": 36,
    "residual": 9.287759894505143e-09,
    "precision": "f32",
@@ -282,7 +282,7 @@
   {
    "fixture": "/work/fixtures/hub-16384.edges",
    "algorithm": "triangles",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -378,7 +378,7 @@
   {
    "fixture": "/work/fixtures/hub-16384.edges",
    "algorithm": "wcc",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -410,7 +410,7 @@
    "width_capable": true,
    "parse_ms": 40.318539,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -432,7 +432,7 @@
    "width_capable": false,
    "parse_ms": 39.584475,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -450,7 +450,7 @@
    "width_capable": true,
    "parse_ms": 68.712816,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -472,7 +472,7 @@
    "width_capable": false,
    "parse_ms": 40.639010000000006,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -554,7 +554,7 @@
   {
    "fixture": "/work/fixtures/hub-65536.edges",
    "algorithm": "pagerank",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": 28,
    "residual": 9.332325134892017e-09,
    "precision": "f32",
@@ -590,7 +590,7 @@
   {
    "fixture": "/work/fixtures/hub-65536.edges",
    "algorithm": "triangles",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -686,7 +686,7 @@
   {
    "fixture": "/work/fixtures/hub-65536.edges",
    "algorithm": "wcc",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -718,7 +718,7 @@
    "width_capable": true,
    "parse_ms": 2.496631,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -740,7 +740,7 @@
    "width_capable": false,
    "parse_ms": 2.4484820000000003,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -758,7 +758,7 @@
    "width_capable": true,
    "parse_ms": 4.221655,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -780,7 +780,7 @@
    "width_capable": false,
    "parse_ms": 2.524273,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -882,7 +882,7 @@
   {
    "fixture": "/work/fixtures/layered-16384.edges",
    "algorithm": "triangles",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -978,7 +978,7 @@
   {
    "fixture": "/work/fixtures/layered-16384.edges",
    "algorithm": "wcc",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -1010,7 +1010,7 @@
    "width_capable": true,
    "parse_ms": 10.250597,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1032,7 +1032,7 @@
    "width_capable": false,
    "parse_ms": 10.025592999999999,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1050,7 +1050,7 @@
    "width_capable": true,
    "parse_ms": 17.622986,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1072,7 +1072,7 @@
    "width_capable": false,
    "parse_ms": 10.383823,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1174,7 +1174,7 @@
   {
    "fixture": "/work/fixtures/layered-65536.edges",
    "algorithm": "triangles",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -1270,7 +1270,7 @@
   {
    "fixture": "/work/fixtures/layered-65536.edges",
    "algorithm": "wcc",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -1302,7 +1302,7 @@
    "width_capable": true,
    "parse_ms": 1.2827069999999998,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1324,7 +1324,7 @@
    "width_capable": false,
    "parse_ms": 1.265911,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1342,7 +1342,7 @@
    "width_capable": true,
    "parse_ms": 2.151291,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1364,7 +1364,7 @@
    "width_capable": false,
    "parse_ms": 1.313178,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1466,7 +1466,7 @@
   {
    "fixture": "/work/fixtures/path-16384.edges",
    "algorithm": "triangles",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -1562,7 +1562,7 @@
   {
    "fixture": "/work/fixtures/path-16384.edges",
    "algorithm": "wcc",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -1594,7 +1594,7 @@
    "width_capable": true,
    "parse_ms": 5.1896759999999995,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1616,7 +1616,7 @@
    "width_capable": false,
    "parse_ms": 5.087747,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1634,7 +1634,7 @@
    "width_capable": true,
    "parse_ms": 8.85004,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1656,7 +1656,7 @@
    "width_capable": false,
    "parse_ms": 5.2132000000000005,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1758,7 +1758,7 @@
   {
    "fixture": "/work/fixtures/path-65536.edges",
    "algorithm": "triangles",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -1854,7 +1854,7 @@
   {
    "fixture": "/work/fixtures/path-65536.edges",
    "algorithm": "wcc",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -1886,7 +1886,7 @@
    "width_capable": true,
    "parse_ms": 10.235045999999999,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1908,7 +1908,7 @@
    "width_capable": false,
    "parse_ms": 10.071931,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1926,7 +1926,7 @@
    "width_capable": true,
    "parse_ms": 16.838,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -1948,7 +1948,7 @@
    "width_capable": false,
    "parse_ms": 10.431217,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -2030,7 +2030,7 @@
   {
    "fixture": "/work/fixtures/uniform-16384.edges",
    "algorithm": "pagerank",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": 28,
    "residual": 9.637005859985948e-09,
    "precision": "f32",
@@ -2066,7 +2066,7 @@
   {
    "fixture": "/work/fixtures/uniform-16384.edges",
    "algorithm": "triangles",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -2162,7 +2162,7 @@
   {
    "fixture": "/work/fixtures/uniform-16384.edges",
    "algorithm": "wcc",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -2194,7 +2194,7 @@
    "width_capable": true,
    "parse_ms": 41.124622,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -2216,7 +2216,7 @@
    "width_capable": false,
    "parse_ms": 40.292161,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -2234,7 +2234,7 @@
    "width_capable": true,
    "parse_ms": 69.302151,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -2256,7 +2256,7 @@
    "width_capable": false,
    "parse_ms": 41.406119999999994,
    "absent": [
-    "library"
+    "neo4j-graph"
    ]
   },
   {
@@ -2338,7 +2338,7 @@
   {
    "fixture": "/work/fixtures/uniform-65536.edges",
    "algorithm": "pagerank",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": 34,
    "residual": 9.699533620732836e-09,
    "precision": "f32",
@@ -2374,7 +2374,7 @@
   {
    "fixture": "/work/fixtures/uniform-65536.edges",
    "algorithm": "triangles",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",
@@ -2470,7 +2470,7 @@
   {
    "fixture": "/work/fixtures/uniform-65536.edges",
    "algorithm": "wcc",
-   "participant": "library",
+   "participant": "neo4j-graph",
    "iterations": null,
    "residual": null,
    "precision": "f32",

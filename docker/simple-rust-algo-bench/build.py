@@ -32,7 +32,13 @@ def stage(source, destination, skip=('.git', 'target', '__pycache__')):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--grust', type=pathlib.Path, default=HERE.parents[2]/'grust')
+    p.add_argument('--grust-next', type=pathlib.Path, default=HERE.parents[2]/'grust-next',
+                   help='the Grust commit under test, linked by the grust-next participant; '
+                        '--grust stays the published release it is compared against')
     p.add_argument('--icecat', type=pathlib.Path, default=HERE.parents[2]/'icecat')
+    p.add_argument('--allow-dirty', action='store_true',
+                   help='stage trees with uncommitted changes; the commit stamped into a '
+                        'binary then does not describe it, so the default refuses')
     p.add_argument('--context', type=pathlib.Path, required=True)
     p.add_argument('--tag', default='simple-rust-algo-bench:local')
     p.add_argument('--jobs', type=int, default=4)
@@ -44,8 +50,16 @@ def main():
         raise SystemExit(f'Initialize Icecat submodules first: git -C {a.icecat} submodule update --init --recursive')
     if a.context.exists(): shutil.rmtree(a.context)
     a.context.mkdir(parents=True)
-    trees = dict(grust=commit(a.grust.resolve()), icecat=commit(a.icecat.resolve()), bench=commit(HERE))
+    trees = dict(grust=commit(a.grust.resolve()), grust_next=commit(a.grust_next.resolve()),
+                 icecat=commit(a.icecat.resolve()), bench=commit(HERE))
+    dirty = [name for name, tree in trees.items() if tree['uncommitted']]
+    if dirty and not a.allow_dirty:
+        raise SystemExit(f'uncommitted changes in {", ".join(dirty)}: a binary stamped with a commit '
+                         'must be built from that commit')
+    if trees['grust']['commit'] == trees['grust_next']['commit']:
+        print('warning: grust and grust-next are the same commit', file=sys.stderr)
     stage(a.grust.resolve(), a.context/'grust')
+    stage(a.grust_next.resolve(), a.context/'grust-next')
     stage(a.icecat.resolve(), a.context/'icecat')
     stage(HERE, a.context/'bench', skip=('.git', 'target', '__pycache__', 'context'))
     shutil.copy2(HERE/'Dockerfile', a.context/'Dockerfile')
@@ -54,6 +68,9 @@ def main():
                '--build-arg', f'BUILD_JOBS={a.jobs}',
                '--build-arg', f'ICEBUG_COMMIT={trees["icecat"]["commit"][:12]}',
                '--build-arg', 'ICEBUG_VERSION=icecat-cpp',
+               '--build-arg', f'BENCH_COMMIT={trees["bench"]["commit"][:12]}',
+               '--build-arg', f'GRUST_COMMIT={trees["grust"]["commit"]}',
+               '--build-arg', f'GRUST_NEXT_COMMIT={trees["grust_next"]["commit"]}',
                str(a.context)]
     print(' '.join(command), flush=True)
     raise SystemExit(subprocess.run(command).returncode)

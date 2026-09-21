@@ -1,0 +1,23 @@
+[package]
+name = "bench-grust-next"
+version = "0.1.0"
+edition = "2021"
+autobins = false
+
+# The same participant source as `grust`, built against the Grust commit under
+# test, which the image stages at ../../../../grust-next. Only the Grust tree and
+# the feature differ, so the two columns differ only in Grust.
+[[bin]]
+name = "bench-grust-next"
+path = "../grust/src/main.rs"
+
+[dependencies]
+grust-algorithms = { path = "../../../../grust-next/crates/grust-algorithms" }
+
+[features]
+default = ["accounting-api"]
+accounting-api = []
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

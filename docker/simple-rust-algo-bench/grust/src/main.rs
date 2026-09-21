@@ -1,20 +1,66 @@
-//! The `grust` participant: Grust's own kernels over `GraphProjection`, direct,
+//! The `grust` participants: Grust's own kernels over `GraphProjection`, direct,
 //! with no procedure layer, no Cypher and no storage backend.
 //!
+//! One source, two builds. `grust/Cargo.toml` builds it against the published
+//! release, v0.22.0; `grust-next/Cargo.toml` builds the same file against the
+//! commit under test with the `accounting-api` feature, which is what that
+//! commit added and the release does not have: `GraphProjection::prepare_incoming`,
+//! `ExecutionContext::with_accounting`, and `WorkCount` in place of a `usize`
+//! work total. A harness that edited this file per commit would be timing two
+//! participants; this way the only difference between the columns is Grust.
+//!
 //! The budget is deliberately unbounded here. Charging is part of what these
-//! kernels do and stays on, but a limit that could fire would make the column a
-//! measurement of a policy rather than of a kernel; the resources it did charge
-//! are reported beside the result instead.
+//! kernels do and stays on by default, but a limit that could fire would make
+//! the column a measurement of a policy rather than of a kernel; the resources
+//! it did charge are reported beside the result instead. Whether charging
+//! happens at all is `--accounting`, and every output line names the mode.
+//!
+//! Where the transpose is built is the correction this participant carries.
+//! B3 built Grust's incoming adjacency lazily, inside the first kernel that
+//! needed it, so it was timed in `kernel_ms`; grustcat builds both adjacencies
+//! in its constructor, inside `build_ms`. With `accounting-api` the transpose is
+//! built by `prepare_incoming` inside the build timer and its share is reported
+//! as `incoming_ms`. The release has no such method, so every build runs the
+//! kernel twice on the same projection and reports both calls: the first is
+//! what B3 published, the second has the transpose already cached.
 
 use std::time::Instant;
 
+#[cfg(feature = "accounting-api")]
+use grust_algorithms::Accounting;
 use grust_algorithms::{
-    ExecutionContext, ExecutionLimits, GraphProjection, Orientation, ProjectionEdge,
-    SnapshotIdentity, PageRankOptions, TriangleOptions, bfs, pagerank, triangles,
+    ExecutionContext, ExecutionLimits, GraphProjection, Orientation, PageRankOptions,
+    ProjectionEdge, SnapshotIdentity, TriangleOptions, bfs, pagerank, triangles,
     weakly_connected_components,
 };
 
-const PARTICIPANT: &str = "grust";
+/// The binary's name without the `bench-` prefix: `grust` or `grust-next`.
+fn participant() -> &'static str {
+    env!("CARGO_BIN_NAME").strip_prefix("bench-").unwrap_or(env!("CARGO_BIN_NAME"))
+}
+
+/// The Grust commit this binary was linked against, passed in by the image
+/// build. Both commits call themselves 0.22.0, so the version cannot say which.
+fn grust_commit() -> &'static str {
+    option_env!("GRUST_COMMIT").unwrap_or("unknown")
+}
+
+/// FNV-1a over each score's IEEE-754 bits, little-endian, in node order.
+///
+/// Bit identity is what licenses comparing two kernels' times, and a sum or a
+/// maximum can agree while the vector does not. `parity.py` computes the same
+/// function over the reference's scores, so the comparison is of every bit of
+/// every score and not of a summary.
+fn digest(values: &[f64]) -> String {
+    let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
+    for value in values {
+        for byte in value.to_bits().to_le_bytes() {
+            hash ^= u64::from(byte);
+            hash = hash.wrapping_mul(0x0000_0100_0000_01b3);
+        }
+    }
+    format!("{hash:016x}")
+}
 
 fn read(path: &str) -> (usize, Vec<(usize, usize)>) {
     let text = std::fs::read_to_string(path).expect("fixture");
@@ -34,22 +80,191 @@ fn read(path: &str) -> (usize, Vec<(usize, usize)>) {
     (nodes, edges)
 }
 
+fn flag(args: &[String], name: &str) -> Option<String> {
+    args.iter().position(|a| a == name).map(|i| args[i + 1].clone())
+}
+
+/// The accounting mode requested, and the label every output line carries.
+#[cfg(feature = "accounting-api")]
+fn accounting(args: &[String]) -> (Accounting, &'static str) {
+    let mode = match flag(args, "--accounting").as_deref().unwrap_or("counted") {
+        "counted" => Accounting::COUNTED,
+        "work-uncounted" => Accounting::WORK_UNCOUNTED,
+        "unchecked" => Accounting::UNCHECKED,
+        other => panic!("unknown --accounting {other}: counted, work-uncounted or unchecked"),
+    };
+    (mode, mode.label())
+}
+
+/// The release has no opt-out: it always counts work and observes
+/// cancellation, which is what the later commit calls `counted`. It accepts
+/// `counted` and refuses anything else, rather than running counted under
+/// another mode's name.
+#[cfg(not(feature = "accounting-api"))]
+fn accounting(args: &[String]) -> ((), &'static str) {
+    match flag(args, "--accounting").as_deref().unwrap_or("counted") {
+        "counted" => ((), "counted"),
+        other => panic!("--accounting {other}: this Grust has no accounting opt-out, so only counted runs"),
+    }
+}
+
+fn context(limits: ExecutionLimits, args: &[String]) -> ExecutionContext {
+    #[cfg(feature = "accounting-api")]
+    return ExecutionContext::with_accounting(limits, accounting(args).0).expect("execution context");
+    #[cfg(not(feature = "accounting-api"))]
+    {
+        accounting(args);
+        ExecutionContext::new(limits).expect("execution context")
+    }
+}
+
+/// Counted work, or `null` where the mode did not count it. A zero would say
+/// the kernel did nothing, which is a different claim.
+fn work_units(context: &ExecutionContext) -> String {
+    let usage = context.usage().expect("usage");
+    #[cfg(feature = "accounting-api")]
+    return usage.work_units.counted().map(|units| units.to_string()).unwrap_or_else(|| "null".into());
+    #[cfg(not(feature = "accounting-api"))]
+    usage.work_units.to_string()
+}
+
+/// Build the transpose now, inside the build timer, where grustcat's
+/// constructor builds its own. Returns the milliseconds it took, or `None`
+/// where this Grust cannot build it outside a kernel.
+#[cfg(feature = "accounting-api")]
+fn prepare_incoming(projection: &GraphProjection) -> Option<f64> {
+    let started = Instant::now();
+    projection.prepare_incoming().expect("prepare_incoming");
+    Some(started.elapsed().as_secs_f64() * 1e3)
+}
+
+#[cfg(not(feature = "accounting-api"))]
+fn prepare_incoming(_projection: &GraphProjection) -> Option<f64> {
+    None
+}
+
+/// One kernel call: its time, the fields that identify its result, and a
+/// value compared between the first and second call on the same projection.
+struct Call {
+    kernel_ms: f64,
+    fields: String,
+    identity: String,
+    materialise_ms: f64,
+    /// PageRank's scores, kept only when `--scores-out` asks for them.
+    scores: Option<Vec<f64>>,
+}
+
+/// `--scores-out PATH`: write every PageRank score's bits, one hex word per
+/// line in node order, after both calls and outside every timer. Parity uses it
+/// to compare each score with the reference's rather than a digest or a sum;
+/// timed runs never pass it.
+fn write_scores(path: &str, scores: &[f64]) {
+    use std::fmt::Write as _;
+    let mut text = String::with_capacity(scores.len() * 17);
+    for score in scores {
+        writeln!(text, "{:016x}", score.to_bits()).expect("format");
+    }
+    std::fs::write(path, text).expect("--scores-out");
+}
+
+fn call(projection: &GraphProjection, algorithm: &str, tolerance: f64, max_iterations: usize, keep: bool) -> Call {
+    let started = Instant::now();
+    match algorithm {
+        "pagerank" => {
+            // `..Default::default()` because the later commit adds a `variant`
+            // field whose default is PageRank; the release has no such field.
+            #[allow(clippy::needless_update)]
+            let options = PageRankOptions {
+                damping: 0.85, tolerance, max_iterations, personalization: None,
+                ..Default::default()
+            };
+            let result = pagerank(projection, options).expect("pagerank");
+            let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
+            let started = Instant::now();
+            let scores = result.values();
+            let sum: f64 = scores.iter().sum();
+            let (argmax, max) = scores.iter().enumerate()
+                .fold((0usize, f64::MIN), |(bi, bv), (i, v)| if *v > bv { (i, *v) } else { (bi, bv) });
+            let bits = digest(scores);
+            Call {
+                kernel_ms,
+                fields: format!("\"iterations\":{},\"residual\":{},\"converged\":{},\"sum\":{sum},\
+                                 \"max\":{max},\"argmax\":{argmax},\"scores_digest\":\"{bits}\"",
+                                result.iterations(), result.residual(), result.converged()),
+                identity: format!("{bits}/{}", result.iterations()),
+                materialise_ms: started.elapsed().as_secs_f64() * 1e3,
+                scores: keep.then(|| scores.to_vec()),
+            }
+        }
+        "wcc" => {
+            let result = weakly_connected_components(projection).expect("wcc");
+            let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
+            let started = Instant::now();
+            let labels = result.values();
+            let distinct: std::collections::HashSet<_> = labels.iter().collect();
+            let identity = format!("{:?}", labels);
+            Call {
+                kernel_ms,
+                fields: format!("\"count\":{},\"probe_label\":{}", distinct.len(), labels[0]),
+                identity,
+                materialise_ms: started.elapsed().as_secs_f64() * 1e3,
+                scores: None,
+            }
+        }
+        "bfs" => {
+            let result = bfs(projection, "0").expect("bfs");
+            let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
+            let started = Instant::now();
+            // Unreachable nodes carry positive infinity here and -1 in the
+            // reference; both mean the same thing and neither enters the sum.
+            let distances = result.values();
+            let reached = distances.iter().filter(|hops| hops.is_finite()).count();
+            let total: f64 = distances.iter().filter(|hops| hops.is_finite()).sum();
+            Call {
+                kernel_ms,
+                fields: format!("\"reached\":{reached},\"distance_sum\":{total}"),
+                identity: digest(distances),
+                materialise_ms: started.elapsed().as_secs_f64() * 1e3,
+                scores: None,
+            }
+        }
+        "triangles" => {
+            let result = triangles(projection, TriangleOptions { max_degree: None }).expect("triangles");
+            let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
+            Call {
+                kernel_ms,
+                fields: format!("\"triangles\":{}", result.triangle_count()),
+                identity: result.triangle_count().to_string(),
+                materialise_ms: 0.0,
+                scores: None,
+            }
+        }
+        other => panic!("unknown algorithm {other}"),
+    }
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
+    let (_, mode) = accounting(&args);
+    let participant = participant();
     if args.iter().any(|a| a == "--receipt") {
         println!(
-            "{{\"participant\":\"{PARTICIPANT}\",\"version\":\"{}\",\"commit\":\"{}\",\
-              \"precision\":\"f64\",\"algorithms\":[\"pagerank\",\"wcc\",\"bfs\",\"triangles\"],\
-              \"parallel\":\"sequential unless with_concurrency is requested\",\"width_capable\":true}}",
-            env!("CARGO_PKG_VERSION"), option_env!("BENCH_COMMIT").unwrap_or("unknown"));
+            "{{\"participant\":\"{participant}\",\"version\":\"{}\",\"commit\":\"{}\",\
+              \"grust_commit\":\"{}\",\"precision\":\"f64\",\
+              \"algorithms\":[\"pagerank\",\"wcc\",\"bfs\",\"triangles\"],\
+              \"parallel\":\"sequential unless with_concurrency is requested\",\"width_capable\":true,\
+              \"accounting\":\"{mode}\",\"accounting_selectable\":{},\"prepares_incoming\":{},\
+              \"scores_out\":true}}",
+            env!("CARGO_PKG_VERSION"), option_env!("BENCH_COMMIT").unwrap_or("unknown"), grust_commit(),
+            cfg!(feature = "accounting-api"), cfg!(feature = "accounting-api"));
         return;
     }
-    let fixture = args.iter().position(|a| a == "--fixture").map(|i| args[i + 1].clone()).expect("--fixture");
-    let algorithm = args.iter().position(|a| a == "--algorithm").map(|i| args[i + 1].clone()).expect("--algorithm");
-    let max_iterations: usize = args.iter().position(|a| a == "--max-iterations")
-        .map(|i| args[i + 1].parse().expect("--max-iterations")).unwrap_or(100);
-    let tolerance: f64 = args.iter().position(|a| a == "--tolerance")
-        .map(|i| args[i + 1].parse().expect("--tolerance")).unwrap_or(1e-10);
+    let fixture = flag(&args, "--fixture").expect("--fixture");
+    let algorithm = flag(&args, "--algorithm").expect("--algorithm");
+    let max_iterations: usize = flag(&args, "--max-iterations")
+        .map(|v| v.parse().expect("--max-iterations")).unwrap_or(100);
+    let tolerance: f64 = flag(&args, "--tolerance")
+        .map(|v| v.parse().expect("--tolerance")).unwrap_or(1e-10);
 
     let started = Instant::now();
     let (nodes, edges) = read(&fixture);
@@ -58,16 +273,14 @@ fn main() {
     // Two distinct things could be called "sequential": concurrency unset, where
     // PageRank takes the push loop kept as the parallel path's oracle, and
     // concurrency 1, where it takes the pull kernel on one thread. They are
-    // different algorithms, so the flag is explicit and the receipt records which.
-    let concurrency: Option<usize> = args.iter().position(|a| a == "--concurrency")
-        .map(|i| args[i + 1].parse().expect("--concurrency"));
-    let mut context = ExecutionContext::new(ExecutionLimits {
+    // different algorithms, so the flag is explicit and the output records which.
+    let concurrency: Option<usize> = flag(&args, "--concurrency").map(|v| v.parse().expect("--concurrency"));
+    let mut context = context(ExecutionLimits {
         memory_bytes: usize::MAX,
         work_units: usize::MAX,
         batch_rows: 1 << 16,
         deadline: None,
-    })
-    .expect("execution context");
+    }, &args);
     if let Some(workers) = concurrency {
         context = context.with_concurrency(workers).expect("concurrency");
     }
@@ -85,56 +298,34 @@ fn main() {
         &context,
     )
     .expect("projection");
+    // Inside the build timer, for every algorithm: grustcat's constructor
+    // builds both adjacencies whatever is asked of it, so a build column that
+    // skipped the transpose where a kernel happens not to need it would not be
+    // the same work. `incoming_ms` says how much of `build_ms` it was.
+    let incoming_ms = prepare_incoming(&projection);
     let build_ms = started.elapsed().as_secs_f64() * 1e3;
 
-    let started = Instant::now();
-    let (summary, materialise) = match algorithm.as_str() {
-        "pagerank" => {
-            let result = pagerank(&projection, PageRankOptions {
-                damping: 0.85, tolerance, max_iterations, personalization: None,
-            }).expect("pagerank");
-            let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
-            let started = Instant::now();
-            let scores = result.values();
-            let sum: f64 = scores.iter().sum();
-            let (argmax, max) = scores.iter().enumerate()
-                .fold((0usize, f64::MIN), |(bi, bv), (i, v)| if *v > bv { (i, *v) } else { (bi, bv) });
-            (format!("\"kernel_ms\":{kernel_ms},\"iterations\":{},\"sum\":{sum},\"max\":{max},\"argmax\":{argmax}",
-                     result.iterations()),
-             started.elapsed().as_secs_f64() * 1e3)
-        }
-        "wcc" => {
-            let result = weakly_connected_components(&projection).expect("wcc");
-            let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
-            let started = Instant::now();
-            let labels = result.values();
-            let distinct: std::collections::HashSet<_> = labels.iter().collect();
-            (format!("\"kernel_ms\":{kernel_ms},\"count\":{},\"probe_label\":{}", distinct.len(), labels[0]),
-             started.elapsed().as_secs_f64() * 1e3)
-        }
-        "bfs" => {
-            let result = bfs(&projection, "0").expect("bfs");
-            let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
-            let started = Instant::now();
-            // Unreachable nodes carry positive infinity here and -1 in the
-            // reference; both mean the same thing and neither enters the sum.
-            let distances = result.values();
-            let reached = distances.iter().filter(|hops| hops.is_finite()).count();
-            let total: f64 = distances.iter().filter(|hops| hops.is_finite()).sum();
-            (format!("\"kernel_ms\":{kernel_ms},\"reached\":{reached},\"distance_sum\":{total}"),
-             started.elapsed().as_secs_f64() * 1e3)
-        }
-        "triangles" => {
-            let result = triangles(&projection, TriangleOptions { max_degree: None }).expect("triangles");
-            let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
-            (format!("\"kernel_ms\":{kernel_ms},\"triangles\":{}", result.triangle_count()), 0.0)
-        }
-        other => panic!("unknown algorithm {other}"),
-    };
-    let usage = context.usage().expect("usage");
-    println!("{{\"participant\":\"{PARTICIPANT}\",\"algorithm\":\"{algorithm}\",\"fixture\":\"{fixture}\",\
-               \"nodes\":{nodes},\"edges\":{},\"parse_ms\":{parse_ms},\"build_ms\":{build_ms},{summary},\
-               \"materialise_ms\":{materialise},\"work_units\":{},\"peak_bytes\":{},\"concurrency\":{}}}",
-             edges.len(), usage.work_units, usage.peak_bytes,
+    let scores_out = flag(&args, "--scores-out");
+    let first = call(&projection, &algorithm, tolerance, max_iterations, scores_out.is_some());
+    // Read after the first call, as B3 read it after its only call.
+    let work = work_units(&context);
+    let second = call(&projection, &algorithm, tolerance, max_iterations, false);
+    // The second call is only a timing of the same computation if it is the
+    // same computation. A difference is a defect, and exits non-zero so parity
+    // records an error and the cell is never timed.
+    assert_eq!(first.identity, second.identity, "second call on the same projection returned a different result");
+    let peak_bytes = context.usage().expect("usage").peak_bytes;
+    if let (Some(path), Some(scores)) = (&scores_out, &first.scores) {
+        write_scores(path, scores);
+    }
+
+    println!("{{\"participant\":\"{participant}\",\"grust_commit\":\"{}\",\"accounting\":\"{mode}\",\
+               \"algorithm\":\"{algorithm}\",\"fixture\":\"{fixture}\",\
+               \"nodes\":{nodes},\"edges\":{},\"parse_ms\":{parse_ms},\"build_ms\":{build_ms},\
+               \"incoming_ms\":{},\"kernel_ms\":{},\"kernel_second_ms\":{},\"second_identical\":true,{},\
+               \"materialise_ms\":{},\"work_units\":{work},\"peak_bytes\":{peak_bytes},\"concurrency\":{}}}",
+             grust_commit(), edges.len(),
+             incoming_ms.map(|ms| ms.to_string()).unwrap_or_else(|| "null".into()),
+             first.kernel_ms, second.kernel_ms, first.fields, first.materialise_ms,
              concurrency.map(|w| w.to_string()).unwrap_or_else(|| "null".into()));
 }

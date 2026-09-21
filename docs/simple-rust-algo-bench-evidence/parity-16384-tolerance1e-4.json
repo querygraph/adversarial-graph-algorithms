@@ -1,7 +1,7 @@
 [
  {
   "fixture": "hub-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "pagerank",
   "verdict": "MISMATCH",
   "detail": "sum: 0.9997947451474829 against 0.999999999999997",
@@ -10,7 +10,7 @@
  },
  {
   "fixture": "hub-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "wcc",
   "verdict": "agrees",
   "detail": "",
@@ -19,14 +19,14 @@
  },
  {
   "fixture": "hub-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "bfs",
   "verdict": "absent",
   "detail": "no such kernel in this project"
  },
  {
   "fixture": "hub-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "triangles",
   "verdict": "agrees",
   "detail": "",
@@ -171,7 +171,7 @@
  },
  {
   "fixture": "layered-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "pagerank",
   "verdict": "MISMATCH",
   "detail": "sum: 0.977864590306126 against 1.0000000000000187",
@@ -180,7 +180,7 @@
  },
  {
   "fixture": "layered-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "wcc",
   "verdict": "agrees",
   "detail": "",
@@ -189,14 +189,14 @@
  },
  {
   "fixture": "layered-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "bfs",
   "verdict": "absent",
   "detail": "no such kernel in this project"
  },
  {
   "fixture": "layered-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "triangles",
   "verdict": "agrees",
   "detail": "",
@@ -341,7 +341,7 @@
  },
  {
   "fixture": "path-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "pagerank",
   "verdict": "MISMATCH",
   "detail": "sum: 0.99965395639083 against 1.0; argmax undetermined at tolerance 0.0001: top two reference scores differ by 0",
@@ -352,7 +352,7 @@
  },
  {
   "fixture": "path-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "wcc",
   "verdict": "agrees",
   "detail": "",
@@ -361,14 +361,14 @@
  },
  {
   "fixture": "path-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "bfs",
   "verdict": "absent",
   "detail": "no such kernel in this project"
  },
  {
   "fixture": "path-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "triangles",
   "verdict": "agrees",
   "detail": "",
@@ -517,7 +517,7 @@
  },
  {
   "fixture": "uniform-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "pagerank",
   "verdict": "agrees",
   "detail": "",
@@ -526,7 +526,7 @@
  },
  {
   "fixture": "uniform-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "wcc",
   "verdict": "agrees",
   "detail": "",
@@ -535,14 +535,14 @@
  },
  {
   "fixture": "uniform-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "bfs",
   "verdict": "absent",
   "detail": "no such kernel in this project"
  },
  {
   "fixture": "uniform-16384.edges",
-  "participant": "library",
+  "participant": "neo4j-graph",
   "algorithm": "triangles",
   "verdict": "agrees",
   "detail": "",
