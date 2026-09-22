@@ -157,6 +157,75 @@ worse_summary = (f"{len(worse)} of the {compared} counted cells with a v0.22.0 c
                  f"`ca68900`, by {pct(min(w[0] for w in worse))} to {pct(max(w[0] for w in worse))}." if worse
                  else f"None of the {compared} counted cells with a v0.22.0 counterpart is slower on `ca68900`.")
 
+# The largest changes the wrong way, and the three shapes they fall into.
+worst = sorted(worse, key=lambda w: -w[0])[:5]
+worse_worst = '; '.join(f"`{fx}` {alg} {run} {kn} {call} {pct(ratio)}"
+                        for ratio, fx, alg, run, kn, call, o, n in worst) + '.'
+
+path_pr = [(ratio, fx, run, call, o, n) for ratio, fx, alg, run, kn, call, o, n in worse
+           if alg == 'pagerank' and fx.startswith('path')]
+path_note = (f"{len(path_pr)} of them are PageRank on the `path` family, "
+             f"{pct(min(r for r, *_ in path_pr))} to {pct(max(r for r, *_ in path_pr))}: "
+             + '; '.join(f"`{fx}` {run} {call} {o['total_ms']:.2f} to {n['total_ms']:.2f} ms"
+                         for _, fx, run, call, o, n in sorted(path_pr, key=lambda t: (t[1], t[2], t[3]))) + '.'
+             ) if path_pr else 'No PageRank cell on the `path` family is slower.'
+
+tri = [(ratio, fx, run, o, n) for ratio, fx, alg, run, kn, call, o, n in worse
+       if alg == 'triangles' and call == 'second' and o['minflt'] is not None and n['minflt'] is not None]
+tri_note = (f"{len(tri)} are the triangles second call, {pct(min(r for r, *_ in tri))} to "
+            f"{pct(max(r for r, *_ in tri))}, and every one of them takes more minor page faults than "
+            f"v0.22.0 did: a median of {statistics.median(o['minflt'] for _, _, _, o, _ in tri):.0f} faults on "
+            f"v0.22.0 against {statistics.median(n['minflt'] for _, _, _, _, n in tri):.0f} on `ca68900`. "
+            "v0.22.0's second "
+            "triangle call allocates almost nothing and the later commit's allocates again, which is a "
+            "change in what the second call does rather than in how fast it does it."
+            ) if tri else 'No triangles second call is slower.'
+
+wcc1 = [(fx, run, o, n) for run in [r for r in PROTOCOL if r in idx] for fx in fixtures(run)
+        for o, n in [(cell(run, fx, 'wcc', 'grust#1', 'first'), cell(run, fx, 'wcc', 'grust-next@counted#1', 'first'))]
+        if o and n]
+wcc_worse = [(n['total_ms'] / o['total_ms'], fx, o, n) for fx, run, o, n in wcc1]
+wcc_note = (f"WCC on the pull-side concurrency 1 first call is slower on {sum(r > 1 for r, *_ in wcc_worse)} of "
+            f"{len(wcc_worse)} fixtures at one thread, {pct(min(r for r, *_ in wcc_worse))} to "
+            f"{pct(max(r for r, *_ in wcc_worse))}, with the page-fault counts equal on "
+            f"{sum(o['minflt'] == n['minflt'] for _, _, o, n in wcc_worse)} of {len(wcc_worse)}."
+            ) if wcc_worse else ''
+
+# The open items, as verdicts rather than as tables alone.
+def bfs_cells(only=None):
+    out = []
+    for run in [r for r in PROTOCOL if r in idx and (only is None or r == only)]:
+        for fx in fixtures(run, FAMILIES):
+            for suffix in suffixes(run):
+                o = cell(run, fx, 'bfs', f'grust{suffix}', 'first')
+                n = cell(run, fx, 'bfs', f'grust-next@counted{suffix}', 'first')
+                b, bo = (b4.get((run, fx, 'bfs', f'grust-next@counted{suffix}', 'first')),
+                         b4.get((run, fx, 'bfs', f'grust{suffix}', 'first')))
+                if o and n: out.append((n['total_ms'] / o['total_ms'],
+                                        (b['total_ms'] / bo['total_ms']) if b and bo else None))
+    return out
+def bfs_verdict_for(run):
+    cells = bfs_cells(run)
+    was = [b for _, b in cells if b is not None]
+    return (f"At {run}, {sum(r > 1 for r, _ in cells)} of {len(cells)} `hub` and `uniform` first-call cells "
+            f"are slower than v0.22.0, {pct(min(r for r, _ in cells))} to {pct(max(r for r, _ in cells))}, "
+            f"where B4's same cells ran {pct(min(was))} to {pct(max(was))}.")
+bfs_verdict = (' '.join(bfs_verdict_for(run) for run in PROTOCOL if run in idx) +
+               " So at one thread it persists, over a narrower range than B4's rows, and at full width the "
+               "same kernel is faster than v0.22.0 on the larger fixture of each family and slower on the "
+               "smaller. The page-fault counts beside each row are within a few of each other, so what is "
+               "left is not the allocator effect.")
+
+layered16 = [(call, cell('full-width', 'layered-16384', 'pagerank', 'grust', call),
+              cell('full-width', 'layered-16384', 'pagerank', 'grust-next@counted', call))
+             for call in ('first', 'second')]
+layered16 = [(call, o, n) for call, o, n in layered16 if o and n]
+layered_verdict = ('; '.join(f"{call} call {pct(n['total_ms'] / o['total_ms'])}" for call, o, n in layered16) +
+                   '. ' + ("The second call is still slower and the first is not, which is the same shape B4 "
+                           "reported and is unexplained."
+                           if any(n['total_ms'] > o['total_ms'] for _, o, n in layered16) else
+                           "Neither call is slower, so on this host and this commit it does not persist."))
+
 # --- the two open items ------------------------------------------------------
 rows = []
 for run in [r for r in PROTOCOL if r in idx]:
@@ -285,6 +354,18 @@ for participant, call in (('grust#1', 'first'), ('grust#unset', 'first'), ('icec
             drift_rows.append(f"| `{fx}` | {alg} | `{participant}` | {ms(b)} | {ms(a)} | "
                               f"{pct(a['total_ms'] / b['total_ms'])} |")
 drift = '\n'.join(drift_rows)
+ratios_ = [a['total_ms'] / b['total_ms'] for a, b in
+           [(idx['one-thread'].get((fx, alg, p_, c)), b4.get(('one-thread', fx, alg, p_, c)))
+            for p_, c in (('grust#1', 'first'), ('grust#unset', 'first'), ('icecat', None),
+                          ('grustcat', None), ('neo4j-graph', None), ('icebug', None))
+            for fx in ('hub-65536', 'uniform-65536') for alg in ('pagerank', 'wcc')]
+           if a and b]
+drift_note = (f"The same binaries' sources, on the same fixtures and the same host, move "
+              f"{pct(min(ratios_))} to {pct(max(ratios_))} between the two campaigns, and the largest of "
+              "those is a participant containing no Grust at all. Both campaigns were built from clean "
+              "trees on that host and ran on an idle one; B5 additionally dropped the page cache before "
+              "starting, which B4 did not. **The drift is unexplained**, and it is the reason a cell is "
+              "only ever compared with other cells of its own run.")
 
 decision = (
     f"**The decision, by the rule fixed before the runs.** Over the same {len(pairs)} WCC and BFS first-call "
@@ -317,7 +398,10 @@ for key, value in [('PENDING-B5-PROVENANCE', provenance), ('PENDING-B5-HOSTRUNS'
                    ('PENDING-B5-WORSENOTE', worse_summary), ('PENDING-B5-WORSETABLE', worse_rows),
                    ('PENDING-B5-BFSOPEN', bfs_open), ('PENDING-B5-LAYEREDOPEN', layered_open),
                    ('PENDING-B5-PINDECISION', decision), ('PENDING-B5-RESIDENT', resident),
-                   ('PENDING-B5-ACCT', acct), ('PENDING-B5-BUILD', build), ('PENDING-B5-DRIFT', drift)]:
+                   ('PENDING-B5-WORSEWORST', worse_worst), ('PENDING-B5-PATHPR', path_note),
+                   ('PENDING-B5-TRIANGLES', tri_note), ('PENDING-B5-WCCFIRST', wcc_note),
+                   ('PENDING-B5-BFSVERDICT', bfs_verdict), ('PENDING-B5-LAYEREDVERDICT', layered_verdict),
+                   ('PENDING-B5-ACCT', acct), ('PENDING-B5-BUILD', build), ('PENDING-B5-DRIFTTABLE', drift), ('PENDING-B5-DRIFTCAVEAT', drift_note)]:
     assert s.count(key) == 1, key
     s = s.replace(key, value)
 DOC.write_text(s)

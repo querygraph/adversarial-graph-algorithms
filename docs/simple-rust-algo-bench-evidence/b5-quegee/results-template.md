@@ -662,7 +662,7 @@ large and xlarge sizes.
 
 ## B5: results
 
-One host, quegee, 2026-09-22. Grust `2182cdb` (v0.22.0) as `grust`, Grust `ca68900` as `grust-next`, Icecat `57b443ec`, this harness at `9ec8548`, image `simple-rust-algo-bench:b5-ca68900`, built on the host from clean trees. One warmup, five repeats,
+One host, quegee, 2026-09-22. PENDING-B5-PROVENANCE One warmup, five repeats,
 counterbalanced, parity gated at every concurrency. **Every cell of every run,
 with its steal, its dispersion, its minor page faults and its usability, is in
 `simple-rust-algo-bench-evidence/b5-quegee/tables.md`**, generated from the run
@@ -670,38 +670,17 @@ files by `tables.py`; the tables below select from it and add nothing to it.
 Times are milliseconds, median ± MAD; page faults are the median of the same
 samples, read outside the timers. Steal is ticks over that cell's group.
 
-**Host conditions.** 1 resident agent sessions were seen by name across the campaign (2382171 codex resume 01a0ad61-0419-7110-9e8c-c25058935bc0). 0 sightings were recorded over 8 timed invocations, and a run with a sighting is discarded rather than published. The host was checked idle before and after every run and sampled once a second during it.
+**Host conditions.** PENDING-B5-RESIDENT
 
-- `one-thread`: clean, started 2026-09-22T07:32:22+0000, 236.8 s, 1 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `full-width`: clean, started 2026-09-22T07:36:21+0000, 104.5 s, 0 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `pinned-one-thread`: clean, started 2026-09-22T07:38:08+0000, 139.4 s, 1 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `pinned-full-width`: clean, started 2026-09-22T07:40:29+0000, 76.2 s, 0 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `large-one-thread`: clean, started 2026-09-22T07:41:47+0000, 1674.2 s, 7 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `large-full-width`: clean, started 2026-09-22T08:09:44+0000, 711.1 s, 3 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `xlarge-one-thread`: clean, started 2026-09-22T08:21:37+0000, 4300.3 s, 129 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `xlarge-full-width`: clean, started 2026-09-22T09:33:19+0000, 1551.3 s, 7 steal ticks over the run, 0 sightings, 1 resident agent sessions.
+PENDING-B5-HOSTRUNS
 
-**1 of 1840 cells reached the 0.25 MAD/median threshold** and enter no table: `grust-next@counted` pagerank path-65536 first in pinned-full-width, 48.21 ± 12.26.
+PENDING-B5-UNUSABLE
 
 **Parity at the commit under test**, every fixture set at concurrency unset, 1
 and 16, before any timing. `grust-next` must return v0.22.0's PageRank vector
 bit for bit or it is a mismatch and is never timed.
 
-| file | agree | absent | mismatch | error | bits-identical to v0.22.0 | mismatched rows |
-| --- | ---: | ---: | ---: | ---: | ---: | --- |
-| `fixtures-1` | 252 | 32 | 4 | 0 | 24 of 24 | neo4j-graph layered-16384, neo4j-graph layered-65536, neo4j-graph path-16384, neo4j-graph path-65536 |
-| `fixtures-16` | 252 | 32 | 4 | 0 | 24 of 24 | neo4j-graph layered-16384, neo4j-graph layered-65536, neo4j-graph path-16384, neo4j-graph path-65536 |
-| `fixtures-large-1` | 18 | 0 | 0 | 0 | 6 of 6 | — |
-| `fixtures-large-16` | 18 | 0 | 0 | 0 | 6 of 6 | — |
-| `fixtures-large-unset` | 18 | 0 | 0 | 0 | 6 of 6 | — |
-| `fixtures-unset` | 252 | 32 | 4 | 0 | 24 of 24 | neo4j-graph layered-16384, neo4j-graph layered-65536, neo4j-graph path-16384, neo4j-graph path-65536 |
-| `fixtures-xlarge-1` | 18 | 0 | 0 | 0 | 6 of 6 | — |
-| `fixtures-xlarge-16` | 18 | 0 | 0 | 0 | 6 of 6 | — |
-| `fixtures-xlarge-unset` | 18 | 0 | 0 | 0 | 6 of 6 | — |
-
-3 parity invocations exited 1: `parity.py` exits 1 whenever any row mismatches, and the protocol fixture set always contains the four known `neo4j-graph` dangling-mass rows; the PageRank-only large sets contain none and exit 0. The driver takes its verdict from the file, not the exit code. 2 parity invocations are marked shared.
-
-The `--bits-identical` gate names v0.22.0 and the three accounting modes. The `+eager` variant differs from `grust-next@counted` only in where the transpose is built, so its rows are compared with v0.22.0's in the same parity files after the fact: its PageRank digest and iteration count equal v0.22.0's in 36 of 36 rows.
+PENDING-B5-PARITY
 
 ### The allocator artifact, corrected
 
@@ -712,56 +691,9 @@ artifact moved, so the correction can be read off the counter beside the time.
 
 | fixture | algorithm | run | kernel | `grust` v0.22.0 | faults | `grust-next` | faults | `grust-next` `+eager` | faults | next/v0.22.0 | eager/next |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `hub-16384` | wcc | one-thread | concurrency 1 | 1.54 ± 0.01 | 33 | 1.48 ± 0.01 | 32 | 1.48 ± 0.00 | 32 | -3.9% | -0.2% |
-| `hub-16384` | wcc | one-thread | concurrency unset | 4.14 ± 0.00 | 33 | 4.09 ± 0.00 | 32 | 4.09 ± 0.00 | 32 | -1.2% | +0.0% |
-| `hub-16384` | bfs | one-thread | concurrency 1 | 1.52 ± 0.01 | 36 | 1.53 ± 0.00 | 32 | 1.54 ± 0.01 | 32 | +0.9% | +1.0% |
-| `hub-16384` | bfs | one-thread | concurrency unset | 1.51 ± 0.01 | 36 | 1.55 ± 0.00 | 36 | 1.59 ± 0.01 | 64 | +2.6% | +2.4% |
-| `hub-65536` | wcc | one-thread | concurrency 1 | 6.66 ± 0.01 | 128 | 6.46 ± 0.04 | 128 | 6.54 ± 0.03 | 128 | -3.0% | +1.3% |
-| `hub-65536` | wcc | one-thread | concurrency unset | 16.88 ± 0.01 | 128 | 16.67 ± 0.01 | 128 | 16.68 ± 0.03 | 128 | -1.3% | +0.1% |
-| `hub-65536` | bfs | one-thread | concurrency 1 | 5.90 ± 0.02 | 146 | 6.25 ± 0.07 | 130 | 6.07 ± 0.00 | 194 | +6.0% | -2.9% |
-| `hub-65536` | bfs | one-thread | concurrency unset | 6.97 ± 0.13 | 144 | 7.40 ± 0.06 | 144 | 7.17 ± 0.05 | 256 | +6.1% | -3.0% |
-| `layered-16384` | wcc | one-thread | concurrency 1 | 0.62 ± 0.01 | 32 | 0.69 ± 0.01 | 32 | 0.67 ± 0.01 | 32 | +10.1% | -2.8% |
-| `layered-16384` | wcc | one-thread | concurrency unset | 1.43 ± 0.01 | 32 | 1.41 ± 0.00 | 32 | 1.42 ± 0.02 | 32 | -1.3% | +0.8% |
-| `layered-16384` | bfs | one-thread | concurrency 1 | 0.45 ± 0.01 | 30 | 0.44 ± 0.01 | 26 | 0.44 ± 0.00 | 26 | -0.8% | -1.3% |
-| `layered-16384` | bfs | one-thread | concurrency unset | 0.45 ± 0.00 | 30 | 0.44 ± 0.00 | 30 | 0.49 ± 0.01 | 58 | -3.9% | +13.2% |
-| `layered-65536` | wcc | one-thread | concurrency 1 | 2.50 ± 0.01 | 128 | 2.78 ± 0.00 | 128 | 2.76 ± 0.02 | 128 | +11.0% | -0.5% |
-| `layered-65536` | wcc | one-thread | concurrency unset | 5.74 ± 0.01 | 128 | 5.72 ± 0.00 | 128 | 5.72 ± 0.00 | 128 | -0.5% | +0.1% |
-| `layered-65536` | bfs | one-thread | concurrency 1 | 1.83 ± 0.01 | 119 | 1.79 ± 0.01 | 103 | 1.78 ± 0.01 | 103 | -2.1% | -0.8% |
-| `layered-65536` | bfs | one-thread | concurrency unset | 1.84 ± 0.02 | 119 | 1.82 ± 0.01 | 119 | 2.04 ± 0.00 | 231 | -1.0% | +11.8% |
-| `path-16384` | wcc | one-thread | concurrency 1 | 0.43 ± 0.01 | 32 | 0.45 ± 0.01 | 32 | 0.44 ± 0.01 | 32 | +4.2% | -1.8% |
-| `path-16384` | wcc | one-thread | concurrency unset | 0.99 ± 0.01 | 32 | 0.97 ± 0.00 | 32 | 0.98 ± 0.00 | 32 | -2.7% | +2.0% |
-| `path-16384` | bfs | one-thread | concurrency 1 | 0.42 ± 0.00 | 36 | 0.38 ± 0.00 | 32 | 0.38 ± 0.00 | 32 | -9.2% | -1.4% |
-| `path-16384` | bfs | one-thread | concurrency unset | 0.41 ± 0.01 | 37 | 0.38 ± 0.00 | 36 | 0.46 ± 0.00 | 64 | -6.4% | +20.0% |
-| `path-65536` | wcc | one-thread | concurrency 1 | 1.77 ± 0.00 | 128 | 1.79 ± 0.01 | 128 | 1.81 ± 0.02 | 128 | +0.9% | +1.2% |
-| `path-65536` | wcc | one-thread | concurrency unset | 3.98 ± 0.01 | 128 | 3.96 ± 0.01 | 128 | 3.97 ± 0.01 | 128 | -0.6% | +0.2% |
-| `path-65536` | bfs | one-thread | concurrency 1 | 1.68 ± 0.01 | 144 | 1.58 ± 0.03 | 128 | 1.57 ± 0.00 | 128 | -5.8% | -0.5% |
-| `path-65536` | bfs | one-thread | concurrency unset | 1.68 ± 0.01 | 144 | 1.64 ± 0.01 | 144 | 1.84 ± 0.01 | 256 | -2.5% | +12.5% |
-| `uniform-16384` | wcc | one-thread | concurrency 1 | 2.04 ± 0.00 | 32 | 2.32 ± 0.01 | 32 | 2.32 ± 0.01 | 32 | +13.6% | +0.1% |
-| `uniform-16384` | wcc | one-thread | concurrency unset | 4.15 ± 0.00 | 32 | 4.09 ± 0.00 | 32 | 4.10 ± 0.00 | 32 | -1.2% | +0.0% |
-| `uniform-16384` | bfs | one-thread | concurrency 1 | 1.58 ± 0.01 | 36 | 1.59 ± 0.01 | 32 | 1.60 ± 0.03 | 32 | +1.0% | +0.2% |
-| `uniform-16384` | bfs | one-thread | concurrency unset | 1.57 ± 0.01 | 36 | 1.62 ± 0.00 | 36 | 1.65 ± 0.03 | 64 | +2.8% | +2.3% |
-| `uniform-65536` | wcc | one-thread | concurrency 1 | 8.88 ± 0.05 | 128 | 9.81 ± 0.03 | 128 | 9.91 ± 0.06 | 128 | +10.5% | +1.0% |
-| `uniform-65536` | wcc | one-thread | concurrency unset | 17.08 ± 0.05 | 128 | 16.96 ± 0.03 | 128 | 17.04 ± 0.02 | 128 | -0.7% | +0.5% |
-| `uniform-65536` | bfs | one-thread | concurrency 1 | 6.39 ± 0.05 | 210 | 6.63 ± 0.04 | 134 | 6.22 ± 0.05 | 198 | +3.8% | -6.2% |
-| `uniform-65536` | bfs | one-thread | concurrency unset | 7.06 ± 0.11 | 144 | 7.54 ± 0.04 | 144 | 7.32 ± 0.09 | 256 | +6.7% | -2.9% |
-| `hub-16384` | wcc | full-width | concurrency as the run | 1.20 ± 0.04 | 141 | 0.49 ± 0.01 | 4 | 0.45 ± 0.01 | 2 | -59.4% | -7.5% |
-| `hub-16384` | bfs | full-width | concurrency as the run | 1.52 ± 0.00 | 36 | 1.54 ± 0.01 | 0 | 1.47 ± 0.01 | 0 | +1.4% | -4.7% |
-| `hub-65536` | wcc | full-width | concurrency as the run | 2.38 ± 0.03 | 239 | 1.48 ± 0.05 | 6 | 1.50 ± 0.05 | 3 | -38.0% | +1.5% |
-| `hub-65536` | bfs | full-width | concurrency as the run | 4.07 ± 0.08 | 390 | 3.17 ± 0.01 | 131 | 3.01 ± 0.02 | 119 | -22.0% | -5.1% |
-| `layered-16384` | wcc | full-width | concurrency as the run | 0.98 ± 0.02 | 140 | 0.38 ± 0.02 | 35 | 0.31 ± 0.00 | 34 | -61.3% | -17.9% |
-| `layered-16384` | bfs | full-width | concurrency as the run | 0.45 ± 0.00 | 30 | 0.46 ± 0.00 | 26 | 0.45 ± 0.00 | 26 | +0.3% | -1.0% |
-| `layered-65536` | wcc | full-width | concurrency as the run | 1.51 ± 0.01 | 239 | 0.89 ± 0.01 | 133 | 0.86 ± 0.01 | 132 | -40.8% | -3.3% |
-| `layered-65536` | bfs | full-width | concurrency as the run | 1.84 ± 0.01 | 119 | 1.85 ± 0.03 | 103 | 1.84 ± 0.04 | 102 | +0.6% | -0.6% |
-| `path-16384` | wcc | full-width | concurrency as the run | 0.93 ± 0.07 | 137 | 0.47 ± 0.02 | 35 | 0.41 ± 0.02 | 35 | -49.4% | -12.8% |
-| `path-16384` | bfs | full-width | concurrency as the run | 0.42 ± 0.00 | 36 | 0.41 ± 0.00 | 32 | 0.40 ± 0.01 | 32 | -2.4% | -1.5% |
-| `path-65536` | wcc | full-width | concurrency as the run | 1.43 ± 0.01 | 238 | 1.04 ± 0.04 | 133 | 1.23 ± 0.03 | 133 | -26.8% | +17.7% |
-| `path-65536` | bfs | full-width | concurrency as the run | 1.69 ± 0.01 | 144 | 1.63 ± 0.02 | 128 | 1.62 ± 0.02 | 128 | -3.4% | -0.3% |
-| `uniform-16384` | wcc | full-width | concurrency as the run | 1.32 ± 0.03 | 142 | 0.57 ± 0.01 | 3 | 0.51 ± 0.03 | 3 | -56.4% | -11.1% |
-| `uniform-16384` | bfs | full-width | concurrency as the run | 1.56 ± 0.00 | 36 | 1.71 ± 0.02 | 0 | 1.53 ± 0.01 | 0 | +9.4% | -10.2% |
-| `uniform-65536` | wcc | full-width | concurrency as the run | 2.71 ± 0.16 | 241 | 1.80 ± 0.06 | 4 | 1.65 ± 0.04 | 4 | -33.7% | -8.2% |
-| `uniform-65536` | bfs | full-width | concurrency as the run | 4.20 ± 0.04 | 367 | 3.27 ± 0.08 | 118 | 3.16 ± 0.01 | 123 | -22.2% | -3.4% |
+PENDING-B5-ALLOCTABLE
 
-Across the 48 WCC and BFS first-call cells at the protocol sizes, the corrected `grust-next` takes a median of -2 minor page faults against v0.22.0 and the `+eager` row a median of +0 against the corrected one; `+eager` is slower than the corrected row in 22 of 48 of them, by a median of -0.4%.
+PENDING-B5-ALLOCNOTE
 
 ### The allocator pinned, for every participant
 
@@ -771,106 +703,11 @@ size, against the same cell of the same run unpinned.
 
 | fixture | algorithm | run | participant | default allocator | faults | pinned | faults | pinned/default |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| `hub-65536` | pagerank | one-thread | `neo4j-graph` | 35.93 ± 0.14 | 70 | 36.03 ± 0.13 | 137 | +0.3% |
-| `hub-65536` | pagerank | one-thread | `icebug` | 42.13 ± 0.80 | 400 | 43.07 ± 0.80 | 400 | +2.2% |
-| `hub-65536` | pagerank | one-thread | `icecat` | 34.12 ± 0.01 | 607 | 34.66 ± 0.05 | 902 | +1.6% |
-| `hub-65536` | pagerank | one-thread | `grustcat` | 30.23 ± 0.03 | 0 | 30.56 ± 0.09 | 387 | +1.1% |
-| `hub-65536` | pagerank | one-thread | `grust#1` | 52.59 ± 0.21 | 1024 | 53.30 ± 0.05 | 647 | +1.4% |
-| `hub-65536` | pagerank | one-thread | `grust#unset` | 203.55 ± 0.34 | 512 | 204.43 ± 0.20 | 645 | +0.4% |
-| `hub-65536` | pagerank | one-thread | `grust-next@counted#1` | 34.02 ± 0.13 | 384 | 34.52 ± 0.33 | 516 | +1.5% |
-| `hub-65536` | pagerank | one-thread | `grust-next@counted#unset` | 95.14 ± 0.47 | 512 | 95.38 ± 0.69 | 645 | +0.3% |
-| `hub-65536` | wcc | one-thread | `neo4j-graph` | 3.75 ± 0.01 | 32 | 4.48 ± 0.01 | 393 | +19.4% |
-| `hub-65536` | wcc | one-thread | `icebug` | 11.25 ± 0.41 | 239 | 11.36 ± 0.06 | 240 | +1.0% |
-| `hub-65536` | wcc | one-thread | `icecat` | 3.48 ± 0.22 | 127 | 3.73 ± 0.01 | 258 | +7.1% |
-| `hub-65536` | wcc | one-thread | `grustcat` | 2.44 ± 0.01 | 0 | 2.46 ± 0.02 | 0 | +0.8% |
-| `hub-65536` | wcc | one-thread | `grust#1` | 6.66 ± 0.01 | 128 | 6.84 ± 0.02 | 258 | +2.6% |
-| `hub-65536` | wcc | one-thread | `grust#unset` | 16.88 ± 0.01 | 128 | 17.10 ± 0.01 | 258 | +1.3% |
-| `hub-65536` | wcc | one-thread | `grust-next@counted#1` | 6.46 ± 0.04 | 128 | 6.72 ± 0.01 | 258 | +4.1% |
-| `hub-65536` | wcc | one-thread | `grust-next@counted#unset` | 16.67 ± 0.01 | 128 | 16.97 ± 0.00 | 258 | +1.8% |
-| `hub-65536` | bfs | one-thread | `icebug` | 8.41 ± 0.23 | 216 | 8.45 ± 0.07 | 216 | +0.5% |
-| `hub-65536` | bfs | one-thread | `icecat` | 4.37 ± 0.01 | 385 | 4.50 ± 0.03 | 388 | +3.0% |
-| `hub-65536` | bfs | one-thread | `grustcat` | 4.06 ± 0.13 | 1 | 4.61 ± 0.20 | 129 | +13.7% |
-| `hub-65536` | bfs | one-thread | `grust#1` | 5.90 ± 0.02 | 146 | 6.28 ± 0.08 | 420 | +6.5% |
-| `hub-65536` | bfs | one-thread | `grust#unset` | 6.97 ± 0.13 | 144 | 6.99 ± 0.06 | 274 | +0.2% |
-| `hub-65536` | bfs | one-thread | `grust-next@counted#1` | 6.25 ± 0.07 | 130 | 6.59 ± 0.04 | 435 | +5.5% |
-| `hub-65536` | bfs | one-thread | `grust-next@counted#unset` | 7.40 ± 0.06 | 144 | 7.27 ± 0.08 | 258 | -1.6% |
-| `hub-65536` | triangles | one-thread | `neo4j-graph` | 35.34 ± 0.15 | 4 | 35.09 ± 0.16 | 4 | -0.7% |
-| `hub-65536` | triangles | one-thread | `grust#1` | 74.25 ± 0.24 | 1665 | 73.73 ± 0.71 | 1290 | -0.7% |
-| `hub-65536` | triangles | one-thread | `grust#unset` | 73.80 ± 0.18 | 1665 | 73.37 ± 0.15 | 1290 | -0.6% |
-| `hub-65536` | triangles | one-thread | `grust-next@counted#1` | 72.51 ± 0.02 | 1666 | 71.71 ± 0.34 | 1290 | -1.1% |
-| `hub-65536` | triangles | one-thread | `grust-next@counted#unset` | 72.29 ± 0.06 | 1666 | 71.81 ± 0.27 | 1290 | -0.7% |
-| `uniform-65536` | pagerank | one-thread | `neo4j-graph` | 44.24 ± 0.08 | 71 | 43.99 ± 0.03 | 138 | -0.6% |
-| `uniform-65536` | pagerank | one-thread | `icebug` | 39.50 ± 0.78 | 398 | 38.97 ± 0.24 | 398 | -1.3% |
-| `uniform-65536` | pagerank | one-thread | `icecat` | 32.69 ± 0.02 | 607 | 32.83 ± 0.06 | 902 | +0.4% |
-| `uniform-65536` | pagerank | one-thread | `grustcat` | 29.27 ± 0.12 | 0 | 28.85 ± 0.10 | 0 | -1.4% |
-| `uniform-65536` | pagerank | one-thread | `grust#1` | 51.51 ± 0.43 | 1025 | 50.34 ± 0.13 | 647 | -2.3% |
-| `uniform-65536` | pagerank | one-thread | `grust#unset` | 192.34 ± 0.36 | 512 | 192.56 ± 0.26 | 645 | +0.1% |
-| `uniform-65536` | pagerank | one-thread | `grust-next@counted#1` | 32.48 ± 0.20 | 384 | 32.18 ± 0.39 | 516 | -0.9% |
-| `uniform-65536` | pagerank | one-thread | `grust-next@counted#unset` | 88.77 ± 0.68 | 512 | 89.06 ± 0.28 | 645 | +0.3% |
-| `uniform-65536` | wcc | one-thread | `neo4j-graph` | 3.75 ± 0.00 | 32 | 4.49 ± 0.02 | 393 | +19.7% |
-| `uniform-65536` | wcc | one-thread | `icebug` | 12.83 ± 0.08 | 244 | 12.81 ± 0.26 | 243 | -0.1% |
-| `uniform-65536` | wcc | one-thread | `icecat` | 4.02 ± 0.07 | 35 | 4.34 ± 0.01 | 259 | +7.9% |
-| `uniform-65536` | wcc | one-thread | `grustcat` | 3.05 ± 0.04 | 0 | 3.06 ± 0.01 | 0 | +0.5% |
-| `uniform-65536` | wcc | one-thread | `grust#1` | 8.88 ± 0.05 | 128 | 8.87 ± 0.02 | 258 | -0.0% |
-| `uniform-65536` | wcc | one-thread | `grust#unset` | 17.08 ± 0.05 | 128 | 17.29 ± 0.06 | 258 | +1.3% |
-| `uniform-65536` | wcc | one-thread | `grust-next@counted#1` | 9.81 ± 0.03 | 128 | 10.03 ± 0.04 | 258 | +2.3% |
-| `uniform-65536` | wcc | one-thread | `grust-next@counted#unset` | 16.96 ± 0.03 | 128 | 17.33 ± 0.04 | 258 | +2.2% |
-| `uniform-65536` | bfs | one-thread | `icebug` | 8.43 ± 0.14 | 216 | 8.34 ± 0.11 | 217 | -1.1% |
-| `uniform-65536` | bfs | one-thread | `icecat` | 3.93 ± 0.04 | 180 | 4.20 ± 0.03 | 386 | +6.8% |
-| `uniform-65536` | bfs | one-thread | `grustcat` | 4.36 ± 0.12 | 0 | 4.43 ± 0.04 | 0 | +1.7% |
-| `uniform-65536` | bfs | one-thread | `grust#1` | 6.39 ± 0.05 | 210 | 6.40 ± 0.06 | 428 | +0.2% |
-| `uniform-65536` | bfs | one-thread | `grust#unset` | 7.06 ± 0.11 | 144 | 6.93 ± 0.03 | 273 | -1.9% |
-| `uniform-65536` | bfs | one-thread | `grust-next@counted#1` | 6.63 ± 0.04 | 134 | 6.71 ± 0.05 | 420 | +1.3% |
-| `uniform-65536` | bfs | one-thread | `grust-next@counted#unset` | 7.54 ± 0.04 | 144 | 7.17 ± 0.03 | 257 | -4.9% |
-| `uniform-65536` | triangles | one-thread | `neo4j-graph` | 39.47 ± 0.14 | 4 | 39.25 ± 0.06 | 4 | -0.5% |
-| `uniform-65536` | triangles | one-thread | `grust#1` | 80.93 ± 0.52 | 1668 | 78.90 ± 0.04 | 780 | -2.5% |
-| `uniform-65536` | triangles | one-thread | `grust#unset` | 81.49 ± 0.35 | 1668 | 78.91 ± 0.02 | 780 | -3.2% |
-| `uniform-65536` | triangles | one-thread | `grust-next@counted#1` | 78.55 ± 1.00 | 1157 | 77.41 ± 0.12 | 780 | -1.5% |
-| `uniform-65536` | triangles | one-thread | `grust-next@counted#unset` | 78.43 ± 0.03 | 1157 | 77.30 ± 0.06 | 780 | -1.4% |
-| `hub-65536` | pagerank | full-width | `neo4j-graph` | 15.03 ± 0.04 | 94 | 15.21 ± 0.04 | 170 | +1.2% |
-| `hub-65536` | pagerank | full-width | `icebug` | 7.45 ± 0.04 | 502 | 7.45 ± 0.04 | 487 | -0.0% |
-| `hub-65536` | pagerank | full-width | `icecat` | 34.07 ± 0.07 | 608 | 34.60 ± 0.01 | 901 | +1.5% |
-| `hub-65536` | pagerank | full-width | `grustcat` | 30.28 ± 0.22 | 0 | 30.53 ± 0.08 | 387 | +0.8% |
-| `hub-65536` | pagerank | full-width | `grust` | 17.79 ± 0.26 | 1133 | 16.97 ± 0.12 | 771 | -4.6% |
-| `hub-65536` | pagerank | full-width | `grust-next@counted` | 7.22 ± 0.04 | 13 | 8.30 ± 0.12 | 533 | +15.0% |
-| `hub-65536` | wcc | full-width | `neo4j-graph` | 3.18 ± 0.05 | 226 | 3.37 ± 0.09 | 415 | +6.2% |
-| `hub-65536` | wcc | full-width | `icebug` | 11.21 ± 0.09 | 239 | 11.04 ± 0.22 | 239 | -1.5% |
-| `hub-65536` | wcc | full-width | `icecat` | 3.71 ± 0.02 | 256 | 3.74 ± 0.01 | 259 | +0.7% |
-| `hub-65536` | wcc | full-width | `grustcat` | 2.46 ± 0.01 | 0 | 2.44 ± 0.00 | 0 | -0.8% |
-| `hub-65536` | wcc | full-width | `grust` | 2.38 ± 0.03 | 239 | 2.66 ± 0.05 | 368 | +11.3% |
-| `hub-65536` | wcc | full-width | `grust-next@counted` | 1.48 ± 0.05 | 6 | 2.12 ± 0.03 | 261 | +43.8% |
-| `hub-65536` | bfs | full-width | `icebug` | 8.41 ± 0.05 | 216 | 8.38 ± 0.06 | 216 | -0.4% |
-| `hub-65536` | bfs | full-width | `icecat` | 3.79 ± 0.03 | 109 | 4.39 ± 0.10 | 388 | +15.8% |
-| `hub-65536` | bfs | full-width | `grustcat` | 3.98 ± 0.08 | 0 | 4.62 ± 0.04 | 129 | +16.0% |
-| `hub-65536` | bfs | full-width | `grust` | 4.07 ± 0.08 | 390 | 4.73 ± 0.08 | 598 | +16.3% |
-| `hub-65536` | bfs | full-width | `grust-next@counted` | 3.17 ± 0.01 | 131 | 3.82 ± 0.06 | 414 | +20.5% |
-| `hub-65536` | triangles | full-width | `neo4j-graph` | 3.50 ± 0.05 | 52 | 3.56 ± 0.05 | 52 | +1.6% |
-| `hub-65536` | triangles | full-width | `grust` | 31.16 ± 0.11 | 1768 | 30.92 ± 0.18 | 1393 | -0.8% |
-| `hub-65536` | triangles | full-width | `grust-next@counted` | 28.78 ± 0.09 | 1026 | 29.61 ± 0.06 | 1290 | +2.9% |
-| `uniform-65536` | pagerank | full-width | `neo4j-graph` | 16.30 ± 0.28 | 94 | 16.09 ± 0.10 | 173 | -1.3% |
-| `uniform-65536` | pagerank | full-width | `icebug` | 7.37 ± 0.06 | 488 | 7.14 ± 0.12 | 489 | -3.2% |
-| `uniform-65536` | pagerank | full-width | `icecat` | 32.72 ± 0.05 | 606 | 32.90 ± 0.11 | 902 | +0.6% |
-| `uniform-65536` | pagerank | full-width | `grustcat` | 29.50 ± 0.10 | 0 | 29.02 ± 0.06 | 0 | -1.6% |
-| `uniform-65536` | pagerank | full-width | `grust` | 17.41 ± 0.34 | 1134 | 16.80 ± 0.19 | 771 | -3.5% |
-| `uniform-65536` | pagerank | full-width | `grust-next@counted` | 7.01 ± 0.16 | 12 | 7.85 ± 0.12 | 531 | +12.1% |
-| `uniform-65536` | wcc | full-width | `neo4j-graph` | 3.08 ± 0.13 | 228 | 3.88 ± 0.06 | 413 | +26.1% |
-| `uniform-65536` | wcc | full-width | `icebug` | 13.06 ± 0.11 | 244 | 12.82 ± 0.07 | 243 | -1.8% |
-| `uniform-65536` | wcc | full-width | `icecat` | 3.96 ± 0.01 | 3 | 4.35 ± 0.01 | 258 | +9.9% |
-| `uniform-65536` | wcc | full-width | `grustcat` | 3.08 ± 0.02 | 0 | 3.07 ± 0.01 | 0 | -0.3% |
-| `uniform-65536` | wcc | full-width | `grust` | 2.71 ± 0.16 | 241 | 2.96 ± 0.08 | 370 | +9.3% |
-| `uniform-65536` | wcc | full-width | `grust-next@counted` | 1.80 ± 0.06 | 4 | 2.37 ± 0.08 | 262 | +31.8% |
-| `uniform-65536` | bfs | full-width | `icebug` | 8.58 ± 0.26 | 216 | 8.58 ± 0.05 | 216 | +0.1% |
-| `uniform-65536` | bfs | full-width | `icecat` | 4.03 ± 0.30 | 253 | 4.26 ± 0.02 | 386 | +5.7% |
-| `uniform-65536` | bfs | full-width | `grustcat` | 4.35 ± 0.08 | 0 | 4.38 ± 0.05 | 0 | +0.6% |
-| `uniform-65536` | bfs | full-width | `grust` | 4.20 ± 0.04 | 367 | 4.75 ± 0.07 | 556 | +13.0% |
-| `uniform-65536` | bfs | full-width | `grust-next@counted` | 3.27 ± 0.08 | 118 | 4.03 ± 0.04 | 453 | +23.1% |
-| `uniform-65536` | triangles | full-width | `neo4j-graph` | 3.99 ± 0.04 | 51 | 3.77 ± 0.03 | 55 | -5.6% |
-| `uniform-65536` | triangles | full-width | `grust` | 32.54 ± 0.32 | 1770 | 31.27 ± 0.05 | 882 | -3.9% |
-| `uniform-65536` | triangles | full-width | `grust-next@counted` | 29.06 ± 0.08 | 517 | 29.74 ± 0.09 | 780 | +2.4% |
+PENDING-B5-PINNED
 
-Median change under pinning, per participant: `grust` +0.1% over 24 cells; `grust-next` +2.0% over 24 cells; `grustcat` +0.7% over 12 cells; `icebug` -0.2% over 12 cells; `icecat` +4.4% over 12 cells; `neo4j-graph` +0.7% over 12 cells.
+Median change under pinning, per participant: PENDING-B5-PINVERDICT
 
-**The decision, by the rule fixed before the runs.** Over the same 48 WCC and BFS first-call cells, the median difference in minor page faults between v0.22.0 and the corrected `grust-next` is 2, against the 25 that the rule set as the line and the 112 to 128 the attribution measured for the artifact itself. The two builds are therefore in the same allocator state on the same cell, and the published tables are the default-allocator runs: glibc's default is what every participant's users have, and none of these projects sets a tunable. The pinned runs above stay as a labelled probe, and they also show that the threshold is not a Grust-specific effect — it moves participants that contain no Grust at all.
+PENDING-B5-PINDECISION
 
 ### The transpose, on the build side
 
@@ -882,12 +719,7 @@ which is not the condition of any other participant's timed call.
 
 | fixture | `grust` v0.22.0 first | `grust` v0.22.0 second | `grust-next` counted first | transpose, in `build_ms` | `grustcat` | steal |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| `hub-65536` | 52.59 ± 0.21 | 44.00 ± 0.17 | 34.02 ± 0.13 | 6.41 | 30.23 ± 0.03 | 0 |
-| `uniform-65536` | 51.51 ± 0.43 | 42.87 ± 0.33 | 32.48 ± 0.20 | 6.36 | 29.27 ± 0.12 | 0 |
-| `hub-2097152` | 4987.08 ± 70.65 | 4398.60 ± 71.31 | 2170.69 ± 43.13 | 552.73 | 1946.08 ± 46.23 | 3 |
-| `uniform-2097152` | 5186.50 ± 59.96 | 4575.57 ± 48.02 | 2207.80 ± 62.26 | 529.75 | 2399.05 ± 35.57 | 4 |
-| `hub-4194304` | 12663.28 ± 36.71 | 11300.51 ± 50.55 | 6941.34 ± 23.40 | 1184.65 | 6040.22 ± 40.65 | 121 |
-| `uniform-4194304` | 13286.45 ± 45.87 | 11878.26 ± 54.01 | 7030.83 ± 59.57 | 1173.68 | 7113.24 ± 94.56 | 8 |
+PENDING-B5-TRANSPOSE
 
 ### The kernel change, v0.22.0 against the commit under test
 
@@ -897,116 +729,24 @@ bit, which parity checked on every fixture at every concurrency.
 
 | fixture | run | kernel | v0.22.0 | `ca68900` | ratio | steal |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
-| `hub-16384` | one-thread | pull | 9.60 ± 0.01 | 7.98 ± 0.00 | 0.831 | 0 |
-| `hub-16384` | one-thread | push | 50.40 ± 0.01 | 23.16 ± 0.04 | 0.460 | 0 |
-| `hub-65536` | one-thread | pull | 44.00 ± 0.17 | 33.20 ± 0.10 | 0.755 | 0 |
-| `hub-65536` | one-thread | push | 202.19 ± 0.14 | 95.60 ± 0.56 | 0.473 | 0 |
-| `uniform-16384` | one-thread | pull | 9.20 ± 0.00 | 7.54 ± 0.02 | 0.819 | 0 |
-| `uniform-16384` | one-thread | push | 47.73 ± 0.01 | 21.50 ± 0.01 | 0.450 | 0 |
-| `uniform-65536` | one-thread | pull | 42.87 ± 0.33 | 31.61 ± 0.25 | 0.737 | 0 |
-| `uniform-65536` | one-thread | push | 191.54 ± 0.13 | 88.63 ± 0.72 | 0.463 | 0 |
-| `hub-16384` | full-width | pull | 3.46 ± 0.02 | 3.29 ± 0.01 | 0.951 | 0 |
-| `hub-65536` | full-width | pull | 8.71 ± 0.14 | 7.10 ± 0.06 | 0.816 | 0 |
-| `uniform-16384` | full-width | pull | 3.30 ± 0.07 | 3.39 ± 0.25 | 1.027 | 0 |
-| `uniform-65536` | full-width | pull | 8.16 ± 0.07 | 6.68 ± 0.10 | 0.819 | 0 |
-| `hub-2097152` | large-one-thread | pull | 4398.60 ± 71.31 | 1935.33 ± 23.39 | 0.440 | 3 |
-| `hub-2097152` | large-one-thread | push | 7772.38 ± 75.86 | 4115.77 ± 46.30 | 0.530 | 3 |
-| `uniform-2097152` | large-one-thread | pull | 4575.57 ± 48.02 | 2010.09 ± 52.55 | 0.439 | 4 |
-| `uniform-2097152` | large-one-thread | push | 7545.63 ± 82.12 | 4300.81 ± 153.48 | 0.570 | 4 |
-| `hub-2097152` | large-full-width | pull | 502.37 ± 9.55 | 233.44 ± 1.37 | 0.465 | 1 |
-| `uniform-2097152` | large-full-width | pull | 548.05 ± 17.24 | 253.45 ± 9.76 | 0.462 | 2 |
-| `hub-4194304` | xlarge-one-thread | pull | 11300.51 ± 50.55 | 6969.36 ± 27.73 | 0.617 | 121 |
-| `hub-4194304` | xlarge-one-thread | push | 26010.01 ± 279.41 | 12936.74 ± 26.41 | 0.497 | 121 |
-| `uniform-4194304` | xlarge-one-thread | pull | 11878.26 ± 54.01 | 7036.39 ± 65.96 | 0.592 | 8 |
-| `uniform-4194304` | xlarge-one-thread | push | 24393.09 ± 778.50 | 12394.91 ± 269.46 | 0.508 | 8 |
-| `hub-4194304` | xlarge-full-width | pull | 1347.79 ± 3.82 | 710.51 ± 15.55 | 0.527 | 4 |
-| `uniform-4194304` | xlarge-full-width | pull | 1446.17 ± 3.87 | 750.56 ± 21.85 | 0.519 | 3 |
+PENDING-B5-KERNEL
 
 ### Every cell that got worse
 
 Counted `grust-next` against v0.22.0, same fixture, algorithm, kernel and call.
-70 of the 216 counted cells with a v0.22.0 counterpart are slower on `ca68900`, by +0.0% to +117.4%.
+PENDING-B5-WORSENOTE
 
 | fixture | algorithm | run | kernel | call | v0.22.0 | faults | `ca68900` | faults | change | steal |
 | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| `hub-16384` | bfs | full-width | concurrency as the run | first | 1.52 ± 0.00 | 36 | 1.54 ± 0.01 | 0 | +1.4% | 0 |
-| `hub-16384` | bfs | full-width | concurrency as the run | second | 1.47 ± 0.01 | 0 | 1.47 ± 0.01 | 0 | +0.3% | 0 |
-| `hub-16384` | triangles | full-width | concurrency as the run | second | 6.19 ± 0.03 | 2 | 7.05 ± 0.02 | 512 | +13.9% | 0 |
-| `hub-65536` | triangles | full-width | concurrency as the run | second | 25.06 ± 0.04 | 1 | 26.36 ± 0.15 | 1025 | +5.2% | 0 |
-| `layered-16384` | bfs | full-width | concurrency as the run | first | 0.45 ± 0.00 | 30 | 0.46 ± 0.00 | 26 | +0.3% | 0 |
-| `layered-16384` | pagerank | full-width | pull | second | 13.37 ± 0.18 | 0 | 14.14 ± 0.19 | 0 | +5.8% | 0 |
-| `layered-16384` | triangles | full-width | concurrency as the run | second | 1.66 ± 0.01 | 1 | 2.14 ± 0.03 | 318 | +29.2% | 0 |
-| `layered-16384` | wcc | full-width | concurrency as the run | second | 0.33 ± 0.00 | 32 | 0.34 ± 0.01 | 30 | +2.0% | 0 |
-| `layered-65536` | bfs | full-width | concurrency as the run | first | 1.84 ± 0.01 | 119 | 1.85 ± 0.03 | 103 | +0.6% | 0 |
-| `layered-65536` | triangles | full-width | concurrency as the run | second | 6.41 ± 0.02 | 2 | 7.07 ± 0.08 | 508 | +10.2% | 0 |
-| `layered-65536` | wcc | full-width | concurrency as the run | second | 0.84 ± 0.01 | 129 | 0.84 ± 0.02 | 125 | +0.8% | 0 |
-| `path-16384` | pagerank | full-width | pull | first | 10.44 ± 0.17 | 262 | 15.45 ± 0.69 | 108 | +47.9% | 0 |
-| `path-16384` | pagerank | full-width | pull | second | 8.65 ± 0.12 | 0 | 16.14 ± 0.36 | 64 | +86.6% | 0 |
-| `path-16384` | triangles | full-width | concurrency as the run | second | 0.94 ± 0.01 | 1 | 1.44 ± 0.01 | 256 | +53.6% | 0 |
-| `path-16384` | wcc | full-width | concurrency as the run | second | 0.29 ± 0.01 | 33 | 0.41 ± 0.03 | 17 | +40.0% | 0 |
-| `path-65536` | pagerank | full-width | pull | first | 16.31 ± 0.02 | 754 | 26.27 ± 2.31 | 401 | +61.1% | 0 |
-| `path-65536` | pagerank | full-width | pull | second | 12.24 ± 0.22 | 2 | 26.62 ± 0.47 | 355 | +117.4% | 0 |
-| `path-65536` | triangles | full-width | concurrency as the run | second | 3.53 ± 0.03 | 1 | 5.80 ± 0.06 | 1120 | +64.2% | 0 |
-| `path-65536` | wcc | full-width | concurrency as the run | second | 0.76 ± 0.00 | 133 | 0.81 ± 0.08 | 66 | +6.7% | 0 |
-| `uniform-16384` | bfs | full-width | concurrency as the run | first | 1.56 ± 0.00 | 36 | 1.71 ± 0.02 | 0 | +9.4% | 0 |
-| `uniform-16384` | bfs | full-width | concurrency as the run | second | 1.47 ± 0.00 | 0 | 1.51 ± 0.03 | 0 | +2.5% | 0 |
-| `uniform-16384` | pagerank | full-width | pull | second | 3.30 ± 0.07 | 1 | 3.39 ± 0.25 | 0 | +2.7% | 0 |
-| `uniform-16384` | triangles | full-width | concurrency as the run | second | 6.42 ± 0.03 | 1 | 7.27 ± 0.01 | 512 | +13.3% | 0 |
-| `uniform-65536` | triangles | full-width | concurrency as the run | second | 26.15 ± 0.08 | 1 | 27.61 ± 0.16 | 1026 | +5.6% | 0 |
-| `hub-16384` | bfs | one-thread | concurrency 1 | first | 1.52 ± 0.01 | 36 | 1.53 ± 0.00 | 32 | +0.9% | 0 |
-| `hub-16384` | bfs | one-thread | concurrency unset | first | 1.51 ± 0.01 | 36 | 1.55 ± 0.00 | 36 | +2.6% | 0 |
-| `hub-16384` | bfs | one-thread | concurrency 1 | second | 1.46 ± 0.03 | 0 | 1.46 ± 0.00 | 0 | +0.0% | 0 |
-| `hub-16384` | bfs | one-thread | concurrency unset | second | 1.44 ± 0.01 | 0 | 1.44 ± 0.00 | 0 | +0.2% | 0 |
-| `hub-16384` | triangles | one-thread | concurrency 1 | second | 15.58 ± 0.03 | 32 | 16.19 ± 0.05 | 511 | +3.9% | 0 |
-| `hub-16384` | triangles | one-thread | concurrency unset | second | 15.56 ± 0.06 | 32 | 16.16 ± 0.08 | 543 | +3.8% | 0 |
-| `hub-65536` | bfs | one-thread | concurrency 1 | first | 5.90 ± 0.02 | 146 | 6.25 ± 0.07 | 130 | +6.0% | 0 |
-| `hub-65536` | bfs | one-thread | concurrency unset | first | 6.97 ± 0.13 | 144 | 7.40 ± 0.06 | 144 | +6.1% | 0 |
-| `hub-65536` | bfs | one-thread | concurrency 1 | second | 5.29 ± 0.01 | 0 | 5.47 ± 0.06 | 0 | +3.4% | 0 |
-| `hub-65536` | bfs | one-thread | concurrency unset | second | 6.26 ± 0.00 | 0 | 6.39 ± 0.01 | 0 | +2.1% | 0 |
-| `hub-65536` | triangles | one-thread | concurrency 1 | second | 68.50 ± 0.39 | 128 | 70.27 ± 0.06 | 1535 | +2.6% | 0 |
-| `hub-65536` | triangles | one-thread | concurrency unset | second | 68.51 ± 0.09 | 128 | 69.14 ± 0.73 | 1152 | +0.9% | 0 |
-| `layered-16384` | pagerank | one-thread | pull | first | 30.17 ± 0.05 | 192 | 30.82 ± 0.07 | 96 | +2.2% | 0 |
-| `layered-16384` | pagerank | one-thread | pull | second | 29.34 ± 0.08 | 0 | 30.53 ± 0.01 | 0 | +4.1% | 0 |
-| `layered-16384` | triangles | one-thread | concurrency 1 | second | 2.18 ± 0.01 | 32 | 2.54 ± 0.01 | 350 | +16.3% | 0 |
-| `layered-16384` | triangles | one-thread | concurrency unset | second | 2.19 ± 0.03 | 32 | 2.27 ± 0.01 | 159 | +3.9% | 0 |
-| `layered-16384` | wcc | one-thread | concurrency 1 | first | 0.62 ± 0.01 | 32 | 0.69 ± 0.01 | 32 | +10.1% | 0 |
-| `layered-65536` | pagerank | one-thread | pull | first | 108.55 ± 0.05 | 766 | 111.19 ± 0.09 | 384 | +2.4% | 0 |
-| `layered-65536` | pagerank | one-thread | pull | second | 104.83 ± 0.08 | 0 | 110.15 ± 0.12 | 0 | +5.1% | 0 |
-| `layered-65536` | triangles | one-thread | concurrency 1 | second | 8.79 ± 0.01 | 128 | 10.44 ± 0.04 | 1497 | +18.8% | 1 |
-| `layered-65536` | triangles | one-thread | concurrency unset | second | 8.78 ± 0.00 | 128 | 9.18 ± 0.01 | 635 | +4.5% | 1 |
-| `layered-65536` | wcc | one-thread | concurrency 1 | first | 2.50 ± 0.01 | 128 | 2.78 ± 0.00 | 128 | +11.0% | 0 |
-| `path-16384` | triangles | one-thread | concurrency 1 | first | 1.52 ± 0.10 | 256 | 1.56 ± 0.05 | 256 | +2.7% | 0 |
-| `path-16384` | triangles | one-thread | concurrency 1 | second | 1.08 ± 0.04 | 32 | 1.39 ± 0.02 | 256 | +28.2% | 0 |
-| `path-16384` | wcc | one-thread | concurrency 1 | first | 0.43 ± 0.01 | 32 | 0.45 ± 0.01 | 32 | +4.2% | 0 |
-| `path-16384` | wcc | one-thread | concurrency unset | second | 0.99 ± 0.02 | 30 | 1.00 ± 0.01 | 48 | +1.0% | 0 |
-| `path-65536` | pagerank | one-thread | pull | second | 51.00 ± 0.10 | 0 | 51.76 ± 0.11 | 352 | +1.5% | 0 |
-| `path-65536` | triangles | one-thread | concurrency 1 | first | 6.14 ± 0.03 | 1024 | 6.18 ± 0.02 | 1024 | +0.6% | 0 |
-| `path-65536` | triangles | one-thread | concurrency unset | first | 6.18 ± 0.03 | 1024 | 6.21 ± 0.06 | 1024 | +0.6% | 0 |
-| `path-65536` | triangles | one-thread | concurrency 1 | second | 4.32 ± 0.01 | 128 | 5.79 ± 0.03 | 1120 | +34.0% | 0 |
-| `path-65536` | wcc | one-thread | concurrency 1 | first | 1.77 ± 0.00 | 128 | 1.79 ± 0.01 | 128 | +0.9% | 0 |
-| `path-65536` | wcc | one-thread | concurrency unset | second | 3.97 ± 0.00 | 126 | 4.07 ± 0.01 | 192 | +2.4% | 0 |
-| `uniform-16384` | bfs | one-thread | concurrency 1 | first | 1.58 ± 0.01 | 36 | 1.59 ± 0.01 | 32 | +1.0% | 0 |
-| `uniform-16384` | bfs | one-thread | concurrency unset | first | 1.57 ± 0.01 | 36 | 1.62 ± 0.00 | 36 | +2.8% | 0 |
-| `uniform-16384` | triangles | one-thread | concurrency 1 | second | 16.97 ± 0.04 | 32 | 17.66 ± 0.02 | 512 | +4.1% | 0 |
-| `uniform-16384` | triangles | one-thread | concurrency unset | second | 17.02 ± 0.01 | 32 | 17.68 ± 0.03 | 544 | +3.9% | 0 |
-| `uniform-16384` | wcc | one-thread | concurrency 1 | first | 2.04 ± 0.00 | 32 | 2.32 ± 0.01 | 32 | +13.6% | 0 |
-| `uniform-16384` | wcc | one-thread | concurrency 1 | second | 2.26 ± 0.02 | 31 | 2.27 ± 0.01 | 15 | +0.5% | 0 |
-| `uniform-65536` | bfs | one-thread | concurrency 1 | first | 6.39 ± 0.05 | 210 | 6.63 ± 0.04 | 134 | +3.8% | 0 |
-| `uniform-65536` | bfs | one-thread | concurrency unset | first | 7.06 ± 0.11 | 144 | 7.54 ± 0.04 | 144 | +6.7% | 0 |
-| `uniform-65536` | bfs | one-thread | concurrency 1 | second | 5.52 ± 0.01 | 0 | 5.60 ± 0.01 | 0 | +1.5% | 0 |
-| `uniform-65536` | bfs | one-thread | concurrency unset | second | 6.37 ± 0.06 | 0 | 6.46 ± 0.02 | 0 | +1.4% | 0 |
-| `uniform-65536` | triangles | one-thread | concurrency 1 | second | 75.73 ± 0.50 | 128 | 77.53 ± 0.31 | 1537 | +2.4% | 0 |
-| `uniform-65536` | triangles | one-thread | concurrency unset | second | 76.01 ± 0.05 | 128 | 76.06 ± 0.36 | 1154 | +0.1% | 0 |
-| `uniform-65536` | wcc | one-thread | concurrency 1 | first | 8.88 ± 0.05 | 128 | 9.81 ± 0.03 | 128 | +10.5% | 0 |
-| `uniform-65536` | wcc | one-thread | concurrency 1 | second | 9.25 ± 0.02 | 128 | 9.61 ± 0.05 | 64 | +4.0% | 0 |
+PENDING-B5-WORSETABLE
 
-The largest of them: `path-65536` pagerank full-width pull second +117.4%; `path-16384` pagerank full-width pull second +86.6%; `path-65536` triangles full-width concurrency as the run second +64.2%; `path-65536` pagerank full-width pull first +61.1%; `path-16384` triangles full-width concurrency as the run second +53.6%.
+The largest of them: PENDING-B5-WORSEWORST
 
 Three shapes account for most of that list, and only one of them has a cause
 here.
 
 - **PageRank on the `path` family, and at full width above all.**
-  5 of them are PageRank on the `path` family, +1.5% to +117.4%: `path-16384` full-width first 10.44 to 15.45 ms; `path-16384` full-width second 8.65 to 16.14 ms; `path-65536` full-width first 16.31 to 26.27 ms; `path-65536` full-width second 12.24 to 26.62 ms; `path-65536` one-thread second 51.00 to 51.76 ms. `path` is a chain, where the pull kernel's work per node is
+  PENDING-B5-PATHPR `path` is a chain, where the pull kernel's work per node is
   one arc and a parallel split has nothing to amortise; it is not a family this
   document publishes PageRank on,
   because `path` has a dangling node and `neo4j-graph` computes a different
@@ -1014,8 +754,8 @@ here.
   established here.** A kernel that is faster on every `hub` and `uniform` cell
   at the same width and twice as slow on a chain is a finding about the shape
   of the graph, not a rounding.
-- **The triangles second call.** 22 are the triangles second call, +0.1% to +64.2%, and every one of them takes more minor page faults than v0.22.0 did: a median of 32 faults on v0.22.0 against 544 on `ca68900`. v0.22.0's second triangle call allocates almost nothing and the later commit's allocates again, which is a change in what the second call does rather than in how fast it does it.
-- **WCC's first call at concurrency 1.** WCC on the pull-side concurrency 1 first call is slower on 6 of 8 fixtures at one thread, -3.9% to +13.6%, with the page-fault counts equal on 7 of 8. Where the faults
+- **The triangles second call.** PENDING-B5-TRIANGLES
+- **WCC's first call at concurrency 1.** PENDING-B5-WCCFIRST Where the faults
   are equal it is not the allocator; the same cells at concurrency unset are
   not slower, and at full width the same kernel is far faster than v0.22.0.
   **Unexplained.**
@@ -1031,41 +771,19 @@ way by factors, not percentages.
 
 | fixture | run | kernel | v0.22.0 | faults | `ca68900` | faults | change | B4 said |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| `hub-16384` | one-thread | concurrency 1 | 1.52 ± 0.01 | 36 | 1.53 ± 0.00 | 32 | +0.9% | -1.1% |
-| `hub-16384` | one-thread | concurrency unset | 1.51 ± 0.01 | 36 | 1.55 ± 0.00 | 36 | +2.6% | +0.6% |
-| `hub-65536` | one-thread | concurrency 1 | 5.90 ± 0.02 | 146 | 6.25 ± 0.07 | 130 | +6.0% | +6.8% |
-| `hub-65536` | one-thread | concurrency unset | 6.97 ± 0.13 | 144 | 7.40 ± 0.06 | 144 | +6.1% | +5.7% |
-| `uniform-16384` | one-thread | concurrency 1 | 1.58 ± 0.01 | 36 | 1.59 ± 0.01 | 32 | +1.0% | -4.0% |
-| `uniform-16384` | one-thread | concurrency unset | 1.57 ± 0.01 | 36 | 1.62 ± 0.00 | 36 | +2.8% | +0.8% |
-| `uniform-65536` | one-thread | concurrency 1 | 6.39 ± 0.05 | 210 | 6.63 ± 0.04 | 134 | +3.8% | -0.4% |
-| `uniform-65536` | one-thread | concurrency unset | 7.06 ± 0.11 | 144 | 7.54 ± 0.04 | 144 | +6.7% | +11.4% |
-| `hub-16384` | full-width | concurrency as the run | 1.52 ± 0.00 | 36 | 1.54 ± 0.01 | 0 | +1.4% | +0.7% |
-| `hub-65536` | full-width | concurrency as the run | 4.07 ± 0.08 | 390 | 3.17 ± 0.01 | 131 | -22.0% | -4.5% |
-| `uniform-16384` | full-width | concurrency as the run | 1.56 ± 0.00 | 36 | 1.71 ± 0.02 | 0 | +9.4% | +0.5% |
-| `uniform-65536` | full-width | concurrency as the run | 4.20 ± 0.04 | 367 | 3.27 ± 0.08 | 118 | -22.2% | +4.9% |
+PENDING-B5-BFSOPEN
 
-At one-thread, 8 of 8 `hub` and `uniform` first-call cells are slower than v0.22.0, +0.9% to +6.7%, where B4's same cells ran -4.0% to +11.4%. At full-width, 2 of 4 `hub` and `uniform` first-call cells are slower than v0.22.0, -22.2% to +9.4%, where B4's same cells ran -4.5% to +4.9%. So at one thread it persists, over a narrower range than B4's rows, and at full width the same kernel is faster than v0.22.0 on the larger fixture of each family and slower on the smaller. The page-fault counts beside each row are within a few of each other, so what is left is not the allocator effect. **What it is not** is now stated rather than assumed: it
+PENDING-B5-BFSVERDICT **What it is not** is now stated rather than assumed: it
 is not the transpose, which this run does not build for BFS, and it is not the
 allocator state, which the counter beside each row shows to be the same. What
 it is remains unexplained.
 
 **PageRank on `layered-16384` at sixteen threads.** The full-width run is the
-sixteen-thread one, and its `layered-16384` rows are: first call -2.7%; second call +5.8%. The second call is still slower and the first is not, which is the same shape B4 reported and is unexplained.
+sixteen-thread one, and its `layered-16384` rows are: PENDING-B5-LAYEREDVERDICT
 
 | fixture | run | kernel | call | v0.22.0 | `ca68900` | change | steal |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: |
-| `layered-16384` | one-thread | pull | first | 30.17 ± 0.05 | 30.82 ± 0.07 | +2.2% | 0 |
-| `layered-16384` | one-thread | pull | second | 29.34 ± 0.08 | 30.53 ± 0.01 | +4.1% | 0 |
-| `layered-16384` | one-thread | push | first | 115.40 ± 0.06 | 88.78 ± 0.12 | -23.1% | 0 |
-| `layered-16384` | one-thread | push | second | 115.15 ± 0.00 | 88.49 ± 0.10 | -23.2% | 0 |
-| `layered-65536` | one-thread | pull | first | 108.55 ± 0.05 | 111.19 ± 0.09 | +2.4% | 0 |
-| `layered-65536` | one-thread | pull | second | 104.83 ± 0.08 | 110.15 ± 0.12 | +5.1% | 0 |
-| `layered-65536` | one-thread | push | first | 414.37 ± 0.65 | 318.68 ± 0.09 | -23.1% | 0 |
-| `layered-65536` | one-thread | push | second | 412.83 ± 0.09 | 317.91 ± 0.15 | -23.0% | 0 |
-| `layered-16384` | full-width | pull | first | 15.13 ± 0.14 | 14.72 ± 0.15 | -2.7% | 0 |
-| `layered-16384` | full-width | pull | second | 13.37 ± 0.18 | 14.14 ± 0.19 | +5.8% | 0 |
-| `layered-65536` | full-width | pull | first | 25.49 ± 0.11 | 21.11 ± 0.15 | -17.2% | 0 |
-| `layered-65536` | full-width | pull | second | 21.09 ± 0.09 | 20.07 ± 0.21 | -4.8% | 0 |
+PENDING-B5-LAYEREDOPEN
 
 ### What the accounting guarantee costs
 
@@ -1074,38 +792,9 @@ accounting and is `f32` on its own stopping rule.
 
 | fixture | run | kernel | counted | work-uncounted | unchecked | `neo4j-graph` | steal |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| `hub-65536` | one-thread | pagerank, pull | 34.02 ± 0.13 | 31.92 ± 0.12 | 31.14 ± 0.26 | 35.93 ± 0.14 | 0 |
-| `hub-65536` | one-thread | pagerank, push | 95.14 ± 0.47 | 58.50 ± 0.10 | 56.15 ± 0.25 | 35.93 ± 0.14 | 0 |
-| `hub-65536` | one-thread | wcc, concurrency 1 | 6.46 ± 0.04 | 4.28 ± 0.02 | 3.84 ± 0.05 | 3.75 ± 0.01 | 0 |
-| `hub-65536` | one-thread | wcc, concurrency unset | 16.67 ± 0.01 | 7.10 ± 0.05 | 6.03 ± 0.01 | 3.75 ± 0.01 | 0 |
-| `hub-65536` | one-thread | triangles, concurrency 1 | 72.51 ± 0.02 | 71.64 ± 0.11 | 71.10 ± 0.33 | 35.34 ± 0.15 | 0 |
-| `hub-65536` | one-thread | triangles, concurrency unset | 72.29 ± 0.06 | 71.36 ± 0.04 | 70.87 ± 0.11 | 35.34 ± 0.15 | 0 |
-| `uniform-65536` | one-thread | pagerank, pull | 32.48 ± 0.20 | 30.66 ± 0.18 | 29.58 ± 0.11 | 44.24 ± 0.08 | 0 |
-| `uniform-65536` | one-thread | pagerank, push | 88.77 ± 0.68 | 55.19 ± 0.25 | 53.94 ± 0.24 | 44.24 ± 0.08 | 0 |
-| `uniform-65536` | one-thread | wcc, concurrency 1 | 9.81 ± 0.03 | 8.49 ± 0.01 | 7.88 ± 0.05 | 3.75 ± 0.00 | 0 |
-| `uniform-65536` | one-thread | wcc, concurrency unset | 16.96 ± 0.03 | 8.06 ± 0.04 | 6.85 ± 0.11 | 3.75 ± 0.00 | 0 |
-| `uniform-65536` | one-thread | triangles, concurrency 1 | 78.55 ± 1.00 | 77.72 ± 0.06 | 77.84 ± 0.20 | 39.47 ± 0.14 | 0 |
-| `uniform-65536` | one-thread | triangles, concurrency unset | 78.43 ± 0.03 | 78.37 ± 0.22 | 77.15 ± 0.09 | 39.47 ± 0.14 | 0 |
-| `hub-65536` | full-width | pagerank, pull | 7.22 ± 0.04 | 4.70 ± 0.01 | 4.69 ± 0.02 | 15.03 ± 0.04 | 0 |
-| `hub-65536` | full-width | wcc, concurrency as the run | 1.48 ± 0.05 | 1.24 ± 0.02 | 1.30 ± 0.09 | 3.18 ± 0.05 | 0 |
-| `hub-65536` | full-width | triangles, concurrency as the run | 28.78 ± 0.09 | 28.14 ± 0.68 | 27.39 ± 0.30 | 3.50 ± 0.05 | 0 |
-| `uniform-65536` | full-width | pagerank, pull | 7.01 ± 0.16 | 4.48 ± 0.05 | 4.51 ± 0.04 | 16.30 ± 0.28 | 0 |
-| `uniform-65536` | full-width | wcc, concurrency as the run | 1.80 ± 0.06 | 1.52 ± 0.09 | 1.54 ± 0.05 | 3.08 ± 0.13 | 0 |
-| `uniform-65536` | full-width | triangles, concurrency as the run | 29.06 ± 0.08 | 28.25 ± 0.06 | 27.90 ± 0.02 | 3.99 ± 0.04 | 0 |
-| `hub-2097152` | large-one-thread | pagerank, pull | 2170.69 ± 43.13 | 2013.59 ± 101.38 | 1935.46 ± 322.66 | 2091.59 ± 5.88 | 3 |
-| `hub-2097152` | large-one-thread | pagerank, push | 4025.06 ± 132.51 | 3436.31 ± 43.29 | 2917.49 ± 44.54 | 2091.59 ± 5.88 | 3 |
-| `uniform-2097152` | large-one-thread | pagerank, pull | 2207.80 ± 62.26 | 1791.58 ± 24.65 | 1968.11 ± 30.86 | 2162.61 ± 19.69 | 4 |
-| `uniform-2097152` | large-one-thread | pagerank, push | 4023.10 ± 11.14 | 3184.51 ± 89.67 | 3133.06 ± 182.93 | 2162.61 ± 19.69 | 4 |
-| `hub-2097152` | large-full-width | pagerank, pull | 274.75 ± 15.17 | 219.87 ± 5.69 | 209.83 ± 0.64 | 260.04 ± 1.68 | 1 |
-| `uniform-2097152` | large-full-width | pagerank, pull | 248.59 ± 6.98 | 228.12 ± 3.92 | 226.02 ± 1.64 | 262.94 ± 2.50 | 2 |
-| `hub-4194304` | xlarge-one-thread | pagerank, pull | 6941.34 ± 23.40 | 6696.58 ± 21.59 | 6493.19 ± 37.52 | 4610.20 ± 513.82 | 121 |
-| `hub-4194304` | xlarge-one-thread | pagerank, push | 13050.81 ± 144.21 | 10628.13 ± 52.99 | 10623.61 ± 256.95 | 4610.20 ± 513.82 | 121 |
-| `uniform-4194304` | xlarge-one-thread | pagerank, pull | 7030.83 ± 59.57 | 6737.94 ± 17.02 | 6604.33 ± 13.99 | 5387.87 ± 359.63 | 8 |
-| `uniform-4194304` | xlarge-one-thread | pagerank, push | 12327.00 ± 48.97 | 10187.56 ± 121.81 | 10020.11 ± 338.23 | 5387.87 ± 359.63 | 8 |
-| `hub-4194304` | xlarge-full-width | pagerank, pull | 734.54 ± 19.96 | 714.56 ± 8.58 | 685.88 ± 10.29 | 388.19 ± 36.49 | 4 |
-| `uniform-4194304` | xlarge-full-width | pagerank, pull | 747.76 ± 13.22 | 735.39 ± 11.02 | 720.94 ± 15.14 | 578.25 ± 1.81 | 3 |
+PENDING-B5-ACCT
 
-Counting also costs in the build: `grust-next`'s `build_ms` for PageRank on `hub-65536` at one thread is 47.07 ms counted, 38.00 work-uncounted and 37.56 unchecked, because building the projection and its transpose charges work too.
+PENDING-B5-BUILD
 
 ### B4 against B5 on unchanged code
 
@@ -1115,32 +804,9 @@ table is the size of the drift between campaigns, not a correction to either.
 
 | fixture | algorithm | participant | B4 | B5 | change |
 | --- | --- | --- | ---: | ---: | ---: |
-| `hub-65536` | pagerank | `grust#1` | 65.11 ± 0.37 | 52.59 ± 0.21 | -19.2% |
-| `hub-65536` | wcc | `grust#1` | 7.17 ± 0.09 | 6.66 ± 0.01 | -7.1% |
-| `uniform-65536` | pagerank | `grust#1` | 59.44 ± 3.00 | 51.51 ± 0.43 | -13.3% |
-| `uniform-65536` | wcc | `grust#1` | 9.45 ± 0.02 | 8.88 ± 0.05 | -6.1% |
-| `hub-65536` | pagerank | `grust#unset` | 206.77 ± 0.88 | 203.55 ± 0.34 | -1.6% |
-| `hub-65536` | wcc | `grust#unset` | 17.28 ± 0.10 | 16.88 ± 0.01 | -2.3% |
-| `uniform-65536` | pagerank | `grust#unset` | 196.00 ± 0.71 | 192.34 ± 0.36 | -1.9% |
-| `uniform-65536` | wcc | `grust#unset` | 17.42 ± 0.03 | 17.08 ± 0.05 | -1.9% |
-| `hub-65536` | pagerank | `icecat` | 31.74 ± 0.09 | 34.12 ± 0.01 | +7.5% |
-| `hub-65536` | wcc | `icecat` | 3.80 ± 0.00 | 3.48 ± 0.22 | -8.4% |
-| `uniform-65536` | pagerank | `icecat` | 30.24 ± 0.19 | 32.69 ± 0.02 | +8.1% |
-| `uniform-65536` | wcc | `icecat` | 4.51 ± 0.01 | 4.02 ± 0.07 | -10.7% |
-| `hub-65536` | pagerank | `grustcat` | 34.01 ± 0.34 | 30.23 ± 0.03 | -11.1% |
-| `hub-65536` | wcc | `grustcat` | 2.41 ± 0.01 | 2.44 ± 0.01 | +1.3% |
-| `uniform-65536` | pagerank | `grustcat` | 31.24 ± 0.35 | 29.27 ± 0.12 | -6.3% |
-| `uniform-65536` | wcc | `grustcat` | 3.01 ± 0.03 | 3.05 ± 0.04 | +1.0% |
-| `hub-65536` | pagerank | `neo4j-graph` | 40.03 ± 0.40 | 35.93 ± 0.14 | -10.2% |
-| `hub-65536` | wcc | `neo4j-graph` | 3.84 ± 0.01 | 3.75 ± 0.01 | -2.3% |
-| `uniform-65536` | pagerank | `neo4j-graph` | 48.49 ± 0.20 | 44.24 ± 0.08 | -8.8% |
-| `uniform-65536` | wcc | `neo4j-graph` | 3.86 ± 0.01 | 3.75 ± 0.00 | -2.9% |
-| `hub-65536` | pagerank | `icebug` | 76.06 ± 1.27 | 42.13 ± 0.80 | -44.6% |
-| `hub-65536` | wcc | `icebug` | 22.33 ± 0.59 | 11.25 ± 0.41 | -49.6% |
-| `uniform-65536` | pagerank | `icebug` | 69.77 ± 0.57 | 39.50 ± 0.78 | -43.4% |
-| `uniform-65536` | wcc | `icebug` | 24.76 ± 1.29 | 12.83 ± 0.08 | -48.2% |
+PENDING-B5-DRIFTTABLE
 
-The same binaries' sources, on the same fixtures and the same host, move -49.6% to +8.1% between the two campaigns, and the largest of those is a participant containing no Grust at all. Both campaigns were built from clean trees on that host and ran on an idle one; B5 additionally dropped the page cache before starting, which B4 did not. **The drift is unexplained**, and it is the reason a cell is only ever compared with other cells of its own run.
+PENDING-B5-DRIFTCAVEAT
 
 ## What is not here
 

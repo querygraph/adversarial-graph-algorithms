@@ -1,0 +1,110 @@
+[
+ {
+  "participant": "neo4j-graph",
+  "version": "0.1.0",
+  "commit": "9ec8548cde48",
+  "library": "graph 0.3.2 / graph_builder 0.4.2",
+  "precision": "f32",
+  "algorithms": [
+   "pagerank",
+   "wcc",
+   "triangles"
+  ],
+  "parallel": "rayon, library default",
+  "width_capable": true,
+  "sha256": "479786134f381bb79c6c2257955d4bc2baa104458183e0f8f2d440127afd8e63",
+  "path": "/opt/bench/neo4j-graph"
+ },
+ {
+  "participant": "icebug",
+  "version": "icecat-cpp",
+  "commit": "57b443ec1d16",
+  "precision": "f64",
+  "algorithms": [
+   "pagerank",
+   "wcc",
+   "bfs"
+  ],
+  "parallel": "NetworKit OpenMP defaults",
+  "width_capable": true,
+  "sha256": "8f79f15c469ecd520bf5f4292465d25be16914d83677d9c2a3f277e861f23fa1",
+  "path": "/opt/bench/icebug"
+ },
+ {
+  "participant": "icecat",
+  "version": "0.1.0",
+  "commit": "9ec8548cde48",
+  "precision": "f64",
+  "algorithms": [
+   "pagerank",
+   "wcc",
+   "bfs"
+  ],
+  "parallel": "sequential; the parallel feature is not enabled",
+  "width_capable": false,
+  "sha256": "2ec36cfe7f67c9bb937c8d80bdf1a3a1ee85a60b33d8631259994bf8fed34c2e",
+  "path": "/opt/bench/icecat"
+ },
+ {
+  "participant": "grustcat",
+  "version": "0.1.0",
+  "commit": "9ec8548cde48",
+  "precision": "f64",
+  "algorithms": [
+   "pagerank",
+   "wcc",
+   "bfs"
+  ],
+  "pagerank_tolerance": "1e-8, fixed in the crate",
+  "parallel": "sequential",
+  "width_capable": false,
+  "sha256": "d4c6fffa1b8495ee2e21877e5dda3c4fb8fad0e8ced070d9d4915ec8be938432",
+  "path": "/opt/bench/grustcat"
+ },
+ {
+  "participant": "grust",
+  "version": "0.1.0",
+  "commit": "9ec8548cde48",
+  "grust_commit": "2182cdb82acb0666b80f483dc4c9666941962145",
+  "precision": "f64",
+  "algorithms": [
+   "pagerank",
+   "wcc",
+   "bfs",
+   "triangles"
+  ],
+  "parallel": "sequential unless with_concurrency is requested",
+  "width_capable": true,
+  "accounting": "counted",
+  "accounting_selectable": false,
+  "prepares_incoming": false,
+  "prepare_incoming_selectable": false,
+  "minflt": true,
+  "scores_out": true,
+  "sha256": "9dab3803fd1b1e74b87517bd0fd67c34f430e608a400d39138ebdd2ba774608c",
+  "path": "/opt/bench/grust"
+ },
+ {
+  "participant": "grust-next",
+  "version": "0.1.0",
+  "commit": "9ec8548cde48",
+  "grust_commit": "ca6890053fba0e1bb1b7581d876dd0a1d1ad7285",
+  "precision": "f64",
+  "algorithms": [
+   "pagerank",
+   "wcc",
+   "bfs",
+   "triangles"
+  ],
+  "parallel": "sequential unless with_concurrency is requested",
+  "width_capable": true,
+  "accounting": "counted",
+  "accounting_selectable": true,
+  "prepares_incoming": true,
+  "prepare_incoming_selectable": true,
+  "minflt": true,
+  "scores_out": true,
+  "sha256": "230d95145a6d681e8edca68c30b509042e40b389d95c13e491fad933a1fad134",
+  "path": "/opt/bench/grust-next"
+ }
+]
