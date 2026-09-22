@@ -7,14 +7,22 @@ read across the whole run and across every cell, per AGENTS.md. Tables are as
 wide as the participants that have the kernel, and each says who is absent and
 that the reason is no such kernel rather than a slow one.
 
-A participant name may carry `@mode` (Grust's accounting) and `#N`/`#unset`
-(its concurrency, which selects a kernel); see variants.py. A participant that
-reports `kernel_second_ms` produces two rows per cell, `call: first` and
-`call: second`, and they are never folded into one number: the first is what a
-single call costs on a fresh projection, the second what it costs once anything
-the first call built and cached is already there.
+A participant name may carry `@mode` (Grust's accounting), `+tag` (how it runs,
+not what it computes) and `#N`/`#unset` (its concurrency, which selects a
+kernel); see variants.py. A participant that reports `kernel_second_ms`
+produces two rows per cell, `call: first` and `call: second`, and they are
+never folded into one number: the first is what a single call costs on a fresh
+projection, the second what it costs once anything the first call built and
+cached is already there.
+
+Every cell records the minor page faults taken across the call it times, read
+outside the timer by the participant itself. B4's WCC and BFS first-call rows
+moved with that counter and not with any kernel: a transpose built and freed
+for a kernel that never reads it left glibc's allocator in a different state.
+The counter is beside every first-call time here so that such an effect is
+visible in the evidence rather than in a later attribution.
 """
-import argparse, json, pathlib, statistics, subprocess, sys, time
+import argparse, json, os, pathlib, statistics, subprocess, sys, time
 
 import variants
 
@@ -60,7 +68,6 @@ def worker_env(workers):
     would oversubscribe a quota the others respect - so each is set by name and
     the value is recorded in every cell.
     """
-    import os
     if workers is None: return None
     return dict(os.environ, OMP_NUM_THREADS=str(workers), RAYON_NUM_THREADS=str(workers),
                 OPENBLAS_NUM_THREADS=str(workers))
@@ -78,25 +85,46 @@ def spread(values):
     middle = statistics.median(values)
     return middle, statistics.median([abs(value - middle) for value in values])
 
+# Where each participant reports the minor page faults of a phase. The Grust
+# participants time two calls and report one counter per call; the others time
+# one call and report `minflt_kernel`. A participant that reports none gives
+# None here rather than a zero, which would claim it took no fault.
+FAULTS = dict(first=('minflt_first', 'minflt_kernel'), second=('minflt_second',),
+              build=('minflt_build',))
+
+def faults(rows, phase):
+    for field in FAULTS[phase]:
+        values = [row[field] for row in rows if row.get(field) is not None]
+        if values: return spread(values)[0]
+    return None
+
 def transpose(spec, algorithm, rows, incoming):
-    """Which timer a PageRank reverse index was built under, where it is known.
+    """Which timer a reverse index was built under, where it is known.
 
     B3's finding was that this differed by participant and was not recorded.
-    grust-next builds it with prepare_incoming inside build_ms; icecat builds it
-    between the two timers and prints it apart; grust at v0.22.0 builds it inside
-    the first pull-kernel call, so inside that call's kernel_ms. grustcat,
-    neo4j-graph and NetworKit build theirs in their constructors, inside build_ms,
-    and print no figure for it.
+    B5 asks it of every algorithm, not only PageRank, because B4's answer for
+    WCC and BFS - built inside build_ms, for a kernel that never reads it - is
+    the artifact this run corrects. grust-next builds it with prepare_incoming
+    inside build_ms where a kernel reads it; icecat builds it between the two
+    timers and prints it apart; grust at v0.22.0 builds it inside the first
+    pull-kernel call, so inside that call's kernel_ms. grustcat, neo4j-graph
+    and NetworKit build theirs in their constructors, inside build_ms, and
+    print no figure for it.
     """
-    if algorithm != 'pagerank': return None
     if incoming:
-        return dict(where='inside build_ms', ms=spread(incoming)[0])
+        built = 'inside build_ms'
+        if rows[0].get('prepare_incoming') == 'always' and not rows[0].get('reads_incoming'):
+            built += ', for a kernel that does not read it: B4 behaviour, kept as its own row'
+        return dict(where=built, ms=spread(incoming)[0])
     apart = [r['prepare_incoming_ms'] for r in rows if 'prepare_incoming_ms' in r]
     if apart:
         return dict(where='timed apart: in neither build_ms nor kernel_ms', ms=spread(apart)[0])
-    if spec['binary'] == 'grust':
-        return dict(where=('inside kernel_ms of the first call' if spec['concurrency'] is not None
-                           else 'not built: the push kernel does not use it'), ms=None)
+    if rows[0].get('prepare_incoming') is not None:
+        # A Grust participant that reported its policy and built nothing.
+        if rows[0].get('reads_incoming'):
+            return dict(where='inside kernel_ms of the first call', ms=None)
+        return dict(where='not built: this kernel does not read in-arcs', ms=None)
+    if algorithm != 'pagerank': return None
     return dict(where='inside build_ms, in the constructor; not reported apart', ms=None)
 
 def main():
@@ -172,6 +200,10 @@ def main():
         label=a.label, steal_ticks_over_run=after - before, seconds=round(time.time() - started, 1),
         tolerance=a.tolerance, warmups=a.warmups, repeats=a.repeats,
         workers=a.workers, concurrency=a.concurrency, unusable_dispersion=a.unusable_dispersion,
+        # The allocator this run's participants all saw. Set for the container
+        # by campaign.py or absent; never set for one participant and not
+        # another, which would compare two allocators.
+        glibc_tunables=os.environ.get('GLIBC_TUNABLES'),
         # Table rules, emitted with the data so a report cannot quietly drop them.
         notes=dict(
             width=('At full width, only participants declaring width_capable can use a second '
@@ -193,6 +225,14 @@ def main():
                        'cache residency at all. The arrays cross a 24.8 MB L3 somewhere in the '
                        'hundreds of thousands of nodes at this density, and a run above that '
                        'must restate this sentence rather than inherit it.'),
+            faults=('Every cell records the minor page faults of the call it times, read outside '
+                    'the timer by the participant with getrusage(RUSAGE_SELF). B4 built the '
+                    'transpose inside build_ms for every algorithm, including WCC and BFS, which '
+                    'never read it; building and freeing it raised glibc dynamic mmap threshold, '
+                    'and the first call after it took about 112 to 128 more minor faults. B5 '
+                    'prepares it only where a kernel reads it and keeps the old behaviour as the '
+                    '+eager rows, so the correction can be read off the counter and the time '
+                    'together.'),
             calls=('A Grust row with call "first" is the first kernel call on a fresh projection, '
                    'which is what B3 published. On v0.22.0 (grust) that call also builds the '
                    'transpose the pull kernel needs; on the later commit (grust-next) the '
@@ -236,6 +276,12 @@ def main():
                 total_ms=kernel, total_mad=kernel_spread, dispersion=dispersion,
                 unusable=dispersion is not None and dispersion >= a.unusable_dispersion,
                 per_iteration_ms=(kernel / iterations) if iterations else None,
+                # Read outside the timers by the participant, and reported here
+                # beside the time it belongs to rather than folded into it.
+                minflt=faults(rows, call),
+                minflt_build=faults(rows, 'build'),
+                prepare_incoming=rows[0].get('prepare_incoming'),
+                reads_incoming=rows[0].get('reads_incoming'),
                 build_ms=spread([r['build_ms'] for r in rows])[0],
                 build_mad=spread([r['build_ms'] for r in rows])[1],
                 incoming_ms=spread(incoming)[0] if incoming else None,
@@ -263,6 +309,7 @@ def main():
         print(f"{cell['fixture']:<20} {cell['algorithm']:<10} {cell['participant']:<{width}} "
               f"{cell['call'] or '':<6} iters {str(cell['iterations'] or '-'):>4}  "
               f"total {cell['total_ms']:9.4f} ± {cell['total_mad']:.4f}  per-iter {per}  "
-              f"build {cell['build_ms']:.2f}  steal {cell['steal_ticks']}{flag}")
+              f"build {cell['build_ms']:.2f}  minflt {cell['minflt'] if cell['minflt'] is not None else '-'}  "
+              f"steal {cell['steal_ticks']}{flag}")
 
 if __name__ == '__main__': sys.exit(main())

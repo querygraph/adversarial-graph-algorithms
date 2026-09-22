@@ -14,6 +14,15 @@ about the host and a container cannot see them:
   discards the run. The sampler reads /proc and nothing else.
 - **Steal** is read by run.py per cell and over the run; this records it again
   over the whole docker invocation, and the load average at both ends.
+- **Agent sessions are recorded by name**, before, during and after every run,
+  whatever CPU they use. B4's one discarded run was caused by an agent session
+  starting work on the host, so the record says whether one was resident
+  instead of leaving that to be reconstructed. It is not a second gate: a
+  session that uses CPU is discarded by the CPU rule like anything else.
+- **The allocator is a property of a run.** A run may set `GLIBC_TUNABLES` for
+  its whole container, which is every participant in it; `pinned-*` repeat
+  `one-thread` and `full-width` with glibc's mmap threshold pinned, so what the
+  threshold is worth is measured for all of them rather than assumed for one.
 
 A discarded run's output is kept, renamed, and never published: the operator
 decides whether to rerun it. Nothing here retries on its own, because a retry
@@ -31,10 +40,30 @@ BUSY = re.compile(r'(^|[/ ])(cargo|rustc|perf|cc1plus|ld\.lld|mold|bench-[\w-]+|
                   r'run\.py|parity\.py|criterion|hyperfine|stress|yes)( |$)')
 # Our own watcher and this driver are python3 campaign.py; never count them.
 SELF = re.compile(r'campaign\.py')
+# Agent sessions resident on the host. These are recorded by name in every
+# snapshot and in every sighting, whatever CPU they are using, because B4's one
+# discarded run was caused by an agent session and the record should say
+# whether one was present rather than leave it to be reconstructed. They are
+# not a separate gate: a session that uses CPU is caught by CPU_SHARE like any
+# other process, and a session that uses none is reported and not guessed at.
+RESIDENT = re.compile(r'(^|[/ ])(claude|codex|cursor-agent|aider)( |$)')
 
 BASELINE = ['neo4j-graph', 'icebug', 'icecat', 'grustcat']
 MODES = ['counted', 'work-uncounted', 'unchecked']
 NEXT = [f'grust-next@{mode}' for mode in MODES]
+# B4's placement of the transpose, kept as its own row: prepared inside
+# build_ms for every algorithm, including the kernels that never read it.
+EAGER = 'grust-next@counted+eager'
+
+# The allocator, pinned for every participant in a run or for none of them.
+# glibc raises its own mmap threshold when a large mmapped chunk is freed, so
+# what a kernel's first call pays in page faults depends on what the build
+# before it allocated and released. Pinning the threshold at its 128 KiB
+# default disables that adaptation for every process in the container.
+# Pinning it for the Grust participants alone would compare two allocators, so
+# it is a property of a run: `pinned-*` runs repeat `one-thread` and
+# `full-width` with it set, and are published as their own labelled table.
+PINNED = dict(GLIBC_TUNABLES='glibc.malloc.mmap_threshold=131072')
 
 # Parity: one file per concurrency, every variant that any timed run uses.
 # `--bits-identical` makes a grust-next PageRank that differs from v0.22.0 by a
@@ -44,7 +73,7 @@ PARITY = {
     '1': dict(concurrency=1),
     '16': dict(concurrency=16),
 }
-PARITY_PARTICIPANTS = BASELINE + ['grust'] + NEXT
+PARITY_PARTICIPANTS = BASELINE + ['grust'] + NEXT + [EAGER]
 
 # Timed runs. `#N`/`#unset` fixes a Grust variant's kernel (see variants.py).
 RUNS = {
@@ -54,12 +83,24 @@ RUNS = {
     'one-thread': dict(
         cpus=1, workers=1, concurrency=1, fixtures='fixtures',
         participants=BASELINE + ['grust#1', 'grust#unset']
-                     + [f'{v}#1' for v in NEXT] + [f'{v}#unset' for v in NEXT]),
+                     + [f'{v}#1' for v in NEXT] + [f'{v}#unset' for v in NEXT]
+                     + [f'{EAGER}#1', f'{EAGER}#unset']),
     # What a user of each library gets. Push is sequential by construction and
     # is not repeated here.
     'full-width': dict(
         cpus=16, workers=16, concurrency=16, fixtures='fixtures',
-        participants=BASELINE + ['grust'] + NEXT),
+        participants=BASELINE + ['grust'] + NEXT + [EAGER]),
+    # The same two runs with the allocator pinned for every participant, to
+    # measure rather than assume whose times the threshold moves. Counted only:
+    # this probe is about the allocator, not about accounting, and the rows it
+    # must be comparable with are the counted ones.
+    'pinned-one-thread': dict(
+        cpus=1, workers=1, concurrency=1, fixtures='fixtures', env=PINNED,
+        participants=BASELINE + ['grust#1', 'grust#unset',
+                                 'grust-next@counted#1', 'grust-next@counted#unset']),
+    'pinned-full-width': dict(
+        cpus=16, workers=16, concurrency=16, fixtures='fixtures', env=PINNED,
+        participants=BASELINE + ['grust', 'grust-next@counted']),
     # Above L3: the hoist was never measured where its randomly indexed arrays
     # stop fitting. PageRank only, the kernel the hoist changed, on the two
     # dangling-free families. `fixtures-large` is 2,097,152 nodes, where
@@ -145,9 +186,12 @@ def snapshot(container=None, window=2.0):
     with open('/proc/stat') as handle:
         steal = int(handle.readline().split()[8])
     others = [c for c in container_ids() if c != container]
+    later = cpu_ticks(container)
     return dict(at=time.strftime('%Y-%m-%dT%H:%M:%S%z'), loadavg=pathlib.Path('/proc/loadavg').read_text().split()[:3],
                 steal_ticks=steal, busy=busy_processes(container), other_containers=others,
-                hungry=hungry(earlier, cpu_ticks(container), window))
+                hungry=hungry(earlier, later, window),
+                resident_sessions=[f'{pid} {command[:120]}' for pid, (_, command) in later.items()
+                                   if RESIDENT.search(command) and not SELF.search(command)])
 
 def idle(state):
     return not state['busy'] and not state['other_containers'] and not state['hungry']
@@ -156,6 +200,10 @@ class Watcher(threading.Thread):
     def __init__(self, name):
         super().__init__(daemon=True)
         self.name_, self.sightings, self.container, self.done = name, [], None, threading.Event()
+        # Agent sessions seen at any point of the run, at any CPU. Recorded so
+        # the run's record says whether one was resident rather than leaving it
+        # to be reconstructed later; the discard rule is CPU, not this.
+        self.residents = set()
     def run(self):
         earlier, then = None, time.time()
         while not self.done.wait(1.0):
@@ -169,6 +217,9 @@ class Watcher(threading.Thread):
             busy = busy_processes(self.container, own=f'--name {self.name_} ')
             others = [c for c in container_ids() if c != self.container]
             later, now = cpu_ticks(self.container), time.time()
+            for pid, (_, command) in later.items():
+                if RESIDENT.search(command) and not SELF.search(command):
+                    self.residents.add(f'{pid} {command[:120]}')
             # docker run itself and the containerd shim do a little work for the
             # run; they are part of it, not a second workload.
             eaten = [h for h in hungry(earlier, later, now - then)
@@ -178,9 +229,12 @@ class Watcher(threading.Thread):
                 self.sightings.append(dict(at=time.strftime('%H:%M:%S'), busy=busy,
                                            other_containers=others, hungry=eaten))
 
-def docker(image, work, name, cpus, command):
+def docker(image, work, name, cpus, command, env=None):
     cpu = ['--cpus', str(cpus)] if cpus else []
-    return ['docker', 'run', '--rm', '--name', name, *cpu, '-v', f'{work}:/work', image, *command]
+    # Environment is set for the whole container, so every participant in the
+    # run gets it; a run either pins the allocator for all of them or for none.
+    settings = [flag for key, value in (env or {}).items() for flag in ('-e', f'{key}={value}')]
+    return ['docker', 'run', '--rm', '--name', name, *cpu, *settings, '-v', f'{work}:/work', image, *command]
 
 def guarded(name, command, record, nonzero_ok=False):
     """Run one docker invocation between two idle checks, watched throughout."""
@@ -196,7 +250,7 @@ def guarded(name, command, record, nonzero_ok=False):
     watcher.done.set(); watcher.join()
     after = snapshot()
     record.update(after=after, seconds=round(time.time() - started, 1), exit=result.returncode,
-                  sightings=watcher.sightings,
+                  sightings=watcher.sightings, resident_sessions=sorted(watcher.residents),
                   steal_ticks=after['steal_ticks'] - before['steal_ticks'])
     shared = bool(watcher.sightings) or not idle(after)
     record['status'] = ('failed' if result.returncode and not nonzero_ok else
@@ -277,8 +331,9 @@ def main():
         if spec.get('algorithms') or a.algorithms:
             command += ['--algorithms', *(a.algorithms or spec['algorithms'])]
         record = {}
-        guarded(run, docker(a.image, a.work, f'timed-{run}', spec['cpus'], command), record)
-        record.update(run=run, cpus=spec['cpus'])
+        guarded(run, docker(a.image, a.work, f'timed-{run}', spec['cpus'], command, spec.get('env')),
+                record)
+        record.update(run=run, cpus=spec['cpus'], env=spec.get('env'))
         if record['status'].startswith('DISCARDED'):
             produced = a.work/'timed'/f'{run}{a.tag}.json'
             if produced.exists(): produced.rename(produced.with_suffix('.discarded.json'))

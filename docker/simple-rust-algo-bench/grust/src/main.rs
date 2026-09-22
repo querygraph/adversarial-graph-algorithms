@@ -23,6 +23,17 @@
 //! as `incoming_ms`. The release has no such method, so every build runs the
 //! kernel twice on the same projection and reports both calls: the first is
 //! what B3 published, the second has the transpose already cached.
+//!
+//! B4 prepared it for every algorithm, including the three kernels that never
+//! read in-arcs, and that was a harness artifact rather than a measurement:
+//! building and freeing a transpose no kernel reads leaves the process's
+//! allocator in a different state, and the first call after it took about 112
+//! to 128 more minor page faults. `--prepare-incoming needed`, the default
+//! here, prepares it only for a kernel that reads it — PageRank's pull kernel,
+//! and no other kernel in this matrix. `--prepare-incoming always` keeps B4's
+//! behaviour available as its own labelled row, so the correction can be shown
+//! rather than asserted. Minor page faults are reported beside every call, read
+//! outside every timer, because that is the quantity the artifact moved.
 
 use std::time::Instant;
 
@@ -33,6 +44,48 @@ use grust_algorithms::{
     ProjectionEdge, SnapshotIdentity, TriangleOptions, bfs, pagerank, triangles,
     weakly_connected_components,
 };
+
+/// `struct rusage` on Linux: two timevals, then fourteen longs. `ru_minflt` is
+/// the fifth of those longs, so index 8 of eighteen words.
+#[repr(C)]
+struct Rusage {
+    words: [i64; 18],
+}
+
+unsafe extern "C" {
+    fn getrusage(who: i32, usage: *mut Rusage) -> i32;
+}
+
+/// Minor page faults taken by this process and all its threads so far.
+///
+/// Read outside every timer, never inside one. This is the quantity the B4
+/// allocator artifact moved: a transpose built and freed before a kernel that
+/// never reads it raises glibc's dynamic mmap threshold, and the next call's
+/// large allocations come from a different place. A time that changed while
+/// this did not is not that effect; a time that changed with it may be.
+fn minflt() -> i64 {
+    let mut usage = Rusage { words: [0; 18] };
+    // SAFETY: `getrusage` fills a `struct rusage`, whose Linux layout `Rusage`
+    // reproduces; RUSAGE_SELF is 0 and covers every thread of this process.
+    let code = unsafe { getrusage(0, &mut usage) };
+    assert_eq!(code, 0, "getrusage(RUSAGE_SELF)");
+    usage.words[8]
+}
+
+/// Whether the kernel this invocation will run reads the incoming adjacency.
+///
+/// PageRank's pull kernel is the only kernel in this matrix that does, and it
+/// is selected only when a concurrency was requested and the work clears the
+/// sequential floor in `grust-algorithms/src/parallel.rs`; below that floor
+/// PageRank takes the push loop, which reads out-arcs alone. WCC, BFS and
+/// triangles never read in-arcs at any width — checked in the kernels, not
+/// inferred from their names — and triangles runs on an undirected projection,
+/// whose rows already mirror, so there is nothing to build there in any case.
+fn reads_incoming(algorithm: &str, concurrency: Option<usize>, nodes: usize, edges: usize) -> bool {
+    algorithm == "pagerank"
+        && concurrency.is_some()
+        && nodes.saturating_add(edges).saturating_mul(2) >= 1 << 14
+}
 
 /// The binary's name without the `bench-` prefix: `grust` or `grust-next`.
 fn participant() -> &'static str {
@@ -130,23 +183,46 @@ fn work_units(context: &ExecutionContext) -> String {
 
 /// Build the transpose now, inside the build timer, where grustcat's
 /// constructor builds its own. Returns the milliseconds it took, or `None`
-/// where this Grust cannot build it outside a kernel.
+/// where this Grust cannot build it outside a kernel or was not asked to.
 #[cfg(feature = "accounting-api")]
-fn prepare_incoming(projection: &GraphProjection) -> Option<f64> {
+fn prepare_incoming(projection: &GraphProjection, wanted: bool) -> Option<f64> {
+    if !wanted {
+        return None;
+    }
     let started = Instant::now();
     projection.prepare_incoming().expect("prepare_incoming");
     Some(started.elapsed().as_secs_f64() * 1e3)
 }
 
+/// The release has no `prepare_incoming`: its pull kernel builds the transpose
+/// inside the first call that reads it, and nothing else builds one at all.
 #[cfg(not(feature = "accounting-api"))]
-fn prepare_incoming(_projection: &GraphProjection) -> Option<f64> {
+fn prepare_incoming(_projection: &GraphProjection, _wanted: bool) -> Option<f64> {
     None
+}
+
+/// `--prepare-incoming needed` (the default) builds the transpose inside the
+/// build timer only for a kernel that reads it; `always` builds it for every
+/// algorithm, which is what B4 did and what this row exists to show.
+///
+/// The release cannot honour `always`, having no method to call, so it refuses
+/// it rather than producing a row that silently means something else.
+fn prepare_policy(args: &[String]) -> &'static str {
+    match flag(args, "--prepare-incoming").as_deref().unwrap_or("needed") {
+        "needed" => "needed",
+        "always" if cfg!(feature = "accounting-api") => "always",
+        "always" => panic!("--prepare-incoming always: this Grust has no prepare_incoming, so it \
+                            cannot build the transpose outside a kernel"),
+        other => panic!("unknown --prepare-incoming {other}: needed or always"),
+    }
 }
 
 /// One kernel call: its time, the fields that identify its result, and a
 /// value compared between the first and second call on the same projection.
 struct Call {
     kernel_ms: f64,
+    /// Minor page faults taken across the kernel call, read outside the timer.
+    minflt: i64,
     fields: String,
     identity: String,
     materialise_ms: f64,
@@ -168,6 +244,9 @@ fn write_scores(path: &str, scores: &[f64]) {
 }
 
 fn call(projection: &GraphProjection, algorithm: &str, tolerance: f64, max_iterations: usize, keep: bool) -> Call {
+    // Read before the timer starts and again after it stops: the counter is
+    // reported beside the time, never inside it.
+    let faults = minflt();
     let started = Instant::now();
     match algorithm {
         "pagerank" => {
@@ -180,6 +259,7 @@ fn call(projection: &GraphProjection, algorithm: &str, tolerance: f64, max_itera
             };
             let result = pagerank(projection, options).expect("pagerank");
             let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
+            let faults = minflt() - faults;
             let started = Instant::now();
             let scores = result.values();
             let sum: f64 = scores.iter().sum();
@@ -188,6 +268,7 @@ fn call(projection: &GraphProjection, algorithm: &str, tolerance: f64, max_itera
             let bits = digest(scores);
             Call {
                 kernel_ms,
+                minflt: faults,
                 fields: format!("\"iterations\":{},\"residual\":{},\"converged\":{},\"sum\":{sum},\
                                  \"max\":{max},\"argmax\":{argmax},\"scores_digest\":\"{bits}\"",
                                 result.iterations(), result.residual(), result.converged()),
@@ -199,12 +280,14 @@ fn call(projection: &GraphProjection, algorithm: &str, tolerance: f64, max_itera
         "wcc" => {
             let result = weakly_connected_components(projection).expect("wcc");
             let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
+            let faults = minflt() - faults;
             let started = Instant::now();
             let labels = result.values();
             let distinct: std::collections::HashSet<_> = labels.iter().collect();
             let identity = format!("{:?}", labels);
             Call {
                 kernel_ms,
+                minflt: faults,
                 fields: format!("\"count\":{},\"probe_label\":{}", distinct.len(), labels[0]),
                 identity,
                 materialise_ms: started.elapsed().as_secs_f64() * 1e3,
@@ -214,6 +297,7 @@ fn call(projection: &GraphProjection, algorithm: &str, tolerance: f64, max_itera
         "bfs" => {
             let result = bfs(projection, "0").expect("bfs");
             let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
+            let faults = minflt() - faults;
             let started = Instant::now();
             // Unreachable nodes carry positive infinity here and -1 in the
             // reference; both mean the same thing and neither enters the sum.
@@ -222,6 +306,7 @@ fn call(projection: &GraphProjection, algorithm: &str, tolerance: f64, max_itera
             let total: f64 = distances.iter().filter(|hops| hops.is_finite()).sum();
             Call {
                 kernel_ms,
+                minflt: faults,
                 fields: format!("\"reached\":{reached},\"distance_sum\":{total}"),
                 identity: digest(distances),
                 materialise_ms: started.elapsed().as_secs_f64() * 1e3,
@@ -231,8 +316,10 @@ fn call(projection: &GraphProjection, algorithm: &str, tolerance: f64, max_itera
         "triangles" => {
             let result = triangles(projection, TriangleOptions { max_degree: None }).expect("triangles");
             let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
+            let faults = minflt() - faults;
             Call {
                 kernel_ms,
+                minflt: faults,
                 fields: format!("\"triangles\":{}", result.triangle_count()),
                 identity: result.triangle_count().to_string(),
                 materialise_ms: 0.0,
@@ -254,9 +341,10 @@ fn main() {
               \"algorithms\":[\"pagerank\",\"wcc\",\"bfs\",\"triangles\"],\
               \"parallel\":\"sequential unless with_concurrency is requested\",\"width_capable\":true,\
               \"accounting\":\"{mode}\",\"accounting_selectable\":{},\"prepares_incoming\":{},\
-              \"scores_out\":true}}",
+              \"prepare_incoming_selectable\":{},\"minflt\":true,\"scores_out\":true}}",
             env!("CARGO_PKG_VERSION"), option_env!("BENCH_COMMIT").unwrap_or("unknown"), grust_commit(),
-            cfg!(feature = "accounting-api"), cfg!(feature = "accounting-api"));
+            cfg!(feature = "accounting-api"), cfg!(feature = "accounting-api"),
+            cfg!(feature = "accounting-api"));
         return;
     }
     let fixture = flag(&args, "--fixture").expect("--fixture");
@@ -275,6 +363,7 @@ fn main() {
     // concurrency 1, where it takes the pull kernel on one thread. They are
     // different algorithms, so the flag is explicit and the output records which.
     let concurrency: Option<usize> = flag(&args, "--concurrency").map(|v| v.parse().expect("--concurrency"));
+    let prepare = prepare_policy(&args);
     let mut context = context(ExecutionLimits {
         memory_bytes: usize::MAX,
         work_units: usize::MAX,
@@ -285,6 +374,7 @@ fn main() {
         context = context.with_concurrency(workers).expect("concurrency");
     }
 
+    let minflt_start = minflt();
     let started = Instant::now();
     let orientation = if algorithm == "triangles" { Orientation::Undirected } else { Orientation::Outgoing };
     let projection = GraphProjection::from_topology(
@@ -298,12 +388,18 @@ fn main() {
         &context,
     )
     .expect("projection");
-    // Inside the build timer, for every algorithm: grustcat's constructor
-    // builds both adjacencies whatever is asked of it, so a build column that
-    // skipped the transpose where a kernel happens not to need it would not be
-    // the same work. `incoming_ms` says how much of `build_ms` it was.
-    let incoming_ms = prepare_incoming(&projection);
+    // Inside the build timer, where grustcat's constructor builds its own, and
+    // only for a kernel that reads it. B4 built it for every algorithm so that
+    // the build column would be the same work as grustcat's constructor; what
+    // that bought was a transpose WCC and BFS never read, built and freed just
+    // before their first call, and an allocator in a state their v0.22.0 column
+    // was not measured in. Matching a constructor is not worth measuring a
+    // different process. `incoming_ms` says how much of `build_ms` it was; a
+    // row that built nothing reports null and says so in `prepare_incoming`.
+    let wanted = prepare == "always" || reads_incoming(&algorithm, concurrency, nodes, edges.len());
+    let incoming_ms = prepare_incoming(&projection, wanted);
     let build_ms = started.elapsed().as_secs_f64() * 1e3;
+    let minflt_build = minflt() - minflt_start;
 
     let scores_out = flag(&args, "--scores-out");
     let first = call(&projection, &algorithm, tolerance, max_iterations, scores_out.is_some());
@@ -322,10 +418,14 @@ fn main() {
     println!("{{\"participant\":\"{participant}\",\"grust_commit\":\"{}\",\"accounting\":\"{mode}\",\
                \"algorithm\":\"{algorithm}\",\"fixture\":\"{fixture}\",\
                \"nodes\":{nodes},\"edges\":{},\"parse_ms\":{parse_ms},\"build_ms\":{build_ms},\
-               \"incoming_ms\":{},\"kernel_ms\":{},\"kernel_second_ms\":{},\"second_identical\":true,{},\
+               \"incoming_ms\":{},\"prepare_incoming\":\"{prepare}\",\"reads_incoming\":{},\
+               \"minflt_build\":{minflt_build},\"minflt_first\":{},\"minflt_second\":{},\
+               \"kernel_ms\":{},\"kernel_second_ms\":{},\"second_identical\":true,{},\
                \"materialise_ms\":{},\"work_units\":{work},\"peak_bytes\":{peak_bytes},\"concurrency\":{}}}",
              grust_commit(), edges.len(),
              incoming_ms.map(|ms| ms.to_string()).unwrap_or_else(|| "null".into()),
+             reads_incoming(&algorithm, concurrency, nodes, edges.len()),
+             first.minflt, second.minflt,
              first.kernel_ms, second.kernel_ms, first.fields, first.materialise_ms,
              concurrency.map(|w| w.to_string()).unwrap_or_else(|| "null".into()));
 }

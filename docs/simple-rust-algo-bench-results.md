@@ -576,6 +576,69 @@ is 16.8 MB and does. At that size single precision can buy cache residency on
 the one randomly indexed array, not only bandwidth. This is arithmetic from
 array sizes and the host's L3, not a measurement of cache behaviour.
 
+## B5: what B4 got wrong, and the protocol that corrects it
+
+An attribution run outside this harness, on the measuring host, found two
+things behind B4's WCC and BFS rows. Its evidence is on that host in
+`~/src/perfattr/clean/R1-R8` with its driver `drive.py`; it is not this
+repository's evidence and nothing below is taken from it as a number. What B5
+does is correct the harness for both and measure again.
+
+- **An allocator artifact, and it was ours.** B4's Grust participant called
+  `prepare_incoming()` inside the build timer for every algorithm, to make its
+  build column the same work as grustcat's constructor. WCC and BFS never read
+  the incoming adjacency — checked in the kernels, not inferred — so for those
+  two the harness built and freed a transpose nothing would read, immediately
+  before the call it was timing. Freeing a large mapped chunk raises glibc's
+  own mmap threshold, so the next call's large allocations came from a
+  different place: the attribution measured about 112 to 128 extra minor page
+  faults on the first call, and pinning the threshold removed the difference.
+  B4's `grust-next` first calls were therefore slower, and its second calls
+  faster, than the code alone accounts for.
+- **A real regression, since fixed.** `WorkMeter::charge` had been pushed out
+  of line in 16 kernels at `4d8e5db`, which is what B4 timed. It is inlined
+  again on Grust `ca68900`, the commit B5 times, which also adds child contexts
+  and `with_execution`.
+
+The harness changes, each with the reason it is not the other choice:
+
+- **The transpose is built in the build timer only for the kernel that reads
+  it.** `--prepare-incoming needed` is the default: PageRank's pull kernel, and
+  nothing else in this matrix. B4's behaviour stays available as the `+eager`
+  variant, `--prepare-incoming always`, and is timed as its own labelled row at
+  the protocol sizes, so the correction is shown rather than asserted. Matching
+  grustcat's constructor was the wrong thing to match: a build column that does
+  work no kernel will read is not the same measurement as a build column that
+  does work the kernel needs.
+- **Minor page faults beside every first-call time.** Every participant now
+  reads `getrusage(RUSAGE_SELF).ru_minflt` on both sides of the call it times,
+  outside the timer, and reports it; `tables.md` carries it for every cell. A
+  time that moved while the counter did not is not this effect.
+- **The allocator is pinned for every participant in a run, or for none.**
+  Pinning `GLIBC_TUNABLES=glibc.malloc.mmap_threshold=131072` for the Grust
+  participants alone would compare two allocators, which is the same kind of
+  error as B4's. Whether to pin at all is decided by measurement, not by
+  assumption: `pinned-one-thread` and `pinned-full-width` repeat the two
+  protocol-size runs with the threshold pinned for the whole container, every
+  participant included, and are published as their own labelled table.
+
+**The rule for that decision, fixed before the runs.** The published tables are
+the default-allocator runs, because glibc's default is the allocator every
+participant's users have and none of these projects sets a tunable; the pinned
+runs are published beside them as a labelled probe of what the threshold is
+worth to each participant. That stands unless the corrected harness leaves the
+two Grust builds in different allocator states on the same cell — which the
+page-fault counter now shows directly — in which case the first-call rows would
+be the pinned ones and every size would be rerun pinned. Which of those
+happened is stated under "B5: results" with the counters it was decided on.
+
+Everything else is B4's protocol unchanged: parity before timing and a
+mismatched cell never timed, the bits gate against v0.22.0, counterbalanced
+order, one warmup and five repeats, thread width set for every participant by
+name, the 0.25 MAD/median dispersion rule, steal reported per cell, the
+accounting modes as separate rows, the `neo4j-graph` naming, and the protocol,
+large and xlarge sizes.
+
 ## What is not here
 
 - **Not portable.** Every timing here is from one host — quegee, 16 vCPU on 8

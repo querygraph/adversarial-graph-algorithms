@@ -6,8 +6,11 @@
 // not is computing a different function. The fixtures are dangling-free where
 // PageRank runs, so this setting changes nothing there; it is set so that the
 // participant is right rather than accidentally right.
+#include <sys/resource.h>
+
 #include <chrono>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <string>
@@ -19,6 +22,16 @@
 #include <networkit/distance/BFS.hpp>
 #include <networkit/graph/Graph.hpp>
 #include <networkit/graph/GraphW.hpp>
+
+// Minor page faults of this process and its OpenMP threads so far, read
+// outside every timer and reported beside the kernel time. Every participant
+// records them for the same reason: the B4 allocator artifact moved this
+// counter, so a time that moved without it did not move for that reason.
+static long minflt() {
+    struct rusage usage;
+    if (getrusage(RUSAGE_SELF, &usage) != 0) { std::fprintf(stderr, "getrusage failed\n"); std::exit(2); }
+    return usage.ru_minflt;
+}
 
 using clock_type = std::chrono::steady_clock;
 static double since(clock_type::time_point start) {
@@ -52,6 +65,7 @@ int main(int argc, char **argv) {
     if (edges.size() != declared) { std::fprintf(stderr, "fixture header disagrees with its body\n"); return 2; }
     const double parse_ms = since(started);
 
+    const long minflt_before_build = minflt();
     started = clock_type::now();
     // This NetworKit is the Arrow update: `Graph` is an immutable reference view
     // and `GraphW` is the writable form. Build the writable one, then view it.
@@ -59,15 +73,18 @@ int main(int argc, char **argv) {
     for (const auto &edge : edges) writable.addEdge(edge.first, edge.second);
     const NetworKit::Graph graph(writable);
     const double build_ms = since(started);
+    const long minflt_build = minflt() - minflt_before_build;
 
     std::string summary;
     double materialise_ms = 0;
+    const long minflt_before_kernel = minflt();
     started = clock_type::now();
     if (algorithm == "pagerank") {
         NetworKit::PageRank kernel(graph, 0.85, tolerance, false,
                                    NetworKit::PageRank::SinkHandling::DISTRIBUTE_SINKS);
         kernel.run();
         const double kernel_ms = since(started);
+        const long minflt_kernel = minflt() - minflt_before_kernel;
         started = clock_type::now();
         const auto &scores = kernel.scores();
         double sum = 0, max = -1;
@@ -79,26 +96,28 @@ int main(int argc, char **argv) {
         materialise_ms = since(started);
         char buffer[512];
         std::snprintf(buffer, sizeof buffer,
-                      "\"kernel_ms\":%.6f,\"iterations\":%zu,\"sum\":%.17g,\"max\":%.17g,\"argmax\":%zu",
-                      kernel_ms, static_cast<std::size_t>(kernel.numberOfIterations()), sum, max, argmax);
+                      "\"kernel_ms\":%.6f,\"minflt_kernel\":%ld,\"iterations\":%zu,\"sum\":%.17g,\"max\":%.17g,\"argmax\":%zu",
+                      kernel_ms, minflt_kernel, static_cast<std::size_t>(kernel.numberOfIterations()), sum, max, argmax);
         summary = buffer;
     } else if (algorithm == "wcc") {
         NetworKit::WeaklyConnectedComponents kernel(graph);
         kernel.run();
         const double kernel_ms = since(started);
+        const long minflt_kernel = minflt() - minflt_before_kernel;
         started = clock_type::now();
         const auto components = kernel.getPartition();
         std::unordered_set<NetworKit::index> distinct;
         for (std::size_t node = 0; node < nodes; ++node) distinct.insert(components[node]);
         materialise_ms = since(started);
         char buffer[256];
-        std::snprintf(buffer, sizeof buffer, "\"kernel_ms\":%.6f,\"count\":%zu,\"probe_label\":%zu",
-                      kernel_ms, distinct.size(), static_cast<std::size_t>(components[0]));
+        std::snprintf(buffer, sizeof buffer, "\"kernel_ms\":%.6f,\"minflt_kernel\":%ld,\"count\":%zu,\"probe_label\":%zu",
+                      kernel_ms, minflt_kernel, distinct.size(), static_cast<std::size_t>(components[0]));
         summary = buffer;
     } else if (algorithm == "bfs") {
         NetworKit::BFS kernel(graph, 0, false);
         kernel.run();
         const double kernel_ms = since(started);
+        const long minflt_kernel = minflt() - minflt_before_kernel;
         started = clock_type::now();
         const auto &distances = kernel.getDistances();
         std::size_t reached = 0;
@@ -112,8 +131,8 @@ int main(int argc, char **argv) {
         }
         materialise_ms = since(started);
         char buffer[256];
-        std::snprintf(buffer, sizeof buffer, "\"kernel_ms\":%.6f,\"reached\":%zu,\"distance_sum\":%lld",
-                      kernel_ms, reached, total);
+        std::snprintf(buffer, sizeof buffer, "\"kernel_ms\":%.6f,\"minflt_kernel\":%ld,\"reached\":%zu,\"distance_sum\":%lld",
+                      kernel_ms, minflt_kernel, reached, total);
         summary = buffer;
     } else {
         std::fprintf(stderr, "unknown or absent algorithm %s\n", algorithm.c_str());
@@ -121,8 +140,9 @@ int main(int argc, char **argv) {
     }
 
     std::printf("{\"participant\":\"icebug\",\"algorithm\":\"%s\",\"fixture\":\"%s\",\"nodes\":%zu,"
-                "\"edges\":%zu,\"parse_ms\":%.6f,\"build_ms\":%.6f,%s,\"materialise_ms\":%.6f}\n",
-                algorithm.c_str(), fixture.c_str(), nodes, edges.size(), parse_ms, build_ms,
+                "\"edges\":%zu,\"parse_ms\":%.6f,\"build_ms\":%.6f,\"minflt_build\":%ld,%s,"
+                "\"materialise_ms\":%.6f}\n",
+                algorithm.c_str(), fixture.c_str(), nodes, edges.size(), parse_ms, build_ms, minflt_build,
                 summary.c_str(), materialise_ms);
     return 0;
 }
