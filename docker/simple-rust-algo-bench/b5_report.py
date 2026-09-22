@@ -311,10 +311,10 @@ resident = (f"{len(sessions)} resident agent sessions were seen by name across t
 s = DOC.read_text()
 for key, value in [('PENDING-B5-PROVENANCE', provenance), ('PENDING-B5-HOSTRUNS', host),
                    ('PENDING-B5-UNUSABLE', u), ('PENDING-B5-PARITY', parity),
-                   ('PENDING-B5-ALLOC', alloc), ('PENDING-B5-ALLOCNOTE', alloc_summary),
+                   ('PENDING-B5-ALLOCTABLE', alloc), ('PENDING-B5-ALLOCNOTE', alloc_summary),
                    ('PENDING-B5-PINNED', pinned_table), ('PENDING-B5-PINVERDICT', pin_verdict),
                    ('PENDING-B5-TRANSPOSE', transpose), ('PENDING-B5-KERNEL', kernel),
-                   ('PENDING-B5-WORSENOTE', worse_summary), ('PENDING-B5-WORSE', worse_rows),
+                   ('PENDING-B5-WORSENOTE', worse_summary), ('PENDING-B5-WORSETABLE', worse_rows),
                    ('PENDING-B5-BFSOPEN', bfs_open), ('PENDING-B5-LAYEREDOPEN', layered_open),
                    ('PENDING-B5-PINDECISION', decision), ('PENDING-B5-RESIDENT', resident),
                    ('PENDING-B5-ACCT', acct), ('PENDING-B5-BUILD', build), ('PENDING-B5-DRIFT', drift)]:

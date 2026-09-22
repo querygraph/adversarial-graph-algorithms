@@ -681,7 +681,7 @@ artifact moved, so the correction can be read off the counter beside the time.
 
 | fixture | algorithm | run | kernel | `grust` v0.22.0 | faults | `grust-next` | faults | `grust-next` `+eager` | faults | next/v0.22.0 | eager/next |
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-PENDING-B5-ALLOC
+PENDING-B5-ALLOCTABLE
 
 PENDING-B5-ALLOCNOTE
 
@@ -728,7 +728,7 @@ PENDING-B5-WORSENOTE
 
 | fixture | algorithm | run | kernel | call | v0.22.0 | faults | `ca68900` | faults | change | steal |
 | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-PENDING-B5-WORSE
+PENDING-B5-WORSETABLE
 
 ### The two items the attribution left open
 
