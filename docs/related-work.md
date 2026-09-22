@@ -110,18 +110,27 @@ Grust's general kernel, on one dedicated host. What that established:
   minor page faults beside every call so that neither has to be taken on trust.
 - **Every cell where the current Grust commit is slower than the release before
   it is listed**, with the unexplained ones marked unexplained.
+- **A regression the third campaign found was attributed outside the harness,
+  fixed by one commit, and the commit was timed under the same protocol with
+  nothing else changed.** The fourth campaign puts B5's figure for each cell
+  beside its own and lists which of B5's slower cells are faster, level, or
+  still slower on the padded commit; it also records that the host was slower
+  above L3 for every participant, including the ones that contain no Grust,
+  and reads its large sizes within itself for that reason.
 
-The results document, its evidence bundle at
-[`simple-rust-algo-bench-evidence/b5-quegee/`](simple-rust-algo-bench-evidence/b5-quegee/),
-and the [post that explains the campaign](blog/simple-rust-algo-bench/post.md)
+The results document, its evidence bundles at
+[`simple-rust-algo-bench-evidence/b5-quegee/`](simple-rust-algo-bench-evidence/b5-quegee/)
+and [`simple-rust-algo-bench-evidence/b6-quegee/`](simple-rust-algo-bench-evidence/b6-quegee/),
+and the [post that explains the campaigns](blog/simple-rust-algo-bench/post.md)
 hold the numbers; this note does not repeat them, and it offers no ranking. The
-same bundle renders the [kernels page on adversari.al](https://adversari.al/graph/kernels).
+same bundles render the [kernels page on adversari.al](https://adversari.al/graph/kernels).
 
 What is still not settled: the cause of the remaining first-call slowdown in
-counted WCC and BFS, which the page-fault counter shows is not the allocator;
-the cause of PageRank's collapse on the chain family at full width on the
-current commit; and the drift between campaigns on unchanged participants,
-which is why a cell is only ever compared with other cells of its own run. And
-the remark about a moving target still applies: the timed columns describe
-v0.22.0 and one later commit on one host on one day, and a column measured
-later describes that code.
+counted WCC and BFS, which the page-fault counter shows is not the allocator
+and which the padding commit's own measurement tied to the balance's chunk size
+class without explaining; the drift between campaigns on unchanged
+participants, and the slower host state above L3 that the fourth campaign
+records for every participant, which is why a cell is only ever compared with
+other cells of its own run. And the remark about a moving target still
+applies: the timed columns describe v0.22.0 and one later commit on one host
+on one day, and a column measured later describes that code.
