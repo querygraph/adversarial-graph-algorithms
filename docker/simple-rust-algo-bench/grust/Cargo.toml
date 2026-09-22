@@ -12,6 +12,9 @@ grust-algorithms = { path = "../../../../grust/crates/grust-algorithms" }
 # What the commit under test added and v0.22.0 lacks: `prepare_incoming`,
 # `ExecutionContext::with_accounting`, and `WorkCount` for the work total.
 accounting-api = []
+# `pagerank_f32`, which v0.22.0 also lacks; off here, so `--precision f32`
+# is refused by this build rather than run at f64.
+pagerank-f32 = []
 
 [profile.release]
 lto = "thin"

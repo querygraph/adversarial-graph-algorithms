@@ -15,8 +15,12 @@ path = "../grust/src/main.rs"
 grust-algorithms = { path = "../../../../grust-next/crates/grust-algorithms" }
 
 [features]
-default = ["accounting-api"]
+default = ["accounting-api", "pagerank-f32"]
 accounting-api = []
+# `pagerank_f32`, the f32 score precision B7 times against neo4j-graph's. The
+# commit under test must have it: with the feature on, a tree without it does
+# not build, which is the intended failure.
+pagerank-f32 = []
 
 [profile.release]
 lto = "thin"
