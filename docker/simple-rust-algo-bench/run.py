@@ -283,6 +283,10 @@ def main():
                 # than below the tolerance it was asked for, which the iteration
                 # count alone does not show.
                 residual=rows[0].get('residual', rows[0].get('error')),
+                # Reported by the Grust participants; None where a participant
+                # does not say. A False here never reaches a table: parity
+                # gives such a row its own verdict and it is not timed.
+                converged=rows[0].get('converged'),
                 precision=declared[key].get('precision'),
                 total_ms=kernel, total_mad=kernel_spread, dispersion=dispersion,
                 unusable=dispersion is not None and dispersion >= a.unusable_dispersion,

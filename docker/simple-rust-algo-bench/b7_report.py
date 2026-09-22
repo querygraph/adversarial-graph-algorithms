@@ -76,14 +76,16 @@ def tables(a):
         if report['skipped']:
             print('Not timed (no agreeing parity row):', ', '.join(
                 f"`{s['participant']}` {s['fixture'].removesuffix('.edges')}" for s in report['skipped']), '\n')
-        print('| fixture | participant | precision | accounting | kernel | call | iters | residual | total ms | MAD | '
-              'MAD/median | per iter ms | build ms | incoming ms | minflt | steal | usable |')
-        print('| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |')
+        print('| fixture | participant | precision | accounting | kernel | call | iters | converged | residual | '
+              'total ms | MAD | MAD/median | per iter ms | build ms | incoming ms | minflt | steal | usable |')
+        print('| --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: '
+              '| ---: | --- |')
         for c in cell_rows(report):
-            residual = c.get('residual')
+            residual, converged = c.get('residual'), c.get('converged')
             print(f"| {c['fixture'].removesuffix('.edges')} | `{c['participant']}` | {c.get('precision') or ''} | "
                   f"{c['accounting'] or ''} | {kernel(c['participant'], report['label'])} | {c['call'] or ''} | "
-                  f"{c['iterations'] or '-'} | {'-' if residual is None else f'{residual:.3g}'} | "
+                  f"{c['iterations'] or '-'} | {'' if converged is None else ('yes' if converged else '**NO**')} | "
+                  f"{'-' if residual is None else f'{residual:.3g}'} | "
                   f"{fmt(c['total_ms'])} | {fmt(c['total_mad'])} | {fmt(c['dispersion'])} | "
                   f"{fmt(c['per_iteration_ms'], 4)} | {fmt(c['build_ms'], 2)} | {fmt(c['incoming_ms'], 2)} | "
                   f"{fmt(c.get('minflt'), 0)} | {c['steal_ticks']} | {'**UNUSABLE**' if c['unusable'] else 'yes'} |")
@@ -140,21 +142,24 @@ def parity_summary(a):
     if not paths: return
     print('## Parity\n')
     print('Every row parity produced for the participants B7 times, PageRank only. `vector` is how many of '
-          'the n scores were bit-identical to the reference\'s f64 scores and the largest distance in units '
-          'in the last place of f64; for an f32 row that is recorded and not gated, as it is for every row. '
+          'the n scores were bit-identical to the reference\'s f64 scores and the largest distance, in f64 '
+          'ulps and in absolute terms; for an f32 row, widened to f64, the ulp figure is meaningless and the '
+          'absolute one is the distance. It is recorded and not gated, as it is for every row. '
           '`bits` is the bit gate: f64 builds against v0.22.0, `+f32` builds against their counted row.\n')
-    print('| file | fixture | participant | concurrency | verdict | iters | vector | bits | detail |')
-    print('| --- | --- | --- | --- | --- | ---: | --- | --- | --- |')
+    print('| file | fixture | participant | concurrency | verdict | iters | residual | vector | bits | detail |')
+    print('| --- | --- | --- | --- | --- | ---: | ---: | --- | --- | --- |')
     for path in paths:
         for r in json.loads(path.read_text()):
             if r['algorithm'] != 'pagerank': continue
             v = r.get('vector_against_reference')
-            vector = f"{v['identical']}/{v['of']}, max {v['max_ulps']} ulps" if v else ''
+            vector = f"{v['identical']}/{v['of']}, max {v['max_ulps']} f64 ulps, {v['max_abs']:.3g} abs" if v else ''
             b = r.get('bits_identical_to')
             bits = f"{'same as' if b['identical'] else 'DIFFERS from'} `{b['participant']}`" if b else ''
+            residual = r.get('residual')
             print(f"| {path.name} | {r['fixture'].removesuffix('.edges')} | `{r['participant']}` | "
                   f"{'unset' if r['concurrency'] is None else r['concurrency']} | {r['verdict']} | "
-                  f"{r.get('iterations') or '-'} | {vector} | {bits} | {r.get('detail', '')} |")
+                  f"{r.get('iterations') or '-'} | {'-' if residual is None else f'{residual:.3g}'} | "
+                  f"{vector} | {bits} | {r.get('detail', '')} |")
     print()
 
 def walls(report):

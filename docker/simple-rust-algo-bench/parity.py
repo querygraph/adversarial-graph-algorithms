@@ -35,6 +35,14 @@ for anyone.
 `--families hub uniform` restricts a run to fixtures whose file name starts with
 those families, so a campaign that times two families gates exactly those and
 its parity file says so by containing only them.
+
+A PageRank row whose participant reports `converged: false` is its own
+verdict, `not converged`, with the residual it stalled at, whatever its sum
+and maximum say. An f32 kernel cannot meet a tolerance below one ulp of a
+moving score except at an exact fixed point, and can oscillate by one ulp
+until max_iterations instead; that row ran the iteration cap, not the stopping
+rule, so its total is not a kernel's time and it is not timed. The tolerance
+is never loosened to make it converge.
 """
 import argparse, hashlib, json, pathlib, pickle, struct, subprocess, sys, tempfile
 
@@ -233,8 +241,16 @@ def main():
                             dump.unlink()
                 row.update(verdict='agrees' if not differences else 'MISMATCH',
                            detail='; '.join(differences + notes), notes=notes,
-                           iterations=found.get('iterations'))
-                mismatches += bool(differences)
+                           iterations=found.get('iterations'), converged=found.get('converged'),
+                           residual=found.get('residual', found.get('error')))
+                if algorithm == 'pagerank' and found.get('converged') is False:
+                    # Its own outcome, kept apart from agreement and mismatch,
+                    # and counted with the mismatches so it is never timed.
+                    row.update(verdict='not converged',
+                               detail=f"stopped at max_iterations with residual {found.get('residual')!r} "
+                                      f"above tolerance {a.tolerance:g}" + ('; ' if row['detail'] else '')
+                                      + row['detail'])
+                mismatches += bool(differences) or row['verdict'] == 'not converged'
                 rows.append(row)
 
     for base, *candidates in a.bits_identical or []:
@@ -262,7 +278,10 @@ def main():
         extra = ''
         if 'vector_against_reference' in row:
             v = row['vector_against_reference']
-            extra = f"  vector-bits-equal-reference={v['identical']}/{v['of']} max_ulps={v['max_ulps']}"
+            # ulps are f64 ulps; for an f32 row, widened to f64, the absolute
+            # distance is the figure that means something.
+            extra = (f"  vector-bits-equal-reference={v['identical']}/{v['of']} max_ulps={v['max_ulps']} "
+                     f"max_abs={v['max_abs']:.3g}")
         if 'max_bits_equal_reference' in row:
             extra += f"  max-bits-equal-reference={row['max_bits_equal_reference']}"
         if 'bits_identical_to' in row:
