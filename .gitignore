@@ -1,6 +1,7 @@
 /*
 !/.gitignore
 !/README.md
+!/GOODBYE-GRUST.md
 !/Cargo.toml
 !/Cargo.lock
 !/rust-toolchain.toml
