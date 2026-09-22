@@ -683,7 +683,7 @@ artifact moved, so the correction can be read off the counter beside the time.
 | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 PENDING-B5-ALLOC
 
-PENDING-B5-ALLOCSUM
+PENDING-B5-ALLOCNOTE
 
 ### The allocator pinned, for every participant
 
@@ -724,7 +724,7 @@ PENDING-B5-KERNEL
 ### Every cell that got worse
 
 Counted `grust-next` against v0.22.0, same fixture, algorithm, kernel and call.
-PENDING-B5-WORSESUM
+PENDING-B5-WORSENOTE
 
 | fixture | algorithm | run | kernel | call | v0.22.0 | faults | `ca68900` | faults | change | steal |
 | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
