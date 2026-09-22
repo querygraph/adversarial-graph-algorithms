@@ -1,0 +1,185 @@
+{
+ "parity": {
+  "unset": {
+   "concurrency": null
+  },
+  "1": {
+   "concurrency": 1
+  },
+  "16": {
+   "concurrency": 16
+  }
+ },
+ "parity_participants": [
+  "neo4j-graph",
+  "icebug",
+  "icecat",
+  "grustcat",
+  "grust",
+  "grust-next@counted",
+  "grust-next@work-uncounted",
+  "grust-next@unchecked",
+  "grust-next@counted+eager"
+ ],
+ "runs": {
+  "one-thread": {
+   "cpus": 1,
+   "workers": 1,
+   "concurrency": 1,
+   "fixtures": "fixtures",
+   "participants": [
+    "neo4j-graph",
+    "icebug",
+    "icecat",
+    "grustcat",
+    "grust#1",
+    "grust#unset",
+    "grust-next@counted#1",
+    "grust-next@work-uncounted#1",
+    "grust-next@unchecked#1",
+    "grust-next@counted#unset",
+    "grust-next@work-uncounted#unset",
+    "grust-next@unchecked#unset",
+    "grust-next@counted+eager#1",
+    "grust-next@counted+eager#unset"
+   ]
+  },
+  "full-width": {
+   "cpus": 16,
+   "workers": 16,
+   "concurrency": 16,
+   "fixtures": "fixtures",
+   "participants": [
+    "neo4j-graph",
+    "icebug",
+    "icecat",
+    "grustcat",
+    "grust",
+    "grust-next@counted",
+    "grust-next@work-uncounted",
+    "grust-next@unchecked",
+    "grust-next@counted+eager"
+   ]
+  },
+  "pinned-one-thread": {
+   "cpus": 1,
+   "workers": 1,
+   "concurrency": 1,
+   "fixtures": "fixtures",
+   "env": {
+    "GLIBC_TUNABLES": "glibc.malloc.mmap_threshold=131072"
+   },
+   "participants": [
+    "neo4j-graph",
+    "icebug",
+    "icecat",
+    "grustcat",
+    "grust#1",
+    "grust#unset",
+    "grust-next@counted#1",
+    "grust-next@counted#unset"
+   ]
+  },
+  "pinned-full-width": {
+   "cpus": 16,
+   "workers": 16,
+   "concurrency": 16,
+   "fixtures": "fixtures",
+   "env": {
+    "GLIBC_TUNABLES": "glibc.malloc.mmap_threshold=131072"
+   },
+   "participants": [
+    "neo4j-graph",
+    "icebug",
+    "icecat",
+    "grustcat",
+    "grust",
+    "grust-next@counted"
+   ]
+  },
+  "large-one-thread": {
+   "cpus": 1,
+   "workers": 1,
+   "concurrency": 1,
+   "fixtures": "fixtures-large",
+   "algorithms": [
+    "pagerank"
+   ],
+   "participants": [
+    "neo4j-graph",
+    "icebug",
+    "icecat",
+    "grustcat",
+    "grust#1",
+    "grust#unset",
+    "grust-next@counted#1",
+    "grust-next@work-uncounted#1",
+    "grust-next@unchecked#1",
+    "grust-next@counted#unset",
+    "grust-next@work-uncounted#unset",
+    "grust-next@unchecked#unset"
+   ]
+  },
+  "large-full-width": {
+   "cpus": 16,
+   "workers": 16,
+   "concurrency": 16,
+   "fixtures": "fixtures-large",
+   "algorithms": [
+    "pagerank"
+   ],
+   "participants": [
+    "neo4j-graph",
+    "icebug",
+    "icecat",
+    "grustcat",
+    "grust",
+    "grust-next@counted",
+    "grust-next@work-uncounted",
+    "grust-next@unchecked"
+   ]
+  },
+  "xlarge-one-thread": {
+   "cpus": 1,
+   "workers": 1,
+   "concurrency": 1,
+   "fixtures": "fixtures-xlarge",
+   "algorithms": [
+    "pagerank"
+   ],
+   "participants": [
+    "neo4j-graph",
+    "icebug",
+    "icecat",
+    "grustcat",
+    "grust#1",
+    "grust#unset",
+    "grust-next@counted#1",
+    "grust-next@work-uncounted#1",
+    "grust-next@unchecked#1",
+    "grust-next@counted#unset",
+    "grust-next@work-uncounted#unset",
+    "grust-next@unchecked#unset"
+   ]
+  },
+  "xlarge-full-width": {
+   "cpus": 16,
+   "workers": 16,
+   "concurrency": 16,
+   "fixtures": "fixtures-xlarge",
+   "algorithms": [
+    "pagerank"
+   ],
+   "participants": [
+    "neo4j-graph",
+    "icebug",
+    "icecat",
+    "grustcat",
+    "grust",
+    "grust-next@counted",
+    "grust-next@work-uncounted",
+    "grust-next@unchecked"
+   ]
+  }
+ }
+}

@@ -1,0 +1,10 @@
+== b6-control-vmstat-before
+compact_stall 5675 compact_fail 4297 thp_fault_alloc 7301688 thp_fault_fallback 304958 AnonHugePages:   1120256 kB
+2026-09-22T18:14:07Z
+== b6-control-vmstat-after
+compact_stall 5675 compact_fail 4297 thp_fault_alloc 7392514 thp_fault_fallback 304958 AnonHugePages:   1146880 kB
+2026-09-22T18:27:45Z
+== b6-control2-vmstat-before
+thp_fault_alloc 7392517 thp_fault_fallback 304958 2026-09-22T18:29:34Z
+== b6-control2-vmstat-after
+thp_fault_alloc 7483294 thp_fault_fallback 304958 2026-09-22T18:43:08Z
