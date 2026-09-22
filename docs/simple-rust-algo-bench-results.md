@@ -629,8 +629,19 @@ runs are published beside them as a labelled probe of what the threshold is
 worth to each participant. That stands unless the corrected harness leaves the
 two Grust builds in different allocator states on the same cell — which the
 page-fault counter now shows directly — in which case the first-call rows would
-be the pinned ones and every size would be rerun pinned. Which of those
-happened is stated under "B5: results" with the counters it was decided on.
+be the pinned ones and every size would be rerun pinned. The line is a median
+difference of 25 minor page faults over the WCC and BFS first-call cells at the
+protocol sizes, a fifth of the 112 to 128 the attribution measured for the
+artifact itself. Which of those happened is stated under "B5: results", with
+the counter it was decided on, by the script that reads the evidence.
+
+One host preparation is new and applies to every run equally: the page cache is
+dropped before the campaign starts. A parity invocation at 2,097,152 nodes was
+discarded here because `kswapd` and `kcompactd` woke during it, which is the
+kernel reclaiming memory for the run rather than a second workload — but the
+idle rule does not distinguish those, and weakening the rule to let a run pass
+is not a thing to do to a rule. The cause is removed instead, before anything
+is timed, and the campaign keeps the rule it was written with.
 
 Everything else is B4's protocol unchanged: parity before timing and a
 mismatched cell never timed, the bits gate against v0.22.0, counterbalanced
@@ -638,6 +649,122 @@ order, one warmup and five repeats, thread width set for every participant by
 name, the 0.25 MAD/median dispersion rule, steal reported per cell, the
 accounting modes as separate rows, the `neo4j-graph` naming, and the protocol,
 large and xlarge sizes.
+
+## B5: results
+
+One host, quegee, 2026-09-22. PENDING-B5-PROVENANCE One warmup, five repeats,
+counterbalanced, parity gated at every concurrency. **Every cell of every run,
+with its steal, its dispersion, its minor page faults and its usability, is in
+`simple-rust-algo-bench-evidence/b5-quegee/tables.md`**, generated from the run
+files by `tables.py`; the tables below select from it and add nothing to it.
+Times are milliseconds, median ± MAD; page faults are the median of the same
+samples, read outside the timers. Steal is ticks over that cell's group.
+
+**Host conditions.** PENDING-B5-RESIDENT
+
+PENDING-B5-HOSTRUNS
+
+PENDING-B5-UNUSABLE
+
+**Parity at the commit under test**, every fixture set at concurrency unset, 1
+and 16, before any timing. `grust-next` must return v0.22.0's PageRank vector
+bit for bit or it is a mismatch and is never timed.
+
+PENDING-B5-PARITY
+
+### The allocator artifact, corrected
+
+WCC and BFS read no in-arcs. B4 built the transpose for them anyway, inside the
+build timer and immediately before the call it timed; `+eager` is that
+behaviour, kept as its own row. The page-fault columns are the quantity the
+artifact moved, so the correction can be read off the counter beside the time.
+
+| fixture | algorithm | run | kernel | `grust` v0.22.0 | faults | `grust-next` | faults | `grust-next` `+eager` | faults | next/v0.22.0 | eager/next |
+| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+PENDING-B5-ALLOC
+
+PENDING-B5-ALLOCSUM
+
+### The allocator pinned, for every participant
+
+`GLIBC_TUNABLES=glibc.malloc.mmap_threshold=131072` set for the whole
+container, so every participant in the run has it. First call, at the protocol
+size, against the same cell of the same run unpinned.
+
+| fixture | algorithm | run | participant | default allocator | faults | pinned | faults | pinned/default |
+| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+PENDING-B5-PINNED
+
+Median change under pinning, per participant: PENDING-B5-PINVERDICT
+
+PENDING-B5-PINDECISION
+
+### The transpose, on the build side
+
+One thread, pull kernel (concurrency 1), PageRank — the one kernel here that
+reads in-arcs, and so the one whose build column contains them. "First" is a
+fresh projection's first kernel call; on v0.22.0 it includes building the
+transpose. "Second" repeats it with the transpose cached and on warm caches,
+which is not the condition of any other participant's timed call.
+
+| fixture | `grust` v0.22.0 first | `grust` v0.22.0 second | `grust-next` counted first | transpose, in `build_ms` | `grustcat` | steal |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+PENDING-B5-TRANSPOSE
+
+### The kernel change, v0.22.0 against the commit under test
+
+Same mode (counted), same concurrency, second call against second call, so the
+transpose is cached on both sides. Both builds return the same scores bit for
+bit, which parity checked on every fixture at every concurrency.
+
+| fixture | run | kernel | v0.22.0 | `ca68900` | ratio | steal |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+PENDING-B5-KERNEL
+
+### Every cell that got worse
+
+Counted `grust-next` against v0.22.0, same fixture, algorithm, kernel and call.
+PENDING-B5-WORSESUM
+
+| fixture | algorithm | run | kernel | call | v0.22.0 | faults | `ca68900` | faults | change | steal |
+| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+PENDING-B5-WORSE
+
+### The two items the attribution left open
+
+**Counted BFS on the first call.** B4 had it 8 to 11% slower than v0.22.0 on
+`uniform` and `hub`. The last column is what the same cell said in B4.
+
+| fixture | run | kernel | v0.22.0 | faults | `ca68900` | faults | change | B4 said |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+PENDING-B5-BFSOPEN
+
+**PageRank on `layered-16384` at sixteen threads.**
+
+| fixture | run | kernel | call | v0.22.0 | `ca68900` | change | steal |
+| --- | --- | --- | --- | ---: | ---: | ---: | ---: |
+PENDING-B5-LAYEREDOPEN
+
+### What the accounting guarantee costs
+
+`grust-next`, first call, by mode, beside `neo4j-graph`, which performs no
+accounting and is `f32` on its own stopping rule.
+
+| fixture | run | kernel | counted | work-uncounted | unchecked | `neo4j-graph` | steal |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+PENDING-B5-ACCT
+
+PENDING-B5-BUILD
+
+### B4 against B5 on unchanged code
+
+The participants that did not change between the two runs, one thread, first
+call. A B5 cell is compared only with other cells of the same B5 run; this
+table is the size of the drift between campaigns, not a correction to either.
+
+| fixture | algorithm | participant | B4 | B5 | change |
+| --- | --- | --- | ---: | ---: | ---: |
+PENDING-B5-DRIFT
 
 ## What is not here
 
