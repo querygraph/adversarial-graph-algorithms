@@ -28,16 +28,18 @@ def main():
         if report['skipped']:
             print('Not timed (no agreeing parity row):', ', '.join(
                 f"{s['participant']} {s['algorithm']} {s['fixture']}" for s in report['skipped']), '\n')
-        print('| fixture | algorithm | participant | call | accounting | iters | total ms | MAD | '
-              'MAD/median | per iter | build ms | incoming ms | prepare | minflt | minflt build | '
+        print('| fixture | algorithm | participant | call | accounting | precision | iters | total ms | '
+              'MAD | MAD/median | per iter | build ms | incoming ms | prepare | minflt | minflt build | '
               'work units | steal | usable |')
-        print('| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: '
-              '| ---: | ---: | ---: | --- |')
+        print('| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- '
+              '| ---: | ---: | ---: | ---: | --- |')
         cells = sorted(report['cells'], key=lambda c: (c['fixture'], c['algorithm'],
                                                         order.index(c['participant']), c['call'] or ''))
         for c in cells:
             print(f"| {c['fixture'].removesuffix('.edges')} | {c['algorithm']} | `{c['participant']}` | "
-                  f"{c['call'] or ''} | {c['accounting'] or ''} | {c['iterations'] or '-'} | "
+                  f"{c['call'] or ''} | {c['accounting'] or ''} | "
+                  f"{(c.get('precision') or '') if c['algorithm'] == 'pagerank' else ''} | "
+                  f"{c['iterations'] or '-'} | "
                   f"{fmt(c['total_ms'])} | {fmt(c['total_mad'])} | {fmt(c['dispersion'], 3)} | "
                   f"{fmt(c['per_iteration_ms'])} | {fmt(c['build_ms'], 2)} | {fmt(c['incoming_ms'], 2)} | "
                   f"{c.get('prepare_incoming') or ''} | "

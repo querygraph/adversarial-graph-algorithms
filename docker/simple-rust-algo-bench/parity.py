@@ -20,7 +20,21 @@ Two checks were added for the rerun, both recorded per PageRank row:
   must have the same digest and iteration count as BASE's on every fixture.
   This is the gate that licenses comparing two builds' times: a kernel change
   that altered a score is a different function, not a faster one. A candidate
-  that differs is a MISMATCH, and a mismatched cell is never timed.
+  that differs is a MISMATCH, and a mismatched cell is never timed. The option
+  may be given more than once, one group per BASE: B7 gates the f64 builds
+  against v0.22.0 and the `+f32` builds against their own counted row, because
+  an f32 vector is never bit-identical to an f64 one and a gate that compared
+  them would only ever mismatch.
+
+A variant's precision comes from its receipt, taken with the variant's own
+flags, so a Grust build run with `--precision f32` declares `f32` and is held
+to the same rule as `neo4j-graph`: a relative 1e-6 on the sum and the maximum,
+floored at the stopping tolerance. The f64 rule is 1e-12. Neither is loosened
+for anyone.
+
+`--families hub uniform` restricts a run to fixtures whose file name starts with
+those families, so a campaign that times two families gates exactly those and
+its parity file says so by containing only them.
 """
 import argparse, hashlib, json, pathlib, pickle, struct, subprocess, sys, tempfile
 
@@ -113,8 +127,11 @@ def main():
                    help='the only value grustcat can express, so the only one all five share')
     p.add_argument('--concurrency', type=int,
                    help='passed to participants that accept it; unset and 1 are different kernels')
-    p.add_argument('--bits-identical', nargs='+', metavar='KEY',
-                   help='BASE then CANDIDATES: each candidate PageRank vector must equal BASE bit for bit')
+    p.add_argument('--bits-identical', nargs='+', metavar='KEY', action='append',
+                   help='BASE then CANDIDATES: each candidate PageRank vector must equal BASE bit for bit; '
+                        'repeatable, one group per BASE')
+    p.add_argument('--families', nargs='+', metavar='FAMILY',
+                   help='only fixtures named FAMILY-<size>.edges; default every fixture in the directory')
     p.add_argument('--reference-cache', type=pathlib.Path,
                    help='directory keeping the reference result per fixture SHA-256 and tolerance')
     p.add_argument('--output', type=pathlib.Path)
@@ -127,7 +144,11 @@ def main():
     scratch = pathlib.Path(tempfile.mkdtemp(prefix='parity-scores-'))
 
     rows, mismatches = [], 0
-    for fixture in sorted(a.fixtures.glob('*.edges')):
+    fixtures = [f for f in sorted(a.fixtures.glob('*.edges'))
+                if a.families is None or f.name.split('-')[0] in a.families]
+    if not fixtures:
+        raise SystemExit(f'no fixtures in {a.fixtures} for families {a.families}')
+    for fixture in fixtures:
         loaded = []
         def graph():
             if not loaded: loaded.append(ref.read(fixture))
@@ -216,8 +237,7 @@ def main():
                 mismatches += bool(differences)
                 rows.append(row)
 
-    if a.bits_identical:
-        base, *candidates = a.bits_identical
+    for base, *candidates in a.bits_identical or []:
         for row in rows:
             if row['algorithm'] != 'pagerank' or row['participant'] not in candidates: continue
             if row['verdict'] != 'agrees': continue

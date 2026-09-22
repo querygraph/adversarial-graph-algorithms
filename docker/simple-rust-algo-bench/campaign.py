@@ -29,6 +29,9 @@ decides whether to rerun it. Nothing here retries on its own, because a retry
 loop on a shared host selects for the quiet moments and reports them as typical.
 
 The matrix is data, in RUNS below, so the plan and the run are one artifact.
+`--plan` selects which: `b6` is B5's protocol unchanged, `b7` the PageRank
+precision campaign below it. Outputs of a plan other than `b6` carry the plan
+name, so a B7 run in a B6 work directory overwrites nothing B6 wrote.
 """
 import argparse, json, os, pathlib, re, subprocess, sys, threading, time
 
@@ -122,6 +125,61 @@ RUNS = {
     'xlarge-full-width': dict(
         cpus=16, workers=16, concurrency=16, fixtures='fixtures-xlarge', algorithms=['pagerank'],
         participants=BASELINE + ['grust'] + NEXT),
+}
+
+# ---- B7: PageRank's score precision --------------------------------------
+# B6 found that neo4j-graph, which accumulates and returns f32, stops PageRank
+# at a different iteration count from Grust's f64 kernel under the same 1e-8
+# tolerance (at hub-65536 one-thread: 28 against 17), so its total time was
+# never one kernel's cost against another's. B7 runs Grust's PageRank at f32
+# as well (`+f32`, see variants.py), PageRank only, on the two dangling-free
+# families at the protocol, large and xlarge sizes, so that each table has the
+# iteration count beside the total and a reader can see whether the f32 rows
+# stopped where neo4j-graph stopped. Where the counts still differ, the
+# per-iteration time is the comparable figure.
+#
+# Participants: neo4j-graph; grust-next counted and unchecked, at f64 and at
+# f32; and v0.22.0 (`grust`) as the anchor, at the pull kernel and at full
+# width. The anchor's push loop (`grust#unset`) is left out: at xlarge it is 83
+# s a sample, the most expensive row of B6's matrix, it is the one row nothing
+# in B7 is compared with, and its per-arc charge was B5's question, not this
+# one. `b7_report.py estimate` computes the campaign's expected duration from
+# B6's own sample walls; the choice was made on that (see its output).
+#
+# Protocol as B6: parity first for every fixture set and concurrency, with the
+# bits gate in two groups, the f64 builds against v0.22.0 and the f32 builds
+# against their own counted row; then the timed runs in this order, one
+# warmup and five repeats, idle-checked, watched, steal recorded, the MAD rule
+# and the discard rule unchanged. No pinned runs: the allocator was B5's
+# question and B6 re-decided it on the counter.
+B7_FAMILIES = ['hub', 'uniform']
+B7_ALGORITHMS = ['pagerank']
+B7_NEXT = ['grust-next@counted', 'grust-next@unchecked']
+B7_F32 = [f'{v}+f32' for v in B7_NEXT]
+B7_PARITY_PARTICIPANTS = ['neo4j-graph', 'grust'] + B7_NEXT + B7_F32
+# One bits group per base: an f32 vector is never bit-identical to an f64 one.
+B7_BITS = [['grust', *B7_NEXT], [B7_F32[0], B7_F32[1]]]
+
+def b7_runs():
+    runs = {}
+    for prefix, fixtures in (('', 'fixtures'), ('large-', 'fixtures-large'), ('xlarge-', 'fixtures-xlarge')):
+        common = dict(fixtures=fixtures, algorithms=B7_ALGORITHMS, families=B7_FAMILIES)
+        # Both Grust kernels for every grust-next variant, as B6's one-thread
+        # runs did; the anchor at the pull kernel alone, for the reason above.
+        runs[f'{prefix}one-thread'] = dict(
+            cpus=1, workers=1, concurrency=1, **common,
+            participants=['neo4j-graph', 'grust#1'] + [f'{v}#1' for v in B7_NEXT + B7_F32]
+                         + [f'{v}#unset' for v in B7_NEXT + B7_F32])
+        runs[f'{prefix}full-width'] = dict(
+            cpus=16, workers=16, concurrency=16, **common,
+            participants=['neo4j-graph', 'grust'] + B7_NEXT + B7_F32)
+    return runs
+
+PLANS = {
+    'b6': dict(parity=PARITY, parity_participants=PARITY_PARTICIPANTS, bits_identical=[['grust', *NEXT]],
+               algorithms=None, families=None, runs=RUNS),
+    'b7': dict(parity=PARITY, parity_participants=B7_PARITY_PARTICIPANTS, bits_identical=B7_BITS,
+               algorithms=B7_ALGORITHMS, families=B7_FAMILIES, runs=b7_runs()),
 }
 
 # A process outside the run using more than this share of one CPU over a sample
@@ -260,10 +318,11 @@ def guarded(name, command, record, nonzero_ok=False):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('stage', choices=['idle', 'parity', 'timed', 'plan'])
+    p.add_argument('--plan', choices=list(PLANS), default='b6', help='which matrix; see PLANS')
     p.add_argument('--image', required=False)
     p.add_argument('--work', type=pathlib.Path, help='host directory mounted at /work: fixtures, parity, timed')
-    p.add_argument('--runs', nargs='+', default=list(RUNS))
-    p.add_argument('--configs', nargs='+', default=list(PARITY))
+    p.add_argument('--runs', nargs='+', help='default: every run of the plan, in its order')
+    p.add_argument('--configs', nargs='+', help='default: every parity configuration of the plan')
     p.add_argument('--fixtures', default='fixtures', help='parity: the fixture directory under --work')
     p.add_argument('--algorithms', nargs='+')
     p.add_argument('--repeats', type=int, default=5)
@@ -271,27 +330,33 @@ def main():
     p.add_argument('--only-fixture', help='dry run: time only fixtures matching this glob')
     p.add_argument('--tag', default='', help='suffix for output names, e.g. dry')
     a = p.parse_args()
+    plan = PLANS[a.plan]
+    runs, configs = a.runs or list(plan['runs']), a.configs or list(plan['parity'])
+    algorithms = a.algorithms or plan['algorithms']
+    # B6's names stay exactly what they were; any other plan's carry its name.
+    prefix = '' if a.plan == 'b6' else f'{a.plan}-'
 
     if a.stage == 'idle':
         state = snapshot()
         print(json.dumps(state, indent=1))
         return 0 if idle(state) else 1
     if a.stage == 'plan':
-        print(json.dumps(dict(parity=PARITY, parity_participants=PARITY_PARTICIPANTS, runs=RUNS), indent=1))
+        print(json.dumps(dict(plan=a.plan, **plan), indent=1))
         return 0
 
-    log = a.work/f'campaign{a.tag}.jsonl'
+    log = a.work/f'campaign-{a.plan}{a.tag}.jsonl' if prefix else a.work/f'campaign{a.tag}.jsonl'
     ok = True
     if a.stage == 'parity':
         (a.work/'parity').mkdir(exist_ok=True)
-        for config in a.configs:
-            concurrency = PARITY[config]['concurrency']
-            output = f'/work/parity/parity-{a.fixtures}-{config}{a.tag}.json'
+        for config in configs:
+            concurrency = plan['parity'][config]['concurrency']
+            output = f'/work/parity/parity-{prefix}{a.fixtures}-{config}{a.tag}.json'
             command = ['python3', '/opt/bench/parity.py', '--fixtures', f'/work/{a.fixtures}',
                        '--reference-cache', '/work/reference-cache',
-                       '--participants', *PARITY_PARTICIPANTS, '--bits-identical', 'grust', *NEXT,
-                       '--output', output]
-            if a.algorithms: command += ['--algorithms', *a.algorithms]
+                       '--participants', *plan['parity_participants'], '--output', output]
+            for group in plan['bits_identical']: command += ['--bits-identical', *group]
+            if plan['families']: command += ['--families', *plan['families']]
+            if algorithms: command += ['--algorithms', *algorithms]
             if concurrency is not None: command += ['--concurrency', str(concurrency)]
             record = {}
             # Parity is not timed, so it needs no quota, but it still runs on an
@@ -299,16 +364,16 @@ def main():
             # nobody can vouch for.
             # parity.py exits 1 whenever any row mismatches, and four known
             # neo4j-graph rows always do; its verdict is the file, not the code.
-            guarded(f'parity-{config}', docker(a.image, a.work, f'parity-{config}', None, command), record,
-                    nonzero_ok=True)
+            guarded(f'parity-{prefix}{config}', docker(a.image, a.work, f'parity-{prefix}{config}', None, command),
+                    record, nonzero_ok=True)
             with log.open('a') as out: out.write(json.dumps(record)+'\n')
             print(f"parity {config}: {record['status']}", flush=True)
             ok &= record['status'] == 'clean'
         return 0 if ok else 1
 
     (a.work/'timed').mkdir(exist_ok=True)
-    for run in a.runs:
-        spec = RUNS[run]
+    for run in runs:
+        spec = plan['runs'][run]
         fixtures = f"/work/{spec['fixtures']}"
         if a.only_fixture:
             # A dry run copies one fixture into its own directory rather than
@@ -321,21 +386,22 @@ def main():
             fixtures = f'/work/{dry.name}'
         concurrencies = sorted({'unset' if '#unset' in name else (name.split('#')[1] if '#' in name else str(spec['concurrency']))
                                 for name in spec['participants'] if name.startswith('grust')} | {str(spec['concurrency'])})
-        parity_files = [f"/work/parity/parity-{spec['fixtures']}-{c}.json" for c in concurrencies]
-        output = f'/work/timed/{run}{a.tag}.json'
+        parity_files = [f"/work/parity/parity-{prefix}{spec['fixtures']}-{c}.json" for c in concurrencies]
+        output = f'/work/timed/{prefix}{run}{a.tag}.json'
         command = ['python3', '/opt/bench/run.py', '--fixtures', fixtures,
                    '--participants', *spec['participants'], '--parity', *parity_files,
                    '--concurrency', str(spec['concurrency']), '--workers', str(spec['workers']),
                    '--warmups', str(a.warmups), '--repeats', str(a.repeats),
-                   '--label', f'{run}{a.tag}', '--output', output]
+                   '--label', f'{prefix}{run}{a.tag}', '--output', output]
         if spec.get('algorithms') or a.algorithms:
             command += ['--algorithms', *(a.algorithms or spec['algorithms'])]
+        if spec.get('families'): command += ['--families', *spec['families']]
         record = {}
-        guarded(run, docker(a.image, a.work, f'timed-{run}', spec['cpus'], command, spec.get('env')),
-                record)
-        record.update(run=run, cpus=spec['cpus'], env=spec.get('env'))
+        guarded(f'{prefix}{run}', docker(a.image, a.work, f'timed-{prefix}{run}', spec['cpus'], command,
+                                          spec.get('env')), record)
+        record.update(run=run, plan=a.plan, cpus=spec['cpus'], env=spec.get('env'))
         if record['status'].startswith('DISCARDED'):
-            produced = a.work/'timed'/f'{run}{a.tag}.json'
+            produced = a.work/'timed'/f'{prefix}{run}{a.tag}.json'
             if produced.exists(): produced.rename(produced.with_suffix('.discarded.json'))
         with log.open('a') as out: out.write(json.dumps(record)+'\n')
         print(f"{run}: {record['status']}, {record.get('seconds')}s, steal {record.get('steal_ticks')} ticks, "
