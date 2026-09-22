@@ -34,6 +34,7 @@ def ms(c): return '—' if c is None else f"{c['total_ms']:.2f} ± {c['total_mad
 def flt(c): return '—' if c is None or c['minflt'] is None else f"{c['minflt']:.0f}"
 def cell(run, fx, alg, p, call=None): return idx[run].get((fx, alg, p, call))
 def pct(r): return f"{100 * (r - 1):+.1f}%"
+def plural(n, one, many): return f"{n} {one if n == 1 else many}"
 def fixtures(run, families=None):
     names = sorted({k[0] for k in idx[run]})
     return [f for f in names if families is None or f.split('-')[0] in families]
@@ -281,8 +282,9 @@ for line in (E/'campaign.jsonl').read_text().splitlines():
     r = json.loads(line)
     if 'run' not in r: continue
     lines.append(f"- `{r['run']}`: {r['status']}, started {r['before']['at']}, {r['seconds']} s, "
-                 f"{r['steal_ticks']} steal ticks over the run, {len(r['sightings'])} sightings, "
-                 f"{len(r.get('resident_sessions', []))} resident agent sessions.")
+                 f"{r['steal_ticks']} steal ticks over the run, "
+                 f"{plural(len(r['sightings']), 'sighting', 'sightings')}, "
+                 f"{plural(len(r.get('resident_sessions', [])), 'resident agent session', 'resident agent sessions')}.")
 host = '\n'.join(lines)
 
 everything = [(r, c) for r, d in data.items() for c in d['cells']]
@@ -383,10 +385,12 @@ decision = (
 # Agent sessions, recorded rather than reconstructed.
 sessions = sorted({session for r in records for session in r.get('resident_sessions', [])})
 timed = [r for r in records if 'run' in r]
-resident = (f"{len(sessions)} resident agent sessions were seen by name across the campaign"
+resident = (f"{plural(len(sessions), 'resident agent session was', 'resident agent sessions were')} "
+            "seen by name across the campaign"
             + (f" ({'; '.join(sessions)})" if sessions else "")
-            + f". {sum(len(r['sightings']) for r in timed)} sightings were recorded over "
-            f"{len(timed)} timed invocations, and a run with a sighting is discarded rather than published. "
+            + f". {plural(sum(len(r['sightings']) for r in timed), 'sighting was', 'sightings were')} "
+            f"recorded over {len(timed)} timed invocations, and a run with a sighting is discarded rather "
+            "than published. "
             f"The host was checked idle before and after every run and sampled once a second during it.")
 
 s = DOC.read_text()

@@ -670,16 +670,16 @@ files by `tables.py`; the tables below select from it and add nothing to it.
 Times are milliseconds, median ± MAD; page faults are the median of the same
 samples, read outside the timers. Steal is ticks over that cell's group.
 
-**Host conditions.** 1 resident agent sessions were seen by name across the campaign (2382171 codex resume 01a0ad61-0419-7110-9e8c-c25058935bc0). 0 sightings were recorded over 8 timed invocations, and a run with a sighting is discarded rather than published. The host was checked idle before and after every run and sampled once a second during it.
+**Host conditions.** 1 resident agent session was seen by name across the campaign (2382171 codex resume 01a0ad61-0419-7110-9e8c-c25058935bc0). 0 sightings were recorded over 8 timed invocations, and a run with a sighting is discarded rather than published. The host was checked idle before and after every run and sampled once a second during it.
 
-- `one-thread`: clean, started 2026-09-22T07:32:22+0000, 236.8 s, 1 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `full-width`: clean, started 2026-09-22T07:36:21+0000, 104.5 s, 0 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `pinned-one-thread`: clean, started 2026-09-22T07:38:08+0000, 139.4 s, 1 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `pinned-full-width`: clean, started 2026-09-22T07:40:29+0000, 76.2 s, 0 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `large-one-thread`: clean, started 2026-09-22T07:41:47+0000, 1674.2 s, 7 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `large-full-width`: clean, started 2026-09-22T08:09:44+0000, 711.1 s, 3 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `xlarge-one-thread`: clean, started 2026-09-22T08:21:37+0000, 4300.3 s, 129 steal ticks over the run, 0 sightings, 1 resident agent sessions.
-- `xlarge-full-width`: clean, started 2026-09-22T09:33:19+0000, 1551.3 s, 7 steal ticks over the run, 0 sightings, 1 resident agent sessions.
+- `one-thread`: clean, started 2026-09-22T07:32:22+0000, 236.8 s, 1 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `full-width`: clean, started 2026-09-22T07:36:21+0000, 104.5 s, 0 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `pinned-one-thread`: clean, started 2026-09-22T07:38:08+0000, 139.4 s, 1 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `pinned-full-width`: clean, started 2026-09-22T07:40:29+0000, 76.2 s, 0 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `large-one-thread`: clean, started 2026-09-22T07:41:47+0000, 1674.2 s, 7 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `large-full-width`: clean, started 2026-09-22T08:09:44+0000, 711.1 s, 3 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `xlarge-one-thread`: clean, started 2026-09-22T08:21:37+0000, 4300.3 s, 129 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `xlarge-full-width`: clean, started 2026-09-22T09:33:19+0000, 1551.3 s, 7 steal ticks over the run, 0 sightings, 1 resident agent session.
 
 **1 of 1840 cells reached the 0.25 MAD/median threshold** and enter no table: `grust-next@counted` pagerank path-65536 first in pinned-full-width, 48.21 ± 12.26.
 
