@@ -7,7 +7,9 @@ repository.** Recorded 2026-09-21. This document holds what has been established
 **B3 carries two corrections, stated below under "A correction to B3": its
 Grust PageRank times include a transpose no other participant's kernel time
 does, and its claim of bit-identical PageRank across implementations does not
-hold. A rerun that measures the first is prepared and has not been timed.**
+hold. B4, a rerun that measures the first, the Grust kernel change since
+v0.22.0 and the cost of Grust's accounting, ran on 2026-09-21; its results are
+under "B4: results".**
 Nothing between here and the correction has been changed except one name: the
 participant B3 keyed `library` is keyed `neo4j-graph` here and in the evidence,
 because Grust is a library too. The B3 tables stand as published, with the
@@ -305,9 +307,8 @@ the headline "2.1x slower per iteration" (per-iteration divides the one-off
 build across 16 or 17 iterations, so it inflates that column too), and the
 `grust` PageRank rows of the full-width table. A profile outside this harness
 attributed 25–29% of the published 2.1x gap to it; **that figure is the
-profile's and has not been measured here.** The rerun measures it, on both
-the release and the later commit, and the corrected numbers will be stated
-here beside the published ones, not in place of them. BFS, WCC and triangles
+profile's.** B4 measured it: on `uniform-65536` at one thread the transpose is 8.77 ms of `grust-next`'s `build_ms`, against a first-call gap to `grustcat` of 28.20 ms on v0.22.0 in the same run, 31% of it. The corrected rows are under
+"B4: results", beside B3's rather than in place of them. BFS, WCC and triangles
 are unaffected: none of them reads the incoming adjacency.
 
 ### A second correction: "the same `f64` bit pattern" does not hold
@@ -345,7 +346,7 @@ identity is a stronger property and holds where it is stated: between Grust
 builds. `grust-next` returns v0.22.0's vector bit for bit on 24 of 24
 PageRank checks at each of the three concurrency configurations.
 
-## The rerun, prepared and not yet timed
+## B4: the rerun's protocol
 
 Everything in "The protocol" above still holds: tolerance 1e-8, sizes 16,384
 and 65,536, thread width set per participant by name, counterbalanced order,
@@ -400,15 +401,191 @@ Gates and discipline added for it:
   precision paragraph for their size rather than inherit it, as that paragraph
   requires.
 
+## B4: results
+
+One host, quegee, 2026-09-21. Grust `2182cdb` (v0.22.0) as `grust`, Grust
+`4d8e5db` (`main`, the merge of PR #30) as `grust-next`, Icecat `57b443ec`,
+this harness at `9d58001`, image `simple-rust-algo-bench:rerun-4d8e5db` built on
+the host from clean trees. One warmup, five repeats, counterbalanced, parity
+gated at every concurrency. **Every cell of every run, with its steal, its
+dispersion and its usability, is in
+`simple-rust-algo-bench-evidence/b4-quegee/tables.md`**, generated from the run
+files by `tables.py`; the tables below select from it and add nothing to it.
+Times are milliseconds, median ± MAD. Steal is ticks over that cell's group of
+samples.
+
+**Host conditions.** A resident agent session on the host, pid 1496, used up to
+63% of a CPU in bursts through the afternoon, and parity runs that overlapped it
+are marked shared in `campaign.jsonl`; its last sighting there is in the run
+that started at 20:22:49Z. The operator paused it at or before 20:26Z and then
+killed it; that is the operator's account, and what the campaign itself records
+is that the process was absent before every timed run, from 20:59:30Z on. The
+host was checked idle before and after every run and sampled once a second
+during it.
+- `one-thread`: clean, started 2026-09-21T20:59:32+0000, 235.7 s, 1 steal ticks over the run, 0 sightings.
+- `full-width`: clean, started 2026-09-21T21:03:29+0000, 114.9 s, 0 steal ticks over the run, 0 sightings.
+- `large-one-thread`: clean, started 2026-09-21T21:05:26+0000, 2507.0 s, 10 steal ticks over the run, 0 sightings.
+- `large-full-width`: clean, started 2026-09-21T21:47:16+0000, 909.4 s, 4 steal ticks over the run, 0 sightings.
+- `xlarge-one-thread`: DISCARDED: host shared during the run, started 2026-09-21T22:02:27+0000, 5368.7 s, 21 steal ticks over the run, 2 sightings.
+- `xlarge-one-thread`: clean, started 2026-09-21T23:33:03+0000, 5120.8 s, 20 steal ticks over the run, 0 sightings.
+- `xlarge-full-width`: clean, started 2026-09-22T00:58:26+0000, 1772.0 s, 8 steal ticks over the run, 0 sightings.
+
+The first `xlarge-one-thread` was discarded, and the cause was ours: in its
+first 35 seconds the agent running the campaign started a `docker run` of the
+audit script and a `sha256sum` of the xlarge fixtures, to collect provenance for
+this document. The watcher saw both and the run was discarded as the protocol
+requires; its file is kept under `discarded/` and none of its numbers appears
+here. `xlarge-one-thread` was then run again, and `xlarge-full-width` — which the
+campaign had not reached — run for the first time, on an idle host with nothing
+else started on it.
+
+**None of the 1080 cells reached the 0.25 MAD/median threshold**; the largest dispersion was 0.170, `grust-next@work-uncounted#unset` bfs uniform-65536 first in one-thread.
+
+**Parity at `4d8e5db`**, every fixture set at concurrency unset, 1 and 16, before any timing. `grust-next` is bit-identical to v0.22.0 in every PageRank row, which is the gate that licenses the kernel comparison below; the only mismatches are the `neo4j-graph` dangling-mass rows B3 already reported.
+
+| file | agree | absent | mismatch | error | bits-identical to v0.22.0 | mismatched rows |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `fixtures-1` | 220 | 32 | 4 | 0 | 24 of 24 | neo4j-graph layered-16384, neo4j-graph layered-65536, neo4j-graph path-16384, neo4j-graph path-65536 |
+| `fixtures-16` | 220 | 32 | 4 | 0 | 24 of 24 | neo4j-graph layered-16384, neo4j-graph layered-65536, neo4j-graph path-16384, neo4j-graph path-65536 |
+| `fixtures-large-1` | 16 | 0 | 0 | 0 | 6 of 6 | — |
+| `fixtures-large-16` | 16 | 0 | 0 | 0 | 6 of 6 | — |
+| `fixtures-large-unset` | 16 | 0 | 0 | 0 | 6 of 6 | — |
+| `fixtures-unset` | 220 | 32 | 4 | 0 | 24 of 24 | neo4j-graph layered-16384, neo4j-graph layered-65536, neo4j-graph path-16384, neo4j-graph path-65536 |
+| `fixtures-xlarge-1` | 16 | 0 | 0 | 0 | 6 of 6 | — |
+| `fixtures-xlarge-16` | 16 | 0 | 0 | 0 | 6 of 6 | — |
+| `fixtures-xlarge-unset` | 16 | 0 | 0 | 0 | 6 of 6 | — |
+
+3 parity invocations exited 1. `parity.py` exits 1 whenever any row mismatches, and the protocol fixture set always contains the four known `neo4j-graph` rows; the PageRank-only large sets contain none and exit 0. The driver records a parity verdict from its file, not its exit code. 3 parity invocations are marked shared, every sighting in them the resident session above. Parity verdicts are computed results and do not depend on host load, so these were not rerun; the files above are the output of the last invocation of each set and configuration, including the shared ones. Every parity and timed invocation used the same image, built once before parity began.
+
+**Absolute times moved between B3 and B4 on unchanged code.** `grust` at v0.22.0 on `uniform-65536`, one thread, first call: 65.71 ms in B3, 59.44 ± 3.00 in B4; `icecat` 33.76 then 30.24 ± 0.19. The binaries were rebuilt from the same
+sources, stamped with different commits. So a B4 cell is compared only with
+other cells of the same B4 run, never with a B3 cell.
+
+### The transpose correction
+
+One thread, pull kernel (concurrency 1), PageRank. "First" is a fresh
+projection's first kernel call, which is what B3 timed; on v0.22.0 it includes
+building the transpose. "Second" repeats the call on the same projection with
+the transpose cached — and on warm caches, which is not the condition of any
+other participant's timed call: triangles on `uniform-65536` at full width, which builds nothing lazily, takes 33.28 ms on v0.22.0's first call and 27.08 on its second, 19% less. So v0.22.0's second call is not
+the corrected number. The corrected number is `grust-next`'s first call, whose
+transpose is built inside `build_ms` as grustcat's is; the transpose column is
+its share of that build. That column contains the kernel change as well; the
+next table separates the two.
+
+| fixture | `grust` v0.22.0 first | `grust` v0.22.0 second | `grust-next` counted first | transpose, in `build_ms` | `grustcat` | steal |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-65536` | 65.11 ± 0.37 | 55.68 ± 4.07 | 36.90 ± 0.07 | 8.52 | 34.01 ± 0.34 | 0 |
+| `uniform-65536` | 59.44 ± 3.00 | 49.38 ± 4.14 | 35.02 ± 0.10 | 8.77 | 31.24 ± 0.35 | 1 |
+| `hub-2097152` | 6388.56 ± 29.42 | 5625.49 ± 67.26 | 3460.55 ± 110.02 | 723.86 | 3112.82 ± 12.53 | 5 |
+| `uniform-2097152` | 6661.30 ± 59.64 | 5957.46 ± 26.04 | 3696.77 ± 24.86 | 708.88 | 3512.28 ± 41.73 | 5 |
+| `hub-4194304` | 14198.59 ± 88.39 | 12486.68 ± 74.79 | 8180.58 ± 42.20 | 1552.63 | 7014.94 ± 55.22 | 11 |
+| `uniform-4194304` | 13314.92 ± 61.02 | 11981.43 ± 23.08 | 7268.50 ± 229.66 | 1365.16 | 7052.95 ± 62.84 | 9 |
+
+### The kernel change, v0.22.0 against `4d8e5db`
+
+Same mode (counted), same concurrency, and second call against second call, so
+the transpose is cached on both sides. Both builds return the same scores bit
+for bit, which parity checked on every fixture at every concurrency.
+
+| fixture | run | kernel | v0.22.0 | `4d8e5db` | ratio | steal |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| `hub-16384` | one-thread | pull | 9.50 ± 0.01 | 8.82 ± 0.02 | 0.928 | 0 |
+| `hub-16384` | one-thread | push | 50.64 ± 0.02 | 22.85 ± 0.11 | 0.451 | 0 |
+| `hub-65536` | one-thread | pull | 55.68 ± 4.07 | 36.55 ± 0.18 | 0.656 | 0 |
+| `hub-65536` | one-thread | push | 207.57 ± 2.73 | 94.26 ± 0.60 | 0.454 | 0 |
+| `uniform-16384` | one-thread | pull | 9.12 ± 0.01 | 8.30 ± 0.01 | 0.910 | 0 |
+| `uniform-16384` | one-thread | push | 47.91 ± 0.01 | 21.13 ± 0.02 | 0.441 | 0 |
+| `uniform-65536` | one-thread | pull | 49.38 ± 4.14 | 34.05 ± 0.06 | 0.689 | 1 |
+| `uniform-65536` | one-thread | push | 195.33 ± 0.76 | 88.79 ± 0.91 | 0.455 | 1 |
+| `hub-16384` | full-width | pull | 3.49 ± 0.07 | 3.63 ± 0.11 | 1.040 | 0 |
+| `hub-65536` | full-width | pull | 8.65 ± 0.22 | 7.70 ± 0.11 | 0.890 | 0 |
+| `uniform-16384` | full-width | pull | 3.28 ± 0.10 | 3.46 ± 0.03 | 1.056 | 0 |
+| `uniform-65536` | full-width | pull | 8.33 ± 0.08 | 7.24 ± 0.15 | 0.870 | 0 |
+| `hub-2097152` | large-one-thread | pull | 5625.49 ± 67.26 | 3564.08 ± 88.06 | 0.634 | 5 |
+| `hub-2097152` | large-one-thread | push | 16114.66 ± 40.17 | 7141.83 ± 235.42 | 0.443 | 5 |
+| `uniform-2097152` | large-one-thread | pull | 5957.46 ± 26.04 | 3592.64 ± 35.02 | 0.603 | 5 |
+| `uniform-2097152` | large-one-thread | push | 16646.03 ± 302.70 | 7030.66 ± 38.47 | 0.422 | 5 |
+| `hub-2097152` | large-full-width | pull | 562.12 ± 8.64 | 271.02 ± 17.65 | 0.482 | 2 |
+| `uniform-2097152` | large-full-width | pull | 640.06 ± 14.20 | 277.59 ± 13.38 | 0.434 | 2 |
+| `hub-4194304` | xlarge-one-thread | pull | 12486.68 ± 74.79 | 8040.04 ± 88.57 | 0.644 | 11 |
+| `hub-4194304` | xlarge-one-thread | push | 34026.71 ± 75.39 | 15106.92 ± 140.47 | 0.444 | 11 |
+| `uniform-4194304` | xlarge-one-thread | pull | 11981.43 ± 23.08 | 7227.70 ± 115.88 | 0.603 | 9 |
+| `uniform-4194304` | xlarge-one-thread | push | 26102.82 ± 517.15 | 13142.20 ± 105.13 | 0.503 | 9 |
+| `hub-4194304` | xlarge-full-width | pull | 1362.08 ± 1.53 | 731.33 ± 16.30 | 0.537 | 4 |
+| `uniform-4194304` | xlarge-full-width | pull | 1458.50 ± 2.96 | 761.34 ± 8.27 | 0.522 | 4 |
+
+**It got worse elsewhere.** On `4d8e5db`, counted WCC is slower than v0.22.0 on the first call in 24 of 24 one-thread and full-width cells (+0.3% to +18.9%; median +15.9% at one thread), and on the second call in 11 of 24; counted BFS is slower than v0.22.0 on the first call in 20 of 24 one-thread and full-width cells (-4.5% to +11.4%; median +7.6% at one thread), and on the second call in 8 of 24. The largest PageRank change the wrong way, second call against second call, is +11.1%. At one thread the uncounted modes' medians for the same WCC and BFS cells are -23.0% to -47.6% against v0.22.0. Every such cell is in `tables.md`. **The
+cause is unexplained.** A penalty that fades on the second call is consistent
+with state left by the build — `grust-next` now builds the transpose just
+before the first call — and with other one-off costs; the control that would
+separate them is `grust-next` without `prepare_incoming`, which this run did
+not include.
+
+### What the accounting guarantee costs
+
+`grust-next`, first call, by mode. `counted` is the default and what v0.22.0
+always does; `unchecked` performs neither work accounting nor cancellation
+checks, and `neo4j-graph` performs neither either, though Grust still admits memory in every
+mode. `neo4j-graph` is `f32` and stops on its own rule (26 to 34 iterations
+where the others run 16 or 17), so its column is a total for a different
+number of iterations, not a kernel comparison.
+
+| fixture | run | kernel | counted | work-uncounted | unchecked | `neo4j-graph` | steal |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| `hub-65536` | one-thread | pagerank, pull | 36.90 ± 0.07 | 34.15 ± 0.22 | 32.43 ± 0.38 | 40.03 ± 0.40 | 0 |
+| `hub-65536` | one-thread | pagerank, push | 96.04 ± 0.97 | 61.09 ± 0.51 | 58.18 ± 0.51 | 40.03 ± 0.40 | 0 |
+| `hub-65536` | one-thread | wcc, concurrency 1 | 7.31 ± 0.03 | 4.93 ± 0.07 | 4.62 ± 0.04 | 3.84 ± 0.01 | 0 |
+| `hub-65536` | one-thread | wcc, concurrency unset | 19.78 ± 0.06 | 10.15 ± 0.04 | 9.52 ± 0.13 | 3.84 ± 0.01 | 0 |
+| `hub-65536` | one-thread | triangles, concurrency 1 | 77.02 ± 1.57 | 77.26 ± 0.61 | 75.89 ± 0.71 | 42.31 ± 0.74 | 0 |
+| `hub-65536` | one-thread | triangles, concurrency unset | 79.47 ± 0.31 | 76.28 ± 0.76 | 76.82 ± 1.03 | 42.31 ± 0.74 | 0 |
+| `uniform-65536` | one-thread | pagerank, pull | 35.02 ± 0.10 | 32.53 ± 0.08 | 30.89 ± 0.16 | 48.49 ± 0.20 | 1 |
+| `uniform-65536` | one-thread | pagerank, push | 88.77 ± 0.66 | 57.11 ± 0.44 | 53.63 ± 0.39 | 48.49 ± 0.20 | 1 |
+| `uniform-65536` | one-thread | wcc, concurrency 1 | 10.70 ± 0.10 | 8.74 ± 0.02 | 8.44 ± 0.02 | 3.86 ± 0.01 | 0 |
+| `uniform-65536` | one-thread | wcc, concurrency unset | 20.23 ± 0.09 | 11.13 ± 0.08 | 10.58 ± 0.13 | 3.86 ± 0.01 | 0 |
+| `uniform-65536` | one-thread | triangles, concurrency 1 | 80.43 ± 0.61 | 80.84 ± 0.95 | 81.73 ± 0.38 | 46.94 ± 1.05 | 0 |
+| `uniform-65536` | one-thread | triangles, concurrency unset | 83.23 ± 1.01 | 81.66 ± 1.92 | 81.05 ± 0.31 | 46.94 ± 1.05 | 0 |
+| `hub-65536` | full-width | pagerank, pull | 9.06 ± 0.11 | 6.97 ± 0.22 | 6.52 ± 0.05 | 15.42 ± 0.73 | 0 |
+| `hub-65536` | full-width | wcc | 2.84 ± 0.07 | 2.36 ± 0.05 | 2.31 ± 0.13 | 3.10 ± 0.23 | 0 |
+| `hub-65536` | full-width | triangles | 31.37 ± 0.18 | 30.70 ± 0.15 | 30.94 ± 0.34 | 3.79 ± 0.02 | 0 |
+| `uniform-65536` | full-width | pagerank, pull | 8.95 ± 0.16 | 6.47 ± 0.14 | 6.50 ± 0.06 | 17.19 ± 0.36 | 0 |
+| `uniform-65536` | full-width | wcc | 3.21 ± 0.05 | 2.60 ± 0.17 | 2.74 ± 0.03 | 3.18 ± 0.18 | 0 |
+| `uniform-65536` | full-width | triangles | 32.98 ± 0.15 | 32.20 ± 0.24 | 32.10 ± 0.12 | 4.09 ± 0.08 | 0 |
+| `hub-2097152` | large-one-thread | pagerank, pull | 3460.55 ± 110.02 | 3514.41 ± 35.93 | 3186.54 ± 21.14 | 2585.38 ± 139.56 | 5 |
+| `hub-2097152` | large-one-thread | pagerank, push | 6980.05 ± 561.78 | 5839.02 ± 239.40 | 5862.38 ± 75.51 | 2585.38 ± 139.56 | 5 |
+| `uniform-2097152` | large-one-thread | pagerank, pull | 3696.77 ± 24.86 | 3581.36 ± 134.98 | 3363.09 ± 63.65 | 2553.54 ± 75.83 | 5 |
+| `uniform-2097152` | large-one-thread | pagerank, push | 7015.63 ± 49.71 | 5733.41 ± 3.37 | 5596.27 ± 20.63 | 2553.54 ± 75.83 | 5 |
+| `hub-2097152` | large-full-width | pagerank, pull | 264.98 ± 8.93 | 244.46 ± 3.46 | 241.99 ± 6.30 | 272.61 ± 2.04 | 2 |
+| `uniform-2097152` | large-full-width | pagerank, pull | 267.94 ± 6.19 | 261.48 ± 12.04 | 268.63 ± 8.12 | 283.89 ± 1.33 | 2 |
+| `hub-4194304` | xlarge-one-thread | pagerank, pull | 8180.58 ± 42.20 | 7677.63 ± 18.04 | 7494.93 ± 36.38 | 6158.30 ± 164.91 | 11 |
+| `hub-4194304` | xlarge-one-thread | pagerank, push | 15152.10 ± 70.99 | 12675.26 ± 63.88 | 12707.47 ± 12.41 | 6158.30 ± 164.91 | 11 |
+| `uniform-4194304` | xlarge-one-thread | pagerank, pull | 7268.50 ± 229.66 | 7031.98 ± 142.72 | 6828.03 ± 232.25 | 5328.15 ± 153.34 | 9 |
+| `uniform-4194304` | xlarge-one-thread | pagerank, push | 12873.93 ± 345.52 | 10783.82 ± 317.82 | 10736.38 ± 588.46 | 5328.15 ± 153.34 | 9 |
+| `hub-4194304` | xlarge-full-width | pagerank, pull | 730.85 ± 3.55 | 698.17 ± 18.59 | 695.38 ± 15.32 | 342.47 ± 39.57 | 4 |
+| `uniform-4194304` | xlarge-full-width | pagerank, pull | 757.06 ± 6.56 | 733.26 ± 11.33 | 723.81 ± 13.01 | 620.22 ± 22.72 | 4 |
+
+Counting also costs in the build: `grust-next`'s `build_ms` for PageRank on `hub-65536` at one thread is 127.68 ms counted, 71.95 work-uncounted and 69.54 unchecked, because building the projection and its transpose charges work too.
+
+### PageRank precision, restated for the sizes above L3
+
+At 2,097,152 nodes an `f64` score array is 16.8 MB and `neo4j-graph`'s `f32`
+one 8.4 MB, against quegee's 24.8 MB L3: either fits alone, and neither fits
+beside the rest of a working set whose edge arrays alone exceed 100 MB. At
+4,194,304 the `f64` array is 33.6 MB and does not fit on its own; the `f32` one
+is 16.8 MB and does. At that size single precision can buy cache residency on
+the one randomly indexed array, not only bandwidth. This is arithmetic from
+array sizes and the host's L3, not a measurement of cache behaviour.
+
 ## What is not here
 
-- **Not portable.** Every timing below is from one host — quegee, 16 vCPU on 8
-  physical cores, 24.8 MB L3, not burstable, 0 steal ticks per run — and is a
-  fact about that machine as much as about the code. Numbers produced on a
-  burstable box during this work were for shape only and none is quoted here.
-- **No comparison against `neo4j-labs/graph` on speed.** Nothing in this document
-  says which is faster, because nothing has been measured that could.
-- **No claim about parallel execution.** Whether the Grust participants run
-  parallel in the timed run is undecided at the time of writing.
-- **A dated result.** Parallel execution is being added to the kernels on this
-  side as this is written; a column measured then describes that code.
+- **Not portable.** Every timing here is from one host — quegee, 16 vCPU on 8
+  physical cores, 24.8 MB L3, not burstable — and is a fact about that machine
+  as much as about the code. Numbers produced on a burstable box during this
+  work were for shape only and none is quoted here.
+- **No ranking.** The B4 tables put `neo4j-graph` beside Grust's accounting
+  modes so a reader can compare like for like; this document does not reduce
+  them to an order, and `neo4j-graph` computes in `f32` to its own stopping
+  rule.
+- **No cause for the WCC and BFS first-call slowdown**, only its shape.
+- **A dated result.** B3 describes v0.22.0 and B4 describes `4d8e5db`; a column
+  measured later describes that code.

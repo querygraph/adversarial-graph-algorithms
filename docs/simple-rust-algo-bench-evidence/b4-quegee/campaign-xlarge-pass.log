@@ -1,0 +1,74 @@
+CAMPAIGN-START 2026-09-21T23:33:01Z
+pid1496-before-xlarge-one-thread: [absent] 2026-09-21T23:33:01Z
+steal over the run: 20 ticks
+120 timed samples in 5118.2s -> /work/timed/xlarge-one-thread.json
+hub-4194304.edges    pagerank   grust#1                         first  iters   16  total 14198.5924 ± 88.3928  per-iter 887.4120  build 8158.46  steal 11
+hub-4194304.edges    pagerank   grust#1                         second iters   16  total 12486.6761 ± 74.7898  per-iter 780.4173  build 8158.46  steal 11
+hub-4194304.edges    pagerank   grust#unset                     first  iters   16  total 34034.5122 ± 285.5544  per-iter 2127.1570  build 8130.22  steal 11
+hub-4194304.edges    pagerank   grust#unset                     second iters   16  total 34026.7066 ± 75.3894  per-iter 2126.6692  build 8130.22  steal 11
+hub-4194304.edges    pagerank   grust-next@counted#1            first  iters   16  total 8180.5838 ± 42.2001  per-iter 511.2865  build 11752.45  steal 11
+hub-4194304.edges    pagerank   grust-next@counted#1            second iters   16  total 8040.0375 ± 88.5734  per-iter 502.5023  build 11752.45  steal 11
+hub-4194304.edges    pagerank   grust-next@counted#unset        first  iters   16  total 15152.0985 ± 70.9880  per-iter 947.0062  build 11760.73  steal 11
+hub-4194304.edges    pagerank   grust-next@counted#unset        second iters   16  total 15106.9175 ± 140.4683  per-iter 944.1823  build 11760.73  steal 11
+hub-4194304.edges    pagerank   grust-next@unchecked#1          first  iters   16  total 7494.9301 ± 36.3778  per-iter 468.4331  build 8020.53  steal 11
+hub-4194304.edges    pagerank   grust-next@unchecked#1          second iters   16  total 7478.8633 ± 111.1765  per-iter 467.4290  build 8020.53  steal 11
+hub-4194304.edges    pagerank   grust-next@unchecked#unset      first  iters   16  total 12707.4739 ± 12.4073  per-iter 794.2171  build 8080.30  steal 11
+hub-4194304.edges    pagerank   grust-next@unchecked#unset      second iters   16  total 12663.3954 ± 39.0301  per-iter 791.4622  build 8080.30  steal 11
+hub-4194304.edges    pagerank   grust-next@work-uncounted#1     first  iters   16  total 7677.6288 ± 18.0353  per-iter 479.8518  build 8043.11  steal 11
+hub-4194304.edges    pagerank   grust-next@work-uncounted#1     second iters   16  total 7662.4045 ± 49.1266  per-iter 478.9003  build 8043.11  steal 11
+hub-4194304.edges    pagerank   grust-next@work-uncounted#unset first  iters   16  total 12675.2575 ± 63.8792  per-iter 792.2036  build 8099.10  steal 11
+hub-4194304.edges    pagerank   grust-next@work-uncounted#unset second iters   16  total 12589.7236 ± 100.9749  per-iter 786.8577  build 8099.10  steal 11
+hub-4194304.edges    pagerank   grustcat                               iters   16  total 7014.9375 ± 55.2231  per-iter 438.4336  build 45503.66  steal 11
+hub-4194304.edges    pagerank   icebug                                 iters   10  total 11019.3986 ± 348.4647  per-iter 1101.9399  build 7425.86  steal 11
+hub-4194304.edges    pagerank   icecat                                 iters   16  total 6677.3385 ± 16.1937  per-iter 417.3337  build 1212.16  steal 11
+hub-4194304.edges    pagerank   neo4j-graph                            iters   23  total 6158.3009 ± 164.9058  per-iter 267.7522  build 9022.43  steal 11
+uniform-4194304.edges pagerank   grust#1                         first  iters   16  total 13314.9223 ± 61.0168  per-iter 832.1826  build 7735.60  steal 9
+uniform-4194304.edges pagerank   grust#1                         second iters   16  total 11981.4287 ± 23.0798  per-iter 748.8393  build 7735.60  steal 9
+uniform-4194304.edges pagerank   grust#unset                     first  iters   16  total 26598.3172 ± 1473.4104  per-iter 1662.3948  build 7763.50  steal 9
+uniform-4194304.edges pagerank   grust#unset                     second iters   16  total 26102.8248 ± 517.1464  per-iter 1631.4266  build 7763.50  steal 9
+uniform-4194304.edges pagerank   grust-next@counted#1            first  iters   16  total 7268.4955 ± 229.6560  per-iter 454.2810  build 10941.97  steal 9
+uniform-4194304.edges pagerank   grust-next@counted#1            second iters   16  total 7227.7001 ± 115.8765  per-iter 451.7313  build 10941.97  steal 9
+uniform-4194304.edges pagerank   grust-next@counted#unset        first  iters   16  total 12873.9319 ± 345.5189  per-iter 804.6207  build 10942.47  steal 9
+uniform-4194304.edges pagerank   grust-next@counted#unset        second iters   16  total 13142.1984 ± 105.1290  per-iter 821.3874  build 10942.47  steal 9
+uniform-4194304.edges pagerank   grust-next@unchecked#1          first  iters   16  total 6828.0269 ± 232.2526  per-iter 426.7517  build 7221.17  steal 9
+uniform-4194304.edges pagerank   grust-next@unchecked#1          second iters   16  total 6906.2072 ± 261.5504  per-iter 431.6380  build 7221.17  steal 9
+uniform-4194304.edges pagerank   grust-next@unchecked#unset      first  iters   16  total 10736.3812 ± 588.4559  per-iter 671.0238  build 7242.90  steal 9
+uniform-4194304.edges pagerank   grust-next@unchecked#unset      second iters   16  total 10586.2681 ± 317.4018  per-iter 661.6418  build 7242.90  steal 9
+uniform-4194304.edges pagerank   grust-next@work-uncounted#1     first  iters   16  total 7031.9763 ± 142.7239  per-iter 439.4985  build 7266.22  steal 9
+uniform-4194304.edges pagerank   grust-next@work-uncounted#1     second iters   16  total 6983.3598 ± 196.7897  per-iter 436.4600  build 7266.22  steal 9
+uniform-4194304.edges pagerank   grust-next@work-uncounted#unset first  iters   16  total 10783.8218 ± 317.8244  per-iter 673.9889  build 7340.28  steal 9
+uniform-4194304.edges pagerank   grust-next@work-uncounted#unset second iters   16  total 10565.6675 ± 46.3086  per-iter 660.3542  build 7340.28  steal 9
+uniform-4194304.edges pagerank   grustcat                               iters   16  total 7052.9478 ± 62.8417  per-iter 440.8092  build 43513.50  steal 9
+uniform-4194304.edges pagerank   icebug                                 iters    9  total 9309.6015 ± 112.6842  per-iter 1034.4002  build 6517.91  steal 9
+uniform-4194304.edges pagerank   icecat                                 iters   16  total 5794.6901 ± 56.2302  per-iter 362.1681  build 1187.10  steal 9
+uniform-4194304.edges pagerank   neo4j-graph                            iters   29  total 5328.1483 ± 153.3413  per-iter 183.7293  build 7468.53  steal 9
+xlarge-one-thread: clean, 5120.8s, steal 20 ticks, 0 sightings
+pid1496-before-xlarge-full-width: [absent] 2026-09-22T00:58:24Z
+steal over the run: 8 ticks
+80 timed samples in 1769.4s -> /work/timed/xlarge-full-width.json
+hub-4194304.edges    pagerank   grust                     first  iters   16  total 2778.1078 ± 4.1930  per-iter 173.6317  build 7709.28  steal 4
+hub-4194304.edges    pagerank   grust                     second iters   16  total 1362.0803 ± 1.5281  per-iter 85.1300  build 7709.28  steal 4
+hub-4194304.edges    pagerank   grust-next@counted        first  iters   16  total  730.8451 ± 3.5465  per-iter 45.6778  build 10973.76  steal 4
+hub-4194304.edges    pagerank   grust-next@counted        second iters   16  total  731.3283 ± 16.2964  per-iter 45.7080  build 10973.76  steal 4
+hub-4194304.edges    pagerank   grust-next@unchecked      first  iters   16  total  695.3793 ± 15.3176  per-iter 43.4612  build 7062.89  steal 4
+hub-4194304.edges    pagerank   grust-next@unchecked      second iters   16  total  695.9420 ± 22.2093  per-iter 43.4964  build 7062.89  steal 4
+hub-4194304.edges    pagerank   grust-next@work-uncounted first  iters   16  total  698.1656 ± 18.5921  per-iter 43.6354  build 7293.84  steal 4
+hub-4194304.edges    pagerank   grust-next@work-uncounted second iters   16  total  705.9014 ± 25.5893  per-iter 44.1188  build 7293.84  steal 4
+hub-4194304.edges    pagerank   grustcat                         iters   16  total 6041.8579 ± 14.5860  per-iter 377.6161  build 42230.78  steal 4
+hub-4194304.edges    pagerank   icebug                           iters   10  total 1108.0394 ± 6.6044  per-iter 110.8039  build 7018.11  steal 4
+hub-4194304.edges    pagerank   icecat                           iters   16  total 5789.8833 ± 100.4682  per-iter 361.8677  build 1183.82  steal 4
+hub-4194304.edges    pagerank   neo4j-graph                      iters   15  total  342.4716 ± 39.5720  per-iter 22.8314  build 918.07  steal 4
+uniform-4194304.edges pagerank   grust                     first  iters   16  total 2870.0037 ± 25.6355  per-iter 179.3752  build 7727.75  steal 4
+uniform-4194304.edges pagerank   grust                     second iters   16  total 1458.5041 ± 2.9562  per-iter 91.1565  build 7727.75  steal 4
+uniform-4194304.edges pagerank   grust-next@counted        first  iters   16  total  757.0555 ± 6.5630  per-iter 47.3160  build 11013.46  steal 4
+uniform-4194304.edges pagerank   grust-next@counted        second iters   16  total  761.3421 ± 8.2717  per-iter 47.5839  build 11013.46  steal 4
+uniform-4194304.edges pagerank   grust-next@unchecked      first  iters   16  total  723.8069 ± 13.0137  per-iter 45.2379  build 7286.67  steal 4
+uniform-4194304.edges pagerank   grust-next@unchecked      second iters   16  total  718.0023 ± 4.9325  per-iter 44.8751  build 7286.67  steal 4
+uniform-4194304.edges pagerank   grust-next@work-uncounted first  iters   16  total  733.2572 ± 11.3284  per-iter 45.8286  build 7371.99  steal 4
+uniform-4194304.edges pagerank   grust-next@work-uncounted second iters   16  total  722.0425 ± 16.6439  per-iter 45.1277  build 7371.99  steal 4
+uniform-4194304.edges pagerank   grustcat                         iters   16  total 7243.9263 ± 203.0057  per-iter 452.7454  build 44153.61  steal 4
+uniform-4194304.edges pagerank   icebug                           iters    9  total 1072.4355 ± 10.2460  per-iter 119.1595  build 6515.61  steal 4
+uniform-4194304.edges pagerank   icecat                           iters   16  total 5998.5642 ± 58.1876  per-iter 374.9103  build 1195.45  steal 4
+uniform-4194304.edges pagerank   neo4j-graph                      iters   29  total  620.2220 ± 22.7239  per-iter 21.3870  build 918.44  steal 4
+xlarge-full-width: clean, 1772.0s, steal 8 ticks, 0 sightings
+CAMPAIGN-END 2026-09-22T01:27:58Z

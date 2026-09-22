@@ -1,0 +1,3882 @@
+[
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999668079909,
+   "max": 0.00014937247,
+   "argmax": 10863,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 36
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999948,
+   "max": 0.0001493724339292209,
+   "argmax": 10863,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 12
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154456,
+   "argmax": 10863,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154456,
+   "argmax": 10863,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154456,
+   "argmax": 10863,
+   "scores_digest": "68d9eb90a4b4f53d"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 7352,
+   "of": 16384,
+   "max_abs": 8.131516293641283e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154456,
+   "argmax": 10863,
+   "scores_digest": "68d9eb90a4b4f53d"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 7352,
+   "of": 16384,
+   "max_abs": 8.131516293641283e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "found": {
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154456,
+   "argmax": 10863,
+   "scores_digest": "68d9eb90a4b4f53d"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 7352,
+   "of": 16384,
+   "max_abs": 8.131516293641283e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154456,
+   "argmax": 10863,
+   "scores_digest": "68d9eb90a4b4f53d"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 7352,
+   "of": 16384,
+   "max_abs": 8.131516293641283e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999750891675,
+   "max": 4.230842e-05,
+   "argmax": 49228,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 33
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999962,
+   "max": 4.230841490256836e-05,
+   "argmax": 49228,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 12
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999851,
+   "max": 4.230842528788669e-05,
+   "argmax": 49228,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999851,
+   "max": 4.230842528788669e-05,
+   "argmax": 49228,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999851,
+   "max": 4.230842528788669e-05,
+   "argmax": 49228,
+   "scores_digest": "31d0d5928cbbcf83"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29623,
+   "of": 65536,
+   "max_abs": 1.3552527156068805e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999851,
+   "max": 4.230842528788669e-05,
+   "argmax": 49228,
+   "scores_digest": "31d0d5928cbbcf83"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29623,
+   "of": 65536,
+   "max_abs": 1.3552527156068805e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "found": {
+   "sum": 0.9999999999999851,
+   "max": 4.230842528788669e-05,
+   "argmax": 49228,
+   "scores_digest": "31d0d5928cbbcf83"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29623,
+   "of": 65536,
+   "max_abs": 1.3552527156068805e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 0.9999999999999851,
+   "max": 4.230842528788669e-05,
+   "argmax": 49228,
+   "scores_digest": "31d0d5928cbbcf83"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29623,
+   "of": 65536,
+   "max_abs": 1.3552527156068805e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.977864590306126,
+   "max": 0.00034651702,
+   "argmax": 5575,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 84,
+   "sum": 0.9999999999999653,
+   "max": 0.00035436120055767315,
+   "scores_digest": "6c206f5c497c96a0"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "MISMATCH",
+  "detail": "max: 0.00034651702 against 0.00035436120055767315; sum: 0.977864590306126 against 0.9999999999999653",
+  "notes": [],
+  "iterations": 2
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.0000000000000173,
+   "max": 0.00035436104063441736,
+   "argmax": 5575,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 84,
+   "sum": 0.9999999999999653,
+   "max": 0.00035436120055767315,
+   "scores_digest": "6c206f5c497c96a0"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 69
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999654,
+   "max": 0.0003543612005576732,
+   "argmax": 5575,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 84,
+   "sum": 0.9999999999999653,
+   "max": 0.00035436120055767315,
+   "scores_digest": "6c206f5c497c96a0"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 84
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999657,
+   "max": 0.0003543612005576732,
+   "argmax": 5575,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 84,
+   "sum": 0.9999999999999653,
+   "max": 0.00035436120055767315,
+   "scores_digest": "6c206f5c497c96a0"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 84
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999654,
+   "max": 0.0003543612005576732,
+   "argmax": 5575,
+   "scores_digest": "49a7ab8962013e77"
+  },
+  "reference": {
+   "iterations": 84,
+   "sum": 0.9999999999999653,
+   "max": 0.00035436120055767315,
+   "scores_digest": "6c206f5c497c96a0"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 9984,
+   "of": 16384,
+   "max_abs": 8.131516293641283e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 84
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999654,
+   "max": 0.0003543612005576732,
+   "argmax": 5575,
+   "scores_digest": "49a7ab8962013e77"
+  },
+  "reference": {
+   "iterations": 84,
+   "sum": 0.9999999999999653,
+   "max": 0.00035436120055767315,
+   "scores_digest": "6c206f5c497c96a0"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 9984,
+   "of": 16384,
+   "max_abs": 8.131516293641283e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 84,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "found": {
+   "sum": 0.9999999999999654,
+   "max": 0.0003543612005576732,
+   "argmax": 5575,
+   "scores_digest": "49a7ab8962013e77"
+  },
+  "reference": {
+   "iterations": 84,
+   "sum": 0.9999999999999653,
+   "max": 0.00035436120055767315,
+   "scores_digest": "6c206f5c497c96a0"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 9984,
+   "of": 16384,
+   "max_abs": 8.131516293641283e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 84,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 0.9999999999999654,
+   "max": 0.0003543612005576732,
+   "argmax": 5575,
+   "scores_digest": "49a7ab8962013e77"
+  },
+  "reference": {
+   "iterations": 84,
+   "sum": 0.9999999999999653,
+   "max": 0.00035436120055767315,
+   "scores_digest": "6c206f5c497c96a0"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 9984,
+   "of": 16384,
+   "max_abs": 8.131516293641283e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 84,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9944661554582126,
+   "max": 9.4258336e-05,
+   "argmax": 55180,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 75,
+   "sum": 1.0000000000001217,
+   "max": 9.478284687779482e-05,
+   "scores_digest": "b80a05c60f3db27c"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "MISMATCH",
+  "detail": "max: 9.4258336e-05 against 9.478284687779482e-05; sum: 0.9944661554582126 against 1.0000000000001217",
+  "notes": [],
+  "iterations": 3
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.0000000000001512,
+   "max": 9.478280807253632e-05,
+   "argmax": 55180,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 75,
+   "sum": 1.0000000000001217,
+   "max": 9.478284687779482e-05,
+   "scores_digest": "b80a05c60f3db27c"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 60
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.000000000000122,
+   "max": 9.478284687779485e-05,
+   "argmax": 55180,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 75,
+   "sum": 1.0000000000001217,
+   "max": 9.478284687779482e-05,
+   "scores_digest": "b80a05c60f3db27c"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 75
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.000000000000122,
+   "max": 9.478284687779485e-05,
+   "argmax": 55180,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 75,
+   "sum": 1.0000000000001217,
+   "max": 9.478284687779482e-05,
+   "scores_digest": "b80a05c60f3db27c"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 75
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.000000000000122,
+   "max": 9.478284687779485e-05,
+   "argmax": 55180,
+   "scores_digest": "ba14d4df0618ff5f"
+  },
+  "reference": {
+   "iterations": 75,
+   "sum": 1.0000000000001217,
+   "max": 9.478284687779482e-05,
+   "scores_digest": "b80a05c60f3db27c"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 42207,
+   "of": 65536,
+   "max_abs": 2.710505431213761e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 75
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.000000000000122,
+   "max": 9.478284687779485e-05,
+   "argmax": 55180,
+   "scores_digest": "ba14d4df0618ff5f"
+  },
+  "reference": {
+   "iterations": 75,
+   "sum": 1.0000000000001217,
+   "max": 9.478284687779482e-05,
+   "scores_digest": "b80a05c60f3db27c"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 42207,
+   "of": 65536,
+   "max_abs": 2.710505431213761e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 75,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "found": {
+   "sum": 1.000000000000122,
+   "max": 9.478284687779485e-05,
+   "argmax": 55180,
+   "scores_digest": "ba14d4df0618ff5f"
+  },
+  "reference": {
+   "iterations": 75,
+   "sum": 1.0000000000001217,
+   "max": 9.478284687779482e-05,
+   "scores_digest": "b80a05c60f3db27c"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 42207,
+   "of": 65536,
+   "max_abs": 2.710505431213761e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 75,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 1.000000000000122,
+   "max": 9.478284687779485e-05,
+   "argmax": 55180,
+   "scores_digest": "ba14d4df0618ff5f"
+  },
+  "reference": {
+   "iterations": 75,
+   "sum": 1.0000000000001217,
+   "max": 9.478284687779482e-05,
+   "scores_digest": "b80a05c60f3db27c"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 42207,
+   "of": 65536,
+   "max_abs": 2.710505431213761e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 75,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "layered-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.99965395639083,
+   "max": 6.1035145e-05,
+   "argmax": 94,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 58,
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "MISMATCH",
+  "detail": "max: 6.1035145e-05 against 6.105627182416354e-05; sum: 0.99965395639083 against 1.000000000000152; argmax undetermined at tolerance 1e-08: top two reference scores differ by 0",
+  "notes": [
+   "argmax undetermined at tolerance 1e-08: top two reference scores differ by 0"
+  ],
+  "iterations": 2
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999997147,
+   "max": 6.105627026102396e-05,
+   "argmax": 54,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 58,
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "argmax undetermined at tolerance 1e-08: top two reference scores differ by 0",
+  "notes": [
+   "argmax undetermined at tolerance 1e-08: top two reference scores differ by 0"
+  ],
+  "iterations": 54
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "argmax": 58,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 58,
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "max_bits_equal_reference": true,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 58
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.000000000000152,
+   "max": 6.105627182416355e-05,
+   "argmax": 58,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 58,
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 58
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "argmax": 58,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "reference": {
+   "iterations": 58,
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 16384,
+   "of": 16384,
+   "max_abs": 0.0,
+   "max_ulps": 0
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 58
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "argmax": 58,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "reference": {
+   "iterations": 58,
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 16384,
+   "of": 16384,
+   "max_abs": 0.0,
+   "max_ulps": 0
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 58,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "found": {
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "argmax": 58,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "reference": {
+   "iterations": 58,
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 16384,
+   "of": 16384,
+   "max_abs": 0.0,
+   "max_ulps": 0
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 58,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "argmax": 58,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "reference": {
+   "iterations": 58,
+   "sum": 1.000000000000152,
+   "max": 6.105627182416354e-05,
+   "scores_digest": "31c96ee21e72ae02"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 16384,
+   "of": 16384,
+   "max_abs": 0.0,
+   "max_ulps": 0
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 58,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999133549872568,
+   "max": 1.5258786e-05,
+   "argmax": 94,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 50,
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "MISMATCH",
+  "detail": "sum: 0.9999133549872568 against 0.9999999999991653; argmax undetermined at tolerance 1e-08: top two reference scores differ by 0",
+  "notes": [
+   "argmax undetermined at tolerance 1e-08: top two reference scores differ by 0"
+  ],
+  "iterations": 5
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999988258,
+   "max": 1.5260107802102443e-05,
+   "argmax": 46,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 50,
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "argmax undetermined at tolerance 1e-08: top two reference scores differ by 0",
+  "notes": [
+   "argmax undetermined at tolerance 1e-08: top two reference scores differ by 0"
+  ],
+  "iterations": 46
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "argmax": 50,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 50,
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "max_bits_equal_reference": true,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 50
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999991653,
+   "max": 1.5260108159683117e-05,
+   "argmax": 50,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 50,
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 50
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "argmax": 50,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "reference": {
+   "iterations": 50,
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 65536,
+   "of": 65536,
+   "max_abs": 0.0,
+   "max_ulps": 0
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 50
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "argmax": 50,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "reference": {
+   "iterations": 50,
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 65536,
+   "of": 65536,
+   "max_abs": 0.0,
+   "max_ulps": 0
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 50,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "found": {
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "argmax": 50,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "reference": {
+   "iterations": 50,
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 65536,
+   "of": 65536,
+   "max_abs": 0.0,
+   "max_ulps": 0
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 50,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "argmax": 50,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "reference": {
+   "iterations": 50,
+   "sum": 0.9999999999991653,
+   "max": 1.526010815968312e-05,
+   "scores_digest": "fa89cfe93ebf577b"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 65536,
+   "of": 65536,
+   "max_abs": 0.0,
+   "max_ulps": 0
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 50,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "path-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999704141374,
+   "max": 0.0001442414,
+   "argmax": 8162,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 28
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999963,
+   "max": 0.00014424141272992001,
+   "argmax": 8162,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 12
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "argmax": 8162,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": true,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "argmax": 8162,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": true,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "argmax": 8162,
+   "scores_digest": "75300fca12837c50"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 7355,
+   "of": 16384,
+   "max_abs": 5.421010862427522e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "argmax": 8162,
+   "scores_digest": "75300fca12837c50"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 7355,
+   "of": 16384,
+   "max_abs": 5.421010862427522e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "found": {
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "argmax": 8162,
+   "scores_digest": "75300fca12837c50"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 7355,
+   "of": 16384,
+   "max_abs": 5.421010862427522e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "argmax": 8162,
+   "scores_digest": "75300fca12837c50"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 7355,
+   "of": 16384,
+   "max_abs": 5.421010862427522e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.0000000224240466,
+   "max": 4.2854634e-05,
+   "argmax": 46185,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 35
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icebug",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 1.0000000000000109,
+   "max": 4.285464739635514e-05,
+   "argmax": 46185,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 11
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icebug",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icebug",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icebug",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icecat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999917,
+   "max": 4.285462911850024e-05,
+   "argmax": 46185,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icecat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icecat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "icecat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999999999917,
+   "max": 4.285462911850024e-05,
+   "argmax": 46185,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grustcat",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": null,
+  "verdict": "absent",
+  "detail": "no such kernel in this project"
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999917,
+   "max": 4.285462911850024e-05,
+   "argmax": 46185,
+   "scores_digest": "6034c5f1e9170903"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29430,
+   "of": 65536,
+   "max_abs": 2.0328790734103208e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999917,
+   "max": 4.285462911850024e-05,
+   "argmax": 46185,
+   "scores_digest": "6034c5f1e9170903"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29430,
+   "of": 65536,
+   "max_abs": 2.0328790734103208e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "counted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "found": {
+   "sum": 0.9999999999999917,
+   "max": 4.285462911850024e-05,
+   "argmax": 46185,
+   "scores_digest": "6034c5f1e9170903"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29430,
+   "of": 65536,
+   "max_abs": 2.0328790734103208e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@work-uncounted",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "work-uncounted",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 0.9999999999999917,
+   "max": 4.285462911850024e-05,
+   "argmax": 46185,
+   "scores_digest": "6034c5f1e9170903"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29430,
+   "of": 65536,
+   "max_abs": 2.0328790734103208e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "wcc",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "bfs",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "triangles",
+  "concurrency": 16,
+  "accounting": "unchecked",
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": null
+ }
+]

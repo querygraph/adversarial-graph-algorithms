@@ -1,0 +1,102 @@
+{
+ "generator": "docker/simple-rust-algo-bench/fixtures.py",
+ "note": "Regenerated from the seeded generator; the eight in fixtures/ are byte-identical to b3-quegee/fixtures-manifest.json. fixtures-large and fixtures-xlarge are hub and uniform only, because PageRank publishes on dangling-free families.",
+ "fixtures": [
+  {
+   "directory": "fixtures",
+   "name": "hub-16384.edges",
+   "nodes": 16384,
+   "edges": 130929,
+   "bytes": 1345511,
+   "sha256": "dfcc55c64f501ca31b7562912c5e3034606c79f2804fd0ce9184f5f8ffcf5c34"
+  },
+  {
+   "directory": "fixtures",
+   "name": "hub-65536.edges",
+   "nodes": 65536,
+   "edges": 523817,
+   "bytes": 5913775,
+   "sha256": "2e291d162aedbdc5ef9016e6fdc5d4027ed3b04979a57c90acf71b50d5f8aff2"
+  },
+  {
+   "directory": "fixtures",
+   "name": "layered-16384.edges",
+   "nodes": 16384,
+   "edges": 32414,
+   "bytes": 345282,
+   "sha256": "31c5b52f7eeb2c9a4533e291cbd6f1f7f70fa38058dfe8722445c5275e6f18f4"
+  },
+  {
+   "directory": "fixtures",
+   "name": "layered-65536.edges",
+   "nodes": 65536,
+   "edges": 129915,
+   "bytes": 1515302,
+   "sha256": "82f035d96bab72aa453e172de914f1e7ca1d5390bba856a157dfd9c35f65a68d"
+  },
+  {
+   "directory": "fixtures",
+   "name": "path-16384.edges",
+   "nodes": 16384,
+   "edges": 16383,
+   "bytes": 174392,
+   "sha256": "78366b26f0c4872cb6a6971624aecc79e9e51829b0736d4a2f1a3065941de661"
+  },
+  {
+   "directory": "fixtures",
+   "name": "path-65536.edges",
+   "nodes": 65536,
+   "edges": 65535,
+   "bytes": 764216,
+   "sha256": "c4167547b9931c7ecbaa54774d17e8f02ec3494da00d84155fbfbdc9b704b852"
+  },
+  {
+   "directory": "fixtures",
+   "name": "uniform-16384.edges",
+   "nodes": 16384,
+   "edges": 131041,
+   "bytes": 1395051,
+   "sha256": "743b057aa9b0e607d2a141efd2d935f5c3fedccb1a8a2b39ce0de82fd1ac9fbb"
+  },
+  {
+   "directory": "fixtures",
+   "name": "uniform-65536.edges",
+   "nodes": 65536,
+   "edges": 524249,
+   "bytes": 6112428,
+   "sha256": "8f85623f74765041abb01e06a7fb6659655f25e17b9a8f7b9f6f7c2d114b51e0"
+  },
+  {
+   "directory": "fixtures-large",
+   "name": "hub-2097152.edges",
+   "nodes": 2097152,
+   "edges": 16762845,
+   "bytes": 244168066,
+   "sha256": "60841becebebd8b41e30443f8a5a89355345189e49bf204e1bc4f05d080b4d33"
+  },
+  {
+   "directory": "fixtures-large",
+   "name": "uniform-2097152.edges",
+   "nodes": 2097152,
+   "edges": 16777173,
+   "bytes": 250657127,
+   "sha256": "2e983e86d7e004cba3cc65a3068d606467488bf97d69b27b88d3331a2646def9"
+  },
+  {
+   "directory": "fixtures-xlarge",
+   "name": "hub-4194304.edges",
+   "nodes": 4194304,
+   "edges": 33525729,
+   "bytes": 506128007,
+   "sha256": "8e4c2ae659b6db0297edf4b41515ff3efce7d16a686e0e7140e7bf667f5db703"
+  },
+  {
+   "directory": "fixtures-xlarge",
+   "name": "uniform-4194304.edges",
+   "nodes": 4194304,
+   "edges": 33554395,
+   "bytes": 519085687,
+   "sha256": "bf9f79ce82da0dae82bfc2abbb496531a049a16619144c1227b95ae7cae83790"
+  }
+ ]
+}
