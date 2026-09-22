@@ -25,8 +25,9 @@ predates this work by years.
 ## Where the projects differ
 
 The differences below are scope differences, not quality judgements, and none of
-them is a measured performance claim. No participant in this benchmark has been
-measured against `neo4j-labs/graph`.
+them is a measured performance claim. The measurements that do exist are the
+in-memory kernel benchmark's, described at the end of this note; they are
+boundaried rows, not a verdict on any difference below.
 
 **A query language over the algorithms.** The participants here include a
 general Cypher executor: algorithms are reached through
@@ -73,15 +74,54 @@ constructed and consumed. On a 65,536-node chain that is 2,147,516,416 entries i
 each array, and it exercises reconstruction and result conversion at a scale that
 per-node outputs never reach.
 
-## What is not established
+## What has been measured since, and what has not
 
-Nothing above is a performance comparison, and none is offered here. The two
-projects have not been measured against each other, their execution envelopes
-differ, and parallel execution is currently being added to the kernels on this
-side, so any speed statement written today would describe a moving target.
+An earlier version of this note ended by saying the two projects had not been
+measured against each other, and that the way to settle it was to add the
+library as a participant under the same disclosed boundaries as every other
+column. That participant now exists, keyed `neo4j-graph`, in
+[`simple-rust-algo-bench`](simple-rust-algo-bench-results.md): one execution
+class, an in-memory graph built once from the same input with kernels called
+through each project's own Rust API, beside Icebug, Icecat, Grustcat and
+Grust's general kernel, on one dedicated host. What that established:
 
-The way to settle it is to add the library as a participant: it has a clean
-builder API, it computes several of the same algorithms, and a column for it
-would replace argument with evidence, under the same disclosed boundaries as
-every other column. Until that exists, this note should be read as a description
-of scope, not as a result.
+- **Same function first.** Every participant is checked against an independent
+  reference before anything is timed, and a cell that did not agree is never
+  timed. `neo4j-graph`'s PageRank does not redistribute dangling mass, which is
+  a choice rather than a defect, NetworKit's default too, and it means PageRank
+  is compared only on the dangling-free families. It accumulates and returns
+  `f32` where every other participant is `f64`, stated under every PageRank
+  table as a boundary. The claim that the `f64` participants are bit-identical
+  to one another was made, checked, and withdrawn; what holds is agreement far
+  inside the stopping tolerance with the same iteration count.
+- **The accountability difference is a separate measurement, as this note
+  asked.** Grust's cooperative budget is timed as its own labelled rows,
+  `counted`, `work-uncounted` and `unchecked`, with `unchecked` the
+  like-for-like row for a library that performs no accounting and the distance
+  to `counted` what the guarantee costs. Nothing about it is absorbed into a
+  shared cell.
+- **Two measurement artifacts were in this side's timer, and were corrected in
+  the open.** Grust's first run timed its PageRank transpose inside the kernel
+  while every other participant built its reverse adjacency in the build timer;
+  the rerun that corrected it then built the transpose for kernels that never
+  read it, leaving the allocator in a state the baseline was not measured in.
+  Both are stated as corrections in the results document, with the earlier
+  tables left standing beside the corrected ones, and the third campaign records
+  minor page faults beside every call so that neither has to be taken on trust.
+- **Every cell where the current Grust commit is slower than the release before
+  it is listed**, with the unexplained ones marked unexplained.
+
+The results document, its evidence bundle at
+[`simple-rust-algo-bench-evidence/b5-quegee/`](simple-rust-algo-bench-evidence/b5-quegee/),
+and the [post that explains the campaign](blog/simple-rust-algo-bench/post.md)
+hold the numbers; this note does not repeat them, and it offers no ranking. The
+same bundle renders the [kernels page on adversari.al](https://adversari.al/graph/kernels).
+
+What is still not settled: the cause of the remaining first-call slowdown in
+counted WCC and BFS, which the page-fault counter shows is not the allocator;
+the cause of PageRank's collapse on the chain family at full width on the
+current commit; and the drift between campaigns on unchanged participants,
+which is why a cell is only ever compared with other cells of its own run. And
+the remark about a moving target still applies: the timed columns describe
+v0.22.0 and one later commit on one host on one day, and a column measured
+later describes that code.
