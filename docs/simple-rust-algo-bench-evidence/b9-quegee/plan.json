@@ -1,0 +1,180 @@
+{
+ "plan": "b9",
+ "parity": {
+  "unset": {
+   "concurrency": null
+  },
+  "1": {
+   "concurrency": 1
+  },
+  "16": {
+   "concurrency": 16
+  }
+ },
+ "parity_participants": [
+  "neo4j-graph",
+  "grust",
+  "grust-next@counted",
+  "grust-next@unchecked",
+  "grust-next@counted+f32",
+  "grust-next@unchecked+f32"
+ ],
+ "bits_identical": [
+  [
+   "grust",
+   "grust-next@counted",
+   "grust-next@unchecked"
+  ],
+  [
+   "grust-next@counted+f32",
+   "grust-next@unchecked+f32"
+  ]
+ ],
+ "algorithms": [
+  "pagerank"
+ ],
+ "families": [
+  "hub",
+  "uniform"
+ ],
+ "runs": {
+  "one-thread": {
+   "cpus": 1,
+   "workers": 1,
+   "concurrency": 1,
+   "fixtures": "fixtures",
+   "algorithms": [
+    "pagerank"
+   ],
+   "families": [
+    "hub",
+    "uniform"
+   ],
+   "participants": [
+    "neo4j-graph",
+    "grust#1",
+    "grust-next@counted#1",
+    "grust-next@unchecked#1",
+    "grust-next@counted+f32#1",
+    "grust-next@unchecked+f32#1",
+    "grust-next@counted#unset",
+    "grust-next@unchecked#unset",
+    "grust-next@counted+f32#unset",
+    "grust-next@unchecked+f32#unset"
+   ]
+  },
+  "full-width": {
+   "cpus": 16,
+   "workers": 16,
+   "concurrency": 16,
+   "fixtures": "fixtures",
+   "algorithms": [
+    "pagerank"
+   ],
+   "families": [
+    "hub",
+    "uniform"
+   ],
+   "participants": [
+    "neo4j-graph",
+    "grust",
+    "grust-next@counted",
+    "grust-next@unchecked",
+    "grust-next@counted+f32",
+    "grust-next@unchecked+f32"
+   ]
+  },
+  "large-one-thread": {
+   "cpus": 1,
+   "workers": 1,
+   "concurrency": 1,
+   "fixtures": "fixtures-large",
+   "algorithms": [
+    "pagerank"
+   ],
+   "families": [
+    "hub",
+    "uniform"
+   ],
+   "participants": [
+    "neo4j-graph",
+    "grust#1",
+    "grust-next@counted#1",
+    "grust-next@unchecked#1",
+    "grust-next@counted+f32#1",
+    "grust-next@unchecked+f32#1",
+    "grust-next@counted#unset",
+    "grust-next@unchecked#unset",
+    "grust-next@counted+f32#unset",
+    "grust-next@unchecked+f32#unset"
+   ]
+  },
+  "large-full-width": {
+   "cpus": 16,
+   "workers": 16,
+   "concurrency": 16,
+   "fixtures": "fixtures-large",
+   "algorithms": [
+    "pagerank"
+   ],
+   "families": [
+    "hub",
+    "uniform"
+   ],
+   "participants": [
+    "neo4j-graph",
+    "grust",
+    "grust-next@counted",
+    "grust-next@unchecked",
+    "grust-next@counted+f32",
+    "grust-next@unchecked+f32"
+   ]
+  },
+  "xlarge-one-thread": {
+   "cpus": 1,
+   "workers": 1,
+   "concurrency": 1,
+   "fixtures": "fixtures-xlarge",
+   "algorithms": [
+    "pagerank"
+   ],
+   "families": [
+    "hub",
+    "uniform"
+   ],
+   "participants": [
+    "neo4j-graph",
+    "grust#1",
+    "grust-next@counted#1",
+    "grust-next@unchecked#1",
+    "grust-next@counted+f32#1",
+    "grust-next@unchecked+f32#1",
+    "grust-next@counted#unset",
+    "grust-next@unchecked#unset",
+    "grust-next@counted+f32#unset",
+    "grust-next@unchecked+f32#unset"
+   ]
+  },
+  "xlarge-full-width": {
+   "cpus": 16,
+   "workers": 16,
+   "concurrency": 16,
+   "fixtures": "fixtures-xlarge",
+   "algorithms": [
+    "pagerank"
+   ],
+   "families": [
+    "hub",
+    "uniform"
+   ],
+   "participants": [
+    "neo4j-graph",
+    "grust",
+    "grust-next@counted",
+    "grust-next@unchecked",
+    "grust-next@counted+f32",
+    "grust-next@unchecked+f32"
+   ]
+  }
+ }
+}

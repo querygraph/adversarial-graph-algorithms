@@ -7,9 +7,9 @@ read across the whole run and across every cell, per AGENTS.md. Tables are as
 wide as the participants that have the kernel, and each says who is absent and
 that the reason is no such kernel rather than a slow one.
 
-A participant name may carry `@mode` (Grust's accounting), `+tag` (how it runs,
-not what it computes) and `#N`/`#unset` (its concurrency, which selects a
-kernel); see variants.py. A participant that reports `kernel_second_ms`
+A participant name may carry `@mode` (Grust's accounting), `+tag` (how it runs;
+`+f32` alone changes what it computes, and its receipt says so) and
+`#N`/`#unset` (its concurrency, which selects a kernel); see variants.py. A participant that reports `kernel_second_ms`
 produces two rows per cell, `call: first` and `call: second`, and they are
 never folded into one number: the first is what a single call costs on a fresh
 projection, the second what it costs once anything the first call built and
@@ -150,6 +150,8 @@ def main():
                         'Set it to the cgroup CPU count; left unset the three disagree.')
     p.add_argument('--unusable-dispersion', type=float, default=0.25,
                    help='a cell whose MAD is at least this fraction of its median is marked unusable')
+    p.add_argument('--families', nargs='+', metavar='FAMILY',
+                   help='only fixtures named FAMILY-<size>.edges; default every fixture in the directory')
     p.add_argument('--label', default='', help='free text recorded in the report, e.g. the run name')
     p.add_argument('--output', type=pathlib.Path, required=True)
     a = p.parse_args()
@@ -166,9 +168,13 @@ def main():
     def agreed(fixture, spec, algorithm):
         return verdicts.get((fixture.name, spec['parity_key'], algorithm, spec['concurrency'])) == 'agrees'
 
+    fixtures = [f for f in sorted(a.fixtures.glob('*.edges'))
+                if a.families is None or f.name.split('-')[0] in a.families]
+    if not fixtures:
+        raise SystemExit(f'no fixtures in {a.fixtures} for families {a.families}')
     before, started = steal_ticks(), time.time()
     samples, groups, skipped = [], {}, []
-    for fixture in sorted(a.fixtures.glob('*.edges')):
+    for fixture in fixtures:
         for algorithm in a.algorithms:
             present = [spec for spec in specs if algorithm in declared[spec['key']]['algorithms']]
             for spec in present:
@@ -215,9 +221,14 @@ def main():
             across=('Cells from runs at different widths are not divided by one another. A '
                     'scaling factor is its own table with its own heading.'),
             precision=('PageRank precision differs by participant: neo4j-graph accumulates and '
-                       'returns f32, every other participant f64. The score array is half the '
-                       'bytes, so it is half the memory traffic on the one array PageRank touches '
-                       'randomly per arc. State it under every PageRank table; it is a boundary, '
+                       'returns f32; every other participant f64, except a Grust variant tagged '
+                       '+f32, which runs pagerank_f32 and whose receipt and cells say f32. The '
+                       'score array is half the bytes, so it is half the memory traffic on the one '
+                       'array PageRank touches randomly per arc. An f32 kernel also stops at a '
+                       'different iteration count under the same tolerance, so every PageRank '
+                       'table carries the count beside the total, and where counts differ the '
+                       'per-iteration figure is the one to compare. State it under every PageRank '
+                       'table; it is a boundary, '
                        'not a rounding footnote. WCC and triangle counts carry no such difference '
                        '- component labels are indices and the triangle count is u64. '
                        'Size-dependent: at 65,536 nodes every working set fits in the measuring '
@@ -272,6 +283,10 @@ def main():
                 # than below the tolerance it was asked for, which the iteration
                 # count alone does not show.
                 residual=rows[0].get('residual', rows[0].get('error')),
+                # Reported by the Grust participants; None where a participant
+                # does not say. A False here never reaches a table: parity
+                # gives such a row its own verdict and it is not timed.
+                converged=rows[0].get('converged'),
                 precision=declared[key].get('precision'),
                 total_ms=kernel, total_mad=kernel_spread, dispersion=dispersion,
                 unusable=dispersion is not None and dispersion >= a.unusable_dispersion,

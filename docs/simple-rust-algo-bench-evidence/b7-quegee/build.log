@@ -1,0 +1,419 @@
+BUILD-START 2026-09-22T21:46:17Z
+Running as unit: run-p3933242-i3933542.scope; invocation ID: 2742edab68374f988c368e56dad76c62
+docker build -t simple-rust-algo-bench:b7-ead3568 --build-arg BUILD_JOBS=4 --build-arg ICEBUG_COMMIT=57b443ec1d16 --build-arg ICEBUG_VERSION=icecat-cpp --build-arg BENCH_COMMIT=fdf85a917551 --build-arg GRUST_COMMIT=2182cdb82acb0666b80f483dc4c9666941962145 --build-arg GRUST_NEXT_COMMIT=ead35685968685e11b201deb172840ab6a84c17d /home/admin/src/b7-context
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 4.25kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/rust:1.97.1-bookworm
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/debian:bookworm-slim
+#3 DONE 0.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [bench 1/7] FROM docker.io/library/debian:bookworm-slim@sha256:3783cc01769c7b2b1b83a5c5ad96c815348e28ed7da68e2e3687004faa906251
+#5 resolve docker.io/library/debian:bookworm-slim@sha256:3783cc01769c7b2b1b83a5c5ad96c815348e28ed7da68e2e3687004faa906251 0.0s done
+#5 DONE 0.0s
+
+#6 [rust 1/6] FROM docker.io/library/rust:1.97.1-bookworm@sha256:0e2bcaef56d041a486784e54104a81aebe0da44bd03019bd70bc0401e42e4a97
+#6 resolve docker.io/library/rust:1.97.1-bookworm@sha256:0e2bcaef56d041a486784e54104a81aebe0da44bd03019bd70bc0401e42e4a97 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 109.24MB 0.8s done
+#7 DONE 0.8s
+
+#8 [rust 2/6] COPY grust /src/grust
+#8 CACHED
+
+#9 [rust 3/6] COPY grust-next /src/grust-next
+#9 DONE 1.4s
+
+#10 [rust 4/6] COPY icecat/rust /src/icecat/rust
+#10 DONE 0.1s
+
+#11 [rust 5/6] COPY bench /src/adversarial-graph-algorithms/docker/simple-rust-algo-bench
+#11 DONE 0.1s
+
+#12 [rust 6/6] RUN mkdir -p /out && for participant in neo4j-graph grust grust-next icecat grustcat; do         case $participant in grust) stamp=2182cdb82acb0666b80f483dc4c9666941962145;; grust-next) stamp=ead35685968685e11b201deb172840ab6a84c17d;; *) stamp=;; esac;         GRUST_COMMIT=$stamp BENCH_COMMIT=fdf85a917551         cargo build --release --manifest-path /src/adversarial-graph-algorithms/docker/simple-rust-algo-bench/$participant/Cargo.toml --jobs 4         && cp /src/adversarial-graph-algorithms/docker/simple-rust-algo-bench/$participant/target/release/bench-$participant /out/$participant || exit 1;     done
+#12 1.131     Updating crates.io index
+#12 1.650  Downloading crates ...
+#12 1.701   Downloaded arrayvec v0.7.8
+#12 1.708   Downloaded atomic v0.6.1
+#12 1.711   Downloaded atomic_float v1.1.0
+#12 1.713   Downloaded ahash v0.8.12
+#12 1.715   Downloaded atoi v3.1.0
+#12 1.718   Downloaded crossbeam-deque v0.8.8
+#12 1.719   Downloaded unicode-ident v1.0.26
+#12 1.722   Downloaded rayon-core v1.13.0
+#12 1.726   Downloaded autocfg v1.5.1
+#12 1.728   Downloaded quote v1.0.47
+#12 1.731   Downloaded version_check v0.9.5
+#12 1.732   Downloaded byte-slice-cast v1.2.3
+#12 1.733   Downloaded linereader v0.4.0
+#12 1.734   Downloaded scopeguard v1.2.0
+#12 1.735   Downloaded cfg-if v1.0.5
+#12 1.736   Downloaded thiserror v2.0.20
+#12 1.743   Downloaded num v0.4.3
+#12 1.744   Downloaded page_size v0.6.0
+#12 1.745   Downloaded itoa v1.0.18
+#12 1.747   Downloaded num-integer v0.1.47
+#12 1.748   Downloaded byteorder v1.5.0
+#12 1.750   Downloaded num-iter v0.1.46
+#12 1.751   Downloaded fxhash v0.2.1
+#12 1.752   Downloaded num_cpus v1.17.0
+#12 1.755   Downloaded num-rational v0.4.2
+#12 1.756   Downloaded either v1.18.0
+#12 1.758   Downloaded delegate v0.13.5
+#12 1.759   Downloaded num-complex v0.4.6
+#12 1.760   Downloaded smallvec v1.16.1
+#12 1.762   Downloaded dashmap v6.2.1
+#12 1.764   Downloaded nanorand v0.8.0
+#12 1.767   Downloaded crossbeam-utils v0.8.23
+#12 1.770   Downloaded once_cell v1.21.4
+#12 1.773   Downloaded parking_lot_core v0.9.12
+#12 1.775   Downloaded graph v0.3.2
+#12 1.777   Downloaded lock_api v0.4.14
+#12 1.778   Downloaded fast-float2 v0.2.4
+#12 1.780   Downloaded bytemuck v1.25.2
+#12 1.784   Downloaded thiserror-impl v2.0.20
+#12 1.785   Downloaded crossbeam-epoch v0.9.21
+#12 1.788   Downloaded memmap2 v0.9.11
+#12 1.790   Downloaded num-traits v0.2.19
+#12 1.793   Downloaded parking_lot v0.12.5
+#12 1.795   Downloaded getrandom v0.3.4
+#12 1.799   Downloaded num-format v0.4.4
+#12 1.803   Downloaded syn v2.0.119
+#12 1.815   Downloaded proc-macro2 v1.0.107
+#12 1.819   Downloaded graph_builder v0.4.2
+#12 1.823   Downloaded log v0.4.34
+#12 1.825   Downloaded memchr v2.8.3
+#12 1.831   Downloaded num-bigint v0.4.8
+#12 1.837   Downloaded hashbrown v0.14.5
+#12 1.842   Downloaded rayon v1.12.0
+#12 1.853   Downloaded zerocopy v0.8.57
+#12 1.876   Downloaded syn v3.0.6
+#12 1.888   Downloaded libc v0.2.189
+#12 1.993    Compiling libc v0.2.189
+#12 1.993    Compiling autocfg v1.5.1
+#12 1.993    Compiling proc-macro2 v1.0.107
+#12 1.993    Compiling unicode-ident v1.0.26
+#12 2.365    Compiling quote v1.0.47
+#12 2.516    Compiling num-traits v0.2.19
+#12 2.696    Compiling crossbeam-utils v0.8.23
+#12 3.323    Compiling cfg-if v1.0.5
+#12 3.349    Compiling crossbeam-epoch v0.9.21
+#12 3.426    Compiling num-integer v0.1.47
+#12 3.445    Compiling crossbeam-deque v0.8.8
+#12 3.446    Compiling parking_lot_core v0.9.12
+#12 3.535    Compiling smallvec v1.16.1
+#12 3.539    Compiling rayon-core v1.13.0
+#12 3.596    Compiling scopeguard v1.2.0
+#12 3.633    Compiling lock_api v0.4.14
+#12 3.790    Compiling num-bigint v0.4.8
+#12 3.798    Compiling syn v3.0.6
+#12 3.876    Compiling thiserror v2.0.20
+#12 3.881    Compiling getrandom v0.3.4
+#12 4.015    Compiling zerocopy v0.8.57
+#12 4.020    Compiling once_cell v1.21.4
+#12 4.156    Compiling version_check v0.9.5
+#12 4.334    Compiling ahash v0.8.12
+#12 4.406    Compiling num-iter v0.1.46
+#12 4.459    Compiling syn v2.0.119
+#12 5.049    Compiling num-rational v0.4.2
+#12 5.687    Compiling thiserror-impl v2.0.20
+#12 5.913    Compiling num-complex v0.4.6
+#12 6.008    Compiling hashbrown v0.14.5
+#12 6.290    Compiling graph_builder v0.4.2
+#12 6.385    Compiling arrayvec v0.7.8
+#12 6.536    Compiling either v1.18.0
+#12 6.546    Compiling byteorder v1.5.0
+#12 6.556    Compiling bytemuck v1.25.2
+#12 6.670    Compiling itoa v1.0.18
+#12 6.702    Compiling memchr v2.8.3
+#12 6.717    Compiling fxhash v0.2.1
+#12 6.773    Compiling num-format v0.4.4
+#12 6.788    Compiling atomic v0.6.1
+#12 6.895    Compiling rayon v1.12.0
+#12 7.396    Compiling delegate v0.13.5
+#12 7.424    Compiling linereader v0.4.0
+#12 7.524    Compiling dashmap v6.2.1
+#12 7.833    Compiling num v0.4.3
+#12 7.931    Compiling parking_lot v0.12.5
+#12 7.979    Compiling memmap2 v0.9.11
+#12 8.130    Compiling num_cpus v1.17.0
+#12 8.386    Compiling page_size v0.6.0
+#12 8.425    Compiling atoi v3.1.0
+#12 8.645    Compiling log v0.4.34
+#12 8.660    Compiling fast-float2 v0.2.4
+#12 8.757    Compiling byte-slice-cast v1.2.3
+#12 8.813    Compiling nanorand v0.8.0
+#12 8.892    Compiling bench-neo4j-graph v0.1.0 (/src/adversarial-graph-algorithms/docker/simple-rust-algo-bench/neo4j-graph)
+#12 8.989    Compiling atomic_float v1.1.0
+#12 10.98    Compiling graph v0.3.2
+#12 16.57     Finished `release` profile [optimized] target(s) in 15.86s
+#12 16.66     Updating crates.io index
+#12 16.76  Downloading crates ...
+#12 16.82   Downloaded equivalent v1.0.2
+#12 16.82   Downloaded async-trait v0.1.92
+#12 16.84   Downloaded zmij v1.0.23
+#12 16.85   Downloaded unsafe-libyaml v0.2.11
+#12 16.85   Downloaded ryu v1.0.23
+#12 16.85   Downloaded indexmap v2.14.2
+#12 16.86   Downloaded serde_core v1.0.229
+#12 16.86   Downloaded serde_derive v1.0.229
+#12 16.87   Downloaded serde v1.0.229
+#12 16.87   Downloaded serde_yaml v0.9.34+deprecated
+#12 16.87   Downloaded hashbrown v0.17.1
+#12 16.88   Downloaded serde_json v1.0.151
+#12 16.89   Downloaded quick-xml v0.40.1
+#12 16.93    Compiling proc-macro2 v1.0.107
+#12 16.93    Compiling unicode-ident v1.0.26
+#12 16.93    Compiling quote v1.0.47
+#12 16.93    Compiling serde_core v1.0.229
+#12 16.98    Compiling serde v1.0.229
+#12 17.04    Compiling crossbeam-utils v0.8.23
+#12 17.12    Compiling crossbeam-epoch v0.9.21
+#12 17.17    Compiling zmij v1.0.23
+#12 17.29    Compiling equivalent v1.0.2
+#12 17.32    Compiling itoa v1.0.18
+#12 17.44    Compiling thiserror v2.0.20
+#12 17.59    Compiling memchr v2.8.3
+#12 17.65    Compiling serde_json v1.0.151
+#12 17.72    Compiling syn v3.0.6
+#12 17.74    Compiling hashbrown v0.17.1
+#12 18.29    Compiling crossbeam-deque v0.8.8
+#12 18.29    Compiling indexmap v2.14.2
+#12 18.90    Compiling unsafe-libyaml v0.2.11
+#12 18.98    Compiling rayon-core v1.13.0
+#12 18.98    Compiling ryu v1.0.23
+#12 20.07    Compiling either v1.18.0
+#12 20.20    Compiling rayon v1.12.0
+#12 20.48    Compiling serde_derive v1.0.229
+#12 20.48    Compiling thiserror-impl v2.0.20
+#12 20.50    Compiling async-trait v0.1.92
+#12 22.57    Compiling quick-xml v0.40.1
+#12 22.57    Compiling serde_yaml v0.9.34+deprecated
+#12 23.86    Compiling grust-core v0.22.0 (/src/grust/crates/grust-core)
+#12 26.54    Compiling grust-procedures v0.22.0 (/src/grust/crates/grust-procedures)
+#12 26.96    Compiling grust-algorithms v0.22.0 (/src/grust/crates/grust-algorithms)
+#12 40.53    Compiling bench-grust v0.1.0 (/src/adversarial-graph-algorithms/docker/simple-rust-algo-bench/grust)
+#12 44.53     Finished `release` profile [optimized] target(s) in 27.92s
+#12 44.62    Compiling proc-macro2 v1.0.107
+#12 44.62    Compiling quote v1.0.47
+#12 44.62    Compiling unicode-ident v1.0.26
+#12 44.62    Compiling serde_core v1.0.229
+#12 44.69    Compiling serde v1.0.229
+#12 44.74    Compiling crossbeam-utils v0.8.23
+#12 44.83    Compiling zmij v1.0.23
+#12 44.86    Compiling crossbeam-epoch v0.9.21
+#12 44.96    Compiling serde_json v1.0.151
+#12 45.03    Compiling thiserror v2.0.20
+#12 45.30    Compiling syn v3.0.6
+#12 45.33    Compiling memchr v2.8.3
+#12 45.38    Compiling itoa v1.0.18
+#12 45.50    Compiling crossbeam-deque v0.8.8
+#12 45.60    Compiling equivalent v1.0.2
+#12 45.62    Compiling hashbrown v0.17.1
+#12 46.18    Compiling indexmap v2.14.2
+#12 46.52    Compiling unsafe-libyaml v0.2.11
+#12 46.66    Compiling ryu v1.0.23
+#12 46.80    Compiling rayon-core v1.13.0
+#12 47.78    Compiling either v1.18.0
+#12 47.91    Compiling rayon v1.12.0
+#12 48.14    Compiling serde_derive v1.0.229
+#12 48.14    Compiling thiserror-impl v2.0.20
+#12 48.33    Compiling async-trait v0.1.92
+#12 50.26    Compiling quick-xml v0.40.1
+#12 50.26    Compiling serde_yaml v0.9.34+deprecated
+#12 51.56    Compiling grust-core v0.22.0 (/src/grust-next/crates/grust-core)
+#12 54.22    Compiling grust-procedures v0.22.0 (/src/grust-next/crates/grust-procedures)
+#12 54.66    Compiling grust-algorithms v0.22.0 (/src/grust-next/crates/grust-algorithms)
+#12 68.34    Compiling bench-grust-next v0.1.0 (/src/adversarial-graph-algorithms/docker/simple-rust-algo-bench/grust-next)
+#12 72.98     Finished `release` profile [optimized] target(s) in 28.42s
+#12 73.03     Updating crates.io index
+#12 73.22  Downloading crates ...
+#12 73.28   Downloaded arrow-data v59.3.0
+#12 73.28   Downloaded crunchy v0.2.4
+#12 73.29   Downloaded const-random v0.1.18
+#12 73.29   Downloaded const-random-macro v0.1.16
+#12 73.29   Downloaded tiny-keccak v2.0.2
+#12 73.30   Downloaded arrow-buffer v59.3.0
+#12 73.30   Downloaded getrandom v0.2.17
+#12 73.30   Downloaded iana-time-zone v0.1.65
+#12 73.31   Downloaded bytes v1.12.1
+#12 73.31   Downloaded arrow-schema v59.3.0
+#12 73.31   Downloaded zerocopy-derive v0.8.57
+#12 73.32   Downloaded arrow-select v59.3.0
+#12 73.33   Downloaded num-bigint v0.5.1
+#12 73.33   Downloaded libm v0.2.16
+#12 73.34   Downloaded chrono v0.4.45
+#12 73.35   Downloaded arrow-array v59.3.0
+#12 73.36   Downloaded half v2.7.1
+#12 73.40    Compiling proc-macro2 v1.0.107
+#12 73.40    Compiling unicode-ident v1.0.26
+#12 73.40    Compiling quote v1.0.47
+#12 73.40    Compiling autocfg v1.5.1
+#12 73.45    Compiling libm v0.2.16
+#12 73.52    Compiling zerocopy v0.8.57
+#12 73.66    Compiling num-traits v0.2.19
+#12 73.72    Compiling cfg-if v1.0.5
+#12 73.74    Compiling libc v0.2.189
+#12 73.78    Compiling version_check v0.9.5
+#12 73.93    Compiling getrandom v0.3.4
+#12 74.07    Compiling ahash v0.8.12
+#12 74.09    Compiling syn v2.0.119
+#12 74.15    Compiling bytes v1.12.1
+#12 74.73    Compiling arrow-schema v59.3.0
+#12 75.02    Compiling once_cell v1.21.4
+#12 75.11    Compiling iana-time-zone v0.1.65
+#12 75.23    Compiling num-integer v0.1.47
+#12 75.38    Compiling chrono v0.4.45
+#12 75.53    Compiling num-bigint v0.5.1
+#12 76.40    Compiling num-complex v0.4.6
+#12 76.78    Compiling syn v3.0.6
+#12 76.90    Compiling zerocopy-derive v0.8.57
+#12 77.55    Compiling thiserror v2.0.20
+#12 77.67    Compiling hashbrown v0.17.1
+#12 78.28    Compiling thiserror-impl v2.0.20
+#12 80.93    Compiling half v2.7.1
+#12 81.21    Compiling arrow-buffer v59.3.0
+#12 81.90    Compiling arrow-data v59.3.0
+#12 82.58    Compiling arrow-array v59.3.0
+#12 84.96    Compiling arrow-select v59.3.0
+#12 86.97    Compiling icebug-core v0.1.0 (/src/icecat/rust/crates/icebug-core)
+#12 87.23    Compiling icebug-algorithms v0.1.0 (/src/icecat/rust/crates/icebug-algorithms)
+#12 112.7    Compiling bench-icecat v0.1.0 (/src/adversarial-graph-algorithms/docker/simple-rust-algo-bench/icecat)
+#12 116.4     Finished `release` profile [optimized] target(s) in 43.38s
+#12 116.5     Updating crates.io index
+#12 116.6      Locking 6 packages to latest compatible versions
+#12 116.6     Updating grust-algorithm-procedures v0.21.0 (/src/grust/crates/grust-algorithm-procedures) -> v0.22.0
+#12 116.6     Updating grust-algorithms v0.21.0 (/src/grust/crates/grust-algorithms) -> v0.22.0
+#12 116.6     Updating grust-arrow v0.21.0 (/src/grust/crates/grust-arrow) -> v0.22.0
+#12 116.6     Updating grust-core v0.21.0 (/src/grust/crates/grust-core) -> v0.22.0
+#12 116.6     Updating grust-graph v0.21.0 (/src/grust/crates/grust) -> v0.22.0
+#12 116.6     Updating grust-procedures v0.21.0 (/src/grust/crates/grust-procedures) -> v0.22.0
+#12 116.6  Downloading crates ...
+#12 116.7   Downloaded rustc_version v0.4.1
+#12 116.7   Downloaded flatbuffers v25.12.19
+#12 116.7   Downloaded semver v1.0.28
+#12 116.7   Downloaded bitflags v2.13.2
+#12 116.7   Downloaded arrow-ipc v59.3.0
+#12 116.7    Compiling proc-macro2 v1.0.107
+#12 116.7    Compiling unicode-ident v1.0.26
+#12 116.7    Compiling quote v1.0.47
+#12 116.7    Compiling autocfg v1.5.1
+#12 116.8    Compiling libm v0.2.16
+#12 116.8    Compiling zerocopy v0.8.57
+#12 117.0    Compiling num-traits v0.2.19
+#12 117.0    Compiling cfg-if v1.0.5
+#12 117.1    Compiling libc v0.2.189
+#12 117.1    Compiling version_check v0.9.5
+#12 117.3    Compiling hashbrown v0.17.1
+#12 117.4    Compiling syn v2.0.119
+#12 117.4    Compiling syn v3.0.6
+#12 118.0    Compiling getrandom v0.3.4
+#12 118.1    Compiling serde_core v1.0.229
+#12 118.4    Compiling num-integer v0.1.47
+#12 118.7    Compiling num-bigint v0.5.1
+#12 119.1    Compiling ahash v0.8.12
+#12 119.1    Compiling bytes v1.12.1
+#12 120.2    Compiling zerocopy-derive v0.8.57
+#12 120.4    Compiling arrow-schema v59.3.0
+#12 120.9    Compiling serde v1.0.229
+#12 121.0    Compiling semver v1.0.28
+#12 121.2    Compiling iana-time-zone v0.1.65
+#12 121.5    Compiling once_cell v1.21.4
+#12 121.6    Compiling chrono v0.4.45
+#12 121.7    Compiling rustc_version v0.4.1
+#12 121.9    Compiling serde_derive v1.0.229
+#12 122.1    Compiling num-complex v0.4.6
+#12 122.5    Compiling thiserror v2.0.20
+#12 122.6    Compiling zmij v1.0.23
+#12 122.8    Compiling flatbuffers v25.12.19
+#12 122.8    Compiling thiserror-impl v2.0.20
+#12 123.7    Compiling serde_json v1.0.151
+#12 123.8    Compiling memchr v2.8.3
+#12 123.8    Compiling equivalent v1.0.2
+#12 123.9    Compiling itoa v1.0.18
+#12 124.0    Compiling indexmap v2.14.2
+#12 124.5    Compiling half v2.7.1
+#12 124.7    Compiling unsafe-libyaml v0.2.11
+#12 124.7    Compiling bitflags v2.13.2
+#12 124.8    Compiling arrow-buffer v59.3.0
+#12 124.9    Compiling ryu v1.0.23
+#12 125.3    Compiling serde_yaml v0.9.34+deprecated
+#12 126.0    Compiling arrow-data v59.3.0
+#12 126.3    Compiling quick-xml v0.40.1
+#12 127.3    Compiling arrow-array v59.3.0
+#12 127.3    Compiling async-trait v0.1.92
+#12 127.9    Compiling grust-core v0.22.0 (/src/grust/crates/grust-core)
+#12 129.6    Compiling arrow-select v59.3.0
+#12 131.6    Compiling arrow-ipc v59.3.0
+#12 135.4    Compiling grust-arrow v0.22.0 (/src/grust/crates/grust-arrow)
+#12 136.3    Compiling grust-graph v0.22.0 (/src/grust/crates/grust)
+#12 137.2    Compiling icebug-core v0.1.0 (/src/icecat/rust/crates/icebug-core)
+#12 138.2    Compiling grustcat v0.1.0 (/src/icecat/rust/crates/grustcat)
+#12 156.5    Compiling bench-grustcat v0.1.0 (/src/adversarial-graph-algorithms/docker/simple-rust-algo-bench/grustcat)
+#12 160.4     Finished `release` profile [optimized] target(s) in 43.94s
+#12 DONE 160.5s
+
+#13 [cpp 4/9] COPY icecat/include /src/icecat/include
+#13 CACHED
+
+#14 [cpp 6/9] COPY icecat/extlibs /src/icecat/extlibs
+#14 CACHED
+
+#15 [cpp 9/9] RUN c++ -std=c++20 -O3 -fopenmp /src/bench/icebug.cpp        -DBENCH_COMMIT='"'57b443ec1d16'"' -DBENCH_VERSION='"'icecat-cpp'"'        -I/src/icecat/include -I/src/icecat/extlibs/tlx -I/src/icecat/extlibs/ttmath        -L/build/cpp -lnetworkit $(pkg-config --cflags --libs arrow)        -Wl,-rpath,/opt/bench/lib -o /out/icebug
+#15 CACHED
+
+#16 [cpp 3/9] COPY icecat/CMakeLists.txt icecat/networkit.pc /src/icecat/
+#16 CACHED
+
+#17 [bench 3/7] COPY --from=cpp /out/icebug /opt/bench/
+#17 CACHED
+
+#18 [cpp 5/9] COPY icecat/networkit /src/icecat/networkit
+#18 CACHED
+
+#19 [cpp 7/9] RUN mkdir -p /out && cmake -S /src/icecat -B /build/cpp -G Ninja -DNETWORKIT_BUILD_TESTS=OFF -DNETWORKIT_NATIVE=OFF -DCMAKE_BUILD_TYPE=Release     && cmake --build /build/cpp --target networkit --parallel 4
+#19 CACHED
+
+#20 [cpp 8/9] COPY bench/icebug/icebug.cpp /src/bench/icebug.cpp
+#20 CACHED
+
+#21 [bench 2/7] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl python3     && curl -fsSL https://packages.apache.org/artifactory/arrow/debian/apache-arrow-apt-source-latest-bookworm.deb -o /tmp/arrow.deb     && apt-get install -y /tmp/arrow.deb && apt-get update     && apt-get install -y --no-install-recommends libarrow2400=24.0.0-1 libgomp1     && rm -rf /var/lib/apt/lists/* /tmp/arrow.deb
+#21 CACHED
+
+#22 [cpp 2/9] RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl cmake ninja-build pkg-config     && curl -fsSL https://packages.apache.org/artifactory/arrow/debian/apache-arrow-apt-source-latest-bookworm.deb -o /tmp/arrow.deb     && apt-get install -y /tmp/arrow.deb && apt-get update     && apt-get install -y --no-install-recommends libarrow-dev=24.0.0-1     && rm -rf /var/lib/apt/lists/* /tmp/arrow.deb
+#22 CACHED
+
+#23 [bench 4/7] COPY --from=cpp /build/cpp/libnetworkit.so* /opt/bench/lib/
+#23 CACHED
+
+#24 [bench 5/7] COPY --from=rust /out/ /opt/bench/
+#24 DONE 0.1s
+
+#25 [bench 6/7] COPY bench/fixtures.py bench/reference.py bench/audit.py bench/variants.py bench/parity.py bench/run.py /opt/bench/
+#25 DONE 0.1s
+
+#26 [bench 7/7] WORKDIR /opt/bench
+#26 DONE 0.0s
+
+#27 exporting to image
+#27 exporting layers
+#27 exporting layers 0.3s done
+#27 exporting manifest sha256:2b1f8a463f26d99ee824c7edb6b25c6a89221392cf1fa01d38b5e6cf1c18129e 0.0s done
+#27 exporting config sha256:e7d9db1845c3ed0115c8aa905285c5d7da68b685fc1bf80e391ca958c346c09a 0.0s done
+#27 exporting attestation manifest sha256:53a58d4171b9428397992dfc6d93bd5ed69011d2ea608a7885ba460176a085fe 0.0s done
+#27 exporting manifest list sha256:5d9daac16d11eee54978c678bdd7588dcb22b52e893f60a69691c22a28ec90c0 0.0s done
+#27 naming to docker.io/library/simple-rust-algo-bench:b7-ead3568 done
+#27 unpacking to docker.io/library/simple-rust-algo-bench:b7-ead3568 0.1s done
+#27 DONE 0.5s
+BUILD-END 2026-09-22T21:49:06Z

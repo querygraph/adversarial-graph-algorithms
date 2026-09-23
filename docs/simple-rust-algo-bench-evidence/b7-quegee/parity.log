@@ -1,0 +1,174 @@
+PARITY-START 2026-09-22T21:50:10Z
+hub-16384.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-16384.edges      grust                    pagerank   agrees     vector-bits-equal-reference=699/16384 max_ulps=6 max_abs=1.08e-19  max-bits-equal-reference=False
+hub-16384.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=699/16384 max_ulps=6 max_abs=1.08e-19  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=699/16384 max_ulps=6 max_abs=1.08e-19  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=5491328727 max_abs=9.72e-11  max-bits-equal-reference=False
+hub-16384.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=5491328727 max_abs=9.72e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+hub-65536.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-65536.edges      grust                    pagerank   agrees     vector-bits-equal-reference=3230/65536 max_ulps=7 max_abs=2.71e-20  max-bits-equal-reference=False
+hub-65536.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=3230/65536 max_ulps=7 max_abs=2.71e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=3230/65536 max_ulps=7 max_abs=2.71e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=6037950115 max_abs=2.41e-11  max-bits-equal-reference=False
+hub-65536.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=6037950115 max_abs=2.41e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-16384.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-16384.edges  grust                    pagerank   agrees     vector-bits-equal-reference=16325/16384 max_ulps=2 max_abs=2.71e-20  max-bits-equal-reference=True
+uniform-16384.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=16325/16384 max_ulps=2 max_abs=2.71e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=16325/16384 max_ulps=2 max_abs=2.71e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2960955813 max_abs=4.28e-11  max-bits-equal-reference=False
+uniform-16384.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2960955813 max_abs=4.28e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-65536.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-65536.edges  grust                    pagerank   agrees     vector-bits-equal-reference=65467/65536 max_ulps=2 max_abs=6.78e-21  max-bits-equal-reference=True
+uniform-65536.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=65467/65536 max_ulps=2 max_abs=6.78e-21  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-65536.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=65467/65536 max_ulps=2 max_abs=6.78e-21  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-65536.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3317924464 max_abs=1.36e-11  max-bits-equal-reference=False
+uniform-65536.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3317924464 max_abs=1.36e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+24 checks, 0 mismatches
+parity unset: clean
+hub-16384.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-16384.edges      grust                    pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False
+hub-16384.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2621868491 max_abs=4.38e-11  max-bits-equal-reference=False
+hub-16384.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2621868491 max_abs=4.38e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+hub-65536.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-65536.edges      grust                    pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False
+hub-65536.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=2944077174 max_abs=1.5e-11  max-bits-equal-reference=False
+hub-65536.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=2944077174 max_abs=1.5e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-16384.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-16384.edges  grust                    pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True
+uniform-16384.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2959917052 max_abs=4.48e-11  max-bits-equal-reference=False
+uniform-16384.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2959917052 max_abs=4.48e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-65536.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-65536.edges  grust                    pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False
+uniform-65536.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-65536.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-65536.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3047578129 max_abs=1.15e-11  max-bits-equal-reference=False
+uniform-65536.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3047578129 max_abs=1.15e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+24 checks, 0 mismatches
+parity 1: clean
+hub-16384.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-16384.edges      grust                    pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False
+hub-16384.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2621868491 max_abs=4.38e-11  max-bits-equal-reference=False
+hub-16384.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2621868491 max_abs=4.38e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+hub-65536.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-65536.edges      grust                    pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False
+hub-65536.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=2944077174 max_abs=1.5e-11  max-bits-equal-reference=False
+hub-65536.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=2944077174 max_abs=1.5e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-16384.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-16384.edges  grust                    pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True
+uniform-16384.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2959917052 max_abs=4.48e-11  max-bits-equal-reference=False
+uniform-16384.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2959917052 max_abs=4.48e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-65536.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-65536.edges  grust                    pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False
+uniform-65536.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-65536.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-65536.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3047578129 max_abs=1.15e-11  max-bits-equal-reference=False
+uniform-65536.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3047578129 max_abs=1.15e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+24 checks, 0 mismatches
+parity 16: clean
+hub-2097152.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-2097152.edges    grust                    pagerank   agrees     vector-bits-equal-reference=106053/2097152 max_ulps=8 max_abs=1.06e-21  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=106053/2097152 max_ulps=8 max_abs=1.06e-21  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=106053/2097152 max_ulps=8 max_abs=1.06e-21  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=6097654486 max_abs=9.28e-13  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=6097654486 max_abs=9.28e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-2097152.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-2097152.edges grust                    pagerank   agrees     vector-bits-equal-reference=2097053/2097152 max_ulps=2 max_abs=2.12e-22  max-bits-equal-reference=True
+uniform-2097152.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=2097053/2097152 max_ulps=2 max_abs=2.12e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-2097152.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=2097053/2097152 max_ulps=2 max_abs=2.12e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-2097152.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3561951160 max_abs=4.88e-13  max-bits-equal-reference=False
+uniform-2097152.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3561951160 max_abs=4.88e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity unset: clean
+hub-2097152.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-2097152.edges    grust                    pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3109437963 max_abs=4.95e-13  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3109437963 max_abs=4.95e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-2097152.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-2097152.edges grust                    pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False
+uniform-2097152.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-2097152.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-2097152.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3389236176 max_abs=4.79e-13  max-bits-equal-reference=False
+uniform-2097152.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3389236176 max_abs=4.79e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity 1: clean
+hub-2097152.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-2097152.edges    grust                    pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3109437963 max_abs=4.95e-13  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3109437963 max_abs=4.95e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-2097152.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-2097152.edges grust                    pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False
+uniform-2097152.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-2097152.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-2097152.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3389236176 max_abs=4.79e-13  max-bits-equal-reference=False
+uniform-2097152.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3389236176 max_abs=4.79e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity 16: clean
+hub-4194304.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-4194304.edges    grust                    pagerank   agrees     vector-bits-equal-reference=211043/4194304 max_ulps=8 max_abs=5.29e-22  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=211043/4194304 max_ulps=8 max_abs=5.29e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=211043/4194304 max_ulps=8 max_abs=5.29e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=6393034292 max_abs=4.45e-13  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=6393034292 max_abs=4.45e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-4194304.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-4194304.edges grust                    pagerank   agrees     vector-bits-equal-reference=4194236/4194304 max_ulps=2 max_abs=1.06e-22  max-bits-equal-reference=True
+uniform-4194304.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=4194236/4194304 max_ulps=2 max_abs=1.06e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=4194236/4194304 max_ulps=2 max_abs=1.06e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3709657623 max_abs=2.74e-13  max-bits-equal-reference=False
+uniform-4194304.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3709657623 max_abs=2.74e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity unset: clean
+hub-4194304.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-4194304.edges    grust                    pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3452255767 max_abs=2.6e-13  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3452255767 max_abs=2.6e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-4194304.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-4194304.edges grust                    pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True
+uniform-4194304.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3146797518 max_abs=2.6e-13  max-bits-equal-reference=False
+uniform-4194304.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3146797518 max_abs=2.6e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity 1: clean
+hub-4194304.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-4194304.edges    grust                    pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3452255767 max_abs=2.6e-13  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3452255767 max_abs=2.6e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-4194304.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-4194304.edges grust                    pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True
+uniform-4194304.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3146797518 max_abs=2.6e-13  max-bits-equal-reference=False
+uniform-4194304.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3146797518 max_abs=2.6e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity 16: clean
+PARITY-END 2026-09-22T22:20:36Z
+DROP-CACHES 2026-09-22T22:21:29Z

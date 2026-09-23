@@ -1736,6 +1736,587 @@ was still there afterwards. PageRank, first call, every participant.
 
 Attempt 1: `DISCARDED: host shared during the run`, started 2026-09-22T18:14:09+0000, 816.1 s, 3 steal ticks, 8 sightings (du -sh /home/admin/src). Attempt 2: `clean`, started 2026-09-22T18:29:36+0000, 812.6 s, 4 steal ticks, 0 sightings. A discarded attempt is kept in the bundle, renamed, and enters no table; the rows above are the clean one. Against the campaign's own `large-full-width` cells it is -2.5% to +16.2%, a median of -0.2%; against B5's, +4.2% to +80.9%, a median of +19.6%. So the host was still in the slower state after the campaign ended; the state is not a transient of one run.
 
+## B7: PageRank at f32, the same protocol
+
+Every PageRank table since B3 has carried one sentence under it: `neo4j-graph`
+accumulates and returns f32, every other participant f64. B6's tables show
+what that sentence hides. Under the same tolerance, 1e-8, Grust's f64 kernel
+stopped at 16 or 17 iterations on every hub and uniform fixture at every size,
+and `neo4j-graph` stopped between 20 and 36; so a `neo4j-graph` total and a
+Grust total were never the same number of sweeps over the arcs, and a ratio
+of them was a ratio of two stopping rules as much as of two kernels. B7 adds
+the row that was missing: Grust's PageRank with f32 scores, beside its f64
+one and beside `neo4j-graph`, with the iteration count printed in every table
+beside the total, so that a reader can see where each stopped and compare
+what is comparable.
+
+- **What changed in Grust: one commit.** `ead3568`, "PageRank with f32
+  scores", on top of B6's `87fc462`. The kernel is made generic over a sealed
+  `Score` trait that f64 and f32 implement; `pagerank` keeps its signature and
+  its f64 results, `pagerank_f32` returns `PageRank<f32>`, and the procedure
+  layer takes `precision: 'f64' | 'f32'`. Every score, per-arc share,
+  dangling mass and teleport share is formed and accumulated in the score
+  type; the L1 residual is summed in f64 from the score differences at either
+  precision, which is what `neo4j-graph` does for its f32 kernel, and the
+  stop stays residual <= tolerance. The commit states that the f64 kernel's
+  bits, work charges and refusal units are unchanged and that the f32 kernel
+  charges the same work and is bit-identical at one, two, three and sixteen
+  workers; B7's parity checks the first on every fixture at every
+  concurrency against v0.22.0 and the second between the f32 build's counted
+  and unchecked rows, rather than taking the commit's word. The commit's own
+  tests record where f32 stops and where it cannot: on a dangling-free
+  120,000-node graph both precisions stop at the same iteration at 1e-8; with
+  half the nodes dangling f32 needs about twice the iterations at every
+  tolerance of 1e-6 and below; and on a four-node graph whose largest scores
+  are near 0.45, where an f32 ulp exceeds 1e-8, f32 never meets 1e-8, ending
+  after the iteration cap with `converged` false.
+- **What changed in the harness.** `fdf85a9` against B6's `633ff36`. The
+  Grust participant source gains `--precision {f64,f32}`, default f64, behind
+  a cargo feature that is on for `grust-next` and off for the v0.22.0 build,
+  which refuses the flag non-zero rather than running f64 under an f32 label;
+  any algorithm but PageRank refuses it the same way. A variant tag `+f32`
+  passes it, and the receipt taken with the variant's flags declares `f32`, so
+  parity holds the row to the rule `neo4j-graph` is held to, a relative 1e-6
+  on the sum and the maximum floored at the stopping tolerance, and to nothing
+  looser. The bits gate takes one group per base, the f64 builds against
+  v0.22.0 and the f32 builds against their own counted row, since an f32
+  vector is never bit-identical to an f64 one. A PageRank row that reports
+  `converged: false` gets its own verdict, `not converged`, with the residual
+  it stalled at, and is never timed; the tolerance is never loosened to make
+  it converge. Every cell records its iteration count, its residual and
+  whether it converged, and every table prints the count beside the total.
+  `campaign.py` takes `--plan b7`; the B6 plan and its outputs are unchanged
+  under the default.
+- **What did not change.** The eight hub and uniform fixtures are the same
+  bytes B5 and B6 timed, SHA-256-checked against B6's manifest before the
+  build. The image was built on quegee under a 20 GB memory cap with four
+  jobs; the two Grust trees were staged by `git archive` of the named commits
+  rather than from working trees, so no checkout state reached them, and
+  `sources.json` says so. The audit found six distinct binaries, and the
+  audit, image receipt and manifest were taken before parity and never during
+  a run. Parity came first, every fixture set at concurrency unset, 1 and 16;
+  the page cache was dropped after parity and before the first timed run; one
+  warmup and five repeats, counterbalanced; idle-checked before and after
+  every run and sampled once a second during it; steal per cell and per run;
+  a run with a sighting discarded; a cell at or above 0.25 MAD/median
+  unusable. The work directory is B6's, so the reference cache was reused and
+  every B7 output carries a `b7-` prefix beside B6's.
+- **What is narrower than B6.** PageRank alone, on the two dangling-free
+  families, because that is where the count differs and where `neo4j-graph`
+  agrees with the reference; no pinned runs, since the allocator was B5's
+  question and B6 re-decided it on the counter; no `+eager` row. v0.22.0 is
+  present as the anchor at the pull kernel and at full width, and its push
+  loop is not: at 4,194,304 nodes that row is 83 seconds a sample, the most
+  expensive cell of B6's matrix, and nothing in B7 is compared with it. The
+  estimate that decided this is `b7_report.py estimate` over B6's bundle, and
+  the campaign's timed runs took 102 minutes against its 106.
+
+## B7: results
+
+One host, quegee, 2026-09-22. Grust `2182cdb` (v0.22.0) as `grust`, Grust `ead3568` as `grust-next`, Icecat `57b443ec`, this harness at `fdf85a9`, image `simple-rust-algo-bench:b7-ead3568`, built on the host from commits staged by `git archive`. The 8 fixtures are SHA-256-identical to B6's: `identical_to_b6` is true in the manifest. One warmup, five repeats, counterbalanced, parity gated at every concurrency. **Every cell of every run, with its iteration count, its residual, its steal, its dispersion and its usability, is in `simple-rust-algo-bench-evidence/b7-quegee/tables.md`**, generated from the run files by `b7_report.py tables`; the tables below select from it and add nothing to it. Times are milliseconds, median ± MAD, of the kernel call alone; per-iteration is that median divided by the iteration count the participant reported. Steal is ticks over that cell's group.
+
+**Host conditions.** 1 resident agent session was seen by name across the campaign (2382171 codex resume 01a0ad61-0419-7110-9e8c-c25058935bc0). 0 sightings were recorded over 6 timed invocations, and a run with a sighting is discarded rather than published. The host was checked idle before and after every run and sampled once a second during it. The timed campaign ran from 2026-09-22T22:21:33+0000 to 2026-09-23T00:03:41+0000, 6 runs, in the order listed.
+
+- `one-thread`: clean, started 2026-09-22T22:21:33+0000, 34.3 s, 0 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `full-width`: clean, started 2026-09-22T22:22:10+0000, 13.3 s, 0 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `large-one-thread`: clean, started 2026-09-22T22:22:25+0000, 1514.5 s, 6 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `large-full-width`: clean, started 2026-09-22T22:47:42+0000, 329.5 s, 2 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `xlarge-one-thread`: clean, started 2026-09-22T22:53:13+0000, 3560.6 s, 14 steal ticks over the run, 0 sightings, 1 resident agent session.
+- `xlarge-full-width`: clean, started 2026-09-22T23:52:36+0000, 665.3 s, 3 steal ticks over the run, 0 sightings, 1 resident agent session.
+
+**0 of the 240 cells reached the 0.25 MAD/median threshold**; the largest dispersion was 0.108, `grust-next@unchecked` uniform-2097152 first in b7-large-full-width.
+
+**Parity at the commit under test**, hub and uniform at every size, PageRank, at concurrency unset, 1 and 16, before any timing. The f64 builds must return v0.22.0's vector bit for bit; the `+f32` builds must return their counted row's. A row that reports `converged: false` is `not converged`, its own verdict, and is never timed.
+
+| file | agrees | mismatch | error | not converged | f64 bits-identical to v0.22.0 | `+f32` unchecked identical to counted | rows not agreeing |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `fixtures-1` | 24 | 0 | 0 | 0 | 8 of 8 | 4 of 4 | — |
+| `fixtures-16` | 24 | 0 | 0 | 0 | 8 of 8 | 4 of 4 | — |
+| `fixtures-large-1` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+| `fixtures-large-16` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+| `fixtures-large-unset` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+| `fixtures-unset` | 24 | 0 | 0 | 0 | 8 of 8 | 4 of 4 | — |
+| `fixtures-xlarge-1` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+| `fixtures-xlarge-16` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+| `fixtures-xlarge-unset` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+
+0 parity invocations exited non-zero; 0 are marked other than clean (none).
+
+**Where each participant stopped.** The iteration count every participant reported, per fixture and run. `neo4j-graph` sums its f32 residual in f64 and stops at residual < tolerance; Grust at either precision sums its residual in f64 and stops at residual <= tolerance; every row here ran at tolerance 1e-8 and a cap of 100 iterations. A Grust row reports the same count on both calls, so one is shown.
+
+| fixture | run | `neo4j-graph` | `grust-next@counted+f32#1` | `grust-next@counted+f32#unset` | `grust-next@unchecked+f32#1` | `grust-next@unchecked+f32#unset` | `grust-next@counted+f32` | `grust-next@unchecked+f32` | `grust#1` | `grust-next@counted#1` | `grust-next@counted#unset` | `grust-next@unchecked#1` | `grust-next@unchecked#unset` | `grust` | `grust-next@counted` | `grust-next@unchecked` |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-16384` | one-thread | 36 | 20 | 21 | 20 | 21 | — | — | 17 | 17 | 17 | 17 | 17 | — | — | — |
+| `hub-65536` | one-thread | 28 | 20 | 21 | 20 | 21 | — | — | 17 | 17 | 17 | 17 | 17 | — | — | — |
+| `uniform-16384` | one-thread | 28 | 19 | 19 | 19 | 19 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `uniform-65536` | one-thread | 34 | 19 | 20 | 19 | 20 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `hub-16384` | full-width | 36 | — | — | — | — | 20 | 20 | — | — | — | — | — | 17 | 17 | 17 |
+| `hub-65536` | full-width | 33 | — | — | — | — | 20 | 20 | — | — | — | — | — | 17 | 17 | 17 |
+| `uniform-16384` | full-width | 28 | — | — | — | — | 19 | 19 | — | — | — | — | — | 16 | 16 | 16 |
+| `uniform-65536` | full-width | 34 | — | — | — | — | 19 | 19 | — | — | — | — | — | 16 | 16 | 16 |
+| `hub-2097152` | large-one-thread | 26 | 20 | 21 | 20 | 21 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `uniform-2097152` | large-one-thread | 26 | 19 | 20 | 19 | 20 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `hub-2097152` | large-full-width | 28 | — | — | — | — | 20 | 20 | — | — | — | — | — | 16 | 16 | 16 |
+| `uniform-2097152` | large-full-width | 27 | — | — | — | — | 19 | 19 | — | — | — | — | — | 16 | 16 | 16 |
+| `hub-4194304` | xlarge-one-thread | 23 | 20 | 21 | 20 | 21 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `uniform-4194304` | xlarge-one-thread | 29 | 19 | 20 | 19 | 20 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `hub-4194304` | xlarge-full-width | 19 | — | — | — | — | 20 | 20 | — | — | — | — | — | 16 | 16 | 16 |
+| `uniform-4194304` | xlarge-full-width | 29 | — | — | — | — | 19 | 19 | — | — | — | — | — | 16 | 16 | 16 |
+
+Of 48 `+f32` cells, 0 stopped at the count `neo4j-graph` stopped at on the same fixture in the same run and 48 did not. Where the counts differ the two totals are not the same number of sweeps over the arcs; the per-iteration figure is the one that compares them, and it is a comparison of one sweep's cost, not of the time to an answer at this tolerance, which is the total.
+
+### `neo4j-graph` beside Grust at f32, and Grust at f64 beside both
+
+Total and per-iteration time of the kernel call, with the count. For `grust-next` the second call is shown, which has the transpose cached and runs on warm caches, and the first call in `tables.md`; `neo4j-graph` times one call on a fresh build. `counted` charges work to a shared meter and observes cancellation; `unchecked` does neither and is the like-for-like row against `neo4j-graph`, which performs no accounting. Nothing in this table is a ratio; a reader who forms one takes the boundary with it.
+
+**one-thread** (workers 1), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-16384` | pull | 13.26 ± 0.03 / 0.368 / 36 | 9.05 ± 0.01 / 0.453 / 20 | 9.26 ± 0.01 / 0.463 / 20 | 7.55 ± 0.01 / 0.444 / 17 | 7.89 ± 0.01 / 0.464 / 17 | 9.66 ± 0.02 / 0.568 / 17 | 0 |
+| `hub-16384` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 16.32 ± 0.02 / 0.777 / 21 | 27.90 ± 0.04 / 1.329 / 21 | 13.47 ± 0.03 / 0.792 / 17 | 23.25 ± 0.05 / 1.368 / 17 | — | 0 |
+| `hub-65536` | pull | 36.61 ± 0.28 / 1.307 / 28 | 36.67 ± 0.06 / 1.834 / 20 | 37.90 ± 0.02 / 1.895 / 20 | 31.58 ± 0.14 / 1.858 / 17 | 33.41 ± 0.44 / 1.966 / 17 | 50.67 ± 1.32 / 2.981 / 17 | 0 |
+| `hub-65536` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 65.42 ± 0.02 / 3.115 / 21 | 112.06 ± 0.58 / 5.336 / 21 | 57.93 ± 0.74 / 3.408 / 17 | 95.08 ± 0.35 / 5.593 / 17 | — | 0 |
+| `uniform-16384` | pull | 10.51 ± 0.03 / 0.375 / 28 | 8.58 ± 0.01 / 0.451 / 19 | 8.81 ± 0.00 / 0.464 / 19 | 7.12 ± 0.01 / 0.445 / 16 | 7.49 ± 0.01 / 0.468 / 16 | 9.24 ± 0.01 / 0.578 / 16 | 0 |
+| `uniform-16384` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 14.70 ± 0.01 / 0.774 / 19 | 25.10 ± 0.03 / 1.321 / 19 | 12.68 ± 0.01 / 0.793 / 16 | 21.54 ± 0.02 / 1.346 / 16 | — | 0 |
+| `uniform-65536` | pull | 45.11 ± 0.16 / 1.327 / 34 | 34.88 ± 0.09 / 1.836 / 19 | 36.13 ± 0.08 / 1.902 / 19 | 29.63 ± 0.15 / 1.852 / 16 | 31.98 ± 0.34 / 1.999 / 16 | 46.25 ± 0.34 / 2.890 / 16 | 0 |
+| `uniform-65536` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 62.13 ± 0.22 / 3.107 / 20 | 106.23 ± 0.25 / 5.312 / 20 | 55.45 ± 2.12 / 3.466 / 16 | 89.70 ± 0.53 / 5.606 / 16 | — | 0 |
+
+**full-width** (workers 16), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-16384` | pull | 13.53 ± 0.09 / 0.376 / 36 | 3.29 ± 0.04 / 0.164 / 20 | 3.91 ± 0.07 / 0.195 / 20 | 2.82 ± 0.04 / 0.166 / 17 | 3.41 ± 0.13 / 0.200 / 17 | 3.51 ± 0.05 / 0.207 / 17 | 0 |
+| `hub-65536` | pull | 15.22 ± 0.17 / 0.461 / 33 | 5.02 ± 0.08 / 0.251 / 20 | 7.71 ± 0.06 / 0.385 / 20 | 4.65 ± 0.09 / 0.273 / 17 | 7.23 ± 0.27 / 0.425 / 17 | 8.62 ± 0.08 / 0.507 / 17 | 0 |
+| `uniform-16384` | pull | 10.77 ± 0.06 / 0.385 / 28 | 3.10 ± 0.01 / 0.163 / 19 | 3.84 ± 0.14 / 0.202 / 19 | 2.65 ± 0.07 / 0.166 / 16 | 3.26 ± 0.16 / 0.204 / 16 | 3.35 ± 0.06 / 0.209 / 16 | 0 |
+| `uniform-65536` | pull | 16.22 ± 0.09 / 0.477 / 34 | 4.74 ± 0.01 / 0.250 / 19 | 7.36 ± 0.01 / 0.387 / 19 | 4.35 ± 0.11 / 0.272 / 16 | 6.69 ± 0.10 / 0.418 / 16 | 8.36 ± 0.25 / 0.522 / 16 | 0 |
+
+**large-one-thread** (workers 1), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-2097152` | pull | 2559.78 ± 166.85 / 98.453 / 26 | 2392.00 ± 109.60 / 119.600 / 20 | 2846.56 ± 152.30 / 142.328 / 20 | 3240.03 ± 49.12 / 202.502 / 16 | 3674.28 ± 195.60 / 229.643 / 16 | 5502.70 ± 59.61 / 343.919 / 16 | 3 |
+| `hub-2097152` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 4135.77 ± 38.31 / 196.941 / 21 | 5857.05 ± 92.95 / 278.907 / 21 | 5715.69 ± 63.27 / 357.231 / 16 | 6930.57 ± 40.09 / 433.161 / 16 | — | 3 |
+| `uniform-2097152` | pull | 2378.46 ± 11.42 / 91.479 / 26 | 2175.48 ± 43.25 / 114.499 / 19 | 2414.53 ± 16.06 / 127.080 / 19 | 3185.56 ± 203.04 / 199.098 / 16 | 3421.73 ± 43.31 / 213.858 / 16 | 5826.54 ± 39.65 / 364.159 / 16 | 3 |
+| `uniform-2097152` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 3703.31 ± 84.24 / 185.165 / 20 | 5466.82 ± 179.99 / 273.341 / 20 | 5485.69 ± 60.69 / 342.856 / 16 | 6517.60 ± 90.64 / 407.350 / 16 | — | 3 |
+
+**large-full-width** (workers 16), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-2097152` | pull | 270.98 ± 3.42 / 9.678 / 28 | 232.81 ± 1.44 / 11.640 / 20 | 252.41 ± 2.24 / 12.621 / 20 | 211.99 ± 0.53 / 13.250 / 16 | 246.47 ± 4.91 / 15.405 / 16 | 496.69 ± 3.21 / 31.043 / 16 | 1 |
+| `uniform-2097152` | pull | 274.85 ± 4.51 / 10.180 / 27 | 240.31 ± 2.40 / 12.648 / 19 | 256.15 ± 0.62 / 13.481 / 19 | 260.61 ± 11.69 / 16.288 / 16 | 270.47 ± 21.41 / 16.904 / 16 | 600.75 ± 8.96 / 37.547 / 16 | 1 |
+
+**xlarge-one-thread** (workers 1), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-4194304` | pull | 6292.37 ± 217.86 / 273.581 / 23 | 7600.20 ± 89.06 / 380.010 / 20 | 8275.85 ± 259.97 / 413.793 / 20 | 7802.65 ± 97.01 / 487.666 / 16 | 8257.34 ± 125.18 / 516.084 / 16 | 12614.11 ± 170.82 / 788.382 / 16 | 7 |
+| `hub-4194304` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 13808.21 ± 317.20 / 657.534 / 21 | 16554.15 ± 617.35 / 788.293 / 21 | 12868.34 ± 85.01 / 804.271 / 16 | 15247.29 ± 31.81 / 952.956 / 16 | — | 7 |
+| `uniform-4194304` | pull | 7717.04 ± 48.57 / 266.105 / 29 | 7410.01 ± 211.73 / 390.001 / 19 | 7612.90 ± 50.97 / 400.679 / 19 | 7905.37 ± 28.25 / 494.086 / 16 | 8418.24 ± 63.59 / 526.140 / 16 | 13365.33 ± 74.47 / 835.333 / 16 | 7 |
+| `uniform-4194304` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 12140.00 ± 143.59 / 607.000 / 20 | 15328.09 ± 715.85 / 766.405 / 20 | 12264.49 ± 133.20 / 766.531 / 16 | 14839.20 ± 147.88 / 927.450 / 16 | — | 7 |
+
+**xlarge-full-width** (workers 16), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-4194304` | pull | 406.32 ± 4.20 / 21.385 / 19 | 565.32 ± 8.24 / 28.266 / 20 | 623.24 ± 42.75 / 31.162 / 20 | 766.65 ± 3.65 / 47.916 / 16 | 798.97 ± 9.99 / 49.935 / 16 | 1424.91 ± 10.84 / 89.057 / 16 | 1 |
+| `uniform-4194304` | pull | 622.34 ± 11.31 / 21.460 / 29 | 534.08 ± 50.27 / 28.109 / 19 | 568.30 ± 7.83 / 29.911 / 19 | 788.05 ± 17.47 / 49.253 / 16 | 859.26 ± 7.47 / 53.704 / 16 | 1559.55 ± 9.31 / 97.472 / 16 | 2 |
+
+**Unchanged code against B6.** `grust` (v0.22.0) and `neo4j-graph` are the same binaries' sources as in B6, differing at most by the harness commit stamped into them, on the same fixtures, under the same protocol. Their B7 total against their B6 total on the same cell, as the median and the range of the ratio, is a reading of the host, not of any code:
+
+| participant | cells | median B7/B6 | smallest | largest |
+| --- | ---: | ---: | --- | --- |
+| `grust` | 32 | 0.962 | 0.829 (hub-2097152 large-full-width first) | 1.027 (hub-16384 full-width second) |
+| `neo4j-graph` | 16 | 0.977 | 0.845 (uniform-4194304 xlarge-one-thread) | 1.005 (uniform-16384 full-width) |
+
+
+### The boundary, restated for f32
+
+- **Three counts, not two.** On every fixture in every run, `neo4j-graph`,
+  Grust at f32 and Grust at f64 stopped at three different iteration counts.
+  The f32 rows stopped 3 to 4 iterations after the f64 rows and well before
+  `neo4j-graph`; the residuals at which they stopped are in `tables.md`, the
+  f32 rows between 8.0e-9 and 9.5e-9 and the f64 rows between 3.2e-9 at the
+  protocol sizes and 9.96e-9 above L3, all below the tolerance, so every row
+  stopped by the rule and not by the cap. Where the
+  counts differ, a total is the time to this tolerance under that
+  participant's rule and the per-iteration figure is the cost of one sweep;
+  the tables above give both, and neither is a ratio.
+- **`neo4j-graph`'s count is a property of its run.** Its residual is a f64
+  sum accumulated across worker threads, so its order depends on the width,
+  and its count moved with the run: 28 at one thread and 33 at sixteen on
+  `hub-65536`, 23 and 19 on `hub-4194304`. Grust's residual is formed in fixed
+  chunks and its count did not move with the width at either precision, which
+  is what the bits gate checked. A count for `neo4j-graph` therefore belongs
+  to a run, and the side-by-side table keeps it there.
+- **What f32 cannot do.** An f32 kernel cannot meet a tolerance below one ulp
+  of a moving score except at an exact fixed point, and Grust's commit records
+  a graph where it never meets 1e-8. No B7 row stalled: every f32 cell
+  converged under the cap of 100 on these fixtures, whose largest scores are
+  far below 0.45. On a dangling-heavy graph the same commit's tests record
+  f32 needing about twice the iterations at tolerances of 1e-6 and below; B7's
+  two families have no dangling nodes and this document does not measure that
+  regime. A campaign on `path` or `layered` must expect it and restate this
+  paragraph rather than inherit it.
+- **The scores are different numbers.** Every f32 vector agrees with the f64
+  reference to between 2.6e-13 and 9.7e-11 absolute per score, and no score is
+  bit-identical to the reference's; the f64 rows are bit-identical to
+  v0.22.0's on every fixture. A reader comparing a `+f32` row with an f64 row
+  is comparing two answers, not two timings of one.
+
+## B9: the same plan on the head of the kernel stack
+
+B7 measured Grust's f32 PageRank at `ead3568`. B8 ran the same plan at
+`2985fac`. B9 runs it again, unchanged in every part, at `4a9e7f5` on
+`work/narrow-offsets`, which is the head of the kernel branch stack. Over
+`2985fac` the stack adds four-byte CSR targets (`48598b4`), work charged one
+reduction block at a time rather than one node (`eec1693`), PageRank's inner
+loop written without the ArticleRank term (`ca77603`), four-byte CSR row
+offsets (`13b21d2`), and the non-finite test moved from the node to the block
+(`4a9e7f5`). Each of those commits asserts that the scores it returns are bit
+for bit what they were, at both precisions and at every width; the campaign's
+parity checks that against v0.22.0 on this host before it times anything, and
+every one of the 144 PageRank rows agrees.
+
+- **What did not change.** The eight hub and uniform fixtures are the same
+  bytes, SHA-256-checked against B6's manifest before the build; the manifest
+  written here is byte-identical to B7's. The image was built on quegee under
+  a 20 GB memory cap with four jobs; the two Grust trees were staged by
+  `git archive` of the named commits rather than from working trees, and
+  `sources.json` says so. The audit found six distinct binaries, and the
+  audit, image receipt and manifest were taken before parity and never during
+  a run. Parity came first, every fixture set at concurrency unset, 1 and 16;
+  the page cache was dropped after parity and before the first timed run; one
+  warmup and five repeats, counterbalanced; idle-checked before and after
+  every run and sampled once a second during it; steal per cell and per run; a
+  run with a sighting discarded; a cell at or above 0.25 MAD/median unusable.
+  The matrix is B7's: PageRank alone, hub and uniform alone, v0.22.0 as the
+  anchor at the pull kernel and `neo4j-graph` as the reference participant.
+- **What the gates said about the commit.** `4a9e7f5` passed
+  `scripts/ci-local.sh` on both platforms before the image existed:
+  `PASSED every gate at 4a9e7f5 on Linux x86_64 in 2412s` and
+  `PASSED every gate at 4a9e7f5 on Darwin x86_64 in 2704s`. Each verdict
+  covers that commit and nothing else.
+- **What is absent.** B8 ran on this host between B7 and B9 and was never
+  bundled, so there is no `b8-quegee/` for the generator to read and it prints
+  no campaign-to-campaign table. Where a figure below names B7, it is a ratio
+  formed inside B7's bundle set beside a ratio formed inside B9's; no cell of
+  one campaign is divided by a cell of the other.
+- **One thing the record shows about itself.** The host script that writes the
+  image receipt and the fixture manifest has the `b8-` prefix hard-coded, so
+  running it for B9 wrote B9's receipt and manifest over B8's. Both files in
+  this bundle are B9's own, copied from the paths they landed in; the receipt
+  names `simple-rust-algo-bench:b9-4a9e7f5`, which is the tag every invocation
+  in `campaign.jsonl` ran. B8's own image receipt was overwritten and was read
+  back from the image, which is still on the host. `b9-quegee/README.md` states
+  this in full.
+
+## B9: results
+
+One host, quegee, 2026-09-23. Grust `2182cdb` (v0.22.0) as `grust`, Grust `4a9e7f5` as `grust-next`, Icecat `57b443ec`, this harness at `cea69ee`, image `simple-rust-algo-bench:b9-4a9e7f5`, built on the host from commits staged by `git archive`. The 8 fixtures are SHA-256-identical to B6's: `identical_to_b6` is true in the manifest. One warmup, five repeats, counterbalanced, parity gated at every concurrency. **Every cell of every run, with its iteration count, its residual, its steal, its dispersion and its usability, is in `simple-rust-algo-bench-evidence/b9-quegee/tables.md`**, generated from the run files by `b7_report.py tables`; the tables below select from it and add nothing to it. Times are milliseconds, median ± MAD, of the kernel call alone; per-iteration is that median divided by the iteration count the participant reported. Steal is ticks over that cell's group.
+
+**Host conditions.** 0 resident agent sessions were seen by name across the campaign (none). 0 sightings were recorded over 6 timed invocations, and a run with a sighting is discarded rather than published. The host was checked idle before and after every run and sampled once a second during it. The timed campaign ran from 2026-09-23T15:31:00+0000 to 2026-09-23T16:49:49+0000, 6 runs, in the order listed.
+
+- `one-thread`: clean, started 2026-09-23T15:31:00+0000, 31.8 s, 0 steal ticks over the run, 0 sightings, 0 resident agent sessions.
+- `full-width`: clean, started 2026-09-23T15:31:34+0000, 12.3 s, 0 steal ticks over the run, 0 sightings, 0 resident agent sessions.
+- `large-one-thread`: clean, started 2026-09-23T15:31:48+0000, 1099.6 s, 4 steal ticks over the run, 0 sightings, 0 resident agent sessions.
+- `large-full-width`: clean, started 2026-09-23T15:50:10+0000, 310.6 s, 1 steal ticks over the run, 0 sightings, 0 resident agent sessions.
+- `xlarge-one-thread`: clean, started 2026-09-23T15:55:22+0000, 2643.2 s, 10 steal ticks over the run, 0 sightings, 0 resident agent sessions.
+- `xlarge-full-width`: clean, started 2026-09-23T16:39:28+0000, 621.9 s, 2 steal ticks over the run, 0 sightings, 0 resident agent sessions.
+
+**0 of the 240 cells reached the 0.25 MAD/median threshold**; the largest dispersion was 0.144, `neo4j-graph` hub-4194304 in b9-xlarge-full-width.
+
+**Parity at the commit under test**, hub and uniform at every size, PageRank, at concurrency unset, 1 and 16, before any timing. The f64 builds must return v0.22.0's vector bit for bit; the `+f32` builds must return their counted row's. A row that reports `converged: false` is `not converged`, its own verdict, and is never timed.
+
+| file | agrees | mismatch | error | not converged | f64 bits-identical to v0.22.0 | `+f32` unchecked identical to counted | rows not agreeing |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `fixtures-1` | 24 | 0 | 0 | 0 | 8 of 8 | 4 of 4 | — |
+| `fixtures-16` | 24 | 0 | 0 | 0 | 8 of 8 | 4 of 4 | — |
+| `fixtures-large-1` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+| `fixtures-large-16` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+| `fixtures-large-unset` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+| `fixtures-unset` | 24 | 0 | 0 | 0 | 8 of 8 | 4 of 4 | — |
+| `fixtures-xlarge-1` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+| `fixtures-xlarge-16` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+| `fixtures-xlarge-unset` | 12 | 0 | 0 | 0 | 4 of 4 | 2 of 2 | — |
+
+0 parity invocations exited non-zero; 0 are marked other than clean (none).
+
+**Where each participant stopped.** The iteration count every participant reported, per fixture and run. `neo4j-graph` sums its f32 residual in f64 and stops at residual < tolerance; Grust at either precision sums its residual in f64 and stops at residual <= tolerance; every row here ran at tolerance 1e-8 and a cap of 100 iterations. A Grust row reports the same count on both calls, so one is shown.
+
+| fixture | run | `neo4j-graph` | `grust-next@counted+f32#1` | `grust-next@counted+f32#unset` | `grust-next@unchecked+f32#1` | `grust-next@unchecked+f32#unset` | `grust-next@counted+f32` | `grust-next@unchecked+f32` | `grust#1` | `grust-next@counted#1` | `grust-next@counted#unset` | `grust-next@unchecked#1` | `grust-next@unchecked#unset` | `grust` | `grust-next@counted` | `grust-next@unchecked` |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-16384` | one-thread | 36 | 20 | 21 | 20 | 21 | — | — | 17 | 17 | 17 | 17 | 17 | — | — | — |
+| `hub-65536` | one-thread | 28 | 20 | 21 | 20 | 21 | — | — | 17 | 17 | 17 | 17 | 17 | — | — | — |
+| `uniform-16384` | one-thread | 28 | 19 | 19 | 19 | 19 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `uniform-65536` | one-thread | 34 | 19 | 20 | 19 | 20 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `hub-16384` | full-width | 36 | — | — | — | — | 20 | 20 | — | — | — | — | — | 17 | 17 | 17 |
+| `hub-65536` | full-width | 26 | — | — | — | — | 20 | 20 | — | — | — | — | — | 17 | 17 | 17 |
+| `uniform-16384` | full-width | 28 | — | — | — | — | 19 | 19 | — | — | — | — | — | 16 | 16 | 16 |
+| `uniform-65536` | full-width | 34 | — | — | — | — | 19 | 19 | — | — | — | — | — | 16 | 16 | 16 |
+| `hub-2097152` | large-one-thread | 26 | 20 | 21 | 20 | 21 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `uniform-2097152` | large-one-thread | 26 | 19 | 20 | 19 | 20 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `hub-2097152` | large-full-width | 28 | — | — | — | — | 20 | 20 | — | — | — | — | — | 16 | 16 | 16 |
+| `uniform-2097152` | large-full-width | 28 | — | — | — | — | 19 | 19 | — | — | — | — | — | 16 | 16 | 16 |
+| `hub-4194304` | xlarge-one-thread | 23 | 20 | 21 | 20 | 21 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `uniform-4194304` | xlarge-one-thread | 29 | 19 | 20 | 19 | 20 | — | — | 16 | 16 | 16 | 16 | 16 | — | — | — |
+| `hub-4194304` | xlarge-full-width | 14 | — | — | — | — | 20 | 20 | — | — | — | — | — | 16 | 16 | 16 |
+| `uniform-4194304` | xlarge-full-width | 29 | — | — | — | — | 19 | 19 | — | — | — | — | — | 16 | 16 | 16 |
+
+Of 48 `+f32` cells, 0 stopped at the count `neo4j-graph` stopped at on the same fixture in the same run and 48 did not. Where the counts differ the two totals are not the same number of sweeps over the arcs; the per-iteration figure is the one that compares them, and it is a comparison of one sweep's cost, not of the time to an answer at this tolerance, which is the total.
+
+### `neo4j-graph` beside Grust at f32, and Grust at f64 beside both
+
+Total and per-iteration time of the kernel call, with the count. For `grust-next` the second call is shown, which has the transpose cached and runs on warm caches, and the first call in `tables.md`; `neo4j-graph` times one call on a fresh build. `counted` charges work to a shared meter and observes cancellation; `unchecked` does neither and is the like-for-like row against `neo4j-graph`, which performs no accounting. Nothing in this table is a ratio; a reader who forms one takes the boundary with it.
+
+**one-thread** (workers 1), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-16384` | pull | 13.08 ± 0.02 / 0.363 / 36 | 7.27 ± 0.01 / 0.363 / 20 | 7.25 ± 0.00 / 0.363 / 20 | 5.92 ± 0.01 / 0.348 / 17 | 5.93 ± 0.01 / 0.349 / 17 | 9.65 ± 0.02 / 0.567 / 17 | 0 |
+| `hub-16384` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 14.94 ± 0.03 / 0.712 / 21 | 26.67 ± 0.01 / 1.270 / 21 | 12.44 ± 0.04 / 0.732 / 17 | 22.23 ± 0.02 / 1.308 / 17 | — | 0 |
+| `hub-65536` | pull | 36.08 ± 0.05 / 1.288 / 28 | 28.54 ± 0.02 / 1.427 / 20 | 28.55 ± 0.10 / 1.428 / 20 | 23.93 ± 0.05 / 1.408 / 17 | 24.01 ± 0.06 / 1.412 / 17 | 44.11 ± 0.42 / 2.595 / 17 | 0 |
+| `hub-65536` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 59.91 ± 0.06 / 2.853 / 21 | 107.36 ± 0.13 / 5.113 / 21 | 51.17 ± 0.35 / 3.010 / 17 | 90.63 ± 1.03 / 5.331 / 17 | — | 0 |
+| `uniform-16384` | pull | 10.36 ± 0.01 / 0.370 / 28 | 7.06 ± 0.01 / 0.372 / 19 | 7.05 ± 0.01 / 0.371 / 19 | 5.61 ± 0.01 / 0.351 / 16 | 5.62 ± 0.01 / 0.351 / 16 | 9.25 ± 0.01 / 0.578 / 16 | 0 |
+| `uniform-16384` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 13.45 ± 0.03 / 0.708 / 19 | 24.71 ± 0.01 / 1.300 / 19 | 11.61 ± 0.01 / 0.726 / 16 | 21.33 ± 0.18 / 1.333 / 16 | — | 0 |
+| `uniform-65536` | pull | 44.25 ± 0.01 / 1.301 / 34 | 28.37 ± 0.13 / 1.493 / 19 | 28.36 ± 0.02 / 1.493 / 19 | 22.71 ± 0.03 / 1.419 / 16 | 22.74 ± 0.06 / 1.421 / 16 | 43.33 ± 0.53 / 2.708 / 16 | 0 |
+| `uniform-65536` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 56.64 ± 0.08 / 2.832 / 20 | 104.58 ± 0.05 / 5.229 / 20 | 47.81 ± 0.21 / 2.988 / 16 | 85.89 ± 0.08 / 5.368 / 16 | — | 0 |
+
+**full-width** (workers 16), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-16384` | pull | 13.19 ± 0.06 / 0.366 / 36 | 3.21 ± 0.03 / 0.161 / 20 | 3.27 ± 0.02 / 0.164 / 20 | 2.72 ± 0.03 / 0.160 / 17 | 2.79 ± 0.03 / 0.164 / 17 | 3.44 ± 0.06 / 0.202 / 17 | 0 |
+| `hub-65536` | pull | 14.42 ± 0.52 / 0.555 / 26 | 3.19 ± 0.01 / 0.159 / 20 | 3.41 ± 0.02 / 0.170 / 20 | 2.95 ± 0.08 / 0.173 / 17 | 3.11 ± 0.02 / 0.183 / 17 | 8.53 ± 0.02 / 0.502 / 17 | 0 |
+| `uniform-16384` | pull | 10.41 ± 0.05 / 0.372 / 28 | 3.08 ± 0.03 / 0.162 / 19 | 3.18 ± 0.02 / 0.167 / 19 | 2.59 ± 0.01 / 0.162 / 16 | 2.60 ± 0.06 / 0.163 / 16 | 3.33 ± 0.06 / 0.208 / 16 | 0 |
+| `uniform-65536` | pull | 16.30 ± 0.19 / 0.479 / 34 | 3.06 ± 0.10 / 0.161 / 19 | 3.28 ± 0.01 / 0.173 / 19 | 2.74 ± 0.05 / 0.171 / 16 | 2.95 ± 0.01 / 0.184 / 16 | 8.18 ± 0.08 / 0.511 / 16 | 0 |
+
+**large-one-thread** (workers 1), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-2097152` | pull | 2081.65 ± 11.64 / 80.063 / 26 | 1370.21 ± 17.47 / 68.511 / 20 | 1401.20 ± 17.45 / 70.060 / 20 | 1305.15 ± 79.78 / 81.572 / 16 | 1242.21 ± 13.72 / 77.638 / 16 | 4202.36 ± 38.87 / 262.648 / 16 | 2 |
+| `hub-2097152` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 2894.06 ± 38.62 / 137.813 / 21 | 4445.60 ± 22.45 / 211.695 / 21 | 2683.63 ± 177.36 / 167.727 / 16 | 3817.03 ± 129.00 / 238.564 / 16 | — | 2 |
+| `uniform-2097152` | pull | 2154.73 ± 14.33 / 82.874 / 26 | 1388.65 ± 4.76 / 73.087 / 19 | 1346.18 ± 4.70 / 70.852 / 19 | 1503.78 ± 57.06 / 93.986 / 16 | 1461.40 ± 181.69 / 91.337 / 16 | 4382.39 ± 15.01 / 273.899 / 16 | 2 |
+| `uniform-2097152` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 2804.55 ± 51.54 / 140.228 / 20 | 4311.28 ± 7.06 / 215.564 / 20 | 2860.52 ± 273.87 / 178.782 / 16 | 4231.91 ± 367.83 / 264.494 / 16 | — | 2 |
+
+**large-full-width** (workers 16), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-2097152` | pull | 259.57 ± 0.59 / 9.270 / 28 | 155.92 ± 3.22 / 7.796 / 20 | 152.45 ± 0.31 / 7.623 / 20 | 168.39 ± 4.45 / 10.524 / 16 | 163.45 ± 4.00 / 10.216 / 16 | 507.50 ± 13.27 / 31.719 / 16 | 0 |
+| `uniform-2097152` | pull | 268.10 ± 1.88 / 9.575 / 28 | 152.49 ± 0.08 / 8.026 / 19 | 157.26 ± 5.71 / 8.277 / 19 | 163.11 ± 1.59 / 10.195 / 16 | 163.11 ± 1.94 / 10.194 / 16 | 540.64 ± 6.07 / 33.790 / 16 | 1 |
+
+**xlarge-one-thread** (workers 1), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-4194304` | pull | 4050.95 ± 110.84 / 176.128 / 23 | 3245.98 ± 45.57 / 162.299 / 20 | 3330.71 ± 130.06 / 166.536 / 20 | 4358.81 ± 25.42 / 272.426 / 16 | 4369.69 ± 15.98 / 273.106 / 16 | 10471.70 ± 4.83 / 654.481 / 16 | 5 |
+| `hub-4194304` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 6650.39 ± 137.91 / 316.685 / 21 | 9711.13 ± 235.87 / 462.435 / 21 | 9296.28 ± 84.26 / 581.018 / 16 | 11963.17 ± 189.72 / 747.698 / 16 | — | 5 |
+| `uniform-4194304` | pull | 7301.03 ± 8.39 / 251.760 / 29 | 3805.60 ± 23.42 / 200.294 / 19 | 3634.69 ± 281.87 / 191.299 / 19 | 4549.54 ± 23.86 / 284.346 / 16 | 4577.40 ± 63.78 / 286.087 / 16 | 11171.75 ± 33.34 / 698.234 / 16 | 5 |
+| `uniform-4194304` | push | — (push is sequential by construction; neo4j-graph has no such kernel) | 7108.30 ± 468.22 / 355.415 / 20 | 9211.62 ± 166.43 / 460.581 / 20 | 9012.39 ± 41.14 / 563.274 / 16 | 11580.65 ± 24.20 / 723.790 / 16 | — | 5 |
+
+**xlarge-full-width** (workers 16), cells as total ms ± MAD / per-iteration ms / iterations:
+
+| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `hub-4194304` | pull | 343.07 ± 49.32 / 24.505 / 14 | 338.37 ± 4.82 / 16.919 / 20 | 346.78 ± 2.34 / 17.339 / 20 | 535.30 ± 29.13 / 33.456 / 16 | 511.74 ± 1.90 / 31.984 / 16 | 1322.33 ± 10.21 / 82.646 / 16 | 1 |
+| `uniform-4194304` | pull | 583.77 ± 14.83 / 20.130 / 29 | 348.94 ± 17.82 / 18.365 / 19 | 356.11 ± 7.09 / 18.743 / 19 | 547.54 ± 3.92 / 34.221 / 16 | 539.52 ± 11.53 / 33.720 / 16 | 1426.67 ± 7.82 / 89.167 / 16 | 1 |
+
+### One sweep of `grust-next@unchecked+f32` against one sweep of `neo4j-graph`
+
+Per cell, both participants' per-iteration ms and iteration count, and the first over the second, with the sum of the two cells' MAD/median as its margin. Both rows carry f32 scores and neither charges work to a meter, which is why they are put together; they stop at different counts, so this compares the cost of one sweep and not the time to an answer, and the totals are in the tables above. A figure whose distance from 1 is smaller than its margin is inside dispersion and is not a difference.
+
+| fixture | run | `grust-next@unchecked+f32` per-iter / iters | `neo4j-graph` per-iter / iters | ratio ± | outside its margin |
+| --- | --- | ---: | ---: | ---: | --- |
+| `hub-16384` | one-thread | 0.363 / 20 | 0.363 / 36 | 1.000 ± 0.003 | no |
+| `hub-65536` | one-thread | 1.427 / 20 | 1.288 / 28 | 1.108 ± 0.002 | yes |
+| `uniform-16384` | one-thread | 0.372 / 19 | 0.370 / 28 | 1.004 ± 0.002 | yes |
+| `uniform-65536` | one-thread | 1.493 / 19 | 1.301 / 34 | 1.147 ± 0.005 | yes |
+| `hub-16384` | full-width | 0.161 / 20 | 0.366 / 36 | 0.438 ± 0.013 | yes |
+| `hub-65536` | full-width | 0.159 / 20 | 0.555 / 26 | 0.287 ± 0.039 | yes |
+| `uniform-16384` | full-width | 0.162 / 19 | 0.372 / 28 | 0.436 ± 0.013 | yes |
+| `uniform-65536` | full-width | 0.161 / 19 | 0.479 / 34 | 0.336 ± 0.045 | yes |
+| `hub-2097152` | large-one-thread | 68.511 / 20 | 80.063 / 26 | 0.856 ± 0.018 | yes |
+| `uniform-2097152` | large-one-thread | 73.087 / 19 | 82.874 / 26 | 0.882 ± 0.010 | yes |
+| `hub-2097152` | large-full-width | 7.796 / 20 | 9.270 / 28 | 0.841 ± 0.023 | yes |
+| `uniform-2097152` | large-full-width | 8.026 / 19 | 9.575 / 28 | 0.838 ± 0.008 | yes |
+| `hub-4194304` | xlarge-one-thread | 162.299 / 20 | 176.128 / 23 | 0.921 ± 0.041 | yes |
+| `uniform-4194304` | xlarge-one-thread | 200.294 / 19 | 251.760 / 29 | 0.796 ± 0.007 | yes |
+| `hub-4194304` | xlarge-full-width | 16.919 / 20 | 24.505 / 14 | 0.690 ± 0.158 | yes |
+| `uniform-4194304` | xlarge-full-width | 18.365 / 19 | 20.130 / 29 | 0.912 ± 0.076 | yes |
+
+Of the 16 cells, 12 put Grust's sweep at or below `neo4j-graph`'s and 4 are above it. Of those 4, 1 is above by less than its margin and inside dispersion (`hub-16384` one-thread (1.000 ± 0.003)), and 3 are above by more than the margin on that cell: `hub-65536` one-thread (1.108 ± 0.002), `uniform-16384` one-thread (1.004 ± 0.002), `uniform-65536` one-thread (1.147 ± 0.005). Every one of these figures is formed inside this campaign from two cells of the same run.
+
+### What work accounting costs per sweep, here and in B7
+
+`counted` charges work to a shared meter and observes cancellation; `unchecked` does neither and runs the same kernel otherwise. Their per-iteration ms over each other on the same cell of the same run is what the meter costs, with the sum of the two cells' MAD/median as its margin. The B7 column is formed the same way inside B7's own bundle: no B9 cell is divided by a B7 cell, and the two columns are each campaign's own reading. B8 ran on this host between them and was never bundled, so it is not a column here.
+
+| fixture | run | kernel | precision | B7 counted/unchecked ± | B9 counted/unchecked ± |
+| --- | --- | --- | --- | ---: | ---: |
+| `hub-16384` | one-thread | pull | f32 | 1.023 ± 0.002 | 0.998 ± 0.002 |
+| `hub-16384` | one-thread | pull | f64 | 1.045 ± 0.002 | 1.002 ± 0.003 |
+| `hub-16384` | one-thread | push | f32 | 1.710 ± 0.002 | 1.785 ± 0.003 |
+| `hub-16384` | one-thread | push | f64 | 1.727 ± 0.005 | 1.787 ± 0.004 |
+| `hub-65536` | one-thread | pull | f32 | 1.034 ± 0.002 | 1.000 ± 0.004 |
+| `hub-65536` | one-thread | pull | f64 | 1.058 ± 0.018 | 1.003 ± 0.005 |
+| `hub-65536` | one-thread | push | f32 | 1.713 ± 0.005 | 1.792 ± 0.002 |
+| `hub-65536` | one-thread | push | f64 | 1.641 ± 0.016 | 1.771 ± 0.018 |
+| `uniform-16384` | one-thread | pull | f32 | 1.027 ± 0.001 | 0.999 ± 0.003 |
+| `uniform-16384` | one-thread | pull | f64 | 1.051 ± 0.003 | 1.001 ± 0.003 |
+| `uniform-16384` | one-thread | push | f32 | 1.707 ± 0.002 | 1.837 ± 0.002 |
+| `uniform-16384` | one-thread | push | f64 | 1.699 ± 0.002 | 1.836 ± 0.009 |
+| `uniform-65536` | one-thread | pull | f32 | 1.036 ± 0.005 | 1.000 ± 0.005 |
+| `uniform-65536` | one-thread | pull | f64 | 1.079 ± 0.016 | 1.002 ± 0.004 |
+| `uniform-65536` | one-thread | push | f32 | 1.710 ± 0.006 | 1.846 ± 0.002 |
+| `uniform-65536` | one-thread | push | f64 | 1.618 ± 0.044 | 1.796 ± 0.005 |
+| `hub-16384` | full-width | pull | f32 | 1.189 ± 0.030 | 1.019 ± 0.014 |
+| `hub-16384` | full-width | pull | f64 | 1.210 ± 0.054 | 1.025 ± 0.020 |
+| `hub-65536` | full-width | pull | f32 | 1.537 ± 0.024 | 1.069 ± 0.009 |
+| `hub-65536` | full-width | pull | f64 | 1.557 ± 0.056 | 1.056 ± 0.032 |
+| `uniform-16384` | full-width | pull | f32 | 1.238 ± 0.038 | 1.033 ± 0.014 |
+| `uniform-16384` | full-width | pull | f64 | 1.229 ± 0.076 | 1.007 ± 0.027 |
+| `uniform-65536` | full-width | pull | f32 | 1.552 ± 0.004 | 1.073 ± 0.036 |
+| `uniform-65536` | full-width | pull | f64 | 1.537 ± 0.042 | 1.075 ± 0.020 |
+| `hub-2097152` | large-one-thread | pull | f32 | 1.190 ± 0.099 | 1.023 ± 0.025 |
+| `hub-2097152` | large-one-thread | pull | f64 | 1.134 ± 0.068 | 0.952 ± 0.072 |
+| `hub-2097152` | large-one-thread | push | f32 | 1.416 ± 0.025 | 1.536 ± 0.018 |
+| `hub-2097152` | large-one-thread | push | f64 | 1.213 ± 0.017 | 1.422 ± 0.100 |
+| `uniform-2097152` | large-one-thread | pull | f32 | 1.110 ± 0.027 | 0.969 ± 0.007 |
+| `uniform-2097152` | large-one-thread | pull | f64 | 1.074 ± 0.076 | 0.972 ± 0.162 |
+| `uniform-2097152` | large-one-thread | push | f32 | 1.476 ± 0.056 | 1.537 ± 0.020 |
+| `uniform-2097152` | large-one-thread | push | f64 | 1.188 ± 0.025 | 1.479 ± 0.183 |
+| `hub-2097152` | large-full-width | pull | f32 | 1.084 ± 0.015 | 0.978 ± 0.023 |
+| `hub-2097152` | large-full-width | pull | f64 | 1.163 ± 0.022 | 0.971 ± 0.051 |
+| `uniform-2097152` | large-full-width | pull | f32 | 1.066 ± 0.012 | 1.031 ± 0.037 |
+| `uniform-2097152` | large-full-width | pull | f64 | 1.038 ± 0.124 | 1.000 ± 0.022 |
+| `hub-4194304` | xlarge-one-thread | pull | f32 | 1.089 ± 0.043 | 1.026 ± 0.053 |
+| `hub-4194304` | xlarge-one-thread | pull | f64 | 1.058 ± 0.028 | 1.002 ± 0.009 |
+| `hub-4194304` | xlarge-one-thread | push | f32 | 1.199 ± 0.060 | 1.460 ± 0.045 |
+| `hub-4194304` | xlarge-one-thread | push | f64 | 1.185 ± 0.009 | 1.287 ± 0.025 |
+| `uniform-4194304` | xlarge-one-thread | pull | f32 | 1.027 ± 0.035 | 0.955 ± 0.084 |
+| `uniform-4194304` | xlarge-one-thread | pull | f64 | 1.065 ± 0.011 | 1.006 ± 0.019 |
+| `uniform-4194304` | xlarge-one-thread | push | f32 | 1.263 ± 0.059 | 1.296 ± 0.084 |
+| `uniform-4194304` | xlarge-one-thread | push | f64 | 1.210 ± 0.021 | 1.285 ± 0.007 |
+| `hub-4194304` | xlarge-full-width | pull | f32 | 1.102 ± 0.083 | 1.025 ± 0.021 |
+| `hub-4194304` | xlarge-full-width | pull | f64 | 1.042 ± 0.017 | 0.956 ± 0.058 |
+| `uniform-4194304` | xlarge-full-width | pull | f32 | 1.064 ± 0.108 | 1.021 ± 0.071 |
+| `uniform-4194304` | xlarge-full-width | pull | f64 | 1.090 ± 0.031 | 0.985 ± 0.029 |
+
+Over the 32 pull-kernel cells the meter's cost in B9 runs from 0.952 to 1.075, and 10 cells differ from 1 by more than the margin on that cell: `hub-16384` one-thread f32 (0.998 ± 0.002), `hub-16384` full-width f32 (1.019 ± 0.014), `hub-16384` full-width f64 (1.025 ± 0.020), `hub-65536` full-width f32 (1.069 ± 0.009), `hub-65536` full-width f64 (1.056 ± 0.032), `uniform-16384` full-width f32 (1.033 ± 0.014), `uniform-65536` full-width f32 (1.073 ± 0.036), `uniform-65536` full-width f64 (1.075 ± 0.020), `uniform-2097152` large-one-thread f32 (0.969 ± 0.007), `hub-4194304` xlarge-full-width f32 (1.025 ± 0.021). On the same cells in B7 it ran from 1.023 to 1.557, with 28 cells outside their margins. 
+At 2,097,152 nodes the 8 pull cells read 0.952 to 1.031 in B9 against 1.038 to 1.190 in B7, of which 1 is outside the margin on that cell: `uniform-2097152` large-one-thread f32 (0.969 ± 0.007). Below 1 is the meter costing less than no meter.
+At 4,194,304 nodes the 8 pull cells read 0.955 to 1.026 in B9 against 1.027 to 1.102 in B7, of which 1 is outside the margin on that cell: `hub-4194304` xlarge-full-width f32 (1.025 ± 0.021). Above 1 is the meter costing more than no meter.
+The push kernel is not in that state. Over its 16 cells the meter costs 1.285 to 1.846 in B9 against 1.185 to 1.727 in B7, and on 14 cells the B9 figure exceeds the B7 figure by more than both margins together: `hub-16384` one-thread f32 (1.710 to 1.785), `hub-16384` one-thread f64 (1.727 to 1.787), `hub-65536` one-thread f32 (1.713 to 1.792), `hub-65536` one-thread f64 (1.641 to 1.771), `uniform-16384` one-thread f32 (1.707 to 1.837), `uniform-16384` one-thread f64 (1.699 to 1.836), `uniform-65536` one-thread f32 (1.710 to 1.846), `uniform-65536` one-thread f64 (1.618 to 1.796), `hub-2097152` large-one-thread f32 (1.416 to 1.536), `hub-2097152` large-one-thread f64 (1.213 to 1.422), `uniform-2097152` large-one-thread f64 (1.188 to 1.479), `hub-4194304` xlarge-one-thread f32 (1.199 to 1.460), `hub-4194304` xlarge-one-thread f64 (1.185 to 1.287), `uniform-4194304` xlarge-one-thread f64 (1.210 to 1.285).
+
+### Why no B9 time is compared with a B7 or B8 time
+
+`neo4j-graph` and `grust` (v0.22.0) are the same sources in B7 and in B9, on fixtures with the same SHA-256, under the same protocol. The host was restarted between the campaigns. Their per-sweep figures moved anyway, by cell and in both directions, so a difference between a B9 number and a B7 number is not readable as a difference in code and none is formed outside this table, which exists to say so:
+
+| fixture | run | participant | call | B7 per-iter | B9 per-iter | B9/B7 |
+| --- | --- | --- | --- | ---: | ---: | ---: |
+| `hub-16384` | one-thread | `neo4j-graph` | — | 0.368 | 0.363 | 0.987 |
+| `hub-16384` | one-thread | `grust#1` | first | 0.684 | 0.682 | 0.998 |
+| `hub-16384` | one-thread | `grust#1` | second | 0.568 | 0.567 | 0.999 |
+| `hub-65536` | one-thread | `neo4j-graph` | — | 1.307 | 1.288 | 0.985 |
+| `hub-65536` | one-thread | `grust#1` | first | 3.670 | 3.129 | 0.852 |
+| `hub-65536` | one-thread | `grust#1` | second | 2.981 | 2.595 | 0.870 |
+| `uniform-16384` | one-thread | `neo4j-graph` | — | 0.375 | 0.370 | 0.986 |
+| `uniform-16384` | one-thread | `grust#1` | first | 0.704 | 0.703 | 0.999 |
+| `uniform-16384` | one-thread | `grust#1` | second | 0.578 | 0.578 | 1.000 |
+| `uniform-65536` | one-thread | `neo4j-graph` | — | 1.327 | 1.301 | 0.981 |
+| `uniform-65536` | one-thread | `grust#1` | first | 3.701 | 3.238 | 0.875 |
+| `uniform-65536` | one-thread | `grust#1` | second | 2.890 | 2.708 | 0.937 |
+| `hub-16384` | full-width | `neo4j-graph` | — | 0.376 | 0.366 | 0.975 |
+| `hub-16384` | full-width | `grust` | first | 0.378 | 0.356 | 0.942 |
+| `hub-16384` | full-width | `grust` | second | 0.207 | 0.202 | 0.978 |
+| `hub-65536` | full-width | `neo4j-graph` | — | 0.461 | 0.555 | 1.203 |
+| `hub-65536` | full-width | `grust` | first | 1.083 | 1.028 | 0.949 |
+| `hub-65536` | full-width | `grust` | second | 0.507 | 0.502 | 0.990 |
+| `uniform-16384` | full-width | `neo4j-graph` | — | 0.385 | 0.372 | 0.966 |
+| `uniform-16384` | full-width | `grust` | first | 0.389 | 0.366 | 0.942 |
+| `uniform-16384` | full-width | `grust` | second | 0.209 | 0.208 | 0.994 |
+| `uniform-65536` | full-width | `neo4j-graph` | — | 0.477 | 0.479 | 1.005 |
+| `uniform-65536` | full-width | `grust` | first | 1.150 | 1.098 | 0.955 |
+| `uniform-65536` | full-width | `grust` | second | 0.522 | 0.511 | 0.978 |
+| `hub-2097152` | large-one-thread | `neo4j-graph` | — | 98.453 | 80.063 | 0.813 |
+| `hub-2097152` | large-one-thread | `grust#1` | first | 390.613 | 297.956 | 0.763 |
+| `hub-2097152` | large-one-thread | `grust#1` | second | 343.919 | 262.648 | 0.764 |
+| `uniform-2097152` | large-one-thread | `neo4j-graph` | — | 91.479 | 82.874 | 0.906 |
+| `uniform-2097152` | large-one-thread | `grust#1` | first | 402.906 | 310.200 | 0.770 |
+| `uniform-2097152` | large-one-thread | `grust#1` | second | 364.159 | 273.899 | 0.752 |
+| `hub-2097152` | large-full-width | `neo4j-graph` | — | 9.678 | 9.270 | 0.958 |
+| `hub-2097152` | large-full-width | `grust` | first | 71.788 | 68.395 | 0.953 |
+| `hub-2097152` | large-full-width | `grust` | second | 31.043 | 31.719 | 1.022 |
+| `uniform-2097152` | large-full-width | `neo4j-graph` | — | 10.180 | 9.575 | 0.941 |
+| `uniform-2097152` | large-full-width | `grust` | first | 81.530 | 68.115 | 0.835 |
+| `uniform-2097152` | large-full-width | `grust` | second | 37.547 | 33.790 | 0.900 |
+| `hub-4194304` | xlarge-one-thread | `neo4j-graph` | — | 273.581 | 176.128 | 0.644 |
+| `hub-4194304` | xlarge-one-thread | `grust#1` | first | 888.640 | 738.380 | 0.831 |
+| `hub-4194304` | xlarge-one-thread | `grust#1` | second | 788.382 | 654.481 | 0.830 |
+| `uniform-4194304` | xlarge-one-thread | `neo4j-graph` | — | 266.105 | 251.760 | 0.946 |
+| `uniform-4194304` | xlarge-one-thread | `grust#1` | first | 936.964 | 780.630 | 0.833 |
+| `uniform-4194304` | xlarge-one-thread | `grust#1` | second | 835.333 | 698.234 | 0.836 |
+| `hub-4194304` | xlarge-full-width | `neo4j-graph` | — | 21.385 | 24.505 | 1.146 |
+| `hub-4194304` | xlarge-full-width | `grust` | first | 188.599 | 166.832 | 0.885 |
+| `hub-4194304` | xlarge-full-width | `grust` | second | 89.057 | 82.646 | 0.928 |
+| `uniform-4194304` | xlarge-full-width | `neo4j-graph` | — | 21.460 | 20.130 | 0.938 |
+| `uniform-4194304` | xlarge-full-width | `grust` | first | 194.880 | 170.658 | 0.876 |
+| `uniform-4194304` | xlarge-full-width | `grust` | second | 97.472 | 89.167 | 0.915 |
+
+48 cells of unchanged code, median B9/B7 0.942, from 0.644 (`neo4j-graph` hub-4194304 xlarge-one-thread) to 1.203 (`neo4j-graph` hub-65536 full-width). The reference participant's own one-thread sweep at 2,097,152 nodes is among the cells that moved: hub-2097152 B7 98 ms against B9 80 ms, uniform-2097152 B7 91 ms against B9 83 ms. Every comparison this section makes is therefore between two cells of B9.
+
+### The boundary, restated for B9
+
+- **Per sweep is the comparison, and the totals are not.** No two participants
+  in this campaign stopped at the same iteration count on the same fixture:
+  `neo4j-graph` sums an f32 residual in f64 across its worker threads and
+  stopped between 14 and 36 sweeps, Grust at f32 stopped at 19, 20 or 21,
+  and Grust at f64 at 16 or 17. A total is therefore the time to reach tolerance 1e-8
+  under that participant's own stopping rule, and it is the number a reader
+  who wants an answer should take; a per-iteration figure is the cost of one
+  sweep over the arcs and nothing else. The tables above print both, and every
+  comparison drawn in this section is drawn on the per-iteration column.
+- **The absolutes here do not belong beside B7's or B8's.** The host was
+  restarted between those campaigns and this one, and the participants whose
+  code did not change moved anyway: over 48 cells of unchanged code the median
+  B9/B7 per-sweep ratio is 0.942, with individual cells from 0.644 to 1.203,
+  and `neo4j-graph`'s own one-thread sweep at 2,097,152 nodes reads 98 ms in
+  B7 and 80 ms here. A B9 millisecond is not a B7 millisecond. Every
+  comparison in this section is between two cells of B9, or between a ratio
+  formed inside B9 and a ratio formed inside B7; the unchanged-code table is
+  printed so a reader can see the size of what that rule is avoiding, not so
+  the two campaigns can be subtracted.
+- **Where the sweep cost stands and where it does not.** Twelve of the sixteen
+  like-for-like cells put Grust's sweep at or below the reference's; one more
+  is above by less than its margin. Three are above by more than their margin,
+  and all three are at one thread on the protocol-size fixtures:
+  `uniform-16384` by 0.4% ± 0.2, `hub-65536` by 10.8% ± 0.2 and
+  `uniform-65536` by 14.7% ± 0.5. The two at 65,536 nodes are the largest
+  margins in the table and they are not small: a sequential sweep of a graph
+  that fits in L3 costs Grust about an eighth more than it costs the reference
+  here. Nothing in this campaign explains that, and none of the five commits
+  in the stack was aimed at it.
+- **Work accounting and where it still costs.** On the pull kernel the meter
+  is now indistinguishable from no meter at the two sizes above L3: at
+  2,097,152 nodes the eight cells read 0.952 to 1.031 against B7's 1.038 to
+  1.190, and at 4,194,304 nodes 0.955 to 1.026 against B7's 1.027 to 1.102,
+  with one cell at each size outside its own margin and in opposite
+  directions. That is what charging a reduction block rather than a node was
+  for. The full-width protocol cells still show it — `hub-65536` and
+  `uniform-65536` at 1.056 to 1.075, where B7 read 1.537 to 1.557 — so it is
+  reduced there and not gone. On the push kernel it went the other way: over
+  sixteen cells the meter costs 1.285 to 1.846 here against 1.185 to 1.727 in
+  B7, and on fourteen of them the B9 figure exceeds the B7 figure by more than
+  both margins together. The block change is in the pull kernel's reduction
+  and the push loop still charges per node; why its figure moved is not
+  established here and this document does not attribute it.
+- **The scores are the same numbers as v0.22.0's.** Every f64 row in parity is
+  bit-identical to v0.22.0's vector, at every concurrency and every size, and
+  every `+f32` unchecked row is bit-identical to its counted row. The five
+  commits' own assertions and this host's parity agree. A `+f32` row is still
+  a different answer from an f64 row, not a different timing of one.
+
 ## What is not here
 
 - **Not portable.** Every timing here is from one host — quegee, 16 vCPU on 8
@@ -1760,6 +2341,12 @@ Attempt 1: `DISCARDED: host shared during the run`, started 2026-09-22T18:14:09+
   large for two participants between B4 and B5 and is why no cell of one
   campaign is compared with a cell of another; B6 reports its own drift
   against B5 in the same form.
+- **No f32 result outside the dangling-free families.** B7 times Grust's f32
+  PageRank on `hub` and `uniform` alone; where f32 needs twice the iterations,
+  or cannot meet the tolerance at all, is stated from Grust's own tests and
+  is not measured here.
 - **A dated result.** B3 describes v0.22.0, B4 describes `4d8e5db`, B5
-  describes `ca68900` and B6 describes `87fc462`; a column measured later
-  describes that code.
+  describes `ca68900`, B6 describes `87fc462`, B7 describes `ead3568` and B9 describes
+  `4a9e7f5`; a column measured later describes that code. B8 ran on this
+  host at `2985fac` between B7 and B9 and was never bundled, so this document
+  does not describe it.

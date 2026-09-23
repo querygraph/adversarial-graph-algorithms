@@ -1,0 +1,794 @@
+[
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999668079909,
+   "max": 0.00014937247,
+   "argmax": 10863,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 36,
+  "converged": null,
+  "residual": 9.287759894505143e-09
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154456,
+   "argmax": 10863,
+   "scores_digest": "68d9eb90a4b4f53d"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 7352,
+   "of": 16384,
+   "max_abs": 8.131516293641283e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "converged": true,
+  "residual": 3.231963668260963e-09
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154456,
+   "argmax": 10863,
+   "scores_digest": "68d9eb90a4b4f53d"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 7352,
+   "of": 16384,
+   "max_abs": 8.131516293641283e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "converged": true,
+  "residual": 3.231963668260963e-09,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154456,
+   "argmax": 10863,
+   "scores_digest": "68d9eb90a4b4f53d"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 7352,
+   "of": 16384,
+   "max_abs": 8.131516293641283e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "converged": true,
+  "residual": 3.231963668260963e-09,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@counted+f32",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.0000001356747816,
+   "max": 0.00014937251,
+   "argmax": 10863,
+   "scores_digest": "4751902dadcc6fb6"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 0,
+   "of": 16384,
+   "max_abs": 4.376651076059765e-11,
+   "max_ulps": 2621868491
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 20,
+  "converged": true,
+  "residual": 8.796632755547762e-09
+ },
+ {
+  "fixture": "hub-16384.edges",
+  "participant": "grust-next@unchecked+f32",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 1.0000001356747816,
+   "max": 0.00014937251,
+   "argmax": 10863,
+   "scores_digest": "4751902dadcc6fb6"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 1.0000000000000042,
+   "max": 0.00014937247022154453,
+   "scores_digest": "0498545fb95c53e2"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 0,
+   "of": 16384,
+   "max_abs": 4.376651076059765e-11,
+   "max_ulps": 2621868491
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 20,
+  "converged": true,
+  "residual": 8.796632755547762e-09,
+  "bits_identical_to": {
+   "participant": "grust-next@counted+f32",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999762728748,
+   "max": 4.230842e-05,
+   "argmax": 49228,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 33,
+  "converged": null,
+  "residual": 8.890538083505817e-09
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999851,
+   "max": 4.230842528788669e-05,
+   "argmax": 49228,
+   "scores_digest": "31d0d5928cbbcf83"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29623,
+   "of": 65536,
+   "max_abs": 1.3552527156068805e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "converged": true,
+  "residual": 3.2377320613394786e-09
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999851,
+   "max": 4.230842528788669e-05,
+   "argmax": 49228,
+   "scores_digest": "31d0d5928cbbcf83"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29623,
+   "of": 65536,
+   "max_abs": 1.3552527156068805e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "converged": true,
+  "residual": 3.2377320613394786e-09,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 0.9999999999999851,
+   "max": 4.230842528788669e-05,
+   "argmax": 49228,
+   "scores_digest": "31d0d5928cbbcf83"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29623,
+   "of": 65536,
+   "max_abs": 1.3552527156068805e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 17,
+  "converged": true,
+  "residual": 3.2377320613394786e-09,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@counted+f32",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.000000138397354,
+   "max": 4.230843e-05,
+   "argmax": 49228,
+   "scores_digest": "8a636b96ca92c4d7"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 0,
+   "of": 65536,
+   "max_abs": 1.4992613873749273e-11,
+   "max_ulps": 2944077174
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 20,
+  "converged": true,
+  "residual": 8.442157195531763e-09
+ },
+ {
+  "fixture": "hub-65536.edges",
+  "participant": "grust-next@unchecked+f32",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 1.000000138397354,
+   "max": 4.230843e-05,
+   "argmax": 49228,
+   "scores_digest": "8a636b96ca92c4d7"
+  },
+  "reference": {
+   "iterations": 17,
+   "sum": 0.9999999999999851,
+   "max": 4.23084252878867e-05,
+   "scores_digest": "8a9b11d5596d13a1"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 0,
+   "of": 65536,
+   "max_abs": 1.4992613873749273e-11,
+   "max_ulps": 2944077174
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 20,
+  "converged": true,
+  "residual": 8.442157195531763e-09,
+  "bits_identical_to": {
+   "participant": "grust-next@counted+f32",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": null,
+  "found": {
+   "sum": 0.9999999704141374,
+   "max": 0.0001442414,
+   "argmax": 8162,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 28,
+  "converged": null,
+  "residual": 9.637005859985948e-09
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "argmax": 8162,
+   "scores_digest": "75300fca12837c50"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 7355,
+   "of": 16384,
+   "max_abs": 5.421010862427522e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "converged": true,
+  "residual": 3.3649148104388307e-09
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "argmax": 8162,
+   "scores_digest": "75300fca12837c50"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 7355,
+   "of": 16384,
+   "max_abs": 5.421010862427522e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "converged": true,
+  "residual": 3.3649148104388307e-09,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "argmax": 8162,
+   "scores_digest": "75300fca12837c50"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": true,
+  "vector_against_reference": {
+   "identical": 7355,
+   "of": 16384,
+   "max_abs": 5.421010862427522e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "converged": true,
+  "residual": 3.3649148104388307e-09,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@counted+f32",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.0000001334437911,
+   "max": 0.00014424147,
+   "argmax": 8162,
+   "scores_digest": "54e9194d128f8366"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 0,
+   "of": 16384,
+   "max_abs": 4.483890971192228e-11,
+   "max_ulps": 2959917052
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 19,
+  "converged": true,
+  "residual": 8.757524483371526e-09
+ },
+ {
+  "fixture": "uniform-16384.edges",
+  "participant": "grust-next@unchecked+f32",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 1.0000001334437911,
+   "max": 0.00014424147,
+   "argmax": 8162,
+   "scores_digest": "54e9194d128f8366"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 1.000000000000003,
+   "max": 0.00014424142063260376,
+   "scores_digest": "acaa720012635ae3"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 0,
+   "of": 16384,
+   "max_abs": 4.483890971192228e-11,
+   "max_ulps": 2959917052
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 19,
+  "converged": true,
+  "residual": 8.757524483371526e-09,
+  "bits_identical_to": {
+   "participant": "grust-next@counted+f32",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "neo4j-graph",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": null,
+  "found": {
+   "sum": 1.00000002719662,
+   "max": 4.2854634e-05,
+   "argmax": 46185,
+   "scores_digest": null
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 34,
+  "converged": null,
+  "residual": 9.64496393862646e-09
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999917,
+   "max": 4.285462911850024e-05,
+   "argmax": 46185,
+   "scores_digest": "6034c5f1e9170903"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29430,
+   "of": 65536,
+   "max_abs": 2.0328790734103208e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "converged": true,
+  "residual": 3.4311828054818233e-09
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@counted",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 0.9999999999999917,
+   "max": 4.285462911850024e-05,
+   "argmax": 46185,
+   "scores_digest": "6034c5f1e9170903"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29430,
+   "of": 65536,
+   "max_abs": 2.0328790734103208e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "converged": true,
+  "residual": 3.4311828054818233e-09,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@unchecked",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 0.9999999999999917,
+   "max": 4.285462911850024e-05,
+   "argmax": 46185,
+   "scores_digest": "6034c5f1e9170903"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 29430,
+   "of": 65536,
+   "max_abs": 2.0328790734103208e-20,
+   "max_ulps": 4
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 16,
+  "converged": true,
+  "residual": 3.4311828054818233e-09,
+  "bits_identical_to": {
+   "participant": "grust",
+   "identical": true
+  }
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@counted+f32",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "counted",
+  "found": {
+   "sum": 1.0000001349656031,
+   "max": 4.2854637e-05,
+   "argmax": 46185,
+   "scores_digest": "22402178e5584759"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 0,
+   "of": 65536,
+   "max_abs": 1.1503564817567664e-11,
+   "max_ulps": 3047578129
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 19,
+  "converged": true,
+  "residual": 8.528786565875635e-09
+ },
+ {
+  "fixture": "uniform-65536.edges",
+  "participant": "grust-next@unchecked+f32",
+  "algorithm": "pagerank",
+  "concurrency": 1,
+  "accounting": "unchecked",
+  "found": {
+   "sum": 1.0000001349656031,
+   "max": 4.2854637e-05,
+   "argmax": 46185,
+   "scores_digest": "22402178e5584759"
+  },
+  "reference": {
+   "iterations": 16,
+   "sum": 0.9999999999999916,
+   "max": 4.285462911850025e-05,
+   "scores_digest": "1f3b1fec546d8fb8"
+  },
+  "max_bits_equal_reference": false,
+  "vector_against_reference": {
+   "identical": 0,
+   "of": 65536,
+   "max_abs": 1.1503564817567664e-11,
+   "max_ulps": 3047578129
+  },
+  "verdict": "agrees",
+  "detail": "",
+  "notes": [],
+  "iterations": 19,
+  "converged": true,
+  "residual": 8.528786565875635e-09,
+  "bits_identical_to": {
+   "participant": "grust-next@counted+f32",
+   "identical": true
+  }
+ }
+]

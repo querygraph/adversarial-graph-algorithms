@@ -20,7 +20,29 @@ Two checks were added for the rerun, both recorded per PageRank row:
   must have the same digest and iteration count as BASE's on every fixture.
   This is the gate that licenses comparing two builds' times: a kernel change
   that altered a score is a different function, not a faster one. A candidate
-  that differs is a MISMATCH, and a mismatched cell is never timed.
+  that differs is a MISMATCH, and a mismatched cell is never timed. The option
+  may be given more than once, one group per BASE: B7 gates the f64 builds
+  against v0.22.0 and the `+f32` builds against their own counted row, because
+  an f32 vector is never bit-identical to an f64 one and a gate that compared
+  them would only ever mismatch.
+
+A variant's precision comes from its receipt, taken with the variant's own
+flags, so a Grust build run with `--precision f32` declares `f32` and is held
+to the same rule as `neo4j-graph`: a relative 1e-6 on the sum and the maximum,
+floored at the stopping tolerance. The f64 rule is 1e-12. Neither is loosened
+for anyone.
+
+`--families hub uniform` restricts a run to fixtures whose file name starts with
+those families, so a campaign that times two families gates exactly those and
+its parity file says so by containing only them.
+
+A PageRank row whose participant reports `converged: false` is its own
+verdict, `not converged`, with the residual it stalled at, whatever its sum
+and maximum say. An f32 kernel cannot meet a tolerance below one ulp of a
+moving score except at an exact fixed point, and can oscillate by one ulp
+until max_iterations instead; that row ran the iteration cap, not the stopping
+rule, so its total is not a kernel's time and it is not timed. The tolerance
+is never loosened to make it converge.
 """
 import argparse, hashlib, json, pathlib, pickle, struct, subprocess, sys, tempfile
 
@@ -113,8 +135,11 @@ def main():
                    help='the only value grustcat can express, so the only one all five share')
     p.add_argument('--concurrency', type=int,
                    help='passed to participants that accept it; unset and 1 are different kernels')
-    p.add_argument('--bits-identical', nargs='+', metavar='KEY',
-                   help='BASE then CANDIDATES: each candidate PageRank vector must equal BASE bit for bit')
+    p.add_argument('--bits-identical', nargs='+', metavar='KEY', action='append',
+                   help='BASE then CANDIDATES: each candidate PageRank vector must equal BASE bit for bit; '
+                        'repeatable, one group per BASE')
+    p.add_argument('--families', nargs='+', metavar='FAMILY',
+                   help='only fixtures named FAMILY-<size>.edges; default every fixture in the directory')
     p.add_argument('--reference-cache', type=pathlib.Path,
                    help='directory keeping the reference result per fixture SHA-256 and tolerance')
     p.add_argument('--output', type=pathlib.Path)
@@ -127,7 +152,11 @@ def main():
     scratch = pathlib.Path(tempfile.mkdtemp(prefix='parity-scores-'))
 
     rows, mismatches = [], 0
-    for fixture in sorted(a.fixtures.glob('*.edges')):
+    fixtures = [f for f in sorted(a.fixtures.glob('*.edges'))
+                if a.families is None or f.name.split('-')[0] in a.families]
+    if not fixtures:
+        raise SystemExit(f'no fixtures in {a.fixtures} for families {a.families}')
+    for fixture in fixtures:
         loaded = []
         def graph():
             if not loaded: loaded.append(ref.read(fixture))
@@ -212,12 +241,19 @@ def main():
                             dump.unlink()
                 row.update(verdict='agrees' if not differences else 'MISMATCH',
                            detail='; '.join(differences + notes), notes=notes,
-                           iterations=found.get('iterations'))
-                mismatches += bool(differences)
+                           iterations=found.get('iterations'), converged=found.get('converged'),
+                           residual=found.get('residual', found.get('error')))
+                if algorithm == 'pagerank' and found.get('converged') is False:
+                    # Its own outcome, kept apart from agreement and mismatch,
+                    # and counted with the mismatches so it is never timed.
+                    row.update(verdict='not converged',
+                               detail=f"stopped at max_iterations with residual {found.get('residual')!r} "
+                                      f"above tolerance {a.tolerance:g}" + ('; ' if row['detail'] else '')
+                                      + row['detail'])
+                mismatches += bool(differences) or row['verdict'] == 'not converged'
                 rows.append(row)
 
-    if a.bits_identical:
-        base, *candidates = a.bits_identical
+    for base, *candidates in a.bits_identical or []:
         for row in rows:
             if row['algorithm'] != 'pagerank' or row['participant'] not in candidates: continue
             if row['verdict'] != 'agrees': continue
@@ -242,7 +278,10 @@ def main():
         extra = ''
         if 'vector_against_reference' in row:
             v = row['vector_against_reference']
-            extra = f"  vector-bits-equal-reference={v['identical']}/{v['of']} max_ulps={v['max_ulps']}"
+            # ulps are f64 ulps; for an f32 row, widened to f64, the absolute
+            # distance is the figure that means something.
+            extra = (f"  vector-bits-equal-reference={v['identical']}/{v['of']} max_ulps={v['max_ulps']} "
+                     f"max_abs={v['max_abs']:.3g}")
         if 'max_bits_equal_reference' in row:
             extra += f"  max-bits-equal-reference={row['max_bits_equal_reference']}"
         if 'bits_identical_to' in row:

@@ -34,11 +34,30 @@
 //! behaviour available as its own labelled row, so the correction can be shown
 //! rather than asserted. Minor page faults are reported beside every call, read
 //! outside every timer, because that is the quantity the artifact moved.
+//!
+//! `--precision f32` is the one flag that changes what is computed. B6 found
+//! that `neo4j-graph`, which accumulates and returns f32, stops PageRank at a
+//! different iteration count from Grust's f64 kernel under the same tolerance,
+//! so the two total times were never one kernel's cost against another's. With
+//! the `pagerank-f32` feature this participant can run Grust's f32 PageRank
+//! (`pagerank_f32`) instead, and the receipt then declares `f32`, so parity
+//! holds the row to the rule `neo4j-graph` is held to. The f64 path is
+//! untouched by the flag's absence: `--precision f64` is the default and every
+//! output line names the precision. Only PageRank has an f32 kernel; any other
+//! algorithm asked for f32 exits non-zero, so a row that could not be run as
+//! asked is an error in parity rather than an f64 run under an f32 label. The
+//! release manifest leaves the feature off and refuses the flag the same way.
 
 use std::time::Instant;
 
 #[cfg(feature = "accounting-api")]
 use grust_algorithms::Accounting;
+// B7: this import compiles only against a Grust that has `pagerank_f32`
+// (branch `work/pagerank-f32`); `grust-next/Cargo.toml` turns the feature on,
+// so the `grust-next` build fails, rather than silently running f64, until
+// that commit is the tree it links.
+#[cfg(feature = "pagerank-f32")]
+use grust_algorithms::pagerank_f32;
 use grust_algorithms::{
     ExecutionContext, ExecutionLimits, GraphProjection, Orientation, PageRankOptions,
     ProjectionEdge, SnapshotIdentity, TriangleOptions, bfs, pagerank, triangles,
@@ -161,6 +180,19 @@ fn accounting(args: &[String]) -> ((), &'static str) {
     }
 }
 
+/// `--precision f64` (the default) runs `pagerank`; `f32` runs `pagerank_f32`
+/// where this Grust has it. A build without the `pagerank-f32` feature refuses
+/// `f32` rather than running f64 under that name, and the refusal exits
+/// non-zero so parity records an error for the row.
+fn precision(args: &[String]) -> &'static str {
+    match flag(args, "--precision").as_deref().unwrap_or("f64") {
+        "f64" => "f64",
+        "f32" if cfg!(feature = "pagerank-f32") => "f32",
+        "f32" => panic!("--precision f32: this Grust has no pagerank_f32, so only f64 runs"),
+        other => panic!("unknown --precision {other}: f64 or f32"),
+    }
+}
+
 fn context(limits: ExecutionLimits, args: &[String]) -> ExecutionContext {
     #[cfg(feature = "accounting-api")]
     return ExecutionContext::with_accounting(limits, accounting(args).0).expect("execution context");
@@ -233,7 +265,9 @@ struct Call {
 /// `--scores-out PATH`: write every PageRank score's bits, one hex word per
 /// line in node order, after both calls and outside every timer. Parity uses it
 /// to compare each score with the reference's rather than a digest or a sum;
-/// timed runs never pass it.
+/// timed runs never pass it. An f32 score is written as the f64 it widens to
+/// exactly, so the file has one format whatever the precision and parity reads
+/// it the same way; the digest is over the same widened bits.
 fn write_scores(path: &str, scores: &[f64]) {
     use std::fmt::Write as _;
     let mut text = String::with_capacity(scores.len() * 17);
@@ -243,12 +277,54 @@ fn write_scores(path: &str, scores: &[f64]) {
     std::fs::write(path, text).expect("--scores-out");
 }
 
-fn call(projection: &GraphProjection, algorithm: &str, tolerance: f64, max_iterations: usize, keep: bool) -> Call {
+/// The f32 PageRank call. Sum, max and argmax are formed as `neo4j-graph`
+/// forms them from its f32 scores: the sum accumulated in f64, the max printed
+/// as the f32 it is. The scores are widened to f64 inside the materialise
+/// timer, outside the kernel's, for the digest and `--scores-out`.
+#[cfg(feature = "pagerank-f32")]
+fn call_pagerank_f32(projection: &GraphProjection, options: PageRankOptions<'_>, faults: i64,
+                     started: Instant, keep: bool) -> Call {
+    let result = pagerank_f32(projection, options).expect("pagerank_f32");
+    let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
+    let faults = minflt() - faults;
+    let started = Instant::now();
+    let scores = result.values();
+    let sum: f64 = scores.iter().map(|s| f64::from(*s)).sum();
+    let (argmax, max) = scores.iter().enumerate()
+        .fold((0usize, f32::MIN), |(bi, bv), (i, v)| if *v > bv { (i, *v) } else { (bi, bv) });
+    let widened: Vec<f64> = scores.iter().map(|s| f64::from(*s)).collect();
+    let bits = digest(&widened);
+    Call {
+        kernel_ms,
+        minflt: faults,
+        fields: format!("\"iterations\":{},\"residual\":{},\"converged\":{},\"sum\":{sum},\
+                         \"max\":{max},\"argmax\":{argmax},\"scores_digest\":\"{bits}\"",
+                        result.iterations(), result.residual(), result.converged()),
+        identity: format!("{bits}/{}", result.iterations()),
+        materialise_ms: started.elapsed().as_secs_f64() * 1e3,
+        scores: keep.then_some(widened),
+    }
+}
+
+fn call(projection: &GraphProjection, algorithm: &str, tolerance: f64, max_iterations: usize,
+        precision: &str, keep: bool) -> Call {
+    // `precision()` and `main` have already refused anything this build
+    // cannot run; here it only selects the arm.
+    debug_assert!(precision == "f64" || cfg!(feature = "pagerank-f32"));
     // Read before the timer starts and again after it stops: the counter is
     // reported beside the time, never inside it.
     let faults = minflt();
     let started = Instant::now();
     match algorithm {
+        #[cfg(feature = "pagerank-f32")]
+        "pagerank" if precision == "f32" => {
+            #[allow(clippy::needless_update)]
+            let options = PageRankOptions {
+                damping: 0.85, tolerance, max_iterations, personalization: None,
+                ..Default::default()
+            };
+            call_pagerank_f32(projection, options, faults, started, keep)
+        }
         "pagerank" => {
             // `..Default::default()` because the later commit adds a `variant`
             // field whose default is PageRank; the release has no such field.
@@ -333,22 +409,33 @@ fn call(projection: &GraphProjection, algorithm: &str, tolerance: f64, max_itera
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let (_, mode) = accounting(&args);
+    // Refused here, before the receipt, so a variant asking for a precision
+    // this build cannot run has no receipt and every one of its rows is an error.
+    let precision = precision(&args);
     let participant = participant();
     if args.iter().any(|a| a == "--receipt") {
+        // The receipt names the precision the variant will run at, because
+        // that is what parity reads to choose the rule the row is held to.
         println!(
             "{{\"participant\":\"{participant}\",\"version\":\"{}\",\"commit\":\"{}\",\
-              \"grust_commit\":\"{}\",\"precision\":\"f64\",\
+              \"grust_commit\":\"{}\",\"precision\":\"{precision}\",\"precision_selectable\":{},\
               \"algorithms\":[\"pagerank\",\"wcc\",\"bfs\",\"triangles\"],\
               \"parallel\":\"sequential unless with_concurrency is requested\",\"width_capable\":true,\
               \"accounting\":\"{mode}\",\"accounting_selectable\":{},\"prepares_incoming\":{},\
               \"prepare_incoming_selectable\":{},\"minflt\":true,\"scores_out\":true}}",
             env!("CARGO_PKG_VERSION"), option_env!("BENCH_COMMIT").unwrap_or("unknown"), grust_commit(),
+            cfg!(feature = "pagerank-f32"),
             cfg!(feature = "accounting-api"), cfg!(feature = "accounting-api"),
             cfg!(feature = "accounting-api"));
         return;
     }
     let fixture = flag(&args, "--fixture").expect("--fixture");
     let algorithm = flag(&args, "--algorithm").expect("--algorithm");
+    // Only PageRank has an f32 kernel. Anything else asked for f32 stops here,
+    // non-zero, so parity records an error and no f64 run is timed as f32.
+    if precision == "f32" && algorithm != "pagerank" {
+        panic!("--precision f32: only pagerank has an f32 kernel; {algorithm} runs at f64 only");
+    }
     let max_iterations: usize = flag(&args, "--max-iterations")
         .map(|v| v.parse().expect("--max-iterations")).unwrap_or(100);
     let tolerance: f64 = flag(&args, "--tolerance")
@@ -402,10 +489,10 @@ fn main() {
     let minflt_build = minflt() - minflt_start;
 
     let scores_out = flag(&args, "--scores-out");
-    let first = call(&projection, &algorithm, tolerance, max_iterations, scores_out.is_some());
+    let first = call(&projection, &algorithm, tolerance, max_iterations, precision, scores_out.is_some());
     // Read after the first call, as B3 read it after its only call.
     let work = work_units(&context);
-    let second = call(&projection, &algorithm, tolerance, max_iterations, false);
+    let second = call(&projection, &algorithm, tolerance, max_iterations, precision, false);
     // The second call is only a timing of the same computation if it is the
     // same computation. A difference is a defect, and exits non-zero so parity
     // records an error and the cell is never timed.
@@ -416,7 +503,7 @@ fn main() {
     }
 
     println!("{{\"participant\":\"{participant}\",\"grust_commit\":\"{}\",\"accounting\":\"{mode}\",\
-               \"algorithm\":\"{algorithm}\",\"fixture\":\"{fixture}\",\
+               \"precision\":\"{precision}\",\"algorithm\":\"{algorithm}\",\"fixture\":\"{fixture}\",\
                \"nodes\":{nodes},\"edges\":{},\"parse_ms\":{parse_ms},\"build_ms\":{build_ms},\
                \"incoming_ms\":{},\"prepare_incoming\":\"{prepare}\",\"reads_incoming\":{},\
                \"minflt_build\":{minflt_build},\"minflt_first\":{},\"minflt_second\":{},\

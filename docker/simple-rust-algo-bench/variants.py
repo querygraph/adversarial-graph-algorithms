@@ -12,6 +12,16 @@ A plain name is a binary run as B3 ran it. Three suffixes make a variant of it:
   including the three kernels that never read it. B5 prepares it only where it
   is read, so `+eager` is how B4's behaviour stays available as its own
   labelled row beside the corrected one.
+- `+f32` is the one tag that changes what is computed, not how. It passes
+  `--precision f32`, which makes the Grust PageRank participant call
+  `pagerank_f32` and return f32 scores, as `neo4j-graph` does; the binary's
+  receipt then declares `f32`, so parity holds the row to the f32 rule that
+  `neo4j-graph` is held to, not to the f64 rule and not to a looser one. Every
+  other algorithm refuses the flag and exits non-zero, so a `+f32` row that is
+  not PageRank is an error in parity and is never timed. Because the scores
+  differ from the f64 build's, the tag is part of the parity key: a `+f32`
+  variant runs parity as its own row and is bit-compared only with other
+  `+f32` rows, never with an f64 row.
 - `#N` or `#unset` fixes this variant's `--concurrency`, overriding the run's.
   In Grust that selects a kernel, not a width: unset is PageRank's push loop and
   any number is the pull kernel. Letting a variant carry it puts both kernels in
@@ -30,8 +40,9 @@ pinning it for one participant and not another would compare two allocators.
 """
 
 MODES = ('counted', 'work-uncounted', 'unchecked')
-# tag -> the flags it adds. Timing conditions only, and each still runs parity.
-TAGS = {'eager': ['--prepare-incoming', 'always']}
+# tag -> the flags it adds. Each runs parity as its own row. `eager` is a timing
+# condition; `f32` changes the computation, and its rows are gated as f32.
+TAGS = {'eager': ['--prepare-incoming', 'always'], 'f32': ['--precision', 'f32']}
 
 def parse(spec, concurrency=None):
     base, marker, fixed = spec.partition('#')

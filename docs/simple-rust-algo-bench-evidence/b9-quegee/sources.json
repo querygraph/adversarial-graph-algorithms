@@ -1,0 +1,20 @@
+{
+ "grust": {
+  "commit": "2182cdb82acb0666b80f483dc4c9666941962145",
+  "uncommitted": "",
+  "staged": "git archive v0.22.0 from /home/admin/src/grust"
+ },
+ "grust_next": {
+  "commit": "4a9e7f5eab7724c6fb0e7714032386bdfb98ae89",
+  "uncommitted": "",
+  "staged": "git archive 4a9e7f5eab7724c6fb0e7714032386bdfb98ae89 from /home/admin/src/grust-next"
+ },
+ "icecat": {
+  "commit": "57b443ec1d16809893950b080cf8d0971f8da174",
+  "uncommitted": ""
+ },
+ "bench": {
+  "commit": "cea69ee0b2ce5aad958ffe08395b64f7cc5dcd6e",
+  "uncommitted": ""
+ }
+}
