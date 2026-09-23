@@ -1923,7 +1923,7 @@ Total and per-iteration time of the kernel call, with the count. For `grust-next
 | `hub-4194304` | pull | 406.32 ± 4.20 / 21.385 / 19 | 565.32 ± 8.24 / 28.266 / 20 | 623.24 ± 42.75 / 31.162 / 20 | 766.65 ± 3.65 / 47.916 / 16 | 798.97 ± 9.99 / 49.935 / 16 | 1424.91 ± 10.84 / 89.057 / 16 | 1 |
 | `uniform-4194304` | pull | 622.34 ± 11.31 / 21.460 / 29 | 534.08 ± 50.27 / 28.109 / 19 | 568.30 ± 7.83 / 29.911 / 19 | 788.05 ± 17.47 / 49.253 / 16 | 859.26 ± 7.47 / 53.704 / 16 | 1559.55 ± 9.31 / 97.472 / 16 | 2 |
 
-**Unchanged code against B6.** `grust` (v0.22.0) and `neo4j-graph` are the same binaries' sources as in B6, differing by the harness commit stamped into them, on the same fixtures, under the same protocol. Their B7 total against their B6 total on the same cell, as the median and the range of the ratio, is a reading of the host, not of any code:
+**Unchanged code against B6.** `grust` (v0.22.0) and `neo4j-graph` are the same binaries' sources as in B6, differing at most by the harness commit stamped into them, on the same fixtures, under the same protocol. Their B7 total against their B6 total on the same cell, as the median and the range of the ratio, is a reading of the host, not of any code:
 
 | participant | cells | median B7/B6 | smallest | largest |
 | --- | ---: | ---: | --- | --- |

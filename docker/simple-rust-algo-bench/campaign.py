@@ -180,6 +180,12 @@ PLANS = {
                algorithms=None, families=None, runs=RUNS),
     'b7': dict(parity=PARITY, parity_participants=B7_PARITY_PARTICIPANTS, bits_identical=B7_BITS,
                algorithms=B7_ALGORITHMS, families=B7_FAMILIES, runs=b7_runs()),
+    # B8: the B7 plan, unchanged, on the commit that fuses the pull kernel's
+    # three node passes into one (Grust 2985fac on top of ead3568). Its scores
+    # are asserted bit-identical at both precisions, so the same bits gates
+    # apply; the outputs carry `b8-` so they sit beside B7's in one directory.
+    'b8': dict(parity=PARITY, parity_participants=B7_PARITY_PARTICIPANTS, bits_identical=B7_BITS,
+               algorithms=B7_ALGORITHMS, families=B7_FAMILIES, runs=b7_runs()),
 }
 
 # A process outside the run using more than this share of one CPU over a sample
