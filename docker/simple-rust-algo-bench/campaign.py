@@ -186,6 +186,16 @@ PLANS = {
     # apply; the outputs carry `b8-` so they sit beside B7's in one directory.
     'b8': dict(parity=PARITY, parity_participants=B7_PARITY_PARTICIPANTS, bits_identical=B7_BITS,
                algorithms=B7_ALGORITHMS, families=B7_FAMILIES, runs=b7_runs()),
+    # B9: the same plan again, on the head of the kernel branch stack (Grust
+    # 4a9e7f5 over 2985fac): four-byte CSR targets and row bounds, work charged
+    # a reduction block at a time rather than a node, PageRank's inner loop
+    # without the ArticleRank term, and its non-finite test moved to the block.
+    # Every commit in the stack asserts bit-identical scores at both precisions
+    # and every width, so the same bits gates apply and B8's rows are the
+    # before. The outputs carry `b9-` so all four campaigns sit in one
+    # directory.
+    'b9': dict(parity=PARITY, parity_participants=B7_PARITY_PARTICIPANTS, bits_identical=B7_BITS,
+               algorithms=B7_ALGORITHMS, families=B7_FAMILIES, runs=b7_runs()),
 }
 
 # A process outside the run using more than this share of one CPU over a sample
