@@ -1,0 +1,260 @@
+CAMPAIGN-START 2026-09-22T22:21:31Z
+steal over the run: 0 ticks
+200 timed samples in 31.3s -> /work/timed/b7-one-thread.json
+hub-16384.edges      pagerank   grust#1                        first  iters   17  total   11.6285 ± 0.0406  per-iter 0.6840  build 18.83  minflt 384  steal 0
+hub-16384.edges      pagerank   grust#1                        second iters   17  total    9.6576 ± 0.0156  per-iter 0.5681  build 18.83  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@counted#1           first  iters   17  total    8.1240 ± 0.0127  per-iter 0.4779  build 12.00  minflt 96  steal 0
+hub-16384.edges      pagerank   grust-next@counted#1           second iters   17  total    7.8886 ± 0.0064  per-iter 0.4640  build 12.00  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@counted#unset       first  iters   17  total   23.4787 ± 0.0358  per-iter 1.3811  build 12.86  minflt 128  steal 0
+hub-16384.edges      pagerank   grust-next@counted#unset       second iters   17  total   23.2539 ± 0.0464  per-iter 1.3679  build 12.86  minflt 32  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32#1       first  iters   20  total    9.3690 ± 0.0152  per-iter 0.4685  build 12.04  minflt 48  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32#1       second iters   20  total    9.2600 ± 0.0052  per-iter 0.4630  build 12.04  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32#unset   first  iters   21  total   27.9660 ± 0.0343  per-iter 1.3317  build 13.03  minflt 64  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32#unset   second iters   21  total   27.9039 ± 0.0405  per-iter 1.3288  build 13.03  minflt 32  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked#1         first  iters   17  total    7.7695 ± 0.0134  per-iter 0.4570  build 9.91  minflt 96  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked#1         second iters   17  total    7.5520 ± 0.0081  per-iter 0.4442  build 9.91  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked#unset     first  iters   17  total   13.7651 ± 0.1502  per-iter 0.8097  build 8.70  minflt 128  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked#unset     second iters   17  total   13.4685 ± 0.0338  per-iter 0.7923  build 8.70  minflt 32  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32#1     first  iters   20  total    9.2126 ± 0.0275  per-iter 0.4606  build 10.21  minflt 48  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32#1     second iters   20  total    9.0549 ± 0.0126  per-iter 0.4527  build 10.21  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32#unset first  iters   21  total   16.4158 ± 0.0081  per-iter 0.7817  build 9.16  minflt 64  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32#unset second iters   21  total   16.3202 ± 0.0163  per-iter 0.7772  build 9.16  minflt 32  steal 0
+hub-16384.edges      pagerank   neo4j-graph                           iters   36  total   13.2570 ± 0.0305  per-iter 0.3683  build 7.90  minflt 24  steal 0
+hub-65536.edges      pagerank   grust#1                        first  iters   17  total   62.3954 ± 2.9727  per-iter 3.6703  build 105.03  minflt 1024  steal 0
+hub-65536.edges      pagerank   grust#1                        second iters   17  total   50.6730 ± 1.3221  per-iter 2.9808  build 105.03  minflt 0  steal 0
+hub-65536.edges      pagerank   grust-next@counted#1           first  iters   17  total   34.3859 ± 0.5762  per-iter 2.0227  build 50.45  minflt 384  steal 0
+hub-65536.edges      pagerank   grust-next@counted#1           second iters   17  total   33.4135 ± 0.4367  per-iter 1.9655  build 50.45  minflt 0  steal 0
+hub-65536.edges      pagerank   grust-next@counted#unset       first  iters   17  total   96.8035 ± 0.9630  per-iter 5.6943  build 53.60  minflt 512  steal 0
+hub-65536.edges      pagerank   grust-next@counted#unset       second iters   17  total   95.0797 ± 0.3455  per-iter 5.5929  build 53.60  minflt 128  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32#1       first  iters   20  total   38.4161 ± 0.0049  per-iter 1.9208  build 51.35  minflt 192  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32#1       second iters   20  total   37.9032 ± 0.0197  per-iter 1.8952  build 51.35  minflt 0  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32#unset   first  iters   21  total  112.5307 ± 0.5338  per-iter 5.3586  build 53.87  minflt 256  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32#unset   second iters   21  total  112.0622 ± 0.5820  per-iter 5.3363  build 53.87  minflt 128  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked#1         first  iters   17  total   32.3692 ± 0.0715  per-iter 1.9041  build 42.07  minflt 384  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked#1         second iters   17  total   31.5832 ± 0.1436  per-iter 1.8578  build 42.07  minflt 0  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked#unset     first  iters   17  total   59.1161 ± 1.8372  per-iter 3.4774  build 38.94  minflt 512  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked#unset     second iters   17  total   57.9275 ± 0.7445  per-iter 3.4075  build 38.94  minflt 128  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32#1     first  iters   20  total   37.2038 ± 0.1151  per-iter 1.8602  build 44.02  minflt 192  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32#1     second iters   20  total   36.6741 ± 0.0646  per-iter 1.8337  build 44.02  minflt 0  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32#unset first  iters   21  total   65.7896 ± 0.1575  per-iter 3.1328  build 38.34  minflt 256  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32#unset second iters   21  total   65.4180 ± 0.0150  per-iter 3.1151  build 38.34  minflt 128  steal 0
+hub-65536.edges      pagerank   neo4j-graph                           iters   28  total   36.6063 ± 0.2766  per-iter 1.3074  build 41.61  minflt 70  steal 0
+uniform-16384.edges  pagerank   grust#1                        first  iters   16  total   11.2566 ± 0.0365  per-iter 0.7035  build 18.74  minflt 385  steal 0
+uniform-16384.edges  pagerank   grust#1                        second iters   16  total    9.2431 ± 0.0077  per-iter 0.5777  build 18.74  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@counted#1           first  iters   16  total    7.6937 ± 0.0048  per-iter 0.4809  build 12.00  minflt 96  steal 0
+uniform-16384.edges  pagerank   grust-next@counted#1           second iters   16  total    7.4853 ± 0.0072  per-iter 0.4678  build 12.00  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@counted#unset       first  iters   16  total   21.7784 ± 0.0707  per-iter 1.3611  build 13.27  minflt 128  steal 0
+uniform-16384.edges  pagerank   grust-next@counted#unset       second iters   16  total   21.5425 ± 0.0238  per-iter 1.3464  build 13.27  minflt 32  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32#1       first  iters   19  total    8.9263 ± 0.0168  per-iter 0.4698  build 11.51  minflt 48  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32#1       second iters   19  total    8.8076 ± 0.0031  per-iter 0.4636  build 11.51  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32#unset   first  iters   19  total   25.6347 ± 0.3155  per-iter 1.3492  build 13.48  minflt 64  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32#unset   second iters   19  total   25.1034 ± 0.0255  per-iter 1.3212  build 13.48  minflt 32  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked#1         first  iters   16  total    7.3392 ± 0.0085  per-iter 0.4587  build 9.92  minflt 96  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked#1         second iters   16  total    7.1211 ± 0.0146  per-iter 0.4451  build 9.92  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked#unset     first  iters   16  total   12.8805 ± 0.0023  per-iter 0.8050  build 8.71  minflt 128  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked#unset     second iters   16  total   12.6833 ± 0.0146  per-iter 0.7927  build 8.71  minflt 32  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32#1     first  iters   19  total    8.6985 ± 0.0018  per-iter 0.4578  build 9.89  minflt 48  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32#1     second iters   19  total    8.5771 ± 0.0093  per-iter 0.4514  build 9.89  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32#unset first  iters   19  total   14.7516 ± 0.0077  per-iter 0.7764  build 9.07  minflt 64  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32#unset second iters   19  total   14.7034 ± 0.0081  per-iter 0.7739  build 9.07  minflt 32  steal 0
+uniform-16384.edges  pagerank   neo4j-graph                           iters   28  total   10.5114 ± 0.0285  per-iter 0.3754  build 7.83  minflt 25  steal 0
+uniform-65536.edges  pagerank   grust#1                        first  iters   16  total   59.2145 ± 1.1348  per-iter 3.7009  build 100.75  minflt 1025  steal 0
+uniform-65536.edges  pagerank   grust#1                        second iters   16  total   46.2476 ± 0.3356  per-iter 2.8905  build 100.75  minflt 0  steal 0
+uniform-65536.edges  pagerank   grust-next@counted#1           first  iters   16  total   33.0264 ± 0.2616  per-iter 2.0641  build 49.69  minflt 384  steal 0
+uniform-65536.edges  pagerank   grust-next@counted#1           second iters   16  total   31.9776 ± 0.3403  per-iter 1.9986  build 49.69  minflt 0  steal 0
+uniform-65536.edges  pagerank   grust-next@counted#unset       first  iters   16  total   90.4445 ± 0.6885  per-iter 5.6528  build 53.63  minflt 512  steal 0
+uniform-65536.edges  pagerank   grust-next@counted#unset       second iters   16  total   89.7024 ± 0.5285  per-iter 5.6064  build 53.63  minflt 128  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32#1       first  iters   19  total   36.7432 ± 0.0668  per-iter 1.9339  build 51.07  minflt 192  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32#1       second iters   19  total   36.1309 ± 0.0787  per-iter 1.9016  build 51.07  minflt 0  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32#unset   first  iters   20  total  106.5312 ± 0.1279  per-iter 5.3266  build 52.25  minflt 256  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32#unset   second iters   20  total  106.2331 ± 0.2456  per-iter 5.3117  build 52.25  minflt 128  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked#1         first  iters   16  total   30.4235 ± 0.1429  per-iter 1.9015  build 40.65  minflt 384  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked#1         second iters   16  total   29.6314 ± 0.1548  per-iter 1.8520  build 40.65  minflt 0  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked#unset     first  iters   16  total   54.0427 ± 0.5090  per-iter 3.3777  build 36.38  minflt 512  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked#unset     second iters   16  total   55.4512 ± 2.1222  per-iter 3.4657  build 36.38  minflt 128  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32#1     first  iters   19  total   35.2603 ± 0.0649  per-iter 1.8558  build 42.15  minflt 192  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32#1     second iters   19  total   34.8793 ± 0.0853  per-iter 1.8358  build 42.15  minflt 0  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32#unset first  iters   20  total   62.5726 ± 0.2755  per-iter 3.1286  build 37.15  minflt 256  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32#unset second iters   20  total   62.1320 ± 0.2227  per-iter 3.1066  build 37.15  minflt 128  steal 0
+uniform-65536.edges  pagerank   neo4j-graph                           iters   34  total   45.1108 ± 0.1637  per-iter 1.3268  build 43.57  minflt 72  steal 0
+one-thread: clean, 34.3s, steal 0 ticks, 0 sightings
+steal over the run: 0 ticks
+120 timed samples in 10.6s -> /work/timed/b7-full-width.json
+hub-16384.edges      pagerank   grust                    first  iters   17  total    6.4190 ± 0.1388  per-iter 0.3776  build 19.69  minflt 484  steal 0
+hub-16384.edges      pagerank   grust                    second iters   17  total    3.5130 ± 0.0515  per-iter 0.2066  build 19.69  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@counted       first  iters   17  total    3.7652 ± 0.1762  per-iter 0.2215  build 12.45  minflt 4  steal 0
+hub-16384.edges      pagerank   grust-next@counted       second iters   17  total    3.4079 ± 0.1342  per-iter 0.2005  build 12.45  minflt 1  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32   first  iters   20  total    4.1470 ± 0.0758  per-iter 0.2073  build 12.92  minflt 5  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32   second iters   20  total    3.9092 ± 0.0659  per-iter 0.1955  build 12.92  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked     first  iters   17  total    2.8538 ± 0.0433  per-iter 0.1679  build 10.41  minflt 4  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked     second iters   17  total    2.8153 ± 0.0413  per-iter 0.1656  build 10.41  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32 first  iters   20  total    3.3635 ± 0.0258  per-iter 0.1682  build 10.74  minflt 3  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32 second iters   20  total    3.2879 ± 0.0419  per-iter 0.1644  build 10.74  minflt 1  steal 0
+hub-16384.edges      pagerank   neo4j-graph                     iters   36  total   13.5325 ± 0.0878  per-iter 0.3759  build 4.51  minflt 39  steal 0
+hub-65536.edges      pagerank   grust                    first  iters   17  total   18.4086 ± 0.7096  per-iter 1.0829  build 103.28  minflt 1133  steal 0
+hub-65536.edges      pagerank   grust                    second iters   17  total    8.6166 ± 0.0815  per-iter 0.5069  build 103.28  minflt 5  steal 0
+hub-65536.edges      pagerank   grust-next@counted       first  iters   17  total    7.2406 ± 0.1289  per-iter 0.4259  build 44.25  minflt 19  steal 0
+hub-65536.edges      pagerank   grust-next@counted       second iters   17  total    7.2320 ± 0.2673  per-iter 0.4254  build 44.25  minflt 3  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32   first  iters   20  total    7.8061 ± 0.0988  per-iter 0.3903  build 45.03  minflt 16  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32   second iters   20  total    7.7085 ± 0.0611  per-iter 0.3854  build 45.03  minflt 4  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked     first  iters   17  total    4.8435 ± 0.1349  per-iter 0.2849  build 36.45  minflt 13  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked     second iters   17  total    4.6458 ± 0.0874  per-iter 0.2733  build 36.45  minflt 5  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32 first  iters   20  total    5.2259 ± 0.0903  per-iter 0.2613  build 37.23  minflt 12  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32 second iters   20  total    5.0158 ± 0.0784  per-iter 0.2508  build 37.23  minflt 3  steal 0
+hub-65536.edges      pagerank   neo4j-graph                     iters   33  total   15.2163 ± 0.1656  per-iter 0.4611  build 14.68  minflt 95  steal 0
+uniform-16384.edges  pagerank   grust                    first  iters   16  total    6.2176 ± 0.1226  per-iter 0.3886  build 20.98  minflt 484  steal 0
+uniform-16384.edges  pagerank   grust                    second iters   16  total    3.3487 ± 0.0606  per-iter 0.2093  build 20.98  minflt 1  steal 0
+uniform-16384.edges  pagerank   grust-next@counted       first  iters   16  total    3.3256 ± 0.0416  per-iter 0.2079  build 12.49  minflt 5  steal 0
+uniform-16384.edges  pagerank   grust-next@counted       second iters   16  total    3.2619 ± 0.1570  per-iter 0.2039  build 12.49  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32   first  iters   19  total    4.0244 ± 0.1038  per-iter 0.2118  build 12.83  minflt 6  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32   second iters   19  total    3.8396 ± 0.1388  per-iter 0.2021  build 12.83  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked     first  iters   16  total    2.6665 ± 0.0444  per-iter 0.1667  build 10.71  minflt 5  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked     second iters   16  total    2.6550 ± 0.0739  per-iter 0.1659  build 10.71  minflt 1  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32 first  iters   19  total    3.2752 ± 0.0688  per-iter 0.1724  build 10.34  minflt 6  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32 second iters   19  total    3.1019 ± 0.0056  per-iter 0.1633  build 10.34  minflt 1  steal 0
+uniform-16384.edges  pagerank   neo4j-graph                     iters   28  total   10.7714 ± 0.0617  per-iter 0.3847  build 4.30  minflt 38  steal 0
+uniform-65536.edges  pagerank   grust                    first  iters   16  total   18.4010 ± 0.9552  per-iter 1.1501  build 105.57  minflt 1135  steal 0
+uniform-65536.edges  pagerank   grust                    second iters   16  total    8.3587 ± 0.2541  per-iter 0.5224  build 105.57  minflt 2  steal 0
+uniform-65536.edges  pagerank   grust-next@counted       first  iters   16  total    6.9366 ± 0.0770  per-iter 0.4335  build 43.93  minflt 13  steal 0
+uniform-65536.edges  pagerank   grust-next@counted       second iters   16  total    6.6920 ± 0.1050  per-iter 0.4183  build 43.93  minflt 4  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32   first  iters   19  total    7.4307 ± 0.0284  per-iter 0.3911  build 45.16  minflt 17  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32   second iters   19  total    7.3591 ± 0.0098  per-iter 0.3873  build 45.16  minflt 4  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked     first  iters   16  total    4.4963 ± 0.1116  per-iter 0.2810  build 36.90  minflt 11  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked     second iters   16  total    4.3527 ± 0.1130  per-iter 0.2720  build 36.90  minflt 3  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32 first  iters   19  total    5.0455 ± 0.0429  per-iter 0.2656  build 36.45  minflt 12  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32 second iters   19  total    4.7412 ± 0.0130  per-iter 0.2495  build 36.45  minflt 3  steal 0
+uniform-65536.edges  pagerank   neo4j-graph                     iters   34  total   16.2198 ± 0.0891  per-iter 0.4771  build 14.66  minflt 95  steal 0
+full-width: clean, 13.3s, steal 0 ticks, 0 sightings
+steal over the run: 6 ticks
+100 timed samples in 1511.9s -> /work/timed/b7-large-one-thread.json
+hub-2097152.edges    pagerank   grust#1                        first  iters   16  total 6249.8048 ± 63.5627  per-iter 390.6128  build 4046.08  minflt 3142  steal 3
+hub-2097152.edges    pagerank   grust#1                        second iters   16  total 5502.7011 ± 59.6087  per-iter 343.9188  build 4046.08  minflt 0  steal 3
+hub-2097152.edges    pagerank   grust-next@counted#1           first  iters   16  total 3564.1704 ± 306.3859  per-iter 222.7607  build 2267.64  minflt 1559  steal 3
+hub-2097152.edges    pagerank   grust-next@counted#1           second iters   16  total 3674.2848 ± 195.6010  per-iter 229.6428  build 2267.64  minflt 517  steal 3
+hub-2097152.edges    pagerank   grust-next@counted#unset       first  iters   16  total 6905.1509 ± 71.8513  per-iter 431.5719  build 1913.63  minflt 2595  steal 3
+hub-2097152.edges    pagerank   grust-next@counted#unset       second iters   16  total 6930.5743 ± 40.0877  per-iter 433.1609  build 1913.63  minflt 519  steal 3
+hub-2097152.edges    pagerank   grust-next@counted+f32#1       first  iters   20  total 2729.8123 ± 88.7052  per-iter 136.4906  build 2232.66  minflt 1545  steal 3
+hub-2097152.edges    pagerank   grust-next@counted+f32#1       second iters   20  total 2846.5648 ± 152.3048  per-iter 142.3282  build 2232.66  minflt 0  steal 3
+hub-2097152.edges    pagerank   grust-next@counted+f32#unset   first  iters   21  total 5937.5589 ± 101.1518  per-iter 282.7409  build 1910.66  minflt 2579  steal 3
+hub-2097152.edges    pagerank   grust-next@counted+f32#unset   second iters   21  total 5857.0518 ± 92.9536  per-iter 278.9072  build 1910.66  minflt 1030  steal 3
+hub-2097152.edges    pagerank   grust-next@unchecked#1         first  iters   16  total 3235.2029 ± 65.3776  per-iter 202.2002  build 1959.68  minflt 1559  steal 3
+hub-2097152.edges    pagerank   grust-next@unchecked#1         second iters   16  total 3240.0335 ± 49.1209  per-iter 202.5021  build 1959.68  minflt 517  steal 3
+hub-2097152.edges    pagerank   grust-next@unchecked#unset     first  iters   16  total 5669.1362 ± 82.2017  per-iter 354.3210  build 1406.09  minflt 2595  steal 3
+hub-2097152.edges    pagerank   grust-next@unchecked#unset     second iters   16  total 5715.6915 ± 63.2684  per-iter 357.2307  build 1406.09  minflt 519  steal 3
+hub-2097152.edges    pagerank   grust-next@unchecked+f32#1     first  iters   20  total 2405.6266 ± 58.1881  per-iter 120.2813  build 1973.05  minflt 1545  steal 3
+hub-2097152.edges    pagerank   grust-next@unchecked+f32#1     second iters   20  total 2391.9953 ± 109.6046  per-iter 119.5998  build 1973.05  minflt 0  steal 3
+hub-2097152.edges    pagerank   grust-next@unchecked+f32#unset first  iters   21  total 4182.2789 ± 81.1811  per-iter 199.1561  build 1404.95  minflt 2579  steal 3
+hub-2097152.edges    pagerank   grust-next@unchecked+f32#unset second iters   21  total 4135.7660 ± 38.3097  per-iter 196.9412  build 1404.95  minflt 1030  steal 3
+hub-2097152.edges    pagerank   neo4j-graph                           iters   26  total 2559.7838 ± 166.8531  per-iter 98.4532  build 3664.32  minflt 1038  steal 3
+uniform-2097152.edges pagerank   grust#1                        first  iters   16  total 6446.4942 ± 53.9200  per-iter 402.9059  build 4058.71  minflt 2659  steal 3
+uniform-2097152.edges pagerank   grust#1                        second iters   16  total 5826.5443 ± 39.6482  per-iter 364.1590  build 4058.71  minflt 0  steal 3
+uniform-2097152.edges pagerank   grust-next@counted#1           first  iters   16  total 3424.0432 ± 46.2129  per-iter 214.0027  build 2180.18  minflt 1559  steal 3
+uniform-2097152.edges pagerank   grust-next@counted#1           second iters   16  total 3421.7339 ± 43.3054  per-iter 213.8584  build 2180.18  minflt 517  steal 3
+uniform-2097152.edges pagerank   grust-next@counted#unset       first  iters   16  total 6540.1734 ± 150.8492  per-iter 408.7608  build 1906.76  minflt 2595  steal 3
+uniform-2097152.edges pagerank   grust-next@counted#unset       second iters   16  total 6517.6037 ± 90.6413  per-iter 407.3502  build 1906.76  minflt 519  steal 3
+uniform-2097152.edges pagerank   grust-next@counted+f32#1       first  iters   19  total 2465.6664 ± 84.4868  per-iter 129.7719  build 2225.81  minflt 1545  steal 3
+uniform-2097152.edges pagerank   grust-next@counted+f32#1       second iters   19  total 2414.5254 ± 16.0562  per-iter 127.0803  build 2225.81  minflt 0  steal 3
+uniform-2097152.edges pagerank   grust-next@counted+f32#unset   first  iters   20  total 5645.5553 ± 183.1498  per-iter 282.2778  build 1913.77  minflt 2579  steal 3
+uniform-2097152.edges pagerank   grust-next@counted+f32#unset   second iters   20  total 5466.8245 ± 179.9859  per-iter 273.3412  build 1913.77  minflt 1030  steal 3
+uniform-2097152.edges pagerank   grust-next@unchecked#1         first  iters   16  total 3199.1593 ± 12.7688  per-iter 199.9475  build 1962.17  minflt 1559  steal 3
+uniform-2097152.edges pagerank   grust-next@unchecked#1         second iters   16  total 3185.5636 ± 203.0393  per-iter 199.0977  build 1962.17  minflt 517  steal 3
+uniform-2097152.edges pagerank   grust-next@unchecked#unset     first  iters   16  total 5530.1833 ± 40.2942  per-iter 345.6365  build 1407.92  minflt 2595  steal 3
+uniform-2097152.edges pagerank   grust-next@unchecked#unset     second iters   16  total 5485.6928 ± 60.6922  per-iter 342.8558  build 1407.92  minflt 519  steal 3
+uniform-2097152.edges pagerank   grust-next@unchecked+f32#1     first  iters   19  total 2154.5813 ± 35.9717  per-iter 113.3990  build 1952.87  minflt 1545  steal 3
+uniform-2097152.edges pagerank   grust-next@unchecked+f32#1     second iters   19  total 2175.4836 ± 43.2518  per-iter 114.4991  build 1952.87  minflt 0  steal 3
+uniform-2097152.edges pagerank   grust-next@unchecked+f32#unset first  iters   20  total 3733.1044 ± 93.3948  per-iter 186.6552  build 1407.33  minflt 2579  steal 3
+uniform-2097152.edges pagerank   grust-next@unchecked+f32#unset second iters   20  total 3703.3070 ± 84.2423  per-iter 185.1654  build 1407.33  minflt 1030  steal 3
+uniform-2097152.edges pagerank   neo4j-graph                           iters   26  total 2378.4588 ± 11.4235  per-iter 91.4792  build 3550.30  minflt 1038  steal 3
+large-one-thread: clean, 1514.5s, steal 6 ticks, 0 sightings
+steal over the run: 2 ticks
+60 timed samples in 326.9s -> /work/timed/b7-large-full-width.json
+hub-2097152.edges    pagerank   grust                    first  iters   16  total 1148.6036 ± 52.1122  per-iter 71.7877  build 3807.14  minflt 3309  steal 1
+hub-2097152.edges    pagerank   grust                    second iters   16  total  496.6925 ± 3.2061  per-iter 31.0433  build 3807.14  minflt 12  steal 1
+hub-2097152.edges    pagerank   grust-next@counted       first  iters   16  total  246.3412 ± 8.3945  per-iter 15.3963  build 1529.88  minflt 1621  steal 1
+hub-2097152.edges    pagerank   grust-next@counted       second iters   16  total  246.4726 ± 4.9131  per-iter 15.4045  build 1529.88  minflt 2053  steal 1
+hub-2097152.edges    pagerank   grust-next@counted+f32   first  iters   20  total  250.2230 ± 1.5991  per-iter 12.5112  build 1514.26  minflt 1101  steal 1
+hub-2097152.edges    pagerank   grust-next@counted+f32   second iters   20  total  252.4144 ± 2.2427  per-iter 12.6207  build 1514.26  minflt 2042  steal 1
+hub-2097152.edges    pagerank   grust-next@unchecked     first  iters   16  total  225.6349 ± 7.3164  per-iter 14.1022  build 1279.38  minflt 1621  steal 1
+hub-2097152.edges    pagerank   grust-next@unchecked     second iters   16  total  211.9935 ± 0.5346  per-iter 13.2496  build 1279.38  minflt 2052  steal 1
+hub-2097152.edges    pagerank   grust-next@unchecked+f32 first  iters   20  total  229.7726 ± 0.9058  per-iter 11.4886  build 1257.52  minflt 1101  steal 1
+hub-2097152.edges    pagerank   grust-next@unchecked+f32 second iters   20  total  232.8086 ± 1.4370  per-iter 11.6404  build 1257.52  minflt 2042  steal 1
+hub-2097152.edges    pagerank   neo4j-graph                     iters   28  total  270.9840 ± 3.4227  per-iter 9.6780  build 409.04  minflt 1109  steal 1
+uniform-2097152.edges pagerank   grust                    first  iters   16  total 1304.4849 ± 39.5096  per-iter 81.5303  build 4051.80  minflt 2824  steal 1
+uniform-2097152.edges pagerank   grust                    second iters   16  total  600.7455 ± 8.9572  per-iter 37.5466  build 4051.80  minflt 14  steal 1
+uniform-2097152.edges pagerank   grust-next@counted       first  iters   16  total  281.8816 ± 16.8101  per-iter 17.6176  build 1677.08  minflt 1623  steal 1
+uniform-2097152.edges pagerank   grust-next@counted       second iters   16  total  270.4712 ± 21.4058  per-iter 16.9044  build 1677.08  minflt 2054  steal 1
+uniform-2097152.edges pagerank   grust-next@counted+f32   first  iters   19  total  252.8664 ± 6.4252  per-iter 13.3088  build 1670.44  minflt 1102  steal 1
+uniform-2097152.edges pagerank   grust-next@counted+f32   second iters   19  total  256.1475 ± 0.6207  per-iter 13.4814  build 1670.44  minflt 2040  steal 1
+uniform-2097152.edges pagerank   grust-next@unchecked     first  iters   16  total  254.0908 ± 27.3398  per-iter 15.8807  build 1403.92  minflt 1623  steal 1
+uniform-2097152.edges pagerank   grust-next@unchecked     second iters   16  total  260.6131 ± 11.6895  per-iter 16.2883  build 1403.92  minflt 2055  steal 1
+uniform-2097152.edges pagerank   grust-next@unchecked+f32 first  iters   19  total  231.5748 ± 1.4736  per-iter 12.1881  build 1420.60  minflt 1102  steal 1
+uniform-2097152.edges pagerank   grust-next@unchecked+f32 second iters   19  total  240.3139 ± 2.4001  per-iter 12.6481  build 1420.60  minflt 2040  steal 1
+uniform-2097152.edges pagerank   neo4j-graph                     iters   27  total  274.8479 ± 4.5086  per-iter 10.1796  build 446.02  minflt 1119  steal 1
+large-full-width: clean, 329.5s, steal 2 ticks, 0 sightings
+steal over the run: 14 ticks
+100 timed samples in 3558.0s -> /work/timed/b7-xlarge-one-thread.json
+hub-4194304.edges    pagerank   grust#1                        first  iters   16  total 14218.2370 ± 134.0217  per-iter 888.6398  build 8186.11  minflt 3229  steal 7
+hub-4194304.edges    pagerank   grust#1                        second iters   16  total 12614.1149 ± 170.8153  per-iter 788.3822  build 8186.11  minflt 1584  steal 7
+hub-4194304.edges    pagerank   grust-next@counted#1           first  iters   16  total 8248.7808 ± 7.2580  per-iter 515.5488  build 4603.40  minflt 2112  steal 7
+hub-4194304.edges    pagerank   grust-next@counted#1           second iters   16  total 8257.3389 ± 125.1799  per-iter 516.0837  build 4603.40  minflt 2112  steal 7
+hub-4194304.edges    pagerank   grust-next@counted#unset       first  iters   16  total 15350.3665 ± 135.6567  per-iter 959.3979  build 3836.40  minflt 2640  steal 7
+hub-4194304.edges    pagerank   grust-next@counted#unset       second iters   16  total 15247.2946 ± 31.8092  per-iter 952.9559  build 3836.40  minflt 2640  steal 7
+hub-4194304.edges    pagerank   grust-next@counted+f32#1       first  iters   20  total 8398.1683 ± 289.1030  per-iter 419.9084  build 4634.82  minflt 1560  steal 7
+hub-4194304.edges    pagerank   grust-next@counted+f32#1       second iters   20  total 8275.8528 ± 259.9708  per-iter 413.7926  build 4634.82  minflt 516  steal 7
+hub-4194304.edges    pagerank   grust-next@counted+f32#unset   first  iters   21  total 16410.3402 ± 112.6920  per-iter 781.4448  build 3849.63  minflt 2608  steal 7
+hub-4194304.edges    pagerank   grust-next@counted+f32#unset   second iters   21  total 16554.1486 ± 617.3480  per-iter 788.2928  build 3849.63  minflt 2604  steal 7
+hub-4194304.edges    pagerank   grust-next@unchecked#1         first  iters   16  total 7716.8735 ± 83.9739  per-iter 482.3046  build 4104.86  minflt 2112  steal 7
+hub-4194304.edges    pagerank   grust-next@unchecked#1         second iters   16  total 7802.6514 ± 97.0105  per-iter 487.6657  build 4104.86  minflt 2112  steal 7
+hub-4194304.edges    pagerank   grust-next@unchecked#unset     first  iters   16  total 12847.2163 ± 94.2758  per-iter 802.9510  build 2859.21  minflt 2640  steal 7
+hub-4194304.edges    pagerank   grust-next@unchecked#unset     second iters   16  total 12868.3432 ± 85.0131  per-iter 804.2715  build 2859.21  minflt 2640  steal 7
+hub-4194304.edges    pagerank   grust-next@unchecked+f32#1     first  iters   20  total 7456.6112 ± 70.4326  per-iter 372.8306  build 4114.03  minflt 1560  steal 7
+hub-4194304.edges    pagerank   grust-next@unchecked+f32#1     second iters   20  total 7600.1950 ± 89.0603  per-iter 380.0098  build 4114.03  minflt 516  steal 7
+hub-4194304.edges    pagerank   grust-next@unchecked+f32#unset first  iters   21  total 14142.5216 ± 109.2361  per-iter 673.4534  build 2839.59  minflt 2608  steal 7
+hub-4194304.edges    pagerank   grust-next@unchecked+f32#unset second iters   21  total 13808.2116 ± 317.2002  per-iter 657.5339  build 2839.59  minflt 2604  steal 7
+hub-4194304.edges    pagerank   neo4j-graph                           iters   23  total 6292.3712 ± 217.8640  per-iter 273.5814  build 7522.17  minflt 1046  steal 7
+uniform-4194304.edges pagerank   grust#1                        first  iters   16  total 14991.4171 ± 58.6104  per-iter 936.9636  build 8179.97  minflt 2261  steal 7
+uniform-4194304.edges pagerank   grust#1                        second iters   16  total 13365.3299 ± 74.4666  per-iter 835.3331  build 8179.97  minflt 1073  steal 7
+uniform-4194304.edges pagerank   grust-next@counted#1           first  iters   16  total 8367.5267 ± 37.6760  per-iter 522.9704  build 4563.91  minflt 2112  steal 7
+uniform-4194304.edges pagerank   grust-next@counted#1           second iters   16  total 8418.2367 ± 63.5866  per-iter 526.1398  build 4563.91  minflt 2112  steal 7
+uniform-4194304.edges pagerank   grust-next@counted#unset       first  iters   16  total 14675.1938 ± 86.0034  per-iter 917.1996  build 3846.99  minflt 2129  steal 7
+uniform-4194304.edges pagerank   grust-next@counted#unset       second iters   16  total 14839.1962 ± 147.8782  per-iter 927.4498  build 3846.99  minflt 2129  steal 7
+uniform-4194304.edges pagerank   grust-next@counted+f32#1       first  iters   19  total 7443.8810 ± 231.3877  per-iter 391.7832  build 4562.56  minflt 1560  steal 7
+uniform-4194304.edges pagerank   grust-next@counted+f32#1       second iters   19  total 7612.8974 ± 50.9678  per-iter 400.6788  build 4562.56  minflt 516  steal 7
+uniform-4194304.edges pagerank   grust-next@counted+f32#unset   first  iters   20  total 15409.0780 ± 293.4303  per-iter 770.4539  build 3846.52  minflt 2097  steal 7
+uniform-4194304.edges pagerank   grust-next@counted+f32#unset   second iters   20  total 15328.0921 ± 715.8457  per-iter 766.4046  build 3846.52  minflt 2093  steal 7
+uniform-4194304.edges pagerank   grust-next@unchecked#1         first  iters   16  total 7969.1351 ± 120.7748  per-iter 498.0709  build 4098.05  minflt 2112  steal 7
+uniform-4194304.edges pagerank   grust-next@unchecked#1         second iters   16  total 7905.3730 ± 28.2529  per-iter 494.0858  build 4098.05  minflt 2112  steal 7
+uniform-4194304.edges pagerank   grust-next@unchecked#unset     first  iters   16  total 12244.2891 ± 74.3246  per-iter 765.2681  build 2858.14  minflt 2129  steal 7
+uniform-4194304.edges pagerank   grust-next@unchecked#unset     second iters   16  total 12264.4933 ± 133.1972  per-iter 766.5308  build 2858.14  minflt 2129  steal 7
+uniform-4194304.edges pagerank   grust-next@unchecked+f32#1     first  iters   19  total 7129.6815 ± 55.2346  per-iter 375.2464  build 4154.67  minflt 1560  steal 7
+uniform-4194304.edges pagerank   grust-next@unchecked+f32#1     second iters   19  total 7410.0102 ± 211.7317  per-iter 390.0005  build 4154.67  minflt 516  steal 7
+uniform-4194304.edges pagerank   grust-next@unchecked+f32#unset first  iters   20  total 12119.5365 ± 182.0766  per-iter 605.9768  build 2860.19  minflt 2097  steal 7
+uniform-4194304.edges pagerank   grust-next@unchecked+f32#unset second iters   20  total 12140.0008 ± 143.5866  per-iter 607.0000  build 2860.19  minflt 2093  steal 7
+uniform-4194304.edges pagerank   neo4j-graph                           iters   29  total 7717.0372 ± 48.5707  per-iter 266.1047  build 7405.10  minflt 1046  steal 7
+xlarge-one-thread: clean, 3560.6s, steal 14 ticks, 0 sightings
+steal over the run: 3 ticks
+60 timed samples in 662.7s -> /work/timed/b7-xlarge-full-width.json
+hub-4194304.edges    pagerank   grust                    first  iters   16  total 3017.5794 ± 6.4665  per-iter 188.5987  build 8163.97  minflt 3454  steal 1
+hub-4194304.edges    pagerank   grust                    second iters   16  total 1424.9097 ± 10.8392  per-iter 89.0569  build 8163.97  minflt 1604  steal 1
+hub-4194304.edges    pagerank   grust-next@counted       first  iters   16  total  776.3439 ± 5.5458  per-iter 48.5215  build 3404.77  minflt 1197  steal 1
+hub-4194304.edges    pagerank   grust-next@counted       second iters   16  total  798.9656 ± 9.9873  per-iter 49.9354  build 3404.77  minflt 1108  steal 1
+hub-4194304.edges    pagerank   grust-next@counted+f32   first  iters   20  total  569.5374 ± 24.2589  per-iter 28.4769  build 3440.20  minflt 2193  steal 1
+hub-4194304.edges    pagerank   grust-next@counted+f32   second iters   20  total  623.2408 ± 42.7461  per-iter 31.1620  build 3440.20  minflt 2092  steal 1
+hub-4194304.edges    pagerank   grust-next@unchecked     first  iters   16  total  752.5425 ± 11.1909  per-iter 47.0339  build 2926.65  minflt 1705  steal 1
+hub-4194304.edges    pagerank   grust-next@unchecked     second iters   16  total  766.6505 ± 3.6490  per-iter 47.9157  build 2926.65  minflt 1617  steal 1
+hub-4194304.edges    pagerank   grust-next@unchecked+f32 first  iters   20  total  511.3896 ± 19.3688  per-iter 25.5695  build 2932.62  minflt 1686  steal 1
+hub-4194304.edges    pagerank   grust-next@unchecked+f32 second iters   20  total  565.3177 ± 8.2429  per-iter 28.2659  build 2932.62  minflt 2097  steal 1
+hub-4194304.edges    pagerank   neo4j-graph                     iters   19  total  406.3235 ± 4.2027  per-iter 21.3854  build 938.95  minflt 1127  steal 1
+uniform-4194304.edges pagerank   grust                    first  iters   16  total 3118.0796 ± 20.0578  per-iter 194.8800  build 8211.56  minflt 2484  steal 2
+uniform-4194304.edges pagerank   grust                    second iters   16  total 1559.5509 ± 9.3082  per-iter 97.4719  build 8211.56  minflt 1094  steal 2
+uniform-4194304.edges pagerank   grust-next@counted       first  iters   16  total  846.3384 ± 14.0365  per-iter 52.8961  build 3445.46  minflt 1191  steal 2
+uniform-4194304.edges pagerank   grust-next@counted       second iters   16  total  859.2615 ± 7.4681  per-iter 53.7038  build 3445.46  minflt 1108  steal 2
+uniform-4194304.edges pagerank   grust-next@counted+f32   first  iters   19  total  550.8593 ± 17.9525  per-iter 28.9926  build 3471.08  minflt 1689  steal 2
+uniform-4194304.edges pagerank   grust-next@counted+f32   second iters   19  total  568.2999 ± 7.8270  per-iter 29.9105  build 3471.08  minflt 2096  steal 2
+uniform-4194304.edges pagerank   grust-next@unchecked     first  iters   16  total  813.1205 ± 20.4799  per-iter 50.8200  build 2978.27  minflt 1198  steal 2
+uniform-4194304.edges pagerank   grust-next@unchecked     second iters   16  total  788.0480 ± 17.4656  per-iter 49.2530  build 2978.27  minflt 1113  steal 2
+uniform-4194304.edges pagerank   grust-next@unchecked+f32 first  iters   19  total  511.9634 ± 8.7591  per-iter 26.9454  build 2960.34  minflt 1685  steal 2
+uniform-4194304.edges pagerank   grust-next@unchecked+f32 second iters   19  total  534.0785 ± 50.2708  per-iter 28.1094  build 2960.34  minflt 2092  steal 2
+uniform-4194304.edges pagerank   neo4j-graph                     iters   29  total  622.3427 ± 11.3055  per-iter 21.4601  build 961.93  minflt 1119  steal 2
+xlarge-full-width: clean, 665.3s, steal 3 ticks, 0 sightings
+CAMPAIGN-END 2026-09-23T00:03:41Z

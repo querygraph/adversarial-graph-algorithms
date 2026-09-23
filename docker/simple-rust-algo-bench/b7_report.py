@@ -3,6 +3,7 @@
 
     b7_report.py tables BUNDLE_DIR        Markdown for every B7 timed run
     b7_report.py estimate B6_BUNDLE_DIR   expected B7 duration from B6's walls
+    b7_report.py section BUNDLE_DIR       the results document's B7 results section
 
 `tables` reads BUNDLE_DIR/timed/b7-*.json (or the files given with --timed)
 and BUNDLE_DIR/parity/parity-b7-*.json, and prints, per run and fixture, one
@@ -44,12 +45,17 @@ def base(participant):
     return participant.split('#')[0]
 
 def load_timed(paths):
+    """The run files, in the plan's order, never in the file system's."""
+    order = list(campaign.PLANS['b7']['runs'])
     reports = []
     for path in paths:
         report = json.loads(pathlib.Path(path).read_text())
         report['_file'] = pathlib.Path(path).name
         reports.append(report)
-    return reports
+    def rank(report):
+        name = report['label'].removeprefix('b7-')
+        return order.index(name) if name in order else len(order)
+    return sorted(reports, key=rank)
 
 def cell_rows(report):
     order = list(report['participants'])
@@ -217,13 +223,178 @@ def estimate(a):
           f"{parity_seconds / 60 * b7_participants / b6_participants:.0f} min, less where the reference cache "
           "from the same work directory is reused.")
 
+def parity_rows(bundle):
+    for path in sorted((bundle/'parity').glob('parity-b7-*.json')):
+        yield path, [r for r in json.loads(path.read_text()) if r['algorithm'] == 'pagerank']
+
+def section(a):
+    """The B7 results section: every figure computed from the bundle, none typed."""
+    reports = load_timed(sorted((a.bundle/'timed').glob('b7-*.json')))
+    # PageRank is the campaign; any other algorithm's cell has no count to show.
+    for rep in reports: rep['cells'] = [c for c in rep['cells'] if c['algorithm'] == 'pagerank']
+    # `campaign.jsonl` in a bundle, `campaign-b7.jsonl` in the work directory it came from.
+    record = next(p for p in (a.bundle/'campaign.jsonl', a.bundle/'campaign-b7.jsonl') if p.exists())
+    log = [json.loads(l) for l in record.read_text().splitlines()]
+    sources = json.loads((a.bundle/'sources.json').read_text())
+    manifest = json.loads((a.bundle/'fixtures-manifest.json').read_text())
+    image = json.loads((a.bundle/'receipts'/'image.json').read_text())
+    timed_log = [r for r in log if 'run' in r]
+    parity_log = [r for r in log if 'run' not in r]
+    residents = sorted({s for r in log for s in r.get('resident_sessions', [])})
+    print('## B7: results\n')
+    print(f"One host, quegee, {timed_log[0]['before']['at'][:10] if timed_log else '—'}. "
+          f"Grust `{sources['grust']['commit'][:7]}` (v0.22.0) as `grust`, Grust `{sources['grust_next']['commit'][:7]}` "
+          f"as `grust-next`, Icecat `{sources['icecat']['commit'][:8]}`, this harness at `{sources['bench']['commit'][:7]}`, "
+          f"image `{image['tag']}`, built on the host from commits staged by `git archive`. The "
+          f"{len(manifest['fixtures'])} fixtures are SHA-256-identical to B6's: `identical_to_b6` is "
+          f"{str(manifest['identical_to_b6']).lower()} in the manifest. One warmup, five repeats, counterbalanced, parity "
+          "gated at every concurrency. **Every cell of every run, with its iteration count, its residual, its steal, "
+          "its dispersion and its usability, is in `simple-rust-algo-bench-evidence/b7-quegee/tables.md`**, generated "
+          "from the run files by `b7_report.py tables`; the tables below select from it and add nothing to it. Times "
+          "are milliseconds, median ± MAD, of the kernel call alone; per-iteration is that median divided by the "
+          "iteration count the participant reported. Steal is ticks over that cell's group.\n")
+    sightings = sum(len(r.get('sightings', [])) for r in timed_log)
+    print(f"**Host conditions.** {len(residents)} resident agent session{'' if len(residents) == 1 else 's'} "
+          f"{'was' if len(residents) == 1 else 'were'} seen by name across the campaign ({'; '.join(residents) or 'none'}). "
+          f"{sightings} sightings were recorded over {len(timed_log)} timed invocations, and a run with a sighting is "
+          "discarded rather than published. The host was checked idle before and after every run and sampled once a "
+          f"second during it. The timed campaign ran from {timed_log[0]['before']['at'] if timed_log else '—'} to "
+          f"{timed_log[-1]['after']['at'] if timed_log and 'after' in timed_log[-1] else '—'}, {len(timed_log)} runs, "
+          "in the order listed.\n")
+    for r in timed_log:
+        print(f"- `{r['run']}`: {r['status']}, started {r['before']['at']}, {r.get('seconds')} s, "
+              f"{r.get('steal_ticks')} steal ticks over the run, {len(r.get('sightings', []))} sightings, "
+              f"{len(r.get('resident_sessions', []))} resident agent session{'' if len(r.get('resident_sessions', [])) == 1 else 's'}.")
+    print()
+    cells = [c for rep in reports for c in rep['cells']]
+    unusable = [c for c in cells if c['unusable']]
+    worst = max(cells, key=lambda c: c['dispersion'] or 0) if cells else None
+    if worst:
+        print(f"**{len(unusable)} of the {len(cells)} cells reached the {reports[0]['unusable_dispersion']} MAD/median "
+              f"threshold**; the largest dispersion was {worst['dispersion']:.3f}, `{worst['participant']}` "
+              f"{worst['fixture'].removesuffix('.edges')}{' ' + worst['call'] if worst['call'] else ''} in "
+              f"{worst['participant'] and next(rep['label'] for rep in reports if worst in rep['cells'])}."
+              + (' Unusable cells are printed and marked in `tables.md` and enter no table here.' if unusable else '') + '\n')
+    skipped = [(rep['label'], s) for rep in reports for s in rep['skipped']]
+    if skipped:
+        print('Not timed, having no agreeing parity row: ' + ', '.join(f"`{s['participant']}` {s['fixture'].removesuffix('.edges')} in {label}" for label, s in skipped) + '.\n')
+    print('**Parity at the commit under test**, hub and uniform at every size, PageRank, at concurrency unset, 1 and 16, '
+          'before any timing. The f64 builds must return v0.22.0\'s vector bit for bit; the `+f32` builds must return '
+          'their counted row\'s. A row that reports `converged: false` is `not converged`, its own verdict, and is never '
+          'timed.\n')
+    print('| file | agrees | mismatch | error | not converged | f64 bits-identical to v0.22.0 | `+f32` unchecked identical to counted | rows not agreeing |')
+    print('| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |')
+    for path, rows in parity_rows(a.bundle):
+        count = collections.Counter(r['verdict'] for r in rows)
+        f64 = [r for r in rows if 'bits_identical_to' in r and F32 not in r['participant']]
+        f32 = [r for r in rows if 'bits_identical_to' in r and F32 in r['participant']]
+        odd = [f"`{r['participant']}` {r['fixture'].removesuffix('.edges')}" for r in rows if r['verdict'] != 'agrees']
+        print(f"| `{path.name.removeprefix('parity-b7-').removesuffix('.json')}` | {count['agrees']} | {count['MISMATCH']} | "
+              f"{count['error']} | {count['not converged']} | "
+              f"{sum(r['bits_identical_to']['identical'] for r in f64)} of {len(f64)} | "
+              f"{sum(r['bits_identical_to']['identical'] for r in f32)} of {len(f32)} | {', '.join(odd) or '—'} |")
+    print()
+    exits = collections.Counter((r['status'], r.get('exit')) for r in parity_log)
+    print(f"{sum(1 for r in parity_log if r.get('exit'))} parity invocations exited non-zero; "
+          f"{sum(1 for r in parity_log if r['status'] != 'clean')} are marked other than clean "
+          f"({', '.join(f'{r['name']}: {r['status']}' for r in parity_log if r['status'] != 'clean') or 'none'}).\n")
+    print('**Where each participant stopped.** The iteration count every participant reported, per fixture and run. '
+          '`neo4j-graph` sums its f32 residual in f64 and stops at residual < tolerance; Grust at either precision '
+          'sums its residual in f64 and stops at residual <= tolerance; every row here ran at tolerance 1e-8 and a '
+          'cap of 100 iterations. A Grust row reports the same count on both calls, so one is shown.\n')
+    columns = []
+    for rep in reports:
+        for c in rep['cells']:
+            if c['participant'] not in columns: columns.append(c['participant'])
+    seen = list(columns)
+    columns.sort(key=lambda p: (not p.startswith('neo4j-graph'), F32 not in p, seen.index(p)))
+    print('| fixture | run | ' + ' | '.join(f'`{p}`' for p in columns) + ' |')
+    print('| --- | --- | ' + ' | '.join('---:' for _ in columns) + ' |')
+    findings = []
+    for rep in reports:
+        by = collections.defaultdict(dict)
+        for c in rep['cells']: by[c['fixture']].setdefault(c['participant'], c['iterations'])
+        for fixture in sorted(by):
+            counts = by[fixture]
+            print(f"| `{fixture.removesuffix('.edges')}` | {rep['label'].removeprefix('b7-')} | "
+                  + ' | '.join(str(counts[p]) if counts.get(p) is not None else '—' for p in columns) + ' |')
+            for p, n in counts.items():
+                if F32 in p and counts.get('neo4j-graph') is not None and n is not None:
+                    findings.append((n == counts['neo4j-graph'], n, counts['neo4j-graph']))
+    print()
+    same = sum(1 for f in findings if f[0])
+    print(f"Of {len(findings)} `+f32` cells, {same} stopped at the count `neo4j-graph` stopped at on the same fixture in "
+          f"the same run and {len(findings) - same} did not. "
+          + ("Where the counts differ the two totals are not the same number of sweeps over the arcs; the per-iteration "
+             "figure is the one that compares them, and it is a comparison of one sweep's cost, not of the time to an "
+             "answer at this tolerance, which is the total." if len(findings) - same else
+             "Their totals are comparable as wholes.") + '\n')
+    print('### `neo4j-graph` beside Grust at f32, and Grust at f64 beside both\n')
+    print('Total and per-iteration time of the kernel call, with the count. For `grust-next` the second call is shown, '
+          'which has the transpose cached and runs on warm caches, and the first call in `tables.md`; `neo4j-graph` '
+          'times one call on a fresh build. `counted` charges work to a shared meter and observes cancellation; '
+          '`unchecked` does neither and is the like-for-like row against `neo4j-graph`, which performs no accounting. '
+          'Nothing in this table is a ratio; a reader who forms one takes the boundary with it.\n')
+    def show(c):
+        if not c or c['per_iteration_ms'] is None: return '—'
+        return f"{c['total_ms']:.2f} ± {c['total_mad']:.2f} / {c['per_iteration_ms']:.3f} / {c['iterations']}"
+    for rep in reports:
+        idx = {(c['fixture'], c['participant'], c['call']): c for c in rep['cells']}
+        suffixes = ['#1', '#unset'] if 'one-thread' in rep['label'] else ['']
+        print(f"**{rep['label'].removeprefix('b7-')}** (workers {rep['workers']}), cells as total ms ± MAD / per-iteration ms / iterations:\n")
+        print('| fixture | kernel | `neo4j-graph` f32 | `grust-next@unchecked+f32` | `grust-next@counted+f32` | `grust-next@unchecked` f64 | `grust-next@counted` f64 | `grust` v0.22.0 f64 | steal |')
+        print('| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |')
+        for fixture in sorted({c['fixture'] for c in rep['cells']}):
+            for s in suffixes:
+                n = idx.get((fixture, 'neo4j-graph', None))
+                row = [idx.get((fixture, f'grust-next@unchecked+f32{s}', 'second')), idx.get((fixture, f'grust-next@counted+f32{s}', 'second')),
+                       idx.get((fixture, f'grust-next@unchecked{s}', 'second')), idx.get((fixture, f'grust-next@counted{s}', 'second')),
+                       idx.get((fixture, f'grust{s}', 'second'))]
+                if not any(row): continue
+                steal = next((c['steal_ticks'] for c in row if c), '—')
+                print(f"| `{fixture.removesuffix('.edges')}` | {'push' if s == '#unset' else 'pull'} | {show(n) if s != '#unset' else '— (push is sequential by construction; neo4j-graph has no such kernel)'} | "
+                      + ' | '.join(show(c) for c in row) + f" | {steal} |")
+        print()
+    unchanged_against_b6(a, reports)
+
+def unchanged_against_b6(a, reports):
+    """v0.22.0 and neo4j-graph did not change between B6 and B7; their cells say what the host did."""
+    b6 = a.bundle.parent/'b6-quegee'
+    if not (b6/'timed').exists(): return
+    import statistics
+    pairs = collections.defaultdict(list)
+    for rep in reports:
+        name = rep['label'].removeprefix('b7-')
+        path = b6/'timed'/f'{name}.json'
+        if not path.exists(): continue
+        old = {(c['fixture'], c['participant'], c['call']): c for c in json.loads(path.read_text())['cells']
+               if c['algorithm'] == 'pagerank'}
+        for c in rep['cells']:
+            if c['participant'].split('#')[0] not in ('grust', 'neo4j-graph'): continue
+            o = old.get((c['fixture'], c['participant'], c['call']))
+            if o and not o['unusable'] and not c['unusable']:
+                pairs[c['participant'].split('#')[0]].append((c['total_ms'] / o['total_ms'], c['fixture'], name, c['call']))
+    if not pairs: return
+    print('**Unchanged code against B6.** `grust` (v0.22.0) and `neo4j-graph` are the same binaries\' sources as in '
+          'B6, differing by the harness commit stamped into them, on the same fixtures, under the same protocol. '
+          'Their B7 total against their B6 total on the same cell, as the median and the range of the ratio, is a '
+          'reading of the host, not of any code:\n')
+    print('| participant | cells | median B7/B6 | smallest | largest |')
+    print('| --- | ---: | ---: | --- | --- |')
+    for name, rs in sorted(pairs.items()):
+        lo, hi = min(rs), max(rs)
+        print(f"| `{name}` | {len(rs)} | {statistics.median(r[0] for r in rs):.3f} | "
+              f"{lo[0]:.3f} ({lo[1].removesuffix('.edges')} {lo[2]}{' ' + lo[3] if lo[3] else ''}) | "
+              f"{hi[0]:.3f} ({hi[1].removesuffix('.edges')} {hi[2]}{' ' + hi[3] if hi[3] else ''}) |")
+    print()
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument('command', choices=['tables', 'estimate'])
+    p.add_argument('command', choices=['tables', 'estimate', 'section'])
     p.add_argument('bundle', type=pathlib.Path, nargs='?')
     p.add_argument('--timed', type=pathlib.Path, nargs='+', help='tables: these run files instead of the bundle\'s')
     a = p.parse_args()
     if a.bundle is None and not a.timed: raise SystemExit('give a bundle directory or --timed files')
-    tables(a) if a.command == 'tables' else estimate(a)
+    dict(tables=tables, estimate=estimate, section=section)[a.command](a)
 
 if __name__ == '__main__': main()
