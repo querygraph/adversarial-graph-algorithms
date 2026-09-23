@@ -1,3 +1,4 @@
+<!-- b9_post: wrap 76 -->
 # Related work: Rust graph algorithm libraries
 
 Parallel graph algorithms in Rust are established work, and this benchmark does
@@ -85,68 +86,65 @@ class, an in-memory graph built once from the same input with kernels called
 through each project's own Rust API, beside Icebug, Icecat, Grustcat and
 Grust's general kernel, on one dedicated host. What that established:
 
-- **Same function first.** Every participant is checked against an
-  independent reference before anything is timed, and a cell that did not
-  agree is never timed. `neo4j-graph`'s PageRank does not redistribute
-  dangling mass, which is a choice rather than a defect, NetworKit's default
-  too, and it means PageRank is compared only on the dangling-free families.
-  It accumulates and returns `f32` where every other participant is `f64`,
-  stated under every PageRank table as a boundary. The claim that the `f64`
-  participants are bit-identical to one another was made, checked, and
-  withdrawn; what holds is agreement far inside the stopping tolerance with
-  the same iteration count.
+- **Same function first.** Every participant is checked against an independent
+  reference before anything is timed, and a cell that did not agree is never
+  timed. `neo4j-graph`'s PageRank does not redistribute dangling mass, which is
+  a choice rather than a defect, NetworKit's default too, and it means PageRank
+  is compared only on the dangling-free families. It accumulates and returns
+  `f32` where every other participant is `f64`, stated under every PageRank
+  table as a boundary. The claim that the `f64` participants are bit-identical
+  to one another was made, checked, and withdrawn; what holds is agreement far
+  inside the stopping tolerance with the same iteration count.
 - **The accountability difference is a separate measurement, as this note
   asked.** Grust's cooperative budget is timed as its own labelled rows,
   `counted`, `work-uncounted` and `unchecked`, with `unchecked` the
-  like-for-like row for a library that performs no accounting and the
-  distance to `counted` what the guarantee costs. Nothing about it is
-  absorbed into a shared cell.
-- **Two measurement artifacts were in this side's timer, and were corrected
-  in the open.** Grust's first run timed its PageRank transpose inside the
-  kernel while every other participant built its reverse adjacency in the
-  build timer; the rerun that corrected it then built the transpose for
-  kernels that never read it, leaving the allocator in a state the baseline
-  was not measured in. Both are stated as corrections in the results
-  document, with the earlier tables left standing beside the corrected ones,
-  and the third campaign records minor page faults beside every call so that
-  neither has to be taken on trust.
-- **Every cell where the current Grust commit is slower than the release
-  before it is listed**, with the unexplained ones marked unexplained.
-- **A regression the third campaign found was attributed outside the
-  harness, fixed by one commit, and the commit was timed under the same
-  protocol with nothing else changed.** The fourth campaign puts B5's figure
-  for each cell beside its own and lists which of B5's slower cells are
-  faster, level, or still slower on the padded commit; it also records that
-  the host was slower above L3 for every participant, including the ones
-  that contain no Grust, and reads its large sizes within itself for that
-  reason.
-- **The precision boundary was removed rather than argued around.** The
-  fifth campaign adds a Grust PageRank that accumulates in `f32`, so that
-  Grust and `neo4j-graph` compute at the same precision under the same
-  stopping rule with neither row charging work to a meter, and that pair is
-  what a per-sweep comparison is drawn on. The three rows still stop at
-  three different counts — `neo4j-graph` between 14 and 36 sweeps, Grust at
-  `f32` at 19 to 21, Grust at `f64` at 16 to 17 — so totals are not
-  comparable across participants and per-sweep times are. `neo4j-graph`
-  accumulates in `f32` to its own stopping rule and performs no work
-  accounting, wherever its column appears.
+  like-for-like row for a library that performs no accounting and the distance
+  to `counted` what the guarantee costs. Nothing about it is absorbed into a
+  shared cell.
+- **Two measurement artifacts were in this side's timer, and were corrected in
+  the open.** Grust's first run timed its PageRank transpose inside the kernel
+  while every other participant built its reverse adjacency in the build timer;
+  the rerun that corrected it then built the transpose for kernels that never
+  read it, leaving the allocator in a state the baseline was not measured in.
+  Both are stated as corrections in the results document, with the earlier
+  tables left standing beside the corrected ones, and the third campaign records
+  minor page faults beside every call so that neither has to be taken on trust.
+- **Every cell where the current Grust commit is slower than the release before
+  it is listed**, with the unexplained ones marked unexplained.
+- **A regression the third campaign found was attributed outside the harness,
+  fixed by one commit, and the commit was timed under the same protocol with
+  nothing else changed.** The fourth campaign puts B5's figure for each cell
+  beside its own and lists which of B5's slower cells are faster, level, or
+  still slower on the padded commit; it also records that the host was slower
+  above L3 for every participant, including the ones that contain no Grust,
+  and reads its large sizes within itself for that reason.
+- **The precision boundary was removed rather than argued around.** The fifth
+  campaign adds a Grust PageRank that accumulates in `f32`, so that Grust and
+  `neo4j-graph` compute at the same precision under the same stopping rule with
+  neither row charging work to a meter, and that pair is what a per-sweep
+  comparison is drawn on. The three rows still stop at three different counts —
+  `neo4j-graph` between {{B9_NEO_MIN}} and {{B9_NEO_MAX}} sweeps, Grust at `f32`
+  at {{B9_F32_MIN}} to {{B9_F32_MAX}}, Grust at `f64` at {{B9_F64_MIN}} to
+  {{B9_F64_MAX}} — so totals are not comparable across participants and
+  per-sweep times are. `neo4j-graph` accumulates in `f32` to its own stopping
+  rule and performs no work accounting, wherever its column appears.
 - **The comparison this note once called unmeasured is measured, and this is
   what it says.** Per sweep, on the like-for-like pair, inside the sixth
-  campaign's own bundle: of 16 cells, 12 put Grust's sweep at or below
-  `neo4j-graph`'s, 1 is above by less than the margin on that cell, and 3
-  are above by more — all at one thread on the graphs that fit in the host's
-  L3, the largest being `uniform-65536` by 14.7% ± 0.5, `hub-65536` by 10.8%
-  ± 0.2, `uniform-16384` by 0.4% ± 0.2. No cause for those three is
-  established. Over the same campaign the kernel's counted sweep is 0.296 to
-  0.813 of the release before it on 16 cells, with both sides returning the
-  same bits.
-- **Work accounting moved in both directions, and both are reported.** On
-  the pull kernel the meter's cost per sweep is 0.952 to 1.031 at 2,097,152
-  nodes and 0.955 to 1.026 at 4,194,304, where the campaign before it read
-  1.038 to 1.190 and 1.027 to 1.102; on the push kernel it is 1.285 to 1.846
-  against 1.185 to 1.727, worse on 14 of 16 cells by more than both margins
-  together, with no cause established. Each column is a ratio formed inside
-  its own campaign; no cell of one campaign is divided by a cell of another.
+  campaign's own bundle: of {{LFL_TOTAL}} cells, {{LFL_BELOW}} put Grust's sweep
+  at or below `neo4j-graph`'s, {{LFL_INSIDE}} is above by less than the margin
+  on that cell, and {{LFL_OUTSIDE}} are above by more — all at one thread on the
+  graphs that fit in the host's L3, the largest being {{LFL_OUTSIDE_PCT}}. No
+  cause for those three is established. Over the same campaign the kernel's
+  counted sweep is {{ANCHOR_MIN}} to {{ANCHOR_MAX}} of the release before it on
+  {{ANCHOR_CELLS}} cells, with both sides returning the same bits.
+- **Work accounting moved in both directions, and both are reported.** On the
+  pull kernel the meter's cost per sweep is {{METER_LARGE_B9}} at
+  {{LARGE_SIZE}} nodes and {{METER_XLARGE_B9}} at {{XLARGE_SIZE}}, where the
+  campaign before it read {{METER_LARGE_B7}} and {{METER_XLARGE_B7}}; on the
+  push kernel it is {{METER_PUSH_B9}} against {{METER_PUSH_B7}}, worse on
+  {{METER_PUSH_WORSE}} of {{METER_PUSH_CELLS}} cells by more than both margins
+  together, with no cause established. Each column is a ratio formed inside its
+  own campaign; no cell of one campaign is divided by a cell of another.
 
 The results document, its evidence bundles at
 [`simple-rust-algo-bench-evidence/b5-quegee/`](simple-rust-algo-bench-evidence/b5-quegee/),
@@ -160,14 +158,15 @@ tables, and it offers no ranking. The same bundles render the
 figure is rendered from a hash-verified file rather than typed.
 
 What is still not settled: the cause of the three like-for-like cells above
-their margin, all at one thread at or below 65,536 nodes; the cause of the
-push kernel's meter cost rising between the last two campaigns; the cause of
-the remaining first-call slowdown in counted WCC and BFS, which the
+their margin, all at one thread at or below {{PROTOCOL_SIZE}} nodes; the cause
+of the push kernel's meter cost rising between the last two campaigns; the
+cause of the remaining first-call slowdown in counted WCC and BFS, which the
 page-fault counter shows is not the allocator and which the padding commit's
-own measurement tied to the balance's chunk size class without explaining;
-and the drift between campaigns on unchanged participants, which reaches a
-median per-sweep ratio of 0.942 over 48 cells between the last two, and is
-why a cell is only ever compared with other cells of its own campaign. And
-the remark about a moving target still applies: the timed columns describe
-v0.22.0 (`2182cdb`) and the commits `ca68900`, `87fc462`, `ead3568` and
-`4a9e7f5` on one host, and a column measured later describes that code.
+own measurement tied to the balance's chunk size class without explaining; and
+the drift between campaigns on unchanged participants, which reaches a median
+per-sweep ratio of {{UNCHANGED_MEDIAN}} over {{UNCHANGED_CELLS}} cells between
+the last two, and is why a cell is only ever compared with other cells of its
+own campaign. And the remark about a moving target still applies: the timed
+columns describe v0.22.0 (`{{GRUST_OLD}}`) and the commits `{{GRUST_B5}}`,
+`{{GRUST_B6}}`, `{{GRUST_B7}}` and `{{GRUST_B9}}` on one host, and a column
+measured later describes that code.

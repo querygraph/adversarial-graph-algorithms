@@ -49,5 +49,18 @@ for c in b7 b9; do
     status=1
   fi
 done
-[ "$status" -eq 0 ] && echo "regenerate-check: PASSED, every generated table came back from its bundle"
+# The post and the related-work note are rendered from the same bundles by
+# b9_post.py, which shares one set of values between its templates. A figure in
+# either text that is not what the bundles say fails here.
+if python3 docker/simple-rust-algo-bench/b9_post.py "$EV/b9-quegee" \
+    docs/blog/simple-rust-algo-bench/post.template.md docs/blog/simple-rust-algo-bench/post.md \
+    docs/related-work.template.md docs/related-work.md --check > "$TMP/post.txt" 2>&1; then
+  echo "regenerate-check: post and related-work note byte-identical"
+else
+  echo "regenerate-check: post or related-work note DIFFERS from its bundles"
+  cat "$TMP/post.txt"
+  status=1
+fi
+
+[ "$status" -eq 0 ] && echo "regenerate-check: PASSED, every generated table and text came back from its bundle"
 exit "$status"
