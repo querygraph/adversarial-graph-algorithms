@@ -325,6 +325,10 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('stage', choices=['idle', 'parity', 'timed', 'plan'])
     p.add_argument('--plan', choices=list(PLANS), default='b6', help='which matrix; see PLANS')
+    p.add_argument('--width', type=int,
+                   help='a host narrower than 16 CPUs: its full-width runs and the widest parity configuration '
+                        'take this width instead, and are named by it, so a file never claims a width the host '
+                        'did not have. Never used on the measuring host.')
     p.add_argument('--image', required=False)
     p.add_argument('--work', type=pathlib.Path, help='host directory mounted at /work: fixtures, parity, timed')
     p.add_argument('--runs', nargs='+', help='default: every run of the plan, in its order')
@@ -337,6 +341,19 @@ def main():
     p.add_argument('--tag', default='', help='suffix for output names, e.g. dry')
     a = p.parse_args()
     plan = PLANS[a.plan]
+    if a.width:
+        # The plan is data; a narrower host gets the same plan with 16 read as
+        # its own width, in the parity configurations and in the runs alike.
+        parity = {('unset' if v['concurrency'] is None else str(a.width if v['concurrency'] == 16 else v['concurrency'])): v
+                  for k, v in plan['parity'].items()}
+        for v in parity.values():
+            if v['concurrency'] == 16: v['concurrency'] = a.width
+        runs_ = {}
+        for name, spec in plan['runs'].items():
+            spec = dict(spec)
+            if spec['cpus'] == 16: spec.update(cpus=a.width, workers=a.width, concurrency=a.width)
+            runs_[name] = spec
+        plan = dict(plan, parity=parity, runs=runs_, width=a.width)
     runs, configs = a.runs or list(plan['runs']), a.configs or list(plan['parity'])
     algorithms = a.algorithms or plan['algorithms']
     # B6's names stay exactly what they were; any other plan's carry its name.

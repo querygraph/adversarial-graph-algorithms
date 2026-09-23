@@ -7,6 +7,7 @@ on the next commit and puts B7's rows beside B8's.
     b7_report.py estimate B6_BUNDLE_DIR   expected duration from B6's walls
     b7_report.py section BUNDLE_DIR       the results document's results section
     b7_report.py --campaign b8 section BUNDLE_DIR   the same for B8, with B7 beside it
+    b7_report.py --campaign b8 hosts --timed QUEGEE_DIR EIGEN_DIR LAKECAT_DIR   the shape on other hosts
 
 `tables` reads BUNDLE_DIR/timed/<campaign>-*.json (or the files given with
 --timed) and BUNDLE_DIR/parity/parity-<campaign>-*.json, and prints, per run and fixture, one
@@ -455,16 +456,59 @@ def unchanged_against_previous(a, reports):
               f"{hi[0]:.3f} ({hi[1].removesuffix('.edges')} {hi[2]}{' ' + hi[3] if hi[3] else ''}) |")
     print()
 
+def hosts(a):
+    """The per-sweep distance of the f32 unchecked row to neo4j-graph on every host given, cell by cell.
+
+    Every host but the first is a burstable, shared box: its figure is a ratio
+    formed inside one run on that box, printed with that run's steal, and is
+    never an absolute time. The first bundle is the measuring host's.
+    """
+    bundles = [pathlib.Path(b) for b in a.timed] if a.timed else [a.bundle]
+    names = [b.name for b in bundles]
+    print(f'### The shape on other hosts\n')
+    print('Per cell, the per-iteration time of `grust-next@unchecked+f32` (second call) over the per-iteration time of '
+          '`neo4j-graph` on the same cell of the same run on the same host, with the sum of the two cells\' MAD/median as '
+          'its margin, and the run\'s steal ticks and width. The first column is the measuring host. Every other host '
+          'is a burstable instance shared with other work: its steal is read per run and printed, its figure is a '
+          'ratio on a shared box and nothing from it is an absolute time or is compared with another host\'s time. '
+          'On a host narrower than 16 CPUs the full-width run is the host\'s width and is labelled so.\n')
+    print('| fixture | run | ' + ' | '.join(f'`{n}` ratio ± (width, steal)' for n in names) + ' |')
+    print('| --- | --- | ' + ' | '.join('---:' for _ in names) + ' |')
+    rows = collections.OrderedDict()
+    for i, b in enumerate(bundles):
+        reports = load_timed(sorted((b/'timed').glob(f'{CAMPAIGN}-*.json')))
+        record = next((p for p in (b/'campaign.jsonl', b/f'campaign-{CAMPAIGN}.jsonl') if p.exists()), None)
+        steal = {}
+        if record:
+            for l in record.read_text().splitlines():
+                r = json.loads(l)
+                if 'run' in r: steal[r['run']] = r.get('steal_ticks')
+        for rep in reports:
+            name = rep['label'].removeprefix(f'{CAMPAIGN}-')
+            idx = {(c['fixture'], c['participant'], c['call']): c for c in rep['cells']}
+            for fixture in sorted({c['fixture'] for c in rep['cells']}):
+                s = '#1' if 'one-thread' in name else ''
+                n, f = idx.get((fixture, 'neo4j-graph', None)), idx.get((fixture, f'grust-next@unchecked+f32{s}', 'second'))
+                cell = '—'
+                if n and f and n['per_iteration_ms'] and f['per_iteration_ms']:
+                    cell = (f"{f['per_iteration_ms'] / n['per_iteration_ms']:.3f} ± "
+                            f"{(f['dispersion'] or 0) + (n['dispersion'] or 0):.3f} ({rep['workers']}, {steal.get(name, '?')})")
+                rows.setdefault((fixture, name), ['—'] * len(bundles))[i] = cell
+    for (fixture, name), cells in rows.items():
+        print(f"| `{fixture.removesuffix('.edges')}` | {name} | " + ' | '.join(cells) + ' |')
+    print()
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--campaign', choices=list(PREVIOUS), default='b7', help='which campaign\'s files: the prefix of every output')
-    p.add_argument('command', choices=['tables', 'estimate', 'section'])
+    p.add_argument('command', choices=['tables', 'estimate', 'section', 'hosts'])
     p.add_argument('bundle', type=pathlib.Path, nargs='?')
-    p.add_argument('--timed', type=pathlib.Path, nargs='+', help='tables: these run files instead of the bundle\'s')
+    p.add_argument('--timed', type=pathlib.Path, nargs='+',
+                   help='tables: these run files instead of the bundle\'s; hosts: the bundle directories, measuring host first')
     a = p.parse_args()
     global CAMPAIGN
     CAMPAIGN = a.campaign
     if a.bundle is None and not a.timed: raise SystemExit('give a bundle directory or --timed files')
-    dict(tables=tables, estimate=estimate, section=section)[a.command](a)
+    dict(tables=tables, estimate=estimate, section=section, hosts=hosts)[a.command](a)
 
 if __name__ == '__main__': main()
