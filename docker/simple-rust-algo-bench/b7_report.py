@@ -1,13 +1,27 @@
 #!/usr/bin/env python3
 """The PageRank-precision campaigns' tables, estimate and results section,
-all computed from evidence files. B7 first; `--campaign b8` runs the same plan
-on the next commit and puts B7's rows beside B8's.
+all computed from evidence files. B7 first; `--campaign b8` and `--campaign b9`
+run the same plan on later commits of the kernel stack.
 
     b7_report.py tables BUNDLE_DIR        Markdown for every timed run
     b7_report.py estimate B6_BUNDLE_DIR   expected duration from B6's walls
     b7_report.py section BUNDLE_DIR       the results document's results section
     b7_report.py --campaign b8 section BUNDLE_DIR   the same for B8, with B7 beside it
+    b7_report.py --campaign b9 section BUNDLE_DIR   the same for B9
     b7_report.py --campaign b8 hosts --timed QUEGEE_DIR EIGEN_DIR LAKECAT_DIR   the shape on other hosts
+
+`regenerate-check.sh` beside this file regenerates every campaign's tables.md
+and results section and `cmp`s them against what is committed; run it before
+committing anything that touches a bundle, this generator or the results
+document.
+
+A campaign in BUNDLED_PREVIOUS gets three further subsections, each computed
+from its own bundle and the named one: `grust-next@unchecked+f32` against
+`neo4j-graph` one sweep at a time, what work accounting costs per sweep in each
+campaign, and the unchanged-code table that says why no absolute of one
+campaign is set beside an absolute of another. Every ratio in them is formed
+from two cells of one campaign; no cell of one is ever divided by a cell of
+another.
 
 `tables` reads BUNDLE_DIR/timed/<campaign>-*.json (or the files given with
 --timed) and BUNDLE_DIR/parity/parity-<campaign>-*.json, and prints, per run and fixture, one
@@ -36,7 +50,13 @@ import campaign
 
 F32 = '+f32'
 CAMPAIGN = 'b7'   # set from --campaign; the prefix of every output file
-PREVIOUS = {'b7': 'b6', 'b8': 'b7'}
+PREVIOUS = {'b7': 'b6', 'b8': 'b7', 'b9': 'b8'}
+# The nearest campaign that has a bundle, for readings formed as a ratio inside
+# each campaign separately. B8 ran on quegee and was never bundled, so B9's
+# nearest bundled campaign is B7; nothing here divides a cell of one campaign by
+# a cell of another, and the entry exists so that the document says which bundle
+# a printed figure came out of.
+BUNDLED_PREVIOUS = {'b9': 'b7'}
 COMPARED = ['neo4j-graph', 'grust-next@unchecked+f32', 'grust-next@counted+f32', 'grust-next@unchecked', 'grust-next@counted']
 
 def fmt(value, digits=3):
@@ -364,6 +384,200 @@ def section(a):
         print()
     if PREVIOUS[CAMPAIGN] != 'b6': beside_previous(a, reports)
     unchanged_against_previous(a, reports)
+    if CAMPAIGN in BUNDLED_PREVIOUS:
+        like_for_like(reports)
+        accounting_cost(a, reports)
+        host_between_campaigns(a, reports)
+
+
+def suffixes_for(name):
+    """The kernel suffixes a run carries: one-thread runs time the push loop too."""
+    return ['#1', '#unset'] if 'one-thread' in name else ['']
+
+def pull_suffix(name):
+    return '#1' if 'one-thread' in name else ''
+
+def bundled_previous_cells(a, reports):
+    """The nearest bundled campaign's PageRank cells, keyed as this campaign's."""
+    previous = BUNDLED_PREVIOUS[CAMPAIGN]
+    root = a.bundle.parent/f'{previous}-quegee'
+    found = {}
+    for rep in reports:
+        name = rep['label'].removeprefix(f'{CAMPAIGN}-')
+        path = root/'timed'/f'{previous}-{name}.json'
+        if path.exists():
+            found[name] = {(c['fixture'], c['participant'], c['call']): c
+                           for c in json.loads(path.read_text())['cells'] if c['algorithm'] == 'pagerank'}
+    return found
+
+def plural(n, one, many):
+    return f'{n} {one if n == 1 else many}'
+
+def ratio(cell, other):
+    """cell's per-sweep cost over other's, with the sum of the two MAD/medians as its margin."""
+    if not cell or not other or cell['per_iteration_ms'] is None or other['per_iteration_ms'] is None: return None
+    return (cell['per_iteration_ms'] / other['per_iteration_ms'],
+            (cell['dispersion'] or 0) + (other['dispersion'] or 0))
+
+def like_for_like(reports):
+    """`grust-next@unchecked+f32` against `neo4j-graph`, one sweep against one sweep.
+
+    Both rows carry f32 scores and neither performs accounting, so this is the
+    pair the campaign calls like for like. The figure is per-iteration ms over
+    per-iteration ms on the same cell of the same run; it is not a total, the
+    two rows stop at different counts, and its margin is the sum of the two
+    cells' MAD/median.
+    """
+    print(f'### One sweep of `grust-next@unchecked+f32` against one sweep of `neo4j-graph`\n')
+    print('Per cell, both participants\' per-iteration ms and iteration count, and the first over the second, with '
+          'the sum of the two cells\' MAD/median as its margin. Both rows carry f32 scores and neither charges work '
+          'to a meter, which is why they are put together; they stop at different counts, so this compares the cost '
+          'of one sweep and not the time to an answer, and the totals are in the tables above. A figure whose '
+          'distance from 1 is smaller than its margin is inside dispersion and is not a difference.\n')
+    print('| fixture | run | `grust-next@unchecked+f32` per-iter / iters | `neo4j-graph` per-iter / iters | ratio ± | outside its margin |')
+    print('| --- | --- | ---: | ---: | ---: | --- |')
+    rows = []
+    for rep in reports:
+        name = rep['label'].removeprefix(f'{CAMPAIGN}-')
+        idx = {(c['fixture'], c['participant'], c['call']): c for c in rep['cells']}
+        s = pull_suffix(name)
+        for fixture in sorted({c['fixture'] for c in rep['cells']}):
+            n = idx.get((fixture, 'neo4j-graph', None))
+            g = idx.get((fixture, f'grust-next@unchecked+f32{s}', 'second'))
+            r = ratio(g, n)
+            if r is None: continue
+            outside = abs(r[0] - 1) > r[1]
+            rows.append((fixture, name, r, outside))
+            print(f"| `{fixture.removesuffix('.edges')}` | {name} | {g['per_iteration_ms']:.3f} / {g['iterations']} | "
+                  f"{n['per_iteration_ms']:.3f} / {n['iterations']} | {r[0]:.3f} ± {r[1]:.3f} | {'yes' if outside else 'no'} |")
+    print()
+    below = [r for r in rows if r[2][0] <= 1]
+    above = [r for r in rows if r[2][0] > 1]
+    above_margin = [r for r in above if r[3]]
+    inside = [r for r in above if not r[3]]
+    def named(rs): return ', '.join(f"`{f.removesuffix('.edges')}` {n} ({r[0]:.3f} ± {r[1]:.3f})" for f, n, r, _ in rs)
+    print(f"Of the {len(rows)} cells, {len(below)} put Grust's sweep at or below `neo4j-graph`'s and "
+          f"{plural(len(above), 'is', 'are')} above it. Of those {len(above)}, "
+          f"{plural(len(inside), 'is', 'are')} above by less than its margin and inside dispersion"
+          + (f" ({named(inside)})" if inside else '') + f", and {plural(len(above_margin), 'is', 'are')} "
+          "above by more than the margin on that cell"
+          + (f": {named(above_margin)}" if above_margin else '') + ". "
+          "Every one of these figures is formed inside this campaign from two cells of the same run.\n")
+
+def accounting_cost(a, reports):
+    """`counted` against `unchecked`: what charging work to a shared meter costs per sweep."""
+    previous = bundled_previous_cells(a, reports)
+    old = BUNDLED_PREVIOUS[CAMPAIGN].upper()
+    print(f'### What work accounting costs per sweep, here and in {old}\n')
+    print("`counted` charges work to a shared meter and observes cancellation; `unchecked` does neither and runs the "
+          "same kernel otherwise. Their per-iteration ms over each other on the same cell of the same run is what the "
+          f"meter costs, with the sum of the two cells' MAD/median as its margin. The {old} column is formed the same "
+          f"way inside {old}'s own bundle: no {CAMPAIGN.upper()} cell is divided by a {old} cell, and the two columns "
+          f"are each campaign's own reading. {PREVIOUS[CAMPAIGN].upper()} ran on this host between them and was never "
+          "bundled, so it is not a column here.\n")
+    print(f'| fixture | run | kernel | precision | {old} counted/unchecked ± | {CAMPAIGN.upper()} counted/unchecked ± |')
+    print('| --- | --- | --- | --- | ---: | ---: |')
+    pull_rows, push_rows = [], []
+    for rep in reports:
+        name = rep['label'].removeprefix(f'{CAMPAIGN}-')
+        new = {(c['fixture'], c['participant'], c['call']): c for c in rep['cells']}
+        old_cells = previous.get(name, {})
+        for fixture in sorted({c['fixture'] for c in rep['cells']}):
+            for s in suffixes_for(name):
+                for tag, p in (('f32', F32), ('f64', '')):
+                    def pair(cells):
+                        return ratio(cells.get((fixture, f'grust-next@counted{p}{s}', 'second')),
+                                     cells.get((fixture, f'grust-next@unchecked{p}{s}', 'second')))
+                    o, n = pair(old_cells), pair(new)
+                    if n is None and o is None: continue
+                    def show(r): return '—' if r is None else f'{r[0]:.3f} ± {r[1]:.3f}'
+                    kern = 'push' if s == '#unset' else 'pull'
+                    if n: (push_rows if kern == 'push' else pull_rows).append((fixture, name, tag, o, n))
+                    print(f"| `{fixture.removesuffix('.edges')}` | {name} | {kern} | {tag} | {show(o)} | {show(n)} |")
+    print()
+    if not pull_rows: return
+    def span(rs, i):
+        vals = [r[i][0] for r in rs if r[i]]
+        return (min(vals), max(vals)) if vals else None
+    def named(rs, i): return ', '.join(f"`{f.removesuffix('.edges')}` {n} {t} ({r[i][0]:.3f} ± {r[i][1]:.3f})"
+                                       for r in rs for f, n, t in [(r[0], r[1], r[2])])
+    outside_new = [r for r in pull_rows if abs(r[4][0] - 1) > r[4][1]]
+    outside_old = [r for r in pull_rows if r[3] and abs(r[3][0] - 1) > r[3][1]]
+    lo, hi = span(pull_rows, 4)
+    olo, ohi = span(pull_rows, 3)
+    print(f"Over the {len(pull_rows)} pull-kernel cells the meter's cost in {CAMPAIGN.upper()} runs from {lo:.3f} to "
+          f"{hi:.3f}, and {plural(len(outside_new), 'cell differs', 'cells differ')} from 1 by more than the margin on that cell"
+          + (': ' + named(outside_new, 4) if outside_new else '') + '. '
+          + (f"On the same cells in {old} it ran from {olo:.3f} to {ohi:.3f}, with "
+             f"{plural(len(outside_old), 'cell', 'cells')} outside their margins. " if olo is not None else ''))
+    for size, label in (('2097152', '2,097,152'), ('4194304', '4,194,304')):
+        big = [r for r in pull_rows if size in r[0]]
+        if not big: continue
+        blo, bhi = span(big, 4)
+        obl, out = span(big, 3), [r for r in big if abs(r[4][0] - 1) > r[4][1]]
+        print(f"At {label} nodes the {len(big)} pull cells read {blo:.3f} to {bhi:.3f} in {CAMPAIGN.upper()}"
+              + (f" against {obl[0]:.3f} to {obl[1]:.3f} in {old}" if obl else '')
+              + (f", every one inside its own margin." if not out else
+                 f", of which {plural(len(out), 'is', 'are')} outside the margin on that cell: " + named(out, 4) + '.')
+              + ' ' + ', '.join(f"{'Below' if r[4][0] < 1 else 'Above'} 1 is the meter costing "
+                                f"{'less' if r[4][0] < 1 else 'more'} than no meter" for r in out[:1]) + ('.' if out else ''))
+    if push_rows:
+        plo, phi = span(push_rows, 4)
+        polo, pohi = span(push_rows, 3)
+        worse = [r for r in push_rows if r[3] and r[4][0] - r[3][0] > r[4][1] + r[3][1]]
+        print(f"The push kernel is not in that state. Over its {len(push_rows)} cells the meter costs {plo:.3f} to "
+              f"{phi:.3f} in {CAMPAIGN.upper()}"
+              + (f" against {polo:.3f} to {pohi:.3f} in {old}" if polo is not None else '')
+              + (f", and on {plural(len(worse), 'cell', 'cells')} the {CAMPAIGN.upper()} figure exceeds the {old} "
+                 f"figure by more than both margins together: " + ', '.join(
+                     f"`{r[0].removesuffix('.edges')}` {r[1]} {r[2]} ({r[3][0]:.3f} to {r[4][0]:.3f})" for r in worse)
+                 if worse else '') + '.')
+    print()
+
+def host_between_campaigns(a, reports):
+    """Why no absolute number here is put beside one from another campaign."""
+    previous = bundled_previous_cells(a, reports)
+    if not previous: return
+    old = BUNDLED_PREVIOUS[CAMPAIGN].upper()
+    print(f'### Why no {CAMPAIGN.upper()} time is compared with a {old} or {PREVIOUS[CAMPAIGN].upper()} time\n')
+    print(f"`neo4j-graph` and `grust` (v0.22.0) are the same sources in {old} and in {CAMPAIGN.upper()}, on fixtures "
+          "with the same SHA-256, under the same protocol. The host was restarted between the campaigns. Their "
+          "per-sweep figures moved anyway, by cell and in both directions, so a difference between a "
+          f"{CAMPAIGN.upper()} number and a {old} number is not readable as a difference in code and none is formed "
+          "outside this table, which exists to say so:\n")
+    print(f'| fixture | run | participant | call | {old} per-iter | {CAMPAIGN.upper()} per-iter | {CAMPAIGN.upper()}/{old} |')
+    print('| --- | --- | --- | --- | ---: | ---: | ---: |')
+    seen = []
+    for rep in reports:
+        name = rep['label'].removeprefix(f'{CAMPAIGN}-')
+        old_cells = previous.get(name)
+        if old_cells is None: continue
+        for c in cell_rows(rep):
+            if base(c['participant']).split('+')[0] not in ('grust', 'neo4j-graph'): continue
+            o = old_cells.get((c['fixture'], c['participant'], c['call']))
+            if not o or o['per_iteration_ms'] is None or c['per_iteration_ms'] is None: continue
+            if o['unusable'] or c['unusable']: continue
+            r = c['per_iteration_ms'] / o['per_iteration_ms']
+            seen.append((r, c['participant'], c['fixture'], name, c['call']))
+            print(f"| `{c['fixture'].removesuffix('.edges')}` | {name} | `{c['participant']}` | {c['call'] or '—'} | "
+                  f"{o['per_iteration_ms']:.3f} | {c['per_iteration_ms']:.3f} | {r:.3f} |")
+    print()
+    if not seen: return
+    import statistics
+    lo, hi = min(seen), max(seen)
+    n2m = [s for s in seen if s[1] == 'neo4j-graph' and '2097152' in s[2] and 'one-thread' in s[3]]
+    print(f"{len(seen)} cells of unchanged code, median {CAMPAIGN.upper()}/{old} {statistics.median(s[0] for s in seen):.3f}, "
+          f"from {lo[0]:.3f} (`{lo[1]}` {lo[2].removesuffix('.edges')} {lo[3]}{' ' + lo[4] if lo[4] else ''}) to "
+          f"{hi[0]:.3f} (`{hi[1]}` {hi[2].removesuffix('.edges')} {hi[3]}{' ' + hi[4] if hi[4] else ''}). ", end='')
+    if n2m:
+        for r, _, fixture, name, _ in sorted(n2m, key=lambda s: s[2]):
+            pass
+        parts = ', '.join(f"{fixture.removesuffix('.edges')} {old} "
+                          f"{previous[name][(fixture, 'neo4j-graph', None)]['per_iteration_ms']:.0f} ms against "
+                          f"{CAMPAIGN.upper()} {previous[name][(fixture, 'neo4j-graph', None)]['per_iteration_ms'] * r:.0f} ms"
+                          for r, _, fixture, name, _ in sorted(n2m, key=lambda s: s[2]))
+        print(f"The reference participant's own one-thread sweep at 2,097,152 nodes is among the cells that moved: {parts}.", end='')
+    print(f" Every comparison this section makes is therefore between two cells of {CAMPAIGN.upper()}.")
 
 def previous_cells(a, reports):
     """The previous campaign's PageRank cells, keyed as this campaign's, run by run."""
@@ -500,7 +714,8 @@ def hosts(a):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument('--campaign', choices=list(PREVIOUS), default='b7', help='which campaign\'s files: the prefix of every output')
+    p.add_argument('--campaign', choices=list(PREVIOUS), default='b7',
+                   help='which campaign\'s files: the prefix of every output')
     p.add_argument('command', choices=['tables', 'estimate', 'section', 'hosts'])
     p.add_argument('bundle', type=pathlib.Path, nargs='?')
     p.add_argument('--timed', type=pathlib.Path, nargs='+',

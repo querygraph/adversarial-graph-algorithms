@@ -1,0 +1,444 @@
+neo4j-graph  38c18fa48e41d252  0.1.0         cea69ee0b2ce
+icebug       8f79f15c469ecd52  icecat-cpp    57b443ec1d16
+icecat       f57fd50dcbea3285  0.1.0         cea69ee0b2ce
+grustcat     29df4a784a63fb35  0.1.0         cea69ee0b2ce
+grust        d023a932870b283a  0.1.0         cea69ee0b2ce
+grust-next   8c44100394a2dc03  0.1.0         cea69ee0b2ce
+6 participants, 6 distinct binaries
+{"tag": "simple-rust-algo-bench:b9-4a9e7f5", "id": "sha256:b1b72f3582fb35a90414ec4528a97d55d1ed5ba45b256072be25c6e3edf0616f", "created": "2026-09-23T09:19:44.878915555Z", "size": 328399567}
+manifest identical_to_b6 = True 8 fixtures
+2026-09-23T15:05:46Z
+CACHE-DROPPED 2026-09-23T15:05:46Z
+PARITY-START 2026-09-23T15:05:46Z
+hub-16384.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-16384.edges      grust                    pagerank   agrees     vector-bits-equal-reference=699/16384 max_ulps=6 max_abs=1.08e-19  max-bits-equal-reference=False
+hub-16384.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=699/16384 max_ulps=6 max_abs=1.08e-19  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=699/16384 max_ulps=6 max_abs=1.08e-19  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=5491328727 max_abs=9.72e-11  max-bits-equal-reference=False
+hub-16384.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=5491328727 max_abs=9.72e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+hub-65536.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-65536.edges      grust                    pagerank   agrees     vector-bits-equal-reference=3230/65536 max_ulps=7 max_abs=2.71e-20  max-bits-equal-reference=False
+hub-65536.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=3230/65536 max_ulps=7 max_abs=2.71e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=3230/65536 max_ulps=7 max_abs=2.71e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=6037950115 max_abs=2.41e-11  max-bits-equal-reference=False
+hub-65536.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=6037950115 max_abs=2.41e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-16384.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-16384.edges  grust                    pagerank   agrees     vector-bits-equal-reference=16325/16384 max_ulps=2 max_abs=2.71e-20  max-bits-equal-reference=True
+uniform-16384.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=16325/16384 max_ulps=2 max_abs=2.71e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=16325/16384 max_ulps=2 max_abs=2.71e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2960955813 max_abs=4.28e-11  max-bits-equal-reference=False
+uniform-16384.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2960955813 max_abs=4.28e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-65536.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-65536.edges  grust                    pagerank   agrees     vector-bits-equal-reference=65467/65536 max_ulps=2 max_abs=6.78e-21  max-bits-equal-reference=True
+uniform-65536.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=65467/65536 max_ulps=2 max_abs=6.78e-21  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-65536.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=65467/65536 max_ulps=2 max_abs=6.78e-21  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-65536.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3317924464 max_abs=1.36e-11  max-bits-equal-reference=False
+uniform-65536.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3317924464 max_abs=1.36e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+24 checks, 0 mismatches
+parity unset: clean
+hub-16384.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-16384.edges      grust                    pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False
+hub-16384.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2621868491 max_abs=4.38e-11  max-bits-equal-reference=False
+hub-16384.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2621868491 max_abs=4.38e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+hub-65536.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-65536.edges      grust                    pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False
+hub-65536.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=2944077174 max_abs=1.5e-11  max-bits-equal-reference=False
+hub-65536.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=2944077174 max_abs=1.5e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-16384.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-16384.edges  grust                    pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True
+uniform-16384.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2959917052 max_abs=4.48e-11  max-bits-equal-reference=False
+uniform-16384.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2959917052 max_abs=4.48e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-65536.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-65536.edges  grust                    pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False
+uniform-65536.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-65536.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-65536.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3047578129 max_abs=1.15e-11  max-bits-equal-reference=False
+uniform-65536.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3047578129 max_abs=1.15e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+24 checks, 0 mismatches
+parity 1: clean
+hub-16384.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-16384.edges      grust                    pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False
+hub-16384.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=7352/16384 max_ulps=4 max_abs=8.13e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-16384.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2621868491 max_abs=4.38e-11  max-bits-equal-reference=False
+hub-16384.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2621868491 max_abs=4.38e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+hub-65536.edges      neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-65536.edges      grust                    pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False
+hub-65536.edges      grust-next@counted       pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=29623/65536 max_ulps=4 max_abs=1.36e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-65536.edges      grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=2944077174 max_abs=1.5e-11  max-bits-equal-reference=False
+hub-65536.edges      grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=2944077174 max_abs=1.5e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-16384.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-16384.edges  grust                    pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True
+uniform-16384.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=7355/16384 max_ulps=4 max_abs=5.42e-20  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-16384.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2959917052 max_abs=4.48e-11  max-bits-equal-reference=False
+uniform-16384.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/16384 max_ulps=2959917052 max_abs=4.48e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-65536.edges  neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-65536.edges  grust                    pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False
+uniform-65536.edges  grust-next@counted       pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-65536.edges  grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=29430/65536 max_ulps=4 max_abs=2.03e-20  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-65536.edges  grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3047578129 max_abs=1.15e-11  max-bits-equal-reference=False
+uniform-65536.edges  grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/65536 max_ulps=3047578129 max_abs=1.15e-11  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+24 checks, 0 mismatches
+parity 16: clean
+hub-2097152.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-2097152.edges    grust                    pagerank   agrees     vector-bits-equal-reference=106053/2097152 max_ulps=8 max_abs=1.06e-21  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=106053/2097152 max_ulps=8 max_abs=1.06e-21  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=106053/2097152 max_ulps=8 max_abs=1.06e-21  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=6097654486 max_abs=9.28e-13  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=6097654486 max_abs=9.28e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-2097152.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-2097152.edges grust                    pagerank   agrees     vector-bits-equal-reference=2097053/2097152 max_ulps=2 max_abs=2.12e-22  max-bits-equal-reference=True
+uniform-2097152.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=2097053/2097152 max_ulps=2 max_abs=2.12e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-2097152.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=2097053/2097152 max_ulps=2 max_abs=2.12e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-2097152.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3561951160 max_abs=4.88e-13  max-bits-equal-reference=False
+uniform-2097152.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3561951160 max_abs=4.88e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity unset: clean
+hub-2097152.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-2097152.edges    grust                    pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3109437963 max_abs=4.95e-13  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3109437963 max_abs=4.95e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-2097152.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-2097152.edges grust                    pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False
+uniform-2097152.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-2097152.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-2097152.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3389236176 max_abs=4.79e-13  max-bits-equal-reference=False
+uniform-2097152.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3389236176 max_abs=4.79e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity 1: clean
+hub-2097152.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-2097152.edges    grust                    pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=937899/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-2097152.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3109437963 max_abs=4.95e-13  max-bits-equal-reference=False
+hub-2097152.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3109437963 max_abs=4.95e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-2097152.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-2097152.edges grust                    pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False
+uniform-2097152.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-2097152.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=943172/2097152 max_ulps=6 max_abs=8.47e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+uniform-2097152.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3389236176 max_abs=4.79e-13  max-bits-equal-reference=False
+uniform-2097152.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/2097152 max_ulps=3389236176 max_abs=4.79e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity 16: clean
+hub-4194304.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-4194304.edges    grust                    pagerank   agrees     vector-bits-equal-reference=211043/4194304 max_ulps=8 max_abs=5.29e-22  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=211043/4194304 max_ulps=8 max_abs=5.29e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=211043/4194304 max_ulps=8 max_abs=5.29e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=6393034292 max_abs=4.45e-13  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=6393034292 max_abs=4.45e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-4194304.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-4194304.edges grust                    pagerank   agrees     vector-bits-equal-reference=4194236/4194304 max_ulps=2 max_abs=1.06e-22  max-bits-equal-reference=True
+uniform-4194304.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=4194236/4194304 max_ulps=2 max_abs=1.06e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=4194236/4194304 max_ulps=2 max_abs=1.06e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3709657623 max_abs=2.74e-13  max-bits-equal-reference=False
+uniform-4194304.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3709657623 max_abs=2.74e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity unset: clean
+hub-4194304.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-4194304.edges    grust                    pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3452255767 max_abs=2.6e-13  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3452255767 max_abs=2.6e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-4194304.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-4194304.edges grust                    pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True
+uniform-4194304.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3146797518 max_abs=2.6e-13  max-bits-equal-reference=False
+uniform-4194304.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3146797518 max_abs=2.6e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity 1: clean
+hub-4194304.edges    neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+hub-4194304.edges    grust                    pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@counted       pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=1874065/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=False  same-bits-as-grust=True
+hub-4194304.edges    grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3452255767 max_abs=2.6e-13  max-bits-equal-reference=False
+hub-4194304.edges    grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3452255767 max_abs=2.6e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+uniform-4194304.edges neo4j-graph              pagerank   agrees     max-bits-equal-reference=False
+uniform-4194304.edges grust                    pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True
+uniform-4194304.edges grust-next@counted       pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@unchecked     pagerank   agrees     vector-bits-equal-reference=1884240/4194304 max_ulps=6 max_abs=4.24e-22  max-bits-equal-reference=True  same-bits-as-grust=True
+uniform-4194304.edges grust-next@counted+f32   pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3146797518 max_abs=2.6e-13  max-bits-equal-reference=False
+uniform-4194304.edges grust-next@unchecked+f32 pagerank   agrees     vector-bits-equal-reference=0/4194304 max_ulps=3146797518 max_abs=2.6e-13  max-bits-equal-reference=False  same-bits-as-grust-next@counted+f32=True
+
+12 checks, 0 mismatches
+parity 16: clean
+PARITY-END 2026-09-23T15:30:57Z
+CAMPAIGN-START 2026-09-23T15:30:57Z
+steal over the run: 0 ticks
+200 timed samples in 29.0s -> /work/timed/b9-one-thread.json
+hub-16384.edges      pagerank   grust#1                        first  iters   17  total   11.6022 ± 0.0395  per-iter 0.6825  build 17.46  minflt 384  steal 0
+hub-16384.edges      pagerank   grust#1                        second iters   17  total    9.6455 ± 0.0160  per-iter 0.5674  build 17.46  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@counted#1           first  iters   17  total    6.0760 ± 0.0028  per-iter 0.3574  build 10.70  minflt 64  steal 0
+hub-16384.edges      pagerank   grust-next@counted#1           second iters   17  total    5.9299 ± 0.0100  per-iter 0.3488  build 10.70  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@counted#unset       first  iters   17  total   22.4343 ± 0.0064  per-iter 1.3197  build 12.42  minflt 128  steal 0
+hub-16384.edges      pagerank   grust-next@counted#unset       second iters   17  total   22.2299 ± 0.0156  per-iter 1.3076  build 12.42  minflt 32  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32#1       first  iters   20  total    7.3255 ± 0.0096  per-iter 0.3663  build 10.21  minflt 32  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32#1       second iters   20  total    7.2540 ± 0.0038  per-iter 0.3627  build 10.21  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32#unset   first  iters   21  total   26.8229 ± 0.0079  per-iter 1.2773  build 12.59  minflt 64  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32#unset   second iters   21  total   26.6691 ± 0.0143  per-iter 1.2700  build 12.59  minflt 16  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked#1         first  iters   17  total    6.0654 ± 0.0188  per-iter 0.3568  build 8.28  minflt 64  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked#1         second iters   17  total    5.9155 ± 0.0067  per-iter 0.3480  build 8.28  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked#unset     first  iters   17  total   12.6481 ± 0.0099  per-iter 0.7440  build 8.51  minflt 128  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked#unset     second iters   17  total   12.4414 ± 0.0360  per-iter 0.7318  build 8.51  minflt 32  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32#1     first  iters   20  total    7.3397 ± 0.0138  per-iter 0.3670  build 8.50  minflt 32  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32#1     second iters   20  total    7.2683 ± 0.0088  per-iter 0.3634  build 8.50  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32#unset first  iters   21  total   15.0471 ± 0.0142  per-iter 0.7165  build 8.18  minflt 64  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32#unset second iters   21  total   14.9443 ± 0.0341  per-iter 0.7116  build 8.18  minflt 16  steal 0
+hub-16384.edges      pagerank   neo4j-graph                           iters   36  total   13.0794 ± 0.0204  per-iter 0.3633  build 7.63  minflt 23  steal 0
+hub-65536.edges      pagerank   grust#1                        first  iters   17  total   53.1848 ± 1.1994  per-iter 3.1285  build 70.41  minflt 1024  steal 0
+hub-65536.edges      pagerank   grust#1                        second iters   17  total   44.1103 ± 0.4171  per-iter 2.5947  build 70.41  minflt 0  steal 0
+hub-65536.edges      pagerank   grust-next@counted#1           first  iters   17  total   24.6093 ± 0.0472  per-iter 1.4476  build 44.95  minflt 256  steal 0
+hub-65536.edges      pagerank   grust-next@counted#1           second iters   17  total   24.0056 ± 0.0565  per-iter 1.4121  build 44.95  minflt 0  steal 0
+hub-65536.edges      pagerank   grust-next@counted#unset       first  iters   17  total   91.2308 ± 0.4906  per-iter 5.3665  build 50.27  minflt 512  steal 0
+hub-65536.edges      pagerank   grust-next@counted#unset       second iters   17  total   90.6305 ± 1.0310  per-iter 5.3312  build 50.27  minflt 128  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32#1       first  iters   20  total   28.8632 ± 0.1231  per-iter 1.4432  build 44.92  minflt 128  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32#1       second iters   20  total   28.5516 ± 0.0972  per-iter 1.4276  build 44.92  minflt 0  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32#unset   first  iters   21  total  107.6759 ± 0.0912  per-iter 5.1274  build 49.53  minflt 256  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32#unset   second iters   21  total  107.3639 ± 0.1298  per-iter 5.1126  build 49.53  minflt 64  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked#1         first  iters   17  total   24.4886 ± 0.0169  per-iter 1.4405  build 36.28  minflt 256  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked#1         second iters   17  total   23.9308 ± 0.0527  per-iter 1.4077  build 36.28  minflt 0  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked#unset     first  iters   17  total   51.7268 ± 0.0845  per-iter 3.0428  build 34.09  minflt 512  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked#unset     second iters   17  total   51.1653 ± 0.3470  per-iter 3.0097  build 34.09  minflt 128  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32#1     first  iters   20  total   28.8634 ± 0.1048  per-iter 1.4432  build 37.14  minflt 128  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32#1     second iters   20  total   28.5441 ± 0.0203  per-iter 1.4272  build 37.14  minflt 0  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32#unset first  iters   21  total   60.4887 ± 0.1420  per-iter 2.8804  build 33.76  minflt 256  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32#unset second iters   21  total   59.9089 ± 0.0634  per-iter 2.8528  build 33.76  minflt 64  steal 0
+hub-65536.edges      pagerank   neo4j-graph                           iters   28  total   36.0753 ± 0.0546  per-iter 1.2884  build 35.75  minflt 73  steal 0
+uniform-16384.edges  pagerank   grust#1                        first  iters   16  total   11.2486 ± 0.0503  per-iter 0.7030  build 17.24  minflt 384  steal 0
+uniform-16384.edges  pagerank   grust#1                        second iters   16  total    9.2468 ± 0.0086  per-iter 0.5779  build 17.24  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@counted#1           first  iters   16  total    5.7754 ± 0.0053  per-iter 0.3610  build 11.30  minflt 64  steal 0
+uniform-16384.edges  pagerank   grust-next@counted#1           second iters   16  total    5.6189 ± 0.0093  per-iter 0.3512  build 11.30  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@counted#unset       first  iters   16  total   21.5364 ± 0.1492  per-iter 1.3460  build 12.68  minflt 128  steal 0
+uniform-16384.edges  pagerank   grust-next@counted#unset       second iters   16  total   21.3252 ± 0.1798  per-iter 1.3328  build 12.68  minflt 32  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32#1       first  iters   19  total    7.1402 ± 0.0084  per-iter 0.3758  build 10.58  minflt 32  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32#1       second iters   19  total    7.0531 ± 0.0131  per-iter 0.3712  build 10.58  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32#unset   first  iters   19  total   24.8339 ± 0.0131  per-iter 1.3070  build 12.23  minflt 64  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32#unset   second iters   19  total   24.7075 ± 0.0120  per-iter 1.3004  build 12.23  minflt 16  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked#1         first  iters   16  total    5.7681 ± 0.0120  per-iter 0.3605  build 9.22  minflt 64  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked#1         second iters   16  total    5.6109 ± 0.0089  per-iter 0.3507  build 9.22  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked#unset     first  iters   16  total   11.8312 ± 0.0203  per-iter 0.7394  build 8.49  minflt 128  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked#unset     second iters   16  total   11.6137 ± 0.0074  per-iter 0.7259  build 8.49  minflt 32  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32#1     first  iters   19  total    7.1419 ± 0.0061  per-iter 0.3759  build 9.08  minflt 32  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32#1     second iters   19  total    7.0602 ± 0.0099  per-iter 0.3716  build 9.08  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32#unset first  iters   19  total   13.5424 ± 0.0059  per-iter 0.7128  build 7.94  minflt 64  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32#unset second iters   19  total   13.4528 ± 0.0252  per-iter 0.7080  build 7.94  minflt 16  steal 0
+uniform-16384.edges  pagerank   neo4j-graph                           iters   28  total   10.3601 ± 0.0106  per-iter 0.3700  build 7.65  minflt 23  steal 0
+uniform-65536.edges  pagerank   grust#1                        first  iters   16  total   51.8155 ± 0.4804  per-iter 3.2385  build 71.87  minflt 1025  steal 0
+uniform-65536.edges  pagerank   grust#1                        second iters   16  total   43.3302 ± 0.5327  per-iter 2.7081  build 71.87  minflt 0  steal 0
+uniform-65536.edges  pagerank   grust-next@counted#1           first  iters   16  total   23.3740 ± 0.0633  per-iter 1.4609  build 44.17  minflt 257  steal 0
+uniform-65536.edges  pagerank   grust-next@counted#1           second iters   16  total   22.7409 ± 0.0604  per-iter 1.4213  build 44.17  minflt 0  steal 0
+uniform-65536.edges  pagerank   grust-next@counted#unset       first  iters   16  total   86.8133 ± 0.4356  per-iter 5.4258  build 49.54  minflt 512  steal 0
+uniform-65536.edges  pagerank   grust-next@counted#unset       second iters   16  total   85.8934 ± 0.0766  per-iter 5.3683  build 49.54  minflt 128  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32#1       first  iters   19  total   28.7023 ± 0.0581  per-iter 1.5106  build 44.47  minflt 128  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32#1       second iters   19  total   28.3620 ± 0.0190  per-iter 1.4927  build 44.47  minflt 0  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32#unset   first  iters   20  total  105.0494 ± 0.1537  per-iter 5.2525  build 50.72  minflt 256  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32#unset   second iters   20  total  104.5847 ± 0.0466  per-iter 5.2292  build 50.72  minflt 64  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked#1         first  iters   16  total   23.3534 ± 0.0671  per-iter 1.4596  build 37.11  minflt 256  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked#1         second iters   16  total   22.7054 ± 0.0272  per-iter 1.4191  build 37.11  minflt 0  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked#unset     first  iters   16  total   48.7708 ± 0.0696  per-iter 3.0482  build 33.82  minflt 512  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked#unset     second iters   16  total   47.8120 ± 0.2134  per-iter 2.9882  build 33.82  minflt 128  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32#1     first  iters   19  total   28.6761 ± 0.0955  per-iter 1.5093  build 36.51  minflt 128  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32#1     second iters   19  total   28.3730 ± 0.1263  per-iter 1.4933  build 36.51  minflt 0  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32#unset first  iters   20  total   57.1981 ± 0.0800  per-iter 2.8599  build 34.47  minflt 256  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32#unset second iters   20  total   56.6422 ± 0.0820  per-iter 2.8321  build 34.47  minflt 64  steal 0
+uniform-65536.edges  pagerank   neo4j-graph                           iters   34  total   44.2465 ± 0.0115  per-iter 1.3014  build 34.03  minflt 72  steal 0
+one-thread: clean, 31.8s, steal 0 ticks, 0 sightings
+steal over the run: 0 ticks
+120 timed samples in 9.7s -> /work/timed/b9-full-width.json
+hub-16384.edges      pagerank   grust                    first  iters   17  total    6.0450 ± 0.0188  per-iter 0.3556  build 17.78  minflt 484  steal 0
+hub-16384.edges      pagerank   grust                    second iters   17  total    3.4362 ± 0.0633  per-iter 0.2021  build 17.78  minflt 0  steal 0
+hub-16384.edges      pagerank   grust-next@counted       first  iters   17  total    2.8000 ± 0.0564  per-iter 0.1647  build 11.31  minflt 2  steal 0
+hub-16384.edges      pagerank   grust-next@counted       second iters   17  total    2.7936 ± 0.0292  per-iter 0.1643  build 11.31  minflt 1  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32   first  iters   20  total    3.3095 ± 0.0235  per-iter 0.1655  build 11.51  minflt 1  steal 0
+hub-16384.edges      pagerank   grust-next@counted+f32   second iters   20  total    3.2730 ± 0.0163  per-iter 0.1636  build 11.51  minflt 1  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked     first  iters   17  total    2.7680 ± 0.0152  per-iter 0.1628  build 9.02  minflt 2  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked     second iters   17  total    2.7248 ± 0.0251  per-iter 0.1603  build 9.02  minflt 1  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32 first  iters   20  total    3.3835 ± 0.0286  per-iter 0.1692  build 9.01  minflt 1  steal 0
+hub-16384.edges      pagerank   grust-next@unchecked+f32 second iters   20  total    3.2135 ± 0.0298  per-iter 0.1607  build 9.01  minflt 0  steal 0
+hub-16384.edges      pagerank   neo4j-graph                     iters   36  total   13.1916 ± 0.0556  per-iter 0.3664  build 4.28  minflt 38  steal 0
+hub-65536.edges      pagerank   grust                    first  iters   17  total   17.4724 ± 0.1651  per-iter 1.0278  build 71.60  minflt 1134  steal 0
+hub-65536.edges      pagerank   grust                    second iters   17  total    8.5299 ± 0.0202  per-iter 0.5018  build 71.60  minflt 3  steal 0
+hub-65536.edges      pagerank   grust-next@counted       first  iters   17  total    3.2563 ± 0.1108  per-iter 0.1915  build 41.36  minflt 3  steal 0
+hub-65536.edges      pagerank   grust-next@counted       second iters   17  total    3.1100 ± 0.0181  per-iter 0.1829  build 41.36  minflt 1  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32   first  iters   20  total    3.5537 ± 0.0240  per-iter 0.1777  build 42.28  minflt 3  steal 0
+hub-65536.edges      pagerank   grust-next@counted+f32   second iters   20  total    3.4080 ± 0.0207  per-iter 0.1704  build 42.28  minflt 1  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked     first  iters   17  total    2.9455 ± 0.0566  per-iter 0.1733  build 33.54  minflt 2  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked     second iters   17  total    2.9456 ± 0.0766  per-iter 0.1733  build 33.54  minflt 1  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32 first  iters   20  total    3.2891 ± 0.0162  per-iter 0.1645  build 33.75  minflt 3  steal 0
+hub-65536.edges      pagerank   grust-next@unchecked+f32 second iters   20  total    3.1877 ± 0.0080  per-iter 0.1594  build 33.75  minflt 1  steal 0
+hub-65536.edges      pagerank   neo4j-graph                     iters   26  total   14.4174 ± 0.5242  per-iter 0.5545  build 13.57  minflt 94  steal 0
+uniform-16384.edges  pagerank   grust                    first  iters   16  total    5.8541 ± 0.0838  per-iter 0.3659  build 17.95  minflt 485  steal 0
+uniform-16384.edges  pagerank   grust                    second iters   16  total    3.3276 ± 0.0587  per-iter 0.2080  build 17.95  minflt 0  steal 0
+uniform-16384.edges  pagerank   grust-next@counted       first  iters   16  total    2.6057 ± 0.0103  per-iter 0.1629  build 11.19  minflt 2  steal 0
+uniform-16384.edges  pagerank   grust-next@counted       second iters   16  total    2.6046 ± 0.0551  per-iter 0.1628  build 11.19  minflt 1  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32   first  iters   19  total    3.2153 ± 0.0179  per-iter 0.1692  build 11.53  minflt 2  steal 0
+uniform-16384.edges  pagerank   grust-next@counted+f32   second iters   19  total    3.1797 ± 0.0177  per-iter 0.1674  build 11.53  minflt 1  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked     first  iters   16  total    2.6593 ± 0.0502  per-iter 0.1662  build 8.84  minflt 2  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked     second iters   16  total    2.5866 ± 0.0149  per-iter 0.1617  build 8.84  minflt 1  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32 first  iters   19  total    3.1317 ± 0.0080  per-iter 0.1648  build 9.18  minflt 2  steal 0
+uniform-16384.edges  pagerank   grust-next@unchecked+f32 second iters   19  total    3.0771 ± 0.0264  per-iter 0.1620  build 9.18  minflt 1  steal 0
+uniform-16384.edges  pagerank   neo4j-graph                     iters   28  total   10.4099 ± 0.0504  per-iter 0.3718  build 4.07  minflt 38  steal 0
+uniform-65536.edges  pagerank   grust                    first  iters   16  total   17.5640 ± 0.1434  per-iter 1.0977  build 70.01  minflt 1132  steal 0
+uniform-65536.edges  pagerank   grust                    second iters   16  total    8.1785 ± 0.0797  per-iter 0.5112  build 70.01  minflt 5  steal 0
+uniform-65536.edges  pagerank   grust-next@counted       first  iters   16  total    3.0010 ± 0.0342  per-iter 0.1876  build 41.98  minflt 3  steal 0
+uniform-65536.edges  pagerank   grust-next@counted       second iters   16  total    2.9487 ± 0.0100  per-iter 0.1843  build 41.98  minflt 1  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32   first  iters   19  total    3.3504 ± 0.0823  per-iter 0.1763  build 42.01  minflt 4  steal 0
+uniform-65536.edges  pagerank   grust-next@counted+f32   second iters   19  total    3.2825 ± 0.0087  per-iter 0.1728  build 42.01  minflt 1  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked     first  iters   16  total    2.7935 ± 0.0089  per-iter 0.1746  build 33.14  minflt 3  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked     second iters   16  total    2.7440 ± 0.0466  per-iter 0.1715  build 33.14  minflt 1  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32 first  iters   19  total    3.2015 ± 0.1303  per-iter 0.1685  build 33.31  minflt 3  steal 0
+uniform-65536.edges  pagerank   grust-next@unchecked+f32 second iters   19  total    3.0583 ± 0.1030  per-iter 0.1610  build 33.31  minflt 1  steal 0
+uniform-65536.edges  pagerank   neo4j-graph                     iters   34  total   16.2975 ± 0.1879  per-iter 0.4793  build 13.37  minflt 93  steal 0
+full-width: clean, 12.3s, steal 0 ticks, 0 sightings
+steal over the run: 4 ticks
+100 timed samples in 1097.0s -> /work/timed/b9-large-one-thread.json
+hub-2097152.edges    pagerank   grust#1                        first  iters   16  total 4767.2963 ± 16.5407  per-iter 297.9560  build 3716.62  minflt 3142  steal 2
+hub-2097152.edges    pagerank   grust#1                        second iters   16  total 4202.3643 ± 38.8665  per-iter 262.6478  build 3716.62  minflt 0  steal 2
+hub-2097152.edges    pagerank   grust-next@counted#1           first  iters   16  total 1324.9561 ± 19.6554  per-iter 82.8098  build 1906.22  minflt 1557  steal 2
+hub-2097152.edges    pagerank   grust-next@counted#1           second iters   16  total 1242.2056 ± 13.7238  per-iter 77.6379  build 1906.22  minflt 1006  steal 2
+hub-2097152.edges    pagerank   grust-next@counted#unset       first  iters   16  total 3800.6173 ± 85.4487  per-iter 237.5386  build 1765.32  minflt 2595  steal 2
+hub-2097152.edges    pagerank   grust-next@counted#unset       second iters   16  total 3817.0281 ± 128.9966  per-iter 238.5643  build 1765.32  minflt 519  steal 2
+hub-2097152.edges    pagerank   grust-next@counted+f32#1       first  iters   20  total 1405.8486 ± 13.8464  per-iter 70.2924  build 1905.46  minflt 1030  steal 2
+hub-2097152.edges    pagerank   grust-next@counted+f32#1       second iters   20  total 1401.1968 ± 17.4470  per-iter 70.0598  build 1905.46  minflt 0  steal 2
+hub-2097152.edges    pagerank   grust-next@counted+f32#unset   first  iters   21  total 4452.7793 ± 15.3675  per-iter 212.0371  build 1735.12  minflt 2579  steal 2
+hub-2097152.edges    pagerank   grust-next@counted+f32#unset   second iters   21  total 4445.5970 ± 22.4490  per-iter 211.6951  build 1735.12  minflt 515  steal 2
+hub-2097152.edges    pagerank   grust-next@unchecked#1         first  iters   16  total 1342.8587 ± 91.5476  per-iter 83.9287  build 1632.23  minflt 1557  steal 2
+hub-2097152.edges    pagerank   grust-next@unchecked#1         second iters   16  total 1305.1490 ± 79.7751  per-iter 81.5718  build 1632.23  minflt 1006  steal 2
+hub-2097152.edges    pagerank   grust-next@unchecked#unset     first  iters   16  total 2698.3626 ± 12.3671  per-iter 168.6477  build 1268.68  minflt 2595  steal 2
+hub-2097152.edges    pagerank   grust-next@unchecked#unset     second iters   16  total 2683.6333 ± 177.3628  per-iter 167.7271  build 1268.68  minflt 519  steal 2
+hub-2097152.edges    pagerank   grust-next@unchecked+f32#1     first  iters   20  total 1366.5166 ± 7.6079  per-iter 68.3258  build 1599.66  minflt 1030  steal 2
+hub-2097152.edges    pagerank   grust-next@unchecked+f32#1     second iters   20  total 1370.2150 ± 17.4703  per-iter 68.5107  build 1599.66  minflt 0  steal 2
+hub-2097152.edges    pagerank   grust-next@unchecked+f32#unset first  iters   21  total 2948.3778 ± 79.3493  per-iter 140.3989  build 1277.20  minflt 2579  steal 2
+hub-2097152.edges    pagerank   grust-next@unchecked+f32#unset second iters   21  total 2894.0632 ± 38.6186  per-iter 137.8125  build 1277.20  minflt 515  steal 2
+hub-2097152.edges    pagerank   neo4j-graph                           iters   26  total 2081.6479 ± 11.6355  per-iter 80.0634  build 2657.11  minflt 1037  steal 2
+uniform-2097152.edges pagerank   grust#1                        first  iters   16  total 4963.2033 ± 39.3829  per-iter 310.2002  build 3751.86  minflt 2659  steal 2
+uniform-2097152.edges pagerank   grust#1                        second iters   16  total 4382.3858 ± 15.0059  per-iter 273.8991  build 3751.86  minflt 0  steal 2
+uniform-2097152.edges pagerank   grust-next@counted#1           first  iters   16  total 1410.5793 ± 129.3669  per-iter 88.1612  build 1860.06  minflt 1557  steal 2
+uniform-2097152.edges pagerank   grust-next@counted#1           second iters   16  total 1461.3992 ± 181.6859  per-iter 91.3375  build 1860.06  minflt 1006  steal 2
+uniform-2097152.edges pagerank   grust-next@counted#unset       first  iters   16  total 4245.2246 ± 156.0437  per-iter 265.3265  build 1760.50  minflt 2595  steal 2
+uniform-2097152.edges pagerank   grust-next@counted#unset       second iters   16  total 4231.9088 ± 367.8308  per-iter 264.4943  build 1760.50  minflt 519  steal 2
+uniform-2097152.edges pagerank   grust-next@counted+f32#1       first  iters   19  total 1348.9803 ± 4.6345  per-iter 70.9990  build 1859.82  minflt 1030  steal 2
+uniform-2097152.edges pagerank   grust-next@counted+f32#1       second iters   19  total 1346.1802 ± 4.6979  per-iter 70.8516  build 1859.82  minflt 0  steal 2
+uniform-2097152.edges pagerank   grust-next@counted+f32#unset   first  iters   20  total 4301.8901 ± 31.5986  per-iter 215.0945  build 1744.43  minflt 2579  steal 2
+uniform-2097152.edges pagerank   grust-next@counted+f32#unset   second iters   20  total 4311.2781 ± 7.0568  per-iter 215.5639  build 1744.43  minflt 515  steal 2
+uniform-2097152.edges pagerank   grust-next@unchecked#1         first  iters   16  total 1381.6322 ± 62.1613  per-iter 86.3520  build 1599.45  minflt 1557  steal 2
+uniform-2097152.edges pagerank   grust-next@unchecked#1         second iters   16  total 1503.7787 ± 57.0638  per-iter 93.9862  build 1599.45  minflt 1006  steal 2
+uniform-2097152.edges pagerank   grust-next@unchecked#unset     first  iters   16  total 2885.2978 ± 161.7463  per-iter 180.3311  build 1264.47  minflt 2595  steal 2
+uniform-2097152.edges pagerank   grust-next@unchecked#unset     second iters   16  total 2860.5179 ± 273.8707  per-iter 178.7824  build 1264.47  minflt 519  steal 2
+uniform-2097152.edges pagerank   grust-next@unchecked+f32#1     first  iters   19  total 1387.9742 ± 9.5350  per-iter 73.0513  build 1627.54  minflt 1030  steal 2
+uniform-2097152.edges pagerank   grust-next@unchecked+f32#1     second iters   19  total 1388.6534 ± 4.7640  per-iter 73.0870  build 1627.54  minflt 0  steal 2
+uniform-2097152.edges pagerank   grust-next@unchecked+f32#unset first  iters   20  total 2864.1630 ± 11.3247  per-iter 143.2081  build 1272.37  minflt 2579  steal 2
+uniform-2097152.edges pagerank   grust-next@unchecked+f32#unset second iters   20  total 2804.5515 ± 51.5440  per-iter 140.2276  build 1272.37  minflt 515  steal 2
+uniform-2097152.edges pagerank   neo4j-graph                           iters   26  total 2154.7318 ± 14.3316  per-iter 82.8743  build 2601.00  minflt 1038  steal 2
+large-one-thread: clean, 1099.6s, steal 4 ticks, 0 sightings
+steal over the run: 1 ticks
+60 timed samples in 307.9s -> /work/timed/b9-large-full-width.json
+hub-2097152.edges    pagerank   grust                    first  iters   16  total 1094.3222 ± 7.9519  per-iter 68.3951  build 3735.65  minflt 3312  steal 0
+hub-2097152.edges    pagerank   grust                    second iters   16  total  507.5012 ± 13.2701  per-iter 31.7188  build 3735.65  minflt 12  steal 0
+hub-2097152.edges    pagerank   grust-next@counted       first  iters   16  total  152.5669 ± 2.1941  per-iter 9.5354  build 1459.07  minflt 1064  steal 0
+hub-2097152.edges    pagerank   grust-next@counted       second iters   16  total  163.4526 ± 4.0026  per-iter 10.2158  build 1459.07  minflt 1530  steal 0
+hub-2097152.edges    pagerank   grust-next@counted+f32   first  iters   20  total  152.6132 ± 0.2516  per-iter 7.6307  build 1485.34  minflt 542  steal 0
+hub-2097152.edges    pagerank   grust-next@counted+f32   second iters   20  total  152.4546 ± 0.3149  per-iter 7.6227  build 1485.34  minflt 1520  steal 0
+hub-2097152.edges    pagerank   grust-next@unchecked     first  iters   16  total  153.6603 ± 3.7429  per-iter 9.6038  build 1210.02  minflt 1067  steal 0
+hub-2097152.edges    pagerank   grust-next@unchecked     second iters   16  total  168.3852 ± 4.4524  per-iter 10.5241  build 1210.02  minflt 1534  steal 0
+hub-2097152.edges    pagerank   grust-next@unchecked+f32 first  iters   20  total  150.5368 ± 0.2477  per-iter 7.5268  build 1211.68  minflt 542  steal 0
+hub-2097152.edges    pagerank   grust-next@unchecked+f32 second iters   20  total  155.9172 ± 3.2222  per-iter 7.7959  build 1211.68  minflt 1519  steal 0
+hub-2097152.edges    pagerank   neo4j-graph                     iters   28  total  259.5686 ± 0.5901  per-iter 9.2703  build 409.62  minflt 1117  steal 0
+uniform-2097152.edges pagerank   grust                    first  iters   16  total 1089.8408 ± 9.4360  per-iter 68.1150  build 3744.63  minflt 2827  steal 1
+uniform-2097152.edges pagerank   grust                    second iters   16  total  540.6424 ± 6.0682  per-iter 33.7902  build 3744.63  minflt 13  steal 1
+uniform-2097152.edges pagerank   grust-next@counted       first  iters   16  total  160.2692 ± 2.4427  per-iter 10.0168  build 1480.94  minflt 1063  steal 1
+uniform-2097152.edges pagerank   grust-next@counted       second iters   16  total  163.1052 ± 1.9354  per-iter 10.1941  build 1480.94  minflt 1532  steal 1
+uniform-2097152.edges pagerank   grust-next@counted+f32   first  iters   19  total  151.9150 ± 0.6565  per-iter 7.9955  build 1485.28  minflt 543  steal 1
+uniform-2097152.edges pagerank   grust-next@counted+f32   second iters   19  total  157.2642 ± 5.7146  per-iter 8.2771  build 1485.28  minflt 1519  steal 1
+uniform-2097152.edges pagerank   grust-next@unchecked     first  iters   16  total  158.1870 ± 1.9763  per-iter 9.8867  build 1217.65  minflt 1065  steal 1
+uniform-2097152.edges pagerank   grust-next@unchecked     second iters   16  total  163.1124 ± 1.5941  per-iter 10.1945  build 1217.65  minflt 1532  steal 1
+uniform-2097152.edges pagerank   grust-next@unchecked+f32 first  iters   19  total  150.6080 ± 1.0795  per-iter 7.9267  build 1219.77  minflt 542  steal 1
+uniform-2097152.edges pagerank   grust-next@unchecked+f32 second iters   19  total  152.4909 ± 0.0780  per-iter 8.0258  build 1219.77  minflt 1519  steal 1
+uniform-2097152.edges pagerank   neo4j-graph                     iters   28  total  268.0989 ± 1.8784  per-iter 9.5750  build 404.90  minflt 1112  steal 1
+large-full-width: clean, 310.6s, steal 1 ticks, 0 sightings
+steal over the run: 10 ticks
+100 timed samples in 2640.5s -> /work/timed/b9-xlarge-one-thread.json
+hub-4194304.edges    pagerank   grust#1                        first  iters   16  total 11814.0785 ± 10.6137  per-iter 738.3799  build 7709.06  minflt 3227  steal 5
+hub-4194304.edges    pagerank   grust#1                        second iters   16  total 10471.6991 ± 4.8287  per-iter 654.4812  build 7709.06  minflt 1584  steal 5
+hub-4194304.edges    pagerank   grust-next@counted#1           first  iters   16  total 4373.3651 ± 10.2566  per-iter 273.3353  build 3885.35  minflt 2112  steal 5
+hub-4194304.edges    pagerank   grust-next@counted#1           second iters   16  total 4369.6894 ± 15.9815  per-iter 273.1056  build 3885.35  minflt 2112  steal 5
+hub-4194304.edges    pagerank   grust-next@counted#unset       first  iters   16  total 11942.1774 ± 23.7587  per-iter 746.3861  build 3556.39  minflt 2640  steal 5
+hub-4194304.edges    pagerank   grust-next@counted#unset       second iters   16  total 11963.1748 ± 189.7159  per-iter 747.6984  build 3556.39  minflt 2640  steal 5
+hub-4194304.edges    pagerank   grust-next@counted+f32#1       first  iters   20  total 3642.6301 ± 141.7074  per-iter 182.1315  build 3911.81  minflt 1557  steal 5
+hub-4194304.edges    pagerank   grust-next@counted+f32#1       second iters   20  total 3330.7107 ± 130.0606  per-iter 166.5355  build 3911.81  minflt 1006  steal 5
+hub-4194304.edges    pagerank   grust-next@counted+f32#unset   first  iters   21  total 9468.7259 ± 284.7519  per-iter 450.8917  build 3559.72  minflt 2608  steal 5
+hub-4194304.edges    pagerank   grust-next@counted+f32#unset   second iters   21  total 9711.1303 ± 235.8656  per-iter 462.4348  build 3559.72  minflt 2604  steal 5
+hub-4194304.edges    pagerank   grust-next@unchecked#1         first  iters   16  total 4339.4775 ± 18.0642  per-iter 271.2173  build 3421.91  minflt 2112  steal 5
+hub-4194304.edges    pagerank   grust-next@unchecked#1         second iters   16  total 4358.8093 ± 25.4246  per-iter 272.4256  build 3421.91  minflt 2112  steal 5
+hub-4194304.edges    pagerank   grust-next@unchecked#unset     first  iters   16  total 9469.7557 ± 65.3139  per-iter 591.8597  build 2572.48  minflt 2640  steal 5
+hub-4194304.edges    pagerank   grust-next@unchecked#unset     second iters   16  total 9296.2848 ± 84.2620  per-iter 581.0178  build 2572.48  minflt 2640  steal 5
+hub-4194304.edges    pagerank   grust-next@unchecked+f32#1     first  iters   20  total 3372.2254 ± 271.0916  per-iter 168.6113  build 3409.73  minflt 1557  steal 5
+hub-4194304.edges    pagerank   grust-next@unchecked+f32#1     second iters   20  total 3245.9837 ± 45.5683  per-iter 162.2992  build 3409.73  minflt 1006  steal 5
+hub-4194304.edges    pagerank   grust-next@unchecked+f32#unset first  iters   21  total 6756.6428 ± 656.6035  per-iter 321.7449  build 2549.17  minflt 2608  steal 5
+hub-4194304.edges    pagerank   grust-next@unchecked+f32#unset second iters   21  total 6650.3879 ± 137.9140  per-iter 316.6851  build 2549.17  minflt 2604  steal 5
+hub-4194304.edges    pagerank   neo4j-graph                           iters   23  total 4050.9492 ± 110.8430  per-iter 176.1282  build 6328.00  minflt 1047  steal 5
+uniform-4194304.edges pagerank   grust#1                        first  iters   16  total 12490.0783 ± 21.3990  per-iter 780.6299  build 7688.70  minflt 2261  steal 5
+uniform-4194304.edges pagerank   grust#1                        second iters   16  total 11171.7515 ± 33.3365  per-iter 698.2345  build 7688.70  minflt 1073  steal 5
+uniform-4194304.edges pagerank   grust-next@counted#1           first  iters   16  total 4557.8700 ± 35.2207  per-iter 284.8669  build 3885.66  minflt 579  steal 5
+uniform-4194304.edges pagerank   grust-next@counted#1           second iters   16  total 4577.3974 ± 63.7760  per-iter 286.0873  build 3885.66  minflt 579  steal 5
+uniform-4194304.edges pagerank   grust-next@counted#unset       first  iters   16  total 11647.0303 ± 104.2204  per-iter 727.9394  build 3553.53  minflt 2129  steal 5
+uniform-4194304.edges pagerank   grust-next@counted#unset       second iters   16  total 11580.6479 ± 24.2047  per-iter 723.7905  build 3553.53  minflt 2129  steal 5
+uniform-4194304.edges pagerank   grust-next@counted+f32#1       first  iters   19  total 3139.1574 ± 163.7998  per-iter 165.2188  build 3893.82  minflt 1557  steal 5
+uniform-4194304.edges pagerank   grust-next@counted+f32#1       second iters   19  total 3634.6855 ± 281.8733  per-iter 191.2992  build 3893.82  minflt 1006  steal 5
+uniform-4194304.edges pagerank   grust-next@counted+f32#unset   first  iters   20  total 9904.5325 ± 354.9516  per-iter 495.2266  build 3562.24  minflt 2097  steal 5
+uniform-4194304.edges pagerank   grust-next@counted+f32#unset   second iters   20  total 9211.6198 ± 166.4263  per-iter 460.5810  build 3562.24  minflt 2093  steal 5
+uniform-4194304.edges pagerank   grust-next@unchecked#1         first  iters   16  total 4531.4790 ± 50.9434  per-iter 283.2174  build 3383.98  minflt 579  steal 5
+uniform-4194304.edges pagerank   grust-next@unchecked#1         second iters   16  total 4549.5399 ± 23.8569  per-iter 284.3462  build 3383.98  minflt 579  steal 5
+uniform-4194304.edges pagerank   grust-next@unchecked#unset     first  iters   16  total 9004.2773 ± 40.0719  per-iter 562.7673  build 2566.54  minflt 2129  steal 5
+uniform-4194304.edges pagerank   grust-next@unchecked#unset     second iters   16  total 9012.3863 ± 41.1428  per-iter 563.2741  build 2566.54  minflt 2129  steal 5
+uniform-4194304.edges pagerank   grust-next@unchecked+f32#1     first  iters   19  total 3340.2956 ± 208.0473  per-iter 175.8050  build 3416.58  minflt 1557  steal 5
+uniform-4194304.edges pagerank   grust-next@unchecked+f32#1     second iters   19  total 3805.5954 ± 23.4248  per-iter 200.2945  build 3416.58  minflt 1006  steal 5
+uniform-4194304.edges pagerank   grust-next@unchecked+f32#unset first  iters   20  total 6827.0971 ± 599.9816  per-iter 341.3549  build 2573.27  minflt 2097  steal 5
+uniform-4194304.edges pagerank   grust-next@unchecked+f32#unset second iters   20  total 7108.3039 ± 468.2218  per-iter 355.4152  build 2573.27  minflt 2093  steal 5
+uniform-4194304.edges pagerank   neo4j-graph                           iters   29  total 7301.0258 ± 8.3874  per-iter 251.7595  build 6311.91  minflt 1046  steal 5
+xlarge-one-thread: clean, 2643.2s, steal 10 ticks, 0 sightings
+steal over the run: 2 ticks
+60 timed samples in 619.3s -> /work/timed/b9-xlarge-full-width.json
+hub-4194304.edges    pagerank   grust                    first  iters   16  total 2669.3118 ± 3.3805  per-iter 166.8320  build 7652.63  minflt 3447  steal 1
+hub-4194304.edges    pagerank   grust                    second iters   16  total 1322.3288 ± 10.2060  per-iter 82.6455  build 7652.63  minflt 1608  steal 1
+hub-4194304.edges    pagerank   grust-next@counted       first  iters   16  total  524.6666 ± 2.8409  per-iter 32.7917  build 3075.56  minflt 1643  steal 1
+hub-4194304.edges    pagerank   grust-next@counted       second iters   16  total  511.7424 ± 1.8974  per-iter 31.9839  build 3075.56  minflt 1609  steal 1
+hub-4194304.edges    pagerank   grust-next@counted+f32   first  iters   20  total  352.4930 ± 8.9517  per-iter 17.6246  build 3012.30  minflt 2108  steal 1
+hub-4194304.edges    pagerank   grust-next@counted+f32   second iters   20  total  346.7775 ± 2.3379  per-iter 17.3389  build 3012.30  minflt 1538  steal 1
+hub-4194304.edges    pagerank   grust-next@unchecked     first  iters   16  total  523.5478 ± 16.5665  per-iter 32.7217  build 2570.94  minflt 1644  steal 1
+hub-4194304.edges    pagerank   grust-next@unchecked     second iters   16  total  535.3016 ± 29.1283  per-iter 33.4563  build 2570.94  minflt 1608  steal 1
+hub-4194304.edges    pagerank   grust-next@unchecked+f32 first  iters   20  total  350.5944 ± 11.7346  per-iter 17.5297  build 2563.31  minflt 1610  steal 1
+hub-4194304.edges    pagerank   grust-next@unchecked+f32 second iters   20  total  338.3740 ± 4.8230  per-iter 16.9187  build 2563.31  minflt 1539  steal 1
+hub-4194304.edges    pagerank   neo4j-graph                     iters   14  total  343.0657 ± 49.3172  per-iter 24.5047  build 866.67  minflt 1116  steal 1
+uniform-4194304.edges pagerank   grust                    first  iters   16  total 2730.5202 ± 6.3271  per-iter 170.6575  build 7673.31  minflt 2482  steal 1
+uniform-4194304.edges pagerank   grust                    second iters   16  total 1426.6686 ± 7.8217  per-iter 89.1668  build 7673.31  minflt 1094  steal 1
+uniform-4194304.edges pagerank   grust-next@counted       first  iters   16  total  540.4153 ± 13.8470  per-iter 33.7760  build 3064.88  minflt 1130  steal 1
+uniform-4194304.edges pagerank   grust-next@counted       second iters   16  total  539.5158 ± 11.5265  per-iter 33.7197  build 3064.88  minflt 1095  steal 1
+uniform-4194304.edges pagerank   grust-next@counted+f32   first  iters   19  total  353.7242 ± 10.7476  per-iter 18.6171  build 3036.98  minflt 2117  steal 1
+uniform-4194304.edges pagerank   grust-next@counted+f32   second iters   19  total  356.1088 ± 7.0927  per-iter 18.7426  build 3036.98  minflt 1535  steal 1
+uniform-4194304.edges pagerank   grust-next@unchecked     first  iters   16  total  537.2547 ± 5.9870  per-iter 33.5784  build 2550.81  minflt 1645  steal 1
+uniform-4194304.edges pagerank   grust-next@unchecked     second iters   16  total  547.5353 ± 3.9227  per-iter 34.2210  build 2550.81  minflt 1606  steal 1
+uniform-4194304.edges pagerank   grust-next@unchecked+f32 first  iters   19  total  351.3918 ± 8.1857  per-iter 18.4943  build 2536.35  minflt 1607  steal 1
+uniform-4194304.edges pagerank   grust-next@unchecked+f32 second iters   19  total  348.9419 ± 17.8171  per-iter 18.3654  build 2536.35  minflt 1535  steal 1
+uniform-4194304.edges pagerank   neo4j-graph                     iters   29  total  583.7731 ± 14.8341  per-iter 20.1301  build 866.00  minflt 1113  steal 1
+xlarge-full-width: clean, 621.9s, steal 2 ticks, 0 sightings
+CAMPAIGN-END 2026-09-23T16:49:49Z
