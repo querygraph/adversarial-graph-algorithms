@@ -1,0 +1,72 @@
+{
+ "generator": "docker/simple-rust-algo-bench/fixtures.py",
+ "note": "The edge lists are regenerated from the seeded generator rather than stored; these hashes say the run used the same bytes a rerun will produce.",
+ "sizes": [
+  16384,
+  65536
+ ],
+ "families": [
+  "path",
+  "hub",
+  "layered",
+  "uniform"
+ ],
+ "fixtures": [
+  {
+   "name": "hub-16384.edges",
+   "nodes": 16384,
+   "edges": 130929,
+   "bytes": 1345511,
+   "sha256": "dfcc55c64f501ca31b7562912c5e3034606c79f2804fd0ce9184f5f8ffcf5c34"
+  },
+  {
+   "name": "hub-65536.edges",
+   "nodes": 65536,
+   "edges": 523817,
+   "bytes": 5913775,
+   "sha256": "2e291d162aedbdc5ef9016e6fdc5d4027ed3b04979a57c90acf71b50d5f8aff2"
+  },
+  {
+   "name": "layered-16384.edges",
+   "nodes": 16384,
+   "edges": 32414,
+   "bytes": 345282,
+   "sha256": "31c5b52f7eeb2c9a4533e291cbd6f1f7f70fa38058dfe8722445c5275e6f18f4"
+  },
+  {
+   "name": "layered-65536.edges",
+   "nodes": 65536,
+   "edges": 129915,
+   "bytes": 1515302,
+   "sha256": "82f035d96bab72aa453e172de914f1e7ca1d5390bba856a157dfd9c35f65a68d"
+  },
+  {
+   "name": "path-16384.edges",
+   "nodes": 16384,
+   "edges": 16383,
+   "bytes": 174392,
+   "sha256": "78366b26f0c4872cb6a6971624aecc79e9e51829b0736d4a2f1a3065941de661"
+  },
+  {
+   "name": "path-65536.edges",
+   "nodes": 65536,
+   "edges": 65535,
+   "bytes": 764216,
+   "sha256": "c4167547b9931c7ecbaa54774d17e8f02ec3494da00d84155fbfbdc9b704b852"
+  },
+  {
+   "name": "uniform-16384.edges",
+   "nodes": 16384,
+   "edges": 131041,
+   "bytes": 1395051,
+   "sha256": "743b057aa9b0e607d2a141efd2d935f5c3fedccb1a8a2b39ce0de82fd1ac9fbb"
+  },
+  {
+   "name": "uniform-65536.edges",
+   "nodes": 65536,
+   "edges": 524249,
+   "bytes": 6112428,
+   "sha256": "8f85623f74765041abb01e06a7fb6659655f25e17b9a8f7b9f6f7c2d114b51e0"
+  }
+ ]
+}

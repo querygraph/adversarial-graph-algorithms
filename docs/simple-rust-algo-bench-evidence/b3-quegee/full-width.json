@@ -1,0 +1,2487 @@
+{
+ "steal_ticks_over_run": 0,
+ "seconds": 71.6,
+ "tolerance": 1e-08,
+ "warmups": 1,
+ "repeats": 5,
+ "workers": 16,
+ "concurrency": 16,
+ "notes": {
+  "width": "At full width, only participants declaring width_capable can use a second thread. The others are shown with their times, labelled sequential by construction, and no width-to-width ratio is drawn against them.",
+  "lineage": "The lineage comparison - icebug to icecat to grustcat to grust - is valid only at equal width, so it belongs to the one-thread run. At full width a difference between them is a statement about threads, not about a rewrite.",
+  "across": "Cells from runs at different widths are not divided by one another. A scaling factor is its own table with its own heading.",
+  "precision": "PageRank precision differs by participant: the library accumulates and returns f32, every other participant f64. The score array is half the bytes, so it is half the memory traffic on the one array PageRank touches randomly per arc. State it under every PageRank table; it is a boundary, not a rounding footnote. WCC and triangle counts carry no such difference - component labels are indices and the triangle count is u64. Size-dependent: at 65,536 nodes every working set fits in the measuring host L3 with room to spare, so f32 buys bandwidth on one array and no cache residency at all. The arrays cross a 24.8 MB L3 somewhere in the hundreds of thousands of nodes at this density, and a run above that must restate this sentence rather than inherit it."
+ },
+ "participants": {
+  "library": {
+   "participant": "library",
+   "version": "0.1.0",
+   "commit": "unknown",
+   "library": "graph 0.3.2 / graph_builder 0.4.2",
+   "precision": "f32",
+   "algorithms": [
+    "pagerank",
+    "wcc",
+    "triangles"
+   ],
+   "parallel": "rayon, library default",
+   "width_capable": true
+  },
+  "icebug": {
+   "participant": "icebug",
+   "version": "icecat-cpp",
+   "commit": "57b443ec1d16",
+   "precision": "f64",
+   "algorithms": [
+    "pagerank",
+    "wcc",
+    "bfs"
+   ],
+   "parallel": "NetworKit OpenMP defaults",
+   "width_capable": true
+  },
+  "icecat": {
+   "participant": "icecat",
+   "version": "0.1.0",
+   "commit": "unknown",
+   "precision": "f64",
+   "algorithms": [
+    "pagerank",
+    "wcc",
+    "bfs"
+   ],
+   "parallel": "sequential; the parallel feature is not enabled",
+   "width_capable": false
+  },
+  "grustcat": {
+   "participant": "grustcat",
+   "version": "0.1.0",
+   "commit": "unknown",
+   "precision": "f64",
+   "algorithms": [
+    "pagerank",
+    "wcc",
+    "bfs"
+   ],
+   "pagerank_tolerance": "1e-8, fixed in the crate",
+   "parallel": "sequential",
+   "width_capable": false
+  },
+  "grust": {
+   "participant": "grust",
+   "version": "0.1.0",
+   "commit": "unknown",
+   "precision": "f64",
+   "algorithms": [
+    "pagerank",
+    "wcc",
+    "bfs",
+    "triangles"
+   ],
+   "parallel": "sequential unless with_concurrency is requested",
+   "width_capable": true
+  }
+ },
+ "cells": [
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "bfs",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.663695,
+   "total_mad": 0.01739500000000027,
+   "per_iteration_ms": null,
+   "build_ms": 20.189884000000003,
+   "grust_family_floor": {
+    "units": 147313,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": true,
+   "parse_ms": 10.086972,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "bfs",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.688209,
+   "total_mad": 0.018357999999999985,
+   "per_iteration_ms": null,
+   "build_ms": 94.34812600000001,
+   "grust_family_floor": {
+    "units": 147313,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 9.893566,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "bfs",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 2.333221,
+   "total_mad": 0.08135300000000001,
+   "per_iteration_ms": null,
+   "build_ms": 10.782677,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 16.529636,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "bfs",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.910385,
+   "total_mad": 0.008647999999999989,
+   "per_iteration_ms": null,
+   "build_ms": 6.769421,
+   "grust_family_floor": {
+    "units": 147313,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 10.330553,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "grust",
+   "iterations": 17,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 7.661624,
+   "total_mad": 0.31459100000000007,
+   "per_iteration_ms": 0.45068376470588234,
+   "build_ms": 20.172455,
+   "grust_family_floor": {
+    "units": 294626,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 10.140399,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "grustcat",
+   "iterations": 17,
+   "residual": 3.231963668260963e-09,
+   "precision": "f64",
+   "total_ms": 7.273654,
+   "total_mad": 0.010800000000000587,
+   "per_iteration_ms": 0.42786199999999996,
+   "build_ms": 96.615701,
+   "grust_family_floor": {
+    "units": 294626,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 9.945720999999999,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "icebug",
+   "iterations": 12,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 54.085693,
+   "total_mad": 51.014863,
+   "per_iteration_ms": 4.507141083333333,
+   "build_ms": 10.954039,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 16.580241,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "icecat",
+   "iterations": 17,
+   "residual": 3.231963668260963e-09,
+   "precision": "f64",
+   "total_ms": 8.683845000000002,
+   "total_mad": 0.033117000000002506,
+   "per_iteration_ms": 0.510814411764706,
+   "build_ms": 6.126747,
+   "grust_family_floor": {
+    "units": 294626,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 10.351647999999999,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "library",
+   "iterations": 36,
+   "residual": 9.287759894505143e-09,
+   "precision": "f32",
+   "total_ms": 14.322487,
+   "total_mad": 0.10903299999999838,
+   "per_iteration_ms": 0.3978468611111111,
+   "build_ms": 5.368580000000001,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 10.304661,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "triangles",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 8.237351,
+   "total_mad": 0.06337300000000035,
+   "per_iteration_ms": null,
+   "build_ms": 25.489196,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 10.02343,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "triangles",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 1.3150060000000001,
+   "total_mad": 0.014489000000000196,
+   "per_iteration_ms": null,
+   "build_ms": 4.776911,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 10.296531,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "wcc",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.3314030000000001,
+   "total_mad": 0.04077799999999998,
+   "per_iteration_ms": null,
+   "build_ms": 20.79685,
+   "grust_family_floor": {
+    "units": 278242,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 10.051897,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "wcc",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.584422,
+   "total_mad": 0.0027610000000000134,
+   "per_iteration_ms": null,
+   "build_ms": 93.914294,
+   "grust_family_floor": {
+    "units": 278242,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 9.943146,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "wcc",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 2.981028,
+   "total_mad": 0.13804700000000025,
+   "per_iteration_ms": null,
+   "build_ms": 10.592051,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 16.716328,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "wcc",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.932477,
+   "total_mad": 0.005090000000000039,
+   "per_iteration_ms": null,
+   "build_ms": 6.785888,
+   "grust_family_floor": {
+    "units": 278242,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 10.280012999999999,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-16384.edges",
+   "algorithm": "wcc",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 1.146966,
+   "total_mad": 0.04507299999999992,
+   "per_iteration_ms": null,
+   "build_ms": 4.606254,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 10.279252,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "bfs",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 4.3027619999999995,
+   "total_mad": 0.047700999999999105,
+   "per_iteration_ms": null,
+   "build_ms": 107.162622,
+   "grust_family_floor": {
+    "units": 589353,
+    "floor": 262144,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 40.196848,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "bfs",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 5.369554,
+   "total_mad": 0.06854400000000016,
+   "per_iteration_ms": null,
+   "build_ms": 468.692116,
+   "grust_family_floor": {
+    "units": 589353,
+    "floor": 262144,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 39.390614,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "bfs",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 14.664929,
+   "total_mad": 0.6380500000000016,
+   "per_iteration_ms": null,
+   "build_ms": 62.171612,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 68.473333,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "bfs",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 5.085397,
+   "total_mad": 0.0642579999999997,
+   "per_iteration_ms": null,
+   "build_ms": 21.539294,
+   "grust_family_floor": {
+    "units": 589353,
+    "floor": 262144,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 40.594775999999996,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "grust",
+   "iterations": 17,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 20.742857,
+   "total_mad": 1.1139089999999996,
+   "per_iteration_ms": 1.2201680588235295,
+   "build_ms": 112.637946,
+   "grust_family_floor": {
+    "units": 1178706,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 40.848389999999995,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "grustcat",
+   "iterations": 17,
+   "residual": 3.2377320613394786e-09,
+   "precision": "f64",
+   "total_ms": 33.758841,
+   "total_mad": 0.917669999999994,
+   "per_iteration_ms": 1.985814176470588,
+   "build_ms": 493.84884800000003,
+   "grust_family_floor": {
+    "units": 1178706,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 39.797962999999996,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "icebug",
+   "iterations": 12,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 9.413695,
+   "total_mad": 0.7521300000000011,
+   "per_iteration_ms": 0.7844745833333334,
+   "build_ms": 76.188818,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 68.800569,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "icecat",
+   "iterations": 17,
+   "residual": 3.2377320613394786e-09,
+   "precision": "f64",
+   "total_ms": 35.730506000000005,
+   "total_mad": 0.2788360000000054,
+   "per_iteration_ms": 2.1017944705882354,
+   "build_ms": 22.246084999999997,
+   "grust_family_floor": {
+    "units": 1178706,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 40.806047,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "library",
+   "iterations": 28,
+   "residual": 9.913492249324918e-09,
+   "precision": "f32",
+   "total_ms": 15.861028999999998,
+   "total_mad": 0.23603400000000008,
+   "per_iteration_ms": 0.5664653214285714,
+   "build_ms": 15.873058999999998,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 41.405849,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "triangles",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 31.602528,
+   "total_mad": 1.0410190000000057,
+   "per_iteration_ms": null,
+   "build_ms": 126.808418,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 40.280285,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "triangles",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 3.660961,
+   "total_mad": 0.07503600000000032,
+   "per_iteration_ms": null,
+   "build_ms": 15.338581,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 41.121931000000004,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "wcc",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 2.577523,
+   "total_mad": 0.07826199999999961,
+   "per_iteration_ms": null,
+   "build_ms": 108.093691,
+   "grust_family_floor": {
+    "units": 1113170,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 40.246807000000004,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "wcc",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 2.389628,
+   "total_mad": 0.03334500000000018,
+   "per_iteration_ms": null,
+   "build_ms": 479.420688,
+   "grust_family_floor": {
+    "units": 1113170,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 39.686549,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "wcc",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 20.910646,
+   "total_mad": 0.25818800000000053,
+   "per_iteration_ms": null,
+   "build_ms": 65.050583,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 68.597301,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "wcc",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 3.7786239999999998,
+   "total_mad": 0.0020850000000005586,
+   "per_iteration_ms": null,
+   "build_ms": 22.397288,
+   "grust_family_floor": {
+    "units": 1113170,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 40.728429,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/hub-65536.edges",
+   "algorithm": "wcc",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 3.120926,
+   "total_mad": 0.29459599999999986,
+   "per_iteration_ms": null,
+   "build_ms": 15.258518,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 41.154722,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "bfs",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.46216399999999996,
+   "total_mad": 0.003896999999999984,
+   "per_iteration_ms": null,
+   "build_ms": 7.00858,
+   "grust_family_floor": {
+    "units": 48798,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": true,
+   "parse_ms": 2.4663850000000003,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "bfs",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.25422599999999995,
+   "total_mad": 0.0070450000000000235,
+   "per_iteration_ms": null,
+   "build_ms": 33.911705,
+   "grust_family_floor": {
+    "units": 48798,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 2.430277,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "bfs",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.531241,
+   "total_mad": 0.013332999999999928,
+   "per_iteration_ms": null,
+   "build_ms": 2.823795,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 4.20638,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "bfs",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.392458,
+   "total_mad": 0.0012969999999999926,
+   "per_iteration_ms": null,
+   "build_ms": 1.695815,
+   "grust_family_floor": {
+    "units": 48798,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 2.531127,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "grust",
+   "iterations": 84,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 17.771722,
+   "total_mad": 0.14557800000000043,
+   "per_iteration_ms": 0.21156811904761905,
+   "build_ms": 7.058013,
+   "grust_family_floor": {
+    "units": 97596,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 2.500347,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "grustcat",
+   "iterations": 84,
+   "residual": 9.15442571938001e-09,
+   "precision": "f64",
+   "total_ms": 26.630371999999998,
+   "total_mad": 0.04107899999999631,
+   "per_iteration_ms": 0.31702823809523806,
+   "build_ms": 34.279176,
+   "grust_family_floor": {
+    "units": 97596,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 2.465646,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "icebug",
+   "iterations": 69,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 9.182189,
+   "total_mad": 0.3571629999999999,
+   "per_iteration_ms": 0.1330752028985507,
+   "build_ms": 2.832992,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 4.231973,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "icecat",
+   "iterations": 84,
+   "residual": 9.154425675751037e-09,
+   "precision": "f64",
+   "total_ms": 27.701271,
+   "total_mad": 0.04754000000000502,
+   "per_iteration_ms": 0.3297770357142857,
+   "build_ms": 1.7148249999999998,
+   "grust_family_floor": {
+    "units": 97596,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 2.5569,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "triangles",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 2.950315,
+   "total_mad": 0.03701300000000041,
+   "per_iteration_ms": null,
+   "build_ms": 7.394599,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 2.491042,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "triangles",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 0.728402,
+   "total_mad": 0.00819000000000003,
+   "per_iteration_ms": null,
+   "build_ms": 2.306907,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 2.5466,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "wcc",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.04614,
+   "total_mad": 0.004043000000000019,
+   "per_iteration_ms": null,
+   "build_ms": 6.872642,
+   "grust_family_floor": {
+    "units": 81212,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 2.44713,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "wcc",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.360718,
+   "total_mad": 0.0065549999999999775,
+   "per_iteration_ms": null,
+   "build_ms": 33.145076,
+   "grust_family_floor": {
+    "units": 81212,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 2.424315,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "wcc",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.037082,
+   "total_mad": 0.04959300000000011,
+   "per_iteration_ms": null,
+   "build_ms": 2.825645,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 4.208994,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "wcc",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.500364,
+   "total_mad": 0.003587000000000007,
+   "per_iteration_ms": null,
+   "build_ms": 1.705953,
+   "grust_family_floor": {
+    "units": 81212,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 2.52907,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-16384.edges",
+   "algorithm": "wcc",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 1.040969,
+   "total_mad": 0.0035010000000001984,
+   "per_iteration_ms": null,
+   "build_ms": 2.3019730000000003,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 2.552677,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "bfs",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.871688,
+   "total_mad": 0.006656999999999913,
+   "per_iteration_ms": null,
+   "build_ms": 31.376887,
+   "grust_family_floor": {
+    "units": 195451,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": true,
+   "parse_ms": 10.165263000000001,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "bfs",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.040738,
+   "total_mad": 0.015155999999999947,
+   "per_iteration_ms": null,
+   "build_ms": 140.063932,
+   "grust_family_floor": {
+    "units": 195451,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 10.004763,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "bfs",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 2.816877,
+   "total_mad": 0.015676000000000023,
+   "per_iteration_ms": null,
+   "build_ms": 11.521711,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 17.504624,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "bfs",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.68403,
+   "total_mad": 0.02018299999999984,
+   "per_iteration_ms": null,
+   "build_ms": 7.0300780000000005,
+   "grust_family_floor": {
+    "units": 195451,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 10.311845,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "grust",
+   "iterations": 75,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 29.98467,
+   "total_mad": 0.25614300000000156,
+   "per_iteration_ms": 0.39979560000000003,
+   "build_ms": 31.003213000000002,
+   "grust_family_floor": {
+    "units": 390902,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 10.235256,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "grustcat",
+   "iterations": 75,
+   "residual": 9.924153744154816e-09,
+   "precision": "f64",
+   "total_ms": 95.557962,
+   "total_mad": 0.14635299999999063,
+   "per_iteration_ms": 1.27410616,
+   "build_ms": 140.467776,
+   "grust_family_floor": {
+    "units": 390902,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 9.956446000000001,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "icebug",
+   "iterations": 60,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 14.635515,
+   "total_mad": 0.4458649999999995,
+   "per_iteration_ms": 0.24392525,
+   "build_ms": 11.372766,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 17.602017,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "icecat",
+   "iterations": 75,
+   "residual": 9.924153718643454e-09,
+   "precision": "f64",
+   "total_ms": 101.689317,
+   "total_mad": 0.15163799999999128,
+   "per_iteration_ms": 1.35585756,
+   "build_ms": 6.691373,
+   "grust_family_floor": {
+    "units": 390902,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 10.371804000000001,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "triangles",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 9.407419,
+   "total_mad": 0.21312399999999876,
+   "per_iteration_ms": null,
+   "build_ms": 33.752171999999995,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 10.16331,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "triangles",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 1.1238789999999999,
+   "total_mad": 0.0634380000000001,
+   "per_iteration_ms": null,
+   "build_ms": 5.4211670000000005,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 10.435668,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "wcc",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.609004,
+   "total_mad": 0.02787000000000006,
+   "per_iteration_ms": null,
+   "build_ms": 32.11398,
+   "grust_family_floor": {
+    "units": 325366,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 10.195521000000001,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "wcc",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.445529,
+   "total_mad": 0.007449999999999957,
+   "per_iteration_ms": null,
+   "build_ms": 139.848083,
+   "grust_family_floor": {
+    "units": 325366,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 9.986714000000001,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "wcc",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 4.559012,
+   "total_mad": 0.1314270000000004,
+   "per_iteration_ms": null,
+   "build_ms": 11.449834,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 17.483761,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "wcc",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 2.110779,
+   "total_mad": 0.014782000000000295,
+   "per_iteration_ms": null,
+   "build_ms": 7.149093,
+   "grust_family_floor": {
+    "units": 325366,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 10.294689,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/layered-65536.edges",
+   "algorithm": "wcc",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 2.768742,
+   "total_mad": 0.026742000000000044,
+   "per_iteration_ms": null,
+   "build_ms": 5.311103999999999,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 10.353322,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "bfs",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.42156000000000005,
+   "total_mad": 0.0029249999999999554,
+   "per_iteration_ms": null,
+   "build_ms": 5.131084,
+   "grust_family_floor": {
+    "units": 32767,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": true,
+   "parse_ms": 1.285936,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "bfs",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.138095,
+   "total_mad": 0.0005529999999999979,
+   "per_iteration_ms": null,
+   "build_ms": 26.394237,
+   "grust_family_floor": {
+    "units": 32767,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 1.234918,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "bfs",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.260298,
+   "total_mad": 0.003845000000000043,
+   "per_iteration_ms": null,
+   "build_ms": 1.778329,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 2.148756,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "bfs",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.289404,
+   "total_mad": 0.003581000000000001,
+   "per_iteration_ms": null,
+   "build_ms": 0.9189769999999999,
+   "grust_family_floor": {
+    "units": 32767,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 1.301448,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "grust",
+   "iterations": 58,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 11.496997,
+   "total_mad": 0.1546000000000003,
+   "per_iteration_ms": 0.19822408620689655,
+   "build_ms": 5.175962,
+   "grust_family_floor": {
+    "units": 65534,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 1.279421,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "grustcat",
+   "iterations": 58,
+   "residual": 9.837418477060277e-09,
+   "precision": "f64",
+   "total_ms": 9.718979000000001,
+   "total_mad": 0.006758999999998849,
+   "per_iteration_ms": 0.16756860344827587,
+   "build_ms": 27.158129,
+   "grust_family_floor": {
+    "units": 65534,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 1.253587,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "icebug",
+   "iterations": 54,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 6.700215,
+   "total_mad": 0.06420300000000001,
+   "per_iteration_ms": 0.12407805555555555,
+   "build_ms": 1.771245,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 2.143861,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "icecat",
+   "iterations": 58,
+   "residual": 9.83741847709077e-09,
+   "precision": "f64",
+   "total_ms": 11.196275,
+   "total_mad": 0.02001400000000153,
+   "per_iteration_ms": 0.19303922413793104,
+   "build_ms": 0.927881,
+   "grust_family_floor": {
+    "units": 65534,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 1.309372,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "triangles",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 2.1634559999999996,
+   "total_mad": 0.021915999999999602,
+   "per_iteration_ms": null,
+   "build_ms": 5.343792,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 1.288835,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "triangles",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 0.566654,
+   "total_mad": 0.010758999999999963,
+   "per_iteration_ms": null,
+   "build_ms": 2.161295,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 1.2988380000000002,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "wcc",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.009189,
+   "total_mad": 0.01773900000000017,
+   "per_iteration_ms": null,
+   "build_ms": 5.183555,
+   "grust_family_floor": {
+    "units": 49150,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 1.292221,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "wcc",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.16297499999999998,
+   "total_mad": 0.004411999999999999,
+   "per_iteration_ms": null,
+   "build_ms": 27.297227,
+   "grust_family_floor": {
+    "units": 49150,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 1.25972,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "wcc",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.352526,
+   "total_mad": 0.002008999999999983,
+   "per_iteration_ms": null,
+   "build_ms": 1.791096,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 2.154277,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "wcc",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.278005,
+   "total_mad": 0.0020059999999999523,
+   "per_iteration_ms": null,
+   "build_ms": 0.930548,
+   "grust_family_floor": {
+    "units": 49150,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 1.307431,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-16384.edges",
+   "algorithm": "wcc",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 0.8491939999999999,
+   "total_mad": 0.02040299999999995,
+   "per_iteration_ms": null,
+   "build_ms": 2.136234,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 1.320805,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "bfs",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.704223,
+   "total_mad": 0.019454000000000082,
+   "per_iteration_ms": null,
+   "build_ms": 24.085609,
+   "grust_family_floor": {
+    "units": 131071,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": true,
+   "parse_ms": 5.184861,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "bfs",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.565238,
+   "total_mad": 0.004097000000000017,
+   "per_iteration_ms": null,
+   "build_ms": 115.42855,
+   "grust_family_floor": {
+    "units": 131071,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 5.078043,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "bfs",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.039314,
+   "total_mad": 0.004422000000000148,
+   "per_iteration_ms": null,
+   "build_ms": 7.155094,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 8.842991,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "bfs",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.164553,
+   "total_mad": 0.007908000000000026,
+   "per_iteration_ms": null,
+   "build_ms": 4.331799,
+   "grust_family_floor": {
+    "units": 131071,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 5.2135180000000005,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "grust",
+   "iterations": 50,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 18.752122999999997,
+   "total_mad": 0.31775400000000076,
+   "per_iteration_ms": 0.37504245999999997,
+   "build_ms": 23.20765,
+   "grust_family_floor": {
+    "units": 262142,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 5.180206,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "grustcat",
+   "iterations": 50,
+   "residual": 9.02588341372966e-09,
+   "precision": "f64",
+   "total_ms": 33.523745,
+   "total_mad": 0.008883999999994785,
+   "per_iteration_ms": 0.6704749,
+   "build_ms": 113.075961,
+   "grust_family_floor": {
+    "units": 262142,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 5.080552,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "icebug",
+   "iterations": 46,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 11.989368,
+   "total_mad": 1.1737579999999994,
+   "per_iteration_ms": 0.26063843478260873,
+   "build_ms": 7.103718,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 8.865751,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "icecat",
+   "iterations": 50,
+   "residual": 9.02588341374406e-09,
+   "precision": "f64",
+   "total_ms": 39.29716,
+   "total_mad": 0.03334500000000418,
+   "per_iteration_ms": 0.7859432,
+   "build_ms": 4.353938,
+   "grust_family_floor": {
+    "units": 262142,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 5.240044,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "triangles",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 6.189533,
+   "total_mad": 0.028357999999999883,
+   "per_iteration_ms": null,
+   "build_ms": 23.509816999999998,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 5.1406849999999995,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "triangles",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 0.785226,
+   "total_mad": 0.02618599999999993,
+   "per_iteration_ms": null,
+   "build_ms": 4.803452,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 5.237475,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "wcc",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.567185,
+   "total_mad": 0.016818,
+   "per_iteration_ms": null,
+   "build_ms": 21.909247,
+   "grust_family_floor": {
+    "units": 196606,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 5.171719,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "wcc",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.6565679999999999,
+   "total_mad": 0.01072099999999998,
+   "per_iteration_ms": null,
+   "build_ms": 113.35576,
+   "grust_family_floor": {
+    "units": 196606,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 5.064135,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "wcc",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.31374,
+   "total_mad": 0.016508999999999885,
+   "per_iteration_ms": null,
+   "build_ms": 7.177609,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 8.85036,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "wcc",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.126013,
+   "total_mad": 0.015282000000000018,
+   "per_iteration_ms": null,
+   "build_ms": 4.360710999999999,
+   "grust_family_floor": {
+    "units": 196606,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 5.192707,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/path-65536.edges",
+   "algorithm": "wcc",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 2.370693,
+   "total_mad": 0.06524900000000056,
+   "per_iteration_ms": null,
+   "build_ms": 4.910083,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 5.238304,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "bfs",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.699396,
+   "total_mad": 0.029444000000000026,
+   "per_iteration_ms": null,
+   "build_ms": 19.262877,
+   "grust_family_floor": {
+    "units": 147425,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": true,
+   "parse_ms": 10.210915,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "bfs",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.928095,
+   "total_mad": 0.05026499999999989,
+   "per_iteration_ms": null,
+   "build_ms": 92.45341599999999,
+   "grust_family_floor": {
+    "units": 147425,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 10.069566,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "bfs",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 2.10825,
+   "total_mad": 0.14251799999999992,
+   "per_iteration_ms": null,
+   "build_ms": 10.251099,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 16.983525,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "bfs",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.927173,
+   "total_mad": 0.030915000000000026,
+   "per_iteration_ms": null,
+   "build_ms": 7.21788,
+   "grust_family_floor": {
+    "units": 147425,
+    "floor": 262144,
+    "parallel_eligible": false
+   },
+   "width_capable": false,
+   "parse_ms": 10.448953000000001,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "grust",
+   "iterations": 16,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 7.005105,
+   "total_mad": 0.1448810000000007,
+   "per_iteration_ms": 0.4378190625,
+   "build_ms": 20.097314,
+   "grust_family_floor": {
+    "units": 294850,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 10.224527,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "grustcat",
+   "iterations": 16,
+   "residual": 3.3649148104388307e-09,
+   "precision": "f64",
+   "total_ms": 6.836836,
+   "total_mad": 0.004920999999999509,
+   "per_iteration_ms": 0.42730225,
+   "build_ms": 94.609472,
+   "grust_family_floor": {
+    "units": 294850,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 10.122526,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "icebug",
+   "iterations": 12,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 3.121492,
+   "total_mad": 0.18108499999999994,
+   "per_iteration_ms": 0.26012433333333335,
+   "build_ms": 10.476828,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 16.878447,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "icecat",
+   "iterations": 16,
+   "residual": 3.3649148104388307e-09,
+   "precision": "f64",
+   "total_ms": 8.297509999999999,
+   "total_mad": 0.04052399999999956,
+   "per_iteration_ms": 0.5185943749999999,
+   "build_ms": 7.243458,
+   "grust_family_floor": {
+    "units": 294850,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 10.432125000000001,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "pagerank",
+   "participant": "library",
+   "iterations": 28,
+   "residual": 9.637005859985948e-09,
+   "precision": "f32",
+   "total_ms": 11.23415,
+   "total_mad": 0.04333600000000004,
+   "per_iteration_ms": 0.40121964285714284,
+   "build_ms": 4.473843,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 10.497941,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "triangles",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 9.168382,
+   "total_mad": 0.4330500000000015,
+   "per_iteration_ms": null,
+   "build_ms": 24.638949,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 10.208793,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "triangles",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 1.503236,
+   "total_mad": 0.0232460000000001,
+   "per_iteration_ms": null,
+   "build_ms": 4.403685,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 10.503516,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "wcc",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.6098670000000002,
+   "total_mad": 0.020076000000000205,
+   "per_iteration_ms": null,
+   "build_ms": 20.978468,
+   "grust_family_floor": {
+    "units": 278466,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 10.257699,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "wcc",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 0.731962,
+   "total_mad": 0.005396999999999985,
+   "per_iteration_ms": null,
+   "build_ms": 92.461463,
+   "grust_family_floor": {
+    "units": 278466,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 10.073606,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "wcc",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 3.522783,
+   "total_mad": 0.14745600000000003,
+   "per_iteration_ms": null,
+   "build_ms": 10.720312,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 16.856105,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "wcc",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 1.099043,
+   "total_mad": 0.010234999999999994,
+   "per_iteration_ms": null,
+   "build_ms": 6.876517000000001,
+   "grust_family_floor": {
+    "units": 278466,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 10.463349000000001,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-16384.edges",
+   "algorithm": "wcc",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 1.139246,
+   "total_mad": 0.02129800000000004,
+   "per_iteration_ms": null,
+   "build_ms": 4.425307,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 10.458333999999999,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "bfs",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 4.558645,
+   "total_mad": 0.07939700000000016,
+   "per_iteration_ms": null,
+   "build_ms": 106.425297,
+   "grust_family_floor": {
+    "units": 589785,
+    "floor": 262144,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 41.27032,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "bfs",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 5.625566,
+   "total_mad": 0.04546200000000056,
+   "per_iteration_ms": null,
+   "build_ms": 476.127309,
+   "grust_family_floor": {
+    "units": 589785,
+    "floor": 262144,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 40.307173,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "bfs",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 15.703396,
+   "total_mad": 0.11864199999999947,
+   "per_iteration_ms": null,
+   "build_ms": 70.114313,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 69.33485,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "bfs",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 4.930096,
+   "total_mad": 0.10848799999999947,
+   "per_iteration_ms": null,
+   "build_ms": 21.505325,
+   "grust_family_floor": {
+    "units": 589785,
+    "floor": 262144,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 41.427481,
+   "absent": [
+    "library"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "grust",
+   "iterations": 16,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 19.198651,
+   "total_mad": 0.13331999999999766,
+   "per_iteration_ms": 1.1999156875,
+   "build_ms": 106.276518,
+   "grust_family_floor": {
+    "units": 1179570,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 41.322357999999994,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "grustcat",
+   "iterations": 16,
+   "residual": 3.4311828054818233e-09,
+   "precision": "f64",
+   "total_ms": 30.779588999999998,
+   "total_mad": 0.15663400000000038,
+   "per_iteration_ms": 1.9237243124999999,
+   "build_ms": 472.60206500000004,
+   "grust_family_floor": {
+    "units": 1179570,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 40.43089,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "icebug",
+   "iterations": 11,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 8.958586,
+   "total_mad": 0.18699200000000005,
+   "per_iteration_ms": 0.8144169090909091,
+   "build_ms": 70.003765,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 69.381999,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "icecat",
+   "iterations": 16,
+   "residual": 3.4311828054818233e-09,
+   "precision": "f64",
+   "total_ms": 34.223330000000004,
+   "total_mad": 0.07670400000000654,
+   "per_iteration_ms": 2.1389581250000003,
+   "build_ms": 21.265389,
+   "grust_family_floor": {
+    "units": 1179570,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 41.632032,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "pagerank",
+   "participant": "library",
+   "iterations": 34,
+   "residual": 9.726363714435138e-09,
+   "precision": "f32",
+   "total_ms": 17.028295999999997,
+   "total_mad": 0.24222599999999872,
+   "per_iteration_ms": 0.5008322352941176,
+   "build_ms": 14.557861,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 42.125929,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "triangles",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 30.174733,
+   "total_mad": 0.48964600000000047,
+   "per_iteration_ms": null,
+   "build_ms": 133.718861,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 41.333113999999995,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "triangles",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 4.112489,
+   "total_mad": 0.09301700000000057,
+   "per_iteration_ms": null,
+   "build_ms": 14.691407,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 42.167401,
+   "absent": [
+    "icebug",
+    "icecat",
+    "grustcat"
+   ]
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "wcc",
+   "participant": "grust",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 3.129247,
+   "total_mad": 0.13133600000000012,
+   "per_iteration_ms": null,
+   "build_ms": 107.335964,
+   "grust_family_floor": {
+    "units": 1114034,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": true,
+   "parse_ms": 41.255329,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "wcc",
+   "participant": "grustcat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 2.988891,
+   "total_mad": 0.005523000000000167,
+   "per_iteration_ms": null,
+   "build_ms": 476.050827,
+   "grust_family_floor": {
+    "units": 1114034,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 40.51633,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "wcc",
+   "participant": "icebug",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 27.027376,
+   "total_mad": 0.9327079999999981,
+   "per_iteration_ms": null,
+   "build_ms": 66.286289,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 69.317077,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "wcc",
+   "participant": "icecat",
+   "iterations": null,
+   "residual": null,
+   "precision": "f64",
+   "total_ms": 4.50274,
+   "total_mad": 0.06572900000000015,
+   "per_iteration_ms": null,
+   "build_ms": 21.192528,
+   "grust_family_floor": {
+    "units": 1114034,
+    "floor": 16384,
+    "parallel_eligible": true
+   },
+   "width_capable": false,
+   "parse_ms": 41.5216,
+   "absent": []
+  },
+  {
+   "fixture": "/work/fixtures/uniform-65536.edges",
+   "algorithm": "wcc",
+   "participant": "library",
+   "iterations": null,
+   "residual": null,
+   "precision": "f32",
+   "total_ms": 3.369683,
+   "total_mad": 0.0915360000000005,
+   "per_iteration_ms": null,
+   "build_ms": 13.811371,
+   "grust_family_floor": null,
+   "width_capable": true,
+   "parse_ms": 42.027179,
+   "absent": []
+  }
+ ]
+}

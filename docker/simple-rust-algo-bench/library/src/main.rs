@@ -17,7 +17,7 @@ fn receipt() {
     println!(
         "{{\"participant\":\"{PARTICIPANT}\",\"version\":\"{}\",\"commit\":\"{}\",\
           \"library\":\"graph {} / graph_builder {}\",\"precision\":\"f32\",\
-          \"algorithms\":[\"pagerank\",\"wcc\",\"triangles\"],\"parallel\":\"rayon, library default\"}}",
+          \"algorithms\":[\"pagerank\",\"wcc\",\"triangles\"],\"parallel\":\"rayon, library default\",\"width_capable\":true}}",
         env!("CARGO_PKG_VERSION"),
         option_env!("BENCH_COMMIT").unwrap_or("unknown"),
         env!("GRAPH_VERSION"),

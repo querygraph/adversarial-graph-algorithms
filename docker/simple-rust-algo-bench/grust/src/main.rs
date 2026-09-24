@@ -10,7 +10,7 @@ use std::time::Instant;
 
 use grust_algorithms::{
     ExecutionContext, ExecutionLimits, GraphProjection, Orientation, ProjectionEdge,
-    SnapshotIdentity, PageRankOptions, TriangleOptions, pagerank, triangles,
+    SnapshotIdentity, PageRankOptions, TriangleOptions, bfs, pagerank, triangles,
     weakly_connected_components,
 };
 
@@ -39,8 +39,8 @@ fn main() {
     if args.iter().any(|a| a == "--receipt") {
         println!(
             "{{\"participant\":\"{PARTICIPANT}\",\"version\":\"{}\",\"commit\":\"{}\",\
-              \"precision\":\"f64\",\"algorithms\":[\"pagerank\",\"wcc\",\"triangles\"],\
-              \"parallel\":\"sequential; with_concurrency not requested\"}}",
+              \"precision\":\"f64\",\"algorithms\":[\"pagerank\",\"wcc\",\"bfs\",\"triangles\"],\
+              \"parallel\":\"sequential unless with_concurrency is requested\",\"width_capable\":true}}",
             env!("CARGO_PKG_VERSION"), option_env!("BENCH_COMMIT").unwrap_or("unknown"));
         return;
     }
@@ -55,13 +55,22 @@ fn main() {
     let (nodes, edges) = read(&fixture);
     let parse_ms = started.elapsed().as_secs_f64() * 1e3;
 
-    let context = ExecutionContext::new(ExecutionLimits {
+    // Two distinct things could be called "sequential": concurrency unset, where
+    // PageRank takes the push loop kept as the parallel path's oracle, and
+    // concurrency 1, where it takes the pull kernel on one thread. They are
+    // different algorithms, so the flag is explicit and the receipt records which.
+    let concurrency: Option<usize> = args.iter().position(|a| a == "--concurrency")
+        .map(|i| args[i + 1].parse().expect("--concurrency"));
+    let mut context = ExecutionContext::new(ExecutionLimits {
         memory_bytes: usize::MAX,
         work_units: usize::MAX,
         batch_rows: 1 << 16,
         deadline: None,
     })
     .expect("execution context");
+    if let Some(workers) = concurrency {
+        context = context.with_concurrency(workers).expect("concurrency");
+    }
 
     let started = Instant::now();
     let orientation = if algorithm == "triangles" { Orientation::Undirected } else { Orientation::Outgoing };
@@ -103,6 +112,18 @@ fn main() {
             (format!("\"kernel_ms\":{kernel_ms},\"count\":{},\"probe_label\":{}", distinct.len(), labels[0]),
              started.elapsed().as_secs_f64() * 1e3)
         }
+        "bfs" => {
+            let result = bfs(&projection, "0").expect("bfs");
+            let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
+            let started = Instant::now();
+            // Unreachable nodes carry positive infinity here and -1 in the
+            // reference; both mean the same thing and neither enters the sum.
+            let distances = result.values();
+            let reached = distances.iter().filter(|hops| hops.is_finite()).count();
+            let total: f64 = distances.iter().filter(|hops| hops.is_finite()).sum();
+            (format!("\"kernel_ms\":{kernel_ms},\"reached\":{reached},\"distance_sum\":{total}"),
+             started.elapsed().as_secs_f64() * 1e3)
+        }
         "triangles" => {
             let result = triangles(&projection, TriangleOptions { max_degree: None }).expect("triangles");
             let kernel_ms = started.elapsed().as_secs_f64() * 1e3;
@@ -113,6 +134,7 @@ fn main() {
     let usage = context.usage().expect("usage");
     println!("{{\"participant\":\"{PARTICIPANT}\",\"algorithm\":\"{algorithm}\",\"fixture\":\"{fixture}\",\
                \"nodes\":{nodes},\"edges\":{},\"parse_ms\":{parse_ms},\"build_ms\":{build_ms},{summary},\
-               \"materialise_ms\":{materialise},\"work_units\":{},\"peak_bytes\":{}}}",
-             edges.len(), usage.work_units, usage.peak_bytes);
+               \"materialise_ms\":{materialise},\"work_units\":{},\"peak_bytes\":{},\"concurrency\":{}}}",
+             edges.len(), usage.work_units, usage.peak_bytes,
+             concurrency.map(|w| w.to_string()).unwrap_or_else(|| "null".into()));
 }
