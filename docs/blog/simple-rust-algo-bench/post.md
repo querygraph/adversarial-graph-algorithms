@@ -1,4 +1,4 @@
-# Same function first: four campaigns on one PageRank kernel
+# What one PageRank sweep costs: five implementations on one host
 
 ![A water strider standing on the surface of a pond, its feet dimpling the water into a lattice of linked nodes, while a turtle crosses a chain of lily pads beside it.](assets/water-strider-turtle.png)
 
